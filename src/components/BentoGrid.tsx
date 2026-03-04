@@ -46,9 +46,9 @@ const BentoGrid = () => {
               background: "linear-gradient(90deg, transparent 0%, hsl(35 80% 55% / 0.3) 50%, transparent 100%)",
               backgroundSize: "200% 100%",
             }}
-            variants={shimmer}
-            initial="initial"
-            animate="animate"
+            initial={{ backgroundPosition: "200% 0" }}
+            animate={{ backgroundPosition: ["-200% 0", "200% 0"] }}
+            transition={shimmerTransition}
           />
           <div className="relative h-full flex flex-col justify-between p-5">
             <div className="flex items-start justify-between">
@@ -98,9 +98,9 @@ const BentoGrid = () => {
               background: "linear-gradient(120deg, transparent 0%, hsl(35 80% 55% / 0.4) 50%, transparent 100%)",
               backgroundSize: "200% 100%",
             }}
-            variants={shimmer}
-            initial="initial"
-            animate="animate"
+            initial={{ backgroundPosition: "200% 0" }}
+            animate={{ backgroundPosition: ["-200% 0", "200% 0"] }}
+            transition={shimmerTransition}
           />
           <div className="relative h-full flex flex-col justify-between p-6">
             <div>
@@ -218,9 +218,9 @@ const BentoGrid = () => {
               background: "linear-gradient(90deg, transparent 0%, hsl(35 80% 55% / 0.3) 50%, transparent 100%)",
               backgroundSize: "200% 100%",
             }}
-            variants={shimmer}
-            initial="initial"
-            animate="animate"
+            initial={{ backgroundPosition: "200% 0" }}
+            animate={{ backgroundPosition: ["-200% 0", "200% 0"] }}
+            transition={shimmerTransition}
           />
           <div className="relative h-full flex flex-col justify-end p-5">
             <motion.button whileHover={{ scale: 1.15 }} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center">
