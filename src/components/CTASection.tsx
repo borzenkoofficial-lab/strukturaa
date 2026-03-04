@@ -1,0 +1,57 @@
+import { motion } from "framer-motion";
+import { Phone, ArrowRight } from "lucide-react";
+import AnimatedSection from "./AnimatedSection";
+
+const CTASection = () => {
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-16">
+      <AnimatedSection>
+        <motion.div
+          className="relative rounded-3xl overflow-hidden p-8 md:p-14"
+          style={{
+            background: "linear-gradient(135deg, hsl(35 80% 55% / 0.2), hsl(30 60% 40% / 0.1))",
+          }}
+        >
+          {/* Animated glow */}
+          <motion.div
+            className="absolute -top-20 -right-20 w-80 h-80 rounded-full"
+            style={{ background: "radial-gradient(circle, hsl(35 80% 55% / 0.15), transparent 70%)" }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+                Готовы начать проект?
+              </h2>
+              <p className="text-muted-foreground max-w-lg">
+                Получите бесплатную консультацию и расчёт стоимости. Мы перезвоним в течение 30 минут.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <motion.button
+                className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-display font-semibold hover:opacity-90 transition-opacity"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Phone className="w-5 h-5" />
+                Позвонить
+              </motion.button>
+              <motion.button
+                className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-secondary text-secondary-foreground font-display font-semibold hover:bg-secondary/80 transition-colors"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Оставить заявку
+                <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatedSection>
+    </div>
+  );
+};
+
+export default CTASection;
