@@ -14,18 +14,12 @@ const cardVariants = {
     transition: {
       duration: 0.6,
       delay: i * 0.1,
-      ease: [0.16, 1, 0.3, 1],
+      ease: [0.16, 1, 0.3, 1] as const,
     },
   }),
 };
 
-const shimmer = {
-  initial: { backgroundPosition: "200% 0" },
-  animate: {
-    backgroundPosition: ["-200% 0", "200% 0"],
-    transition: { duration: 3, repeat: Infinity, ease: "linear" },
-  },
-};
+const shimmerTransition = { duration: 3, repeat: Infinity, ease: "linear" as const };
 
 const BentoGrid = () => {
   return (
