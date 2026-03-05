@@ -1,5 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import CinematicIntro from "@/components/CinematicIntro";
 import Header from "@/components/Header";
 import CategoryPills from "@/components/CategoryPills";
@@ -19,28 +21,30 @@ const Index = () => {
   }, []);
 
   return (
-    <>
-      <AnimatePresence>
-        {!introComplete && <CinematicIntro onComplete={handleIntroComplete} />}
-      </AnimatePresence>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AnimatePresence>
+          {!introComplete && <CinematicIntro onComplete={handleIntroComplete} />}
+        </AnimatePresence>
 
-      <motion.div
-        className="min-h-screen bg-background gradient-dark"
-        initial={{ opacity: 0 }}
-        animate={introComplete ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <Header />
-        <CategoryPills />
-        <BentoGrid />
-        <StatsSection />
-        <ServicesSection />
-        <ProcessSection />
-        <TestimonialsSection />
-        <CTASection />
-        <Footer />
-      </motion.div>
-    </>
+        <motion.div
+          className="min-h-screen bg-background gradient-dark"
+          initial={{ opacity: 0 }}
+          animate={introComplete ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <Header />
+          <CategoryPills />
+          <BentoGrid />
+          <StatsSection />
+          <ServicesSection />
+          <ProcessSection />
+          <TestimonialsSection />
+          <CTASection />
+          <Footer />
+        </motion.div>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 };
 

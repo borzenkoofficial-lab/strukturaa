@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
   const [phase, setPhase] = useState<"logo" | "tagline" | "reveal">("logo");
+  const { t } = useLanguage();
 
   useEffect(() => {
     const t1 = setTimeout(() => setPhase("tagline"), 1200);
@@ -30,7 +32,6 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           if (phase === "reveal") onComplete();
         }}
       >
-        {/* Ambient glow */}
         <motion.div
           className="absolute w-[600px] h-[600px] rounded-full"
           style={{ background: "radial-gradient(circle, hsl(35 80% 55% / 0.15), transparent 70%)" }}
@@ -38,16 +39,12 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           animate={{ scale: 1.5, opacity: 1 }}
           transition={{ duration: 2, ease: "easeOut" }}
         />
-
-        {/* Horizontal lines */}
         <motion.div
           className="absolute top-1/2 left-0 right-0 h-px bg-border/50"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.5, ease: [0.76, 0, 0.24, 1] }}
         />
-
-        {/* Logo */}
         <motion.div
           className="relative flex items-center gap-4"
           initial={{ opacity: 0, y: 30 }}
@@ -71,8 +68,6 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
             STRUKTURA
           </motion.span>
         </motion.div>
-
-        {/* Tagline */}
         <AnimatePresence>
           {(phase === "tagline" || phase === "reveal") && (
             <motion.p
@@ -82,12 +77,10 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              Строим будущее. Разбираем прошлое.
+              {t("intro.tagline")}
             </motion.p>
           )}
         </AnimatePresence>
-
-        {/* Loading bar */}
         <motion.div
           className="relative mt-10 w-48 h-0.5 bg-border/30 rounded-full overflow-hidden"
           initial={{ opacity: 0 }}
@@ -101,27 +94,14 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
             transition={{ duration: 2.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           />
         </motion.div>
-
-        {/* Particles */}
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 rounded-full bg-primary/40"
-            style={{
-              left: `${20 + i * 12}%`,
-              top: `${30 + (i % 3) * 15}%`,
-            }}
+            style={{ left: `${20 + i * 12}%`, top: `${30 + (i % 3) * 15}%` }}
             initial={{ opacity: 0, scale: 0 }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-              y: [0, -30, -60],
-            }}
-            transition={{
-              duration: 2,
-              delay: 0.8 + i * 0.2,
-              ease: "easeOut",
-            }}
+            animate={{ opacity: [0, 1, 0], scale: [0, 1, 0], y: [0, -30, -60] }}
+            transition={{ duration: 2, delay: 0.8 + i * 0.2, ease: "easeOut" }}
           />
         ))}
       </motion.div>
