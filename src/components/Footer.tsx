@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+  const navItems = [t("nav.services"), t("nav.projects"), t("nav.about"), t("nav.contacts")];
+
   return (
     <motion.footer
       className="max-w-7xl mx-auto px-6 py-12 border-t border-border"
@@ -17,18 +21,13 @@ const Footer = () => {
           <span className="font-display font-bold text-lg text-foreground tracking-tight">STRUKTURA</span>
         </motion.div>
         <div className="flex items-center gap-6 text-sm text-muted-foreground">
-          {["Услуги", "Проекты", "О нас", "Контакты"].map((item) => (
-            <motion.a
-              key={item}
-              href="#"
-              className="hover:text-foreground transition-colors"
-              whileHover={{ y: -2 }}
-            >
+          {navItems.map((item) => (
+            <motion.a key={item} href="#" className="hover:text-foreground transition-colors" whileHover={{ y: -2 }}>
               {item}
             </motion.a>
           ))}
         </div>
-        <p className="text-xs text-muted-foreground">© 2026 STRUKTURA. Все права защищены.</p>
+        <p className="text-xs text-muted-foreground">{t("footer.rights")}</p>
       </div>
     </motion.footer>
   );
