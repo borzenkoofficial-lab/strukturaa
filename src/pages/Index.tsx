@@ -1,8 +1,5 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import CinematicIntro from "@/components/CinematicIntro";
 import Header from "@/components/Header";
 import CategoryPills from "@/components/CategoryPills";
