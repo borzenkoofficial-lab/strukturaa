@@ -25,6 +25,7 @@ const ServicesSection = () => {
           <motion.button
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             whileHover={{ x: 4 }}
+            onClick={() => navigate("/services")}
           >
             {t("services.all")} <ArrowUpRight className="w-4 h-4" />
           </motion.button>
