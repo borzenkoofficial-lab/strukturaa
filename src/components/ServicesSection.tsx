@@ -8,6 +8,7 @@ import AnimatedSection from "./AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 
 const ServicesSection = () => {
+  const navigate = useNavigate();
   const { t } = useLanguage();
 
   const services: { titleKey: TranslationKey; descKey: TranslationKey; image: string }[] = [
