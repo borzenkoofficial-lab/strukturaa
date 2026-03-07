@@ -238,8 +238,8 @@ const BentoGrid = () => {
         {/* Eco Tile */}
         <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={10} whileHover={{ scale: 1.03 }} onClick={() => navigate("/about")}>
           <div className="flex items-center justify-between">
-            <span className="px-2 sm:px-3 py-1 rounded-lg bg-emerald-500/15 text-[10px] sm:text-xs font-medium text-emerald-400 uppercase tracking-wider">{t("bento.eco")}</span>
-            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
+            <span className="px-2 sm:px-3 py-1 rounded-lg bg-accent/15 text-[10px] sm:text-xs font-medium text-accent uppercase tracking-wider">{t("bento.eco")}</span>
+            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
           </div>
           <div className="mt-2 sm:mt-3">
             <h4 className="text-2xl sm:text-3xl font-display font-bold text-foreground">85%</h4>

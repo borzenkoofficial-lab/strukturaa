@@ -179,6 +179,24 @@ const translations = {
   // Menu
   "menu.title": { ru: "Меню", en: "Menu" },
   "menu.home": { ru: "Главная", en: "Home" },
+
+  // Filter
+  "filter.title": { ru: "Фильтры", en: "Filters" },
+  "filter.apply": { ru: "Применить", en: "Apply" },
+  "filter.reset": { ru: "Сбросить", en: "Reset" },
+
+  // New bento tiles
+  "bento.guarantee": { ru: "Гарантия", en: "Guarantee" },
+  "bento.guaranteeTitle": { ru: "Гарантия 3 года", en: "3 Year Warranty" },
+  "bento.guaranteeDesc": { ru: "На все виды демонтажных и строительных работ предоставляем официальную гарантию", en: "Official warranty on all demolition and construction work" },
+  "bento.speed": { ru: "Скорость", en: "Speed" },
+  "bento.minutes": { ru: "минут", en: "minutes" },
+  "bento.speedDesc": { ru: "Среднее время ответа на заявку. Перезвоним и обсудим детали проекта.", en: "Average response time. We'll call back and discuss project details." },
+  "bento.equipment": { ru: "Техника", en: "Equipment" },
+  "bento.equipmentTitle": { ru: "Собственный парк техники", en: "Own Equipment Fleet" },
+  "bento.equipmentDesc": { ru: "50+ единиц спецтехники: экскаваторы, погрузчики, самосвалы", en: "50+ units: excavators, loaders, dump trucks" },
+  "bento.eco": { ru: "Экология", en: "Ecology" },
+  "bento.ecoDesc": { ru: "Строительных отходов направляем на переработку. Заботимся о природе.", en: "Construction waste sent for recycling. We care about nature." },
 } as const;
 
 type TranslationKey = keyof typeof translations;
