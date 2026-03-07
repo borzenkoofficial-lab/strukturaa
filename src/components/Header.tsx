@@ -25,21 +25,21 @@ const Header = () => {
   return (
     <>
       <motion.header
-        className="w-full py-4 px-6 sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/20"
+        className="w-full py-3 sm:py-4 px-4 sm:px-6 sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/20"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
           <motion.div
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0"
             whileHover={{ scale: 1.03 }}
             onClick={() => navigate("/")}
           >
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="font-display font-bold text-sm text-primary-foreground">S</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary flex items-center justify-center">
+              <span className="font-display font-bold text-xs sm:text-sm text-primary-foreground">S</span>
             </div>
-            <span className="font-display font-bold text-lg text-foreground tracking-tight">STRUKTURA</span>
+            <span className="font-display font-bold text-base sm:text-lg text-foreground tracking-tight">STRUKTURA</span>
           </motion.div>
 
           <div className="hidden md:flex items-center flex-1 max-w-md mx-8 cursor-pointer" onClick={() => setSearchOpen(true)}>
@@ -53,7 +53,7 @@ const Header = () => {
             {navItems.map((item, i) => (
               <motion.button
                 key={item.path}
-                className="px-4 py-2 rounded-xl text-sm font-medium text-secondary-foreground hover:bg-secondary transition-colors"
+                className="px-3 xl:px-4 py-2 rounded-xl text-sm font-medium text-secondary-foreground hover:bg-secondary transition-colors"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08 }}
@@ -65,15 +65,25 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Mobile search */}
+            <motion.button
+              onClick={() => setSearchOpen(true)}
+              className="md:hidden p-2 rounded-xl bg-secondary text-secondary-foreground"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Search className="w-4 h-4" />
+            </motion.button>
+
             <motion.button
               onClick={() => setLang(lang === "ru" ? "en" : "ru")}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold uppercase"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold uppercase"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Globe className="w-3.5 h-3.5" />
-              {lang === "ru" ? "EN" : "RU"}
+              <span className="hidden sm:inline">{lang === "ru" ? "EN" : "RU"}</span>
             </motion.button>
 
             <motion.button
@@ -86,21 +96,23 @@ const Header = () => {
             </motion.button>
 
             <motion.button
-              className="hidden sm:flex md:hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold"
+              className="hidden sm:flex md:hidden lg:flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate("/contacts")}
             >
               <Phone className="w-4 h-4" />
-              {t("header.contact")}
+              <span className="hidden sm:inline">{t("header.contact")}</span>
             </motion.button>
 
-            <button
+            <motion.button
               className="lg:hidden p-2 rounded-xl bg-secondary text-secondary-foreground"
               onClick={() => setMenuOpen(true)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <Menu className="w-5 h-5" />
-            </button>
+            </motion.button>
           </div>
         </div>
       </motion.header>
