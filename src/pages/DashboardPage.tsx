@@ -163,7 +163,13 @@ const DashboardPage = () => {
             onClick={() => setActiveTab("projects")}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${activeTab === "projects" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
           >
-            <HardHat className="w-4 h-4 inline mr-2" /> Мои проекты
+            <HardHat className="w-4 h-4 inline mr-2" /> Проекты
+          </button>
+          <button
+            onClick={() => setActiveTab("chats")}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${activeTab === "chats" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
+          >
+            <MessageCircle className="w-4 h-4 inline mr-2" /> Чаты
           </button>
         </div>
 
