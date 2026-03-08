@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/SEOHead";
 import ShopItemDetail from "@/components/shop/ShopItemDetail";
+import ShopIntro from "@/components/shop/ShopIntro";
 
 const SHOP_CATEGORIES = [
   { value: "all", label: "Все" },
@@ -56,6 +57,7 @@ const ShopPage = () => {
   const [category, setCategory] = useState("all");
   const [activeTab, setActiveTab] = useState<"all" | "my">("all");
   const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
+  const [introComplete, setIntroComplete] = useState(false);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -88,11 +90,15 @@ const ShopPage = () => {
     <>
       <SEOHead title="Магазин инструментов — STRUKTURA" description="Б/У и новый строительный инструмент. Покупайте и продавайте электроинструмент, ручной инструмент и расходники." canonical="/shop" />
 
+      <AnimatePresence>
+        {!introComplete && <ShopIntro onComplete={() => setIntroComplete(true)} />}
+      </AnimatePresence>
+
       <motion.div
         className="min-h-screen bg-background"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        animate={introComplete ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
       >
         {/* Top bar */}
         <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border/30">
