@@ -55,6 +55,7 @@ const ShopPage = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [activeTab, setActiveTab] = useState<"all" | "my">("all");
+  const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
 
   const fetchItems = async () => {
     setLoading(true);
