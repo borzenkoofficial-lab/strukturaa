@@ -197,6 +197,8 @@ const translations = {
   "bento.equipmentDesc": { ru: "50+ единиц спецтехники: экскаваторы, погрузчики, самосвалы", en: "50+ units: excavators, loaders, dump trucks" },
   "bento.eco": { ru: "Экология", en: "Ecology" },
   "bento.ecoDesc": { ru: "Строительных отходов направляем на переработку. Заботимся о природе.", en: "Construction waste sent for recycling. We care about nature." },
+  "bento.marketplace": { ru: "Строительная биржа", en: "Construction Marketplace" },
+  "bento.marketplaceDesc": { ru: "Доска объявлений: размещайте заявки на строительство и находите лучших подрядчиков прямо на нашем сайте", en: "Post construction requests and find the best contractors right on our site" },
 } as const;
 
 type TranslationKey = keyof typeof translations;
