@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Building2, Home, Truck, Wrench, Hammer, Gem, HardHat, Zap } from "lucide-react";
+import { ArrowUpRight, Building2, Home, Truck, Wrench, Hammer, Gem, HardHat } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 
