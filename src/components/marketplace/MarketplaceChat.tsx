@@ -127,9 +127,9 @@ const MarketplaceChat = () => {
   }
 
   return (
-    <div className="flex gap-4 h-[70vh]">
-      {/* Threads */}
-      <div className="w-80 shrink-0 bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col">
+    <div className="flex flex-col md:flex-row gap-4 h-[70vh]">
+      {/* Threads - full width on mobile, fixed on desktop */}
+      <div className={`${selectedPartner ? "hidden md:flex" : "flex"} w-full md:w-80 md:shrink-0 bg-card rounded-2xl border border-border/50 overflow-hidden flex-col`}>
         <div className="p-4 border-b border-border/30">
           <h3 className="font-display font-semibold text-foreground">Диалоги</h3>
         </div>
@@ -153,7 +153,7 @@ const MarketplaceChat = () => {
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-foreground truncate">{t.partnerName}</span>
                       {t.unread > 0 && (
-                        <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-bold">
+                        <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-bold shrink-0">
                           {t.unread}
                         </span>
                       )}
@@ -167,14 +167,26 @@ const MarketplaceChat = () => {
         </div>
       </div>
 
-      {/* Chat */}
-      <div className="flex-1 bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col">
+      {/* Chat - full width on mobile, flex on desktop */}
+      <div className={`${!selectedPartner ? "hidden md:flex" : "flex"} flex-1 bg-card rounded-2xl border border-border/50 overflow-hidden flex-col min-w-0`}>
         {!selectedPartner ? (
           <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
             Выберите диалог
           </div>
         ) : (
           <>
+            {/* Mobile back button */}
+            <div className="flex items-center gap-3 p-3 border-b border-border/30 md:hidden">
+              <button
+                onClick={() => setSelectedPartner(null)}
+                className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0"
+              >
+                <MessageCircle className="w-4 h-4 text-secondary-foreground" />
+              </button>
+              <span className="text-sm font-medium text-foreground truncate">
+                {threads.find(t => t.partnerId === selectedPartner)?.partnerName || "Диалог"}
+              </span>
+            </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
               {messages.map(msg => (
                 <motion.div
@@ -183,7 +195,7 @@ const MarketplaceChat = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className={`flex ${msg.sender_id === user.id ? "justify-end" : "justify-start"}`}
                 >
-                  <div className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm ${
+                  <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm break-words ${
                     msg.sender_id === user.id
                       ? "bg-primary text-primary-foreground rounded-br-md"
                       : "bg-secondary text-secondary-foreground rounded-bl-md"
