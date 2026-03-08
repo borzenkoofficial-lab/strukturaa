@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Newspaper } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
+import SEOHead from "@/components/SEOHead";
 
 const newsItems: { titleKey: TranslationKey; dateKey: TranslationKey; descKey: TranslationKey }[] = [
   { titleKey: "news.1.title", dateKey: "news.1.date", descKey: "news.1.desc" },
