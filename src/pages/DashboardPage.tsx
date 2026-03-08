@@ -8,10 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Mail, LogOut, Edit3, Camera, ArrowLeft, Shield, FileText, Heart, Megaphone, Bookmark, Wrench, Newspaper, Trash2, HardHat } from "lucide-react";
+import { User, Mail, LogOut, Edit3, Camera, ArrowLeft, Shield, FileText, Heart, Megaphone, Bookmark, Wrench, Newspaper, Trash2, HardHat, MessageCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import SEOHead from "@/components/SEOHead";
 import ProjectTracking from "@/components/dashboard/ProjectTracking";
+import DashboardChats from "@/components/dashboard/DashboardChats";
 
 const serviceNames: Record<string, string> = {
   demolition: "Демонтаж",
@@ -29,7 +30,7 @@ const DashboardPage = () => {
   const [displayName, setDisplayName] = useState(profile?.display_name || "");
   const [bio, setBio] = useState(profile?.bio || "");
   const [uploading, setUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"profile" | "favorites" | "projects">("profile");
+  const [activeTab, setActiveTab] = useState<"profile" | "favorites" | "projects" | "chats">("profile");
   const fileRef = useRef<HTMLInputElement>(null);
 
   if (!user) {
@@ -162,7 +163,13 @@ const DashboardPage = () => {
             onClick={() => setActiveTab("projects")}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${activeTab === "projects" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
           >
-            <HardHat className="w-4 h-4 inline mr-2" /> Мои проекты
+            <HardHat className="w-4 h-4 inline mr-2" /> Проекты
+          </button>
+          <button
+            onClick={() => setActiveTab("chats")}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${activeTab === "chats" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
+          >
+            <MessageCircle className="w-4 h-4 inline mr-2" /> Чаты
           </button>
         </div>
 
@@ -275,6 +282,8 @@ const DashboardPage = () => {
         )}
 
         {activeTab === "projects" && <ProjectTracking />}
+
+        {activeTab === "chats" && <DashboardChats />}
       </div>
     </div>
     </>
