@@ -14,6 +14,7 @@ const navItems = [
   { label: "Категории", path: "/admin/categories", icon: FolderOpen },
   { label: "Истории", path: "/admin/stories", icon: CircleDot },
   { label: "Заявки биржи", path: "/admin/listings", icon: Briefcase },
+  { label: "Проекты", path: "/admin/projects", icon: HardHat },
   { label: "Медиа", path: "/admin/media", icon: Image },
   { label: "Пользователи", path: "/admin/users", icon: Users },
   { label: "Настройки", path: "/admin/settings", icon: Settings },
