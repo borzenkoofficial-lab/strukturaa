@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Home, Briefcase, FolderOpen, Users, Phone, Newspaper, Heart, Search } from "lucide-react";
+import { X, Home, Briefcase, FolderOpen, Users, Phone, Newspaper, BookOpen, Megaphone } from "lucide-react";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useCallback } from "react";
@@ -10,6 +10,8 @@ const menuItems: { icon: typeof Home; labelKey: TranslationKey; path: string }[]
   { icon: Home, labelKey: "menu.home", path: "/" },
   { icon: Briefcase, labelKey: "nav.services", path: "/services" },
   { icon: FolderOpen, labelKey: "nav.projects", path: "/projects" },
+  { icon: Megaphone, labelKey: "nav.marketplace", path: "/marketplace" },
+  { icon: BookOpen, labelKey: "nav.blog", path: "/blog" },
   { icon: Newspaper, labelKey: "nav.news", path: "/news" },
   { icon: Users, labelKey: "nav.about", path: "/about" },
   { icon: Phone, labelKey: "nav.contacts", path: "/contacts" },
@@ -71,12 +73,11 @@ const MobileMenu = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                   className="glass-card-hover p-5 flex flex-col items-center gap-3 cursor-pointer relative overflow-hidden select-none"
                   initial={{ opacity: 0, y: 20, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: 0.1 + i * 0.06, type: "spring", damping: 20 }}
+                  transition={{ delay: 0.1 + i * 0.05, type: "spring", damping: 20 }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={(e) => handleClick(e, item.path, i)}
                 >
-                  {/* Ripple effect */}
                   <AnimatePresence>
                     {ripples[i] && (
                       <motion.span
