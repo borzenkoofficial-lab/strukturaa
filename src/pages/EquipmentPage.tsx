@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import AnimatedSection from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
+import SEOHead from "@/components/SEOHead";
 
 const equipment = [
   {
@@ -67,6 +68,8 @@ const EquipmentPage = () => {
   const { lang } = useLanguage();
 
   return (
+    <>
+    <SEOHead title="Спецтехника" description="Собственный парк спецтехники STRUKTURA: экскаваторы, погрузчики, самосвалы, автокраны. Аренда строительной техники." canonical="/equipment" />
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <AnimatedSection>
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6 text-muted-foreground hover:text-foreground">
@@ -172,6 +175,7 @@ const EquipmentPage = () => {
         </div>
       </AnimatedSection>
     </div>
+    </>
   );
 };
 

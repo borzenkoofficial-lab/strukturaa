@@ -1,11 +1,21 @@
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /auth
+Disallow: /reset-password
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin
+Disallow: /dashboard
 
 User-agent: Yandex
 Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /auth
+Disallow: /reset-password
 Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content
 
 User-agent: Mail.Ru
@@ -19,6 +29,8 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /dashboard
 
-Sitemap: https://build-blossom-brand.lovable.app/sitemap.xml
-Host: https://build-blossom-brand.lovable.app
+Sitemap: https://strukturaa.lovable.app/sitemap.xml
+Host: https://strukturaa.lovable.app

@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Mail, LogOut, Edit3, Camera, ArrowLeft, Shield, FileText, Heart, Megaphone, Bookmark, Wrench, Newspaper, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import SEOHead from "@/components/SEOHead";
 
 const serviceNames: Record<string, string> = {
   demolition: "Демонтаж",
@@ -80,6 +81,8 @@ const DashboardPage = () => {
   };
 
   return (
+    <>
+    <SEOHead title="Личный кабинет" description="Управляйте профилем, избранным и заказами в личном кабинете STRUKTURA." canonical="/dashboard" noindex />
     <div className="min-h-screen bg-background gradient-dark">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
@@ -265,6 +268,7 @@ const DashboardPage = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

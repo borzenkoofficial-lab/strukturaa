@@ -10,8 +10,8 @@ interface SEOHeadProps {
 }
 
 const SITE_NAME = "STRUKTURA";
-const BASE_URL = "https://build-blossom-brand.lovable.app";
-const DEFAULT_DESC = "Профессиональная строительная компания. Демонтаж, ремонт, строительство и реновация.";
+const BASE_URL = "https://strukturaa.lovable.app";
+const DEFAULT_DESC = "STRUKTURA — профессиональная строительная компания. Демонтаж, ремонт, строительство, реновация. Строительная биржа и магазин инструментов.";
 
 const SEOHead = ({
   title,

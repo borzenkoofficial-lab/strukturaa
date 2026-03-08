@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff, Building2, Shield, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import SEOHead from "@/components/SEOHead";
 
 type Mode = "login" | "signup" | "reset";
 
@@ -55,6 +56,8 @@ const AuthPage = () => {
   };
 
   return (
+    <>
+    <SEOHead title="Вход и регистрация" description="Войдите или зарегистрируйтесь в STRUKTURA. Размещайте заказы на бирже и продавайте инструменты." canonical="/auth" noindex />
     <div className="min-h-screen bg-background relative overflow-hidden flex">
       {/* Background effects */}
       <div className="absolute inset-0 gradient-dark" />
@@ -300,6 +303,7 @@ const AuthPage = () => {
         </motion.div>
       </div>
     </div>
+    </>
   );
 };
 

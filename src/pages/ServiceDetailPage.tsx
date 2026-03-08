@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import SEOHead from "@/components/SEOHead";
 
 interface ServiceData {
   slug: string;
@@ -312,7 +313,16 @@ const ServiceDetailPage = () => {
     ? lang === "ru" ? "контейнеров" : "containers"
     : service.priceUnit;
 
+  const seoTitle = lang === "ru" ? t(service.titleKey) : t(service.titleKey);
+  const seoDesc = `${seoTitle} от STRUKTURA. Цена от ${service.price}. Сроки ${service.duration.ru}. Бесплатный расчёт стоимости онлайн.`;
+
   return (
+    <>
+    <SEOHead
+      title={seoTitle}
+      description={seoDesc}
+      canonical={`/services/${service.slug}`}
+    />
     <div className="max-w-7xl mx-auto px-6 py-12">
       {/* Back */}
       <AnimatedSection>
@@ -552,6 +562,7 @@ const ServiceDetailPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
