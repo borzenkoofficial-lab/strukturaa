@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/SEOHead";
+import ShopItemDetail from "@/components/shop/ShopItemDetail";
 
 const SHOP_CATEGORIES = [
   { value: "all", label: "Все" },
