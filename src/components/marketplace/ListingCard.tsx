@@ -75,10 +75,16 @@ const ListingCard = ({ listing, index, onClick }: Props) => {
         <Badge variant="secondary" className={`text-[10px] font-semibold ${categoryColors[listing.category] || ""}`}>
           {categoryLabels[listing.category] || listing.category}
         </Badge>
-        <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-          <Clock className="w-3 h-3" />
-          {timeAgo(listing.created_at)}
-        </span>
+        <div className="flex items-center gap-2.5 shrink-0">
+          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+            <Eye className="w-3 h-3" />
+            {viewCount}
+          </span>
+          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            {timeAgo(listing.created_at)}
+          </span>
+        </div>
       </div>
 
       {/* Title */}
