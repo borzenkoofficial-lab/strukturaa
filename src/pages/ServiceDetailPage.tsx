@@ -543,7 +543,7 @@ const ServiceDetailPage = () => {
               {/* Contact shortcuts */}
               <div className="mt-4 flex gap-3">
                 <a
-                  href="tel:+74951234567"
+                  href="tel:+79366669958"
                   className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-secondary text-secondary-foreground text-sm hover:bg-secondary/80 transition-colors"
                 >
                   <Phone className="w-4 h-4" />
