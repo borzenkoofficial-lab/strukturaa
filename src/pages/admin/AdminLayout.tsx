@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard, FileText, Image, Users, Settings, LogOut,
-  ChevronLeft, Menu, ArrowLeft, CircleDot, FolderOpen, Briefcase, HardHat
+  ChevronLeft, Menu, ArrowLeft, CircleDot, FolderOpen, Briefcase, HardHat, ShoppingBag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
