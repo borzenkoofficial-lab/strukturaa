@@ -88,9 +88,11 @@ const Footer = () => {
           <div>
             <h4 className="font-display font-semibold text-foreground mb-4">{t("footer.contactTitle")}</h4>
             <ul className="space-y-3">
-              <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                <Phone className="w-4 h-4 text-primary shrink-0" />
-                {t("footer.phone")}
+              <li>
+                <a href="tel:+79366669958" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Phone className="w-4 h-4 text-primary shrink-0" />
+                  {t("footer.phone")}
+                </a>
               </li>
               <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
                 <Mail className="w-4 h-4 text-primary shrink-0" />

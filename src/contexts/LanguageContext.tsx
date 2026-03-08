@@ -144,7 +144,7 @@ const translations = {
   "footer.servicesTitle": { ru: "Услуги", en: "Services" },
   "footer.companyTitle": { ru: "Компания", en: "Company" },
   "footer.contactTitle": { ru: "Контакты", en: "Contact" },
-  "footer.phone": { ru: "+7 (495) 123-45-67", en: "+7 (495) 123-45-67" },
+  "footer.phone": { ru: "+7 (936) 666-99-58", en: "+7 (936) 666-99-58" },
   "footer.email": { ru: "info@struktura.ru", en: "info@struktura.ru" },
   "footer.address": { ru: "г. Москва, ул. Строителей, д. 15", en: "15 Stroiteley St., Moscow" },
   "footer.privacy": { ru: "Политика конфиденциальности", en: "Privacy Policy" },

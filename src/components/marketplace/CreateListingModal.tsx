@@ -81,7 +81,10 @@ const CreateListingModal = ({ onClose, onCreated }: Props) => {
     if (error) {
       toast({ title: "Ошибка", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Заявка создана!" });
+      toast({ 
+        title: "✅ Заявка создана!", 
+        description: "Мы свяжемся с вами в ближайшее время. Или позвоните нам: +7 (936) 666-99-58",
+      });
       onCreated();
     }
     setSubmitting(false);
