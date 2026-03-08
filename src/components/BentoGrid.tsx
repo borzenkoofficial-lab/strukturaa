@@ -258,7 +258,7 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* Eco Tile */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={11} whileHover={{ scale: 1.03 }} onClick={() => navigate("/about")}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={11} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/waste-removal")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-accent/15 text-[10px] sm:text-xs font-medium text-accent uppercase tracking-wider">{t("bento.eco")}</span>
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
