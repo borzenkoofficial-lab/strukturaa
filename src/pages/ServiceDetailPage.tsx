@@ -562,6 +562,7 @@ const ServiceDetailPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
