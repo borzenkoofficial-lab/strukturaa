@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Mail, LogOut, Edit3, Camera, ArrowLeft, Shield, FileText, Heart, Megaphone, Bookmark, Wrench, Newspaper, Trash2, HardHat } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import SEOHead from "@/components/SEOHead";
+import ProjectTracking from "@/components/dashboard/ProjectTracking";
 
 const serviceNames: Record<string, string> = {
   demolition: "Демонтаж",
