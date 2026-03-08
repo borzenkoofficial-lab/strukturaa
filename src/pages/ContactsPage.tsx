@@ -58,6 +58,7 @@ const ContactsPage = () => {
 
   return (
     <>
+      <SuccessOverlay open={showSuccess} onClose={() => setShowSuccess(false)} />
       <SEOHead title="Контакты" description="Свяжитесь с STRUKTURA: телефон, email, адрес офиса. Бесплатная консультация по строительным и демонтажным работам." canonical="/contacts" />
       <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>

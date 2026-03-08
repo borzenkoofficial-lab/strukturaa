@@ -342,6 +342,12 @@ const ServiceDetailPage = () => {
 
   return (
     <>
+    <SuccessOverlay
+      open={showSuccess}
+      onClose={() => setShowSuccess(false)}
+      service={submittedService}
+      price={submittedPrice}
+    />
     <SEOHead
       title={seoTitle}
       description={seoDesc}
