@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Calendar, DollarSign, Clock } from "lucide-react";
+import { MapPin, Calendar, RussianRuble, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { Listing } from "@/pages/MarketplacePage";
 

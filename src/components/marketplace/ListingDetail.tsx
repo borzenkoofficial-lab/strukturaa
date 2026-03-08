@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { X, MapPin, Calendar, DollarSign, Send, MessageCircle, User } from "lucide-react";
+import { X, MapPin, Calendar, RussianRuble, Send, MessageCircle, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
