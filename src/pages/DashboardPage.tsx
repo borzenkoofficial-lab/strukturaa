@@ -273,6 +273,8 @@ const DashboardPage = () => {
             )}
           </div>
         )}
+
+        {activeTab === "projects" && <ProjectTracking />}
       </div>
     </div>
     </>
