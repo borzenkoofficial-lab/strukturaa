@@ -33,11 +33,8 @@ const ContactsPage = () => {
         },
       });
 
+      setShowSuccess(true);
       setSubmitted(true);
-      toast({
-        title: "✅ Заявка отправлена!",
-        description: "Мы перезвоним в течение 30 минут. Или звоните: +7 (936) 666-99-58",
-      });
       setName("");
       setPhone("");
       setMessage("");

@@ -303,12 +303,9 @@ const ServiceDetailPage = () => {
         },
       });
 
-      toast({
-        title: lang === "ru" ? "✅ Заявка отправлена!" : "✅ Request submitted!",
-        description: lang === "ru"
-          ? "Мы перезвоним в течение 30 минут. Или звоните: +7 (936) 666-99-58"
-          : "We'll contact you within 30 minutes",
-      });
+      setSubmittedService(service ? t(service.titleKey) : null);
+      setSubmittedPrice(calculatedPrice);
+      setShowSuccess(true);
       setName("");
       setPhone("");
       setMessage("");
