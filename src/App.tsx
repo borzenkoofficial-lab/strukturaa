@@ -94,6 +94,7 @@ const App = () => (
                   <Route path="/admin/categories" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminCategories /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/listings" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminListings /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/projects" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminProjects /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/shop" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminShopItems /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="*" element={<Suspense fallback={<PageLoading />}><NotFound /></Suspense>} />
                 </Routes>
               </BrowserRouter>
