@@ -45,6 +45,7 @@ export interface Listing {
 const MarketplacePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [introComplete, setIntroComplete] = useState(false);
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
