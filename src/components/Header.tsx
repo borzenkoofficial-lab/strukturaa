@@ -36,16 +36,30 @@ const Header = () => {
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
-          <motion.div
-            className="flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0"
-            whileHover={{ scale: 1.03 }}
-            onClick={() => navigate("/")}
-          >
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="font-display font-bold text-xs sm:text-sm text-primary-foreground">S</span>
-            </div>
-            <span className="font-display font-bold text-base sm:text-lg text-foreground tracking-tight">STRUKTURA</span>
-          </motion.div>
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Mobile back button */}
+            {!isHome && (
+              <motion.button
+                className="lg:hidden p-2 rounded-xl bg-secondary text-secondary-foreground"
+                onClick={() => navigate(-1)}
+                whileTap={{ scale: 0.9 }}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </motion.button>
+            )}
+            <motion.div
+              className="flex items-center gap-1.5 sm:gap-2 cursor-pointer"
+              whileHover={{ scale: 1.03 }}
+              onClick={() => navigate("/")}
+            >
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary flex items-center justify-center">
+                <span className="font-display font-bold text-xs sm:text-sm text-primary-foreground">S</span>
+              </div>
+              <span className="font-display font-bold text-base sm:text-lg text-foreground tracking-tight">STRUKTURA</span>
+            </motion.div>
+          </div>
 
           <div className="hidden md:flex items-center flex-1 max-w-md mx-8 cursor-pointer" onClick={() => setSearchOpen(true)}>
             <div className="glass-card flex items-center w-full px-4 py-2.5 gap-2 hover:bg-card/80 transition-colors">
