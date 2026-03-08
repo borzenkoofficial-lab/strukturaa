@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Flame, Newspaper, FolderOpen, Truck, Sparkles } from "lucide-react";
+import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Newspaper, FolderOpen, Truck, Sparkles, Hammer, HardHat, Building2, Trash2 as TrashIcon, Gem, Cable } from "lucide-react";
 import heroDemolition from "@/assets/hero-demolition.jpg";
 import serviceConstruction from "@/assets/service-construction.jpg";
 import serviceRenovation from "@/assets/service-renovation.jpg";
