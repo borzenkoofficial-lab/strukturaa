@@ -64,6 +64,7 @@ const ShopPage = () => {
   const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
   const [introComplete, setIntroComplete] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const fetchItems = async () => {
     setLoading(true);
