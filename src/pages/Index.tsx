@@ -33,6 +33,7 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <Header />
+        <StoriesBar />
         <CategoryPills />
         <BentoGrid />
         <StatsSection />
