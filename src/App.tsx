@@ -39,6 +39,7 @@ const AdminStories = lazy(() => import("./pages/admin/AdminStories"));
 const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
 const AdminListings = lazy(() => import("./pages/admin/AdminListings"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
+const AdminShopItems = lazy(() => import("./pages/admin/AdminShopItems"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -93,6 +94,7 @@ const App = () => (
                   <Route path="/admin/categories" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminCategories /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/listings" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminListings /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/projects" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminProjects /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/shop" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminShopItems /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="*" element={<Suspense fallback={<PageLoading />}><NotFound /></Suspense>} />
                 </Routes>
               </BrowserRouter>

@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard, FileText, Image, Users, Settings, LogOut,
-  ChevronLeft, Menu, ArrowLeft, CircleDot, FolderOpen, Briefcase, HardHat
+  ChevronLeft, Menu, ArrowLeft, CircleDot, FolderOpen, Briefcase, HardHat, ShoppingBag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -14,6 +14,7 @@ const navItems = [
   { label: "Категории", path: "/admin/categories", icon: FolderOpen },
   { label: "Истории", path: "/admin/stories", icon: CircleDot },
   { label: "Заявки биржи", path: "/admin/listings", icon: Briefcase },
+  { label: "Маркетплейс", path: "/admin/shop", icon: ShoppingBag },
   { label: "Проекты", path: "/admin/projects", icon: HardHat },
   { label: "Медиа", path: "/admin/media", icon: Image },
   { label: "Пользователи", path: "/admin/users", icon: Users },
