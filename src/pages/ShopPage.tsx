@@ -399,6 +399,12 @@ const ShopPage = () => {
           {selectedItem && (
             <ShopItemDetail item={selectedItem} onClose={() => setSelectedItem(null)} />
           )}
+          {showAddModal && (
+            <AddShopItemModal
+              onClose={() => setShowAddModal(false)}
+              onCreated={() => { setShowAddModal(false); fetchItems(); }}
+            />
+          )}
         </AnimatePresence>
       </motion.div>
     </>
