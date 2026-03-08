@@ -38,7 +38,15 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
   useEffect(() => {
     loadResponses();
     loadOwner();
+    trackView();
   }, [listing.id]);
+
+  const trackView = async () => {
+    await supabase.from("listing_views").insert({
+      listing_id: listing.id,
+      viewer_id: user?.id || null,
+    });
+  };
 
   const loadOwner = async () => {
     const { data } = await supabase.from("profiles").select("display_name").eq("user_id", listing.user_id).maybeSingle();

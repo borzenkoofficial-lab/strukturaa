@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Calendar, RussianRuble, Clock } from "lucide-react";
+import { MapPin, Calendar, RussianRuble, Clock, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/integrations/supabase/client";
 import type { Listing } from "@/pages/MarketplacePage";
 
 const categoryLabels: Record<string, string> = {
@@ -32,6 +34,15 @@ interface Props {
 }
 
 const ListingCard = ({ listing, index, onClick }: Props) => {
+  const [viewCount, setViewCount] = useState(0);
+
+  useEffect(() => {
+    supabase
+      .from("listing_views")
+      .select("id", { count: "exact", head: true })
+      .eq("listing_id", listing.id)
+      .then(({ count }) => setViewCount(count || 0));
+  }, [listing.id]);
   const timeAgo = (date: string) => {
     const diff = Date.now() - new Date(date).getTime();
     const hours = Math.floor(diff / 3600000);
@@ -64,10 +75,16 @@ const ListingCard = ({ listing, index, onClick }: Props) => {
         <Badge variant="secondary" className={`text-[10px] font-semibold ${categoryColors[listing.category] || ""}`}>
           {categoryLabels[listing.category] || listing.category}
         </Badge>
-        <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-          <Clock className="w-3 h-3" />
-          {timeAgo(listing.created_at)}
-        </span>
+        <div className="flex items-center gap-2.5 shrink-0">
+          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+            <Eye className="w-3 h-3" />
+            {viewCount}
+          </span>
+          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            {timeAgo(listing.created_at)}
+          </span>
+        </div>
       </div>
 
       {/* Title */}
