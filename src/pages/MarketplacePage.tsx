@@ -11,6 +11,7 @@ import CreateListingModal from "@/components/marketplace/CreateListingModal";
 import ListingCard from "@/components/marketplace/ListingCard";
 import ListingDetail from "@/components/marketplace/ListingDetail";
 import MarketplaceChat from "@/components/marketplace/MarketplaceChat";
+import MarketplaceIntro from "@/components/marketplace/MarketplaceIntro";
 import SEOHead from "@/components/SEOHead";
 
 const CATEGORIES = [
@@ -44,6 +45,7 @@ export interface Listing {
 const MarketplacePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [introComplete, setIntroComplete] = useState(false);
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -75,7 +77,16 @@ const MarketplacePage = () => {
     <>
       <SEOHead title="Доска объявлений — STRUKTURA" description="Строительная биржа: размещайте заявки на демонтаж, ремонт и строительство. Находите подрядчиков и заказчиков." canonical="/marketplace" />
       
-      <div className="min-h-screen bg-background">
+      <AnimatePresence>
+        {!introComplete && <MarketplaceIntro onComplete={() => setIntroComplete(true)} />}
+      </AnimatePresence>
+
+      <motion.div
+        className="min-h-screen bg-background"
+        initial={{ opacity: 0 }}
+        animate={introComplete ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
+      >
         {/* Top bar */}
         <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border/30">
           <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
@@ -253,7 +264,7 @@ const MarketplacePage = () => {
             />
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </>
   );
 };
