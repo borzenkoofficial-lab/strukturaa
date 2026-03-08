@@ -28,6 +28,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminStories from "./pages/admin/AdminStories";
 import AdminCategories from "./pages/admin/AdminCategories";
+import MarketplacePage from "./pages/MarketplacePage";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -72,6 +73,7 @@ const App = () => (
                   <Route path="/admin/settings" element={<AdminRoute><AdminLayout><AdminSettings /></AdminLayout></AdminRoute>} />
                   <Route path="/admin/stories" element={<AdminRoute><AdminLayout><AdminStories /></AdminLayout></AdminRoute>} />
                   <Route path="/admin/categories" element={<AdminRoute><AdminLayout><AdminCategories /></AdminLayout></AdminRoute>} />
+                  <Route path="/marketplace" element={<MarketplacePage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter>

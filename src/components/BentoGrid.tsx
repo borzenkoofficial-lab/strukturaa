@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap } from "lucide-react";
+import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone } from "lucide-react";
 import heroDemolition from "@/assets/hero-demolition.jpg";
 import serviceConstruction from "@/assets/service-construction.jpg";
 import serviceRenovation from "@/assets/service-renovation.jpg";
@@ -89,7 +89,56 @@ const BentoGrid = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 auto-rows-[minmax(140px,auto)] sm:auto-rows-[minmax(180px,auto)] [&>*]:overflow-hidden">
-        
+
+        {/* 🔥 Marketplace Tile — eye-catching */}
+        <motion.div
+          className="col-span-2 lg:col-span-2 relative overflow-hidden rounded-2xl cursor-pointer group"
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          custom={0}
+          whileHover={{ scale: 1.01 }}
+          onClick={() => navigate("/marketplace")}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-primary" />
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(120deg, transparent 0%, hsl(0 0% 100% / 0.15) 50%, transparent 100%)",
+              backgroundSize: "200% 100%",
+            }}
+            animate={{ backgroundPosition: ["-200% 0", "200% 0"] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          />
+          <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center">
+                  <Megaphone className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <span className="px-2 py-0.5 rounded-full bg-primary-foreground/20 text-[10px] font-bold text-primary-foreground uppercase tracking-wider">Новинка</span>
+                </div>
+              </div>
+              <motion.div
+                whileHover={{ rotate: 45 }}
+                className="w-9 h-9 rounded-full bg-primary-foreground/20 flex items-center justify-center"
+              >
+                <ArrowUpRight className="w-4 h-4 text-primary-foreground" />
+              </motion.div>
+            </div>
+            <div>
+              <h3 className="text-lg sm:text-2xl font-display font-bold text-primary-foreground leading-tight">{t("bento.marketplace")}</h3>
+              <p className="text-primary-foreground/80 text-xs sm:text-sm mt-1 max-w-md">{t("bento.marketplaceDesc")}</p>
+              <div className="flex items-center gap-3 mt-3">
+                <span className="px-3 py-1.5 rounded-full bg-primary-foreground/20 text-xs font-semibold text-primary-foreground">Разместить заявку</span>
+                <span className="px-3 py-1.5 rounded-full bg-primary-foreground/10 text-xs font-medium text-primary-foreground/70">Найти подрядчика</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Hero Card */}
         <motion.div className="col-span-2 md:col-span-1 lg:col-span-1 md:row-span-2 glass-card overflow-hidden relative group cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }} onClick={() => navigate("/services")}>
           <img src={heroDemolition} alt={t("bento.demolition")} className="absolute inset-0 w-full h-full object-cover" />
