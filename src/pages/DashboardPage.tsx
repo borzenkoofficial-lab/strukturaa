@@ -29,7 +29,7 @@ const DashboardPage = () => {
   const [displayName, setDisplayName] = useState(profile?.display_name || "");
   const [bio, setBio] = useState(profile?.bio || "");
   const [uploading, setUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"profile" | "favorites">("profile");
+  const [activeTab, setActiveTab] = useState<"profile" | "favorites" | "projects">("profile");
   const fileRef = useRef<HTMLInputElement>(null);
 
   if (!user) {
