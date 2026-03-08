@@ -4,15 +4,15 @@ import { useNavigate } from "react-router-dom";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 
-const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: TranslationKey; price: string }[] = [
-  { icon: Building2, titleKey: "services.demolition", descKey: "services.demolitionDesc", price: "500₽/м²" },
-  { icon: HardHat, titleKey: "services.construction", descKey: "services.constructionDesc", price: "1200₽/м²" },
-  { icon: Home, titleKey: "services.renovation", descKey: "services.renovationDesc", price: "800₽/м²" },
-  { icon: Hammer, titleKey: "services.apartmentDemo", descKey: "services.apartmentDemoDesc", price: "400₽/м²" },
-  { icon: Building2, titleKey: "services.buildingDemo", descKey: "services.buildingDemoDesc", price: "350₽/м²" },
-  { icon: Truck, titleKey: "services.wasteRemoval", descKey: "services.wasteRemovalDesc", price: "8000₽" },
-  { icon: Wrench, titleKey: "services.dismantling", descKey: "services.dismantlingDesc", price: "600₽/м²" },
-  { icon: Gem, titleKey: "services.concrete", descKey: "services.concreteDesc", price: "1500₽/м.п." },
+const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: TranslationKey; price: string; slug: string }[] = [
+  { icon: Building2, titleKey: "services.demolition", descKey: "services.demolitionDesc", price: "500₽/м²", slug: "demolition" },
+  { icon: HardHat, titleKey: "services.construction", descKey: "services.constructionDesc", price: "1200₽/м²", slug: "construction" },
+  { icon: Home, titleKey: "services.renovation", descKey: "services.renovationDesc", price: "800₽/м²", slug: "renovation" },
+  { icon: Hammer, titleKey: "services.apartmentDemo", descKey: "services.apartmentDemoDesc", price: "400₽/м²", slug: "apartment-demolition" },
+  { icon: Building2, titleKey: "services.buildingDemo", descKey: "services.buildingDemoDesc", price: "350₽/м²", slug: "building-demolition" },
+  { icon: Truck, titleKey: "services.wasteRemoval", descKey: "services.wasteRemovalDesc", price: "8000₽", slug: "waste-removal" },
+  { icon: Wrench, titleKey: "services.dismantling", descKey: "services.dismantlingDesc", price: "600₽/м²", slug: "dismantling" },
+  { icon: Gem, titleKey: "services.concrete", descKey: "services.concreteDesc", price: "1500₽/м.п.", slug: "diamond-cutting" },
 ];
 
 const ServicesPage = () => {
