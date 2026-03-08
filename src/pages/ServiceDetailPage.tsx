@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEOHead from "@/components/SEOHead";
+import SuccessOverlay from "@/components/SuccessOverlay";
 
 interface ServiceData {
   slug: string;
@@ -266,6 +267,9 @@ const ServiceDetailPage = () => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [submittedService, setSubmittedService] = useState<string | null>(null);
+  const [submittedPrice, setSubmittedPrice] = useState<number | null>(null);
 
   const isWaste = service?.slug === "waste-removal";
 
@@ -299,12 +303,9 @@ const ServiceDetailPage = () => {
         },
       });
 
-      toast({
-        title: lang === "ru" ? "✅ Заявка отправлена!" : "✅ Request submitted!",
-        description: lang === "ru"
-          ? "Мы перезвоним в течение 30 минут. Или звоните: +7 (936) 666-99-58"
-          : "We'll contact you within 30 minutes",
-      });
+      setSubmittedService(service ? t(service.titleKey) : null);
+      setSubmittedPrice(calculatedPrice);
+      setShowSuccess(true);
       setName("");
       setPhone("");
       setMessage("");
@@ -341,6 +342,12 @@ const ServiceDetailPage = () => {
 
   return (
     <>
+    <SuccessOverlay
+      open={showSuccess}
+      onClose={() => setShowSuccess(false)}
+      service={submittedService}
+      price={submittedPrice}
+    />
     <SEOHead
       title={seoTitle}
       description={seoDesc}

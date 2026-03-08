@@ -6,12 +6,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import SEOHead from "@/components/SEOHead";
+import SuccessOverlay from "@/components/SuccessOverlay";
 
 const ContactsPage = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -31,11 +33,8 @@ const ContactsPage = () => {
         },
       });
 
+      setShowSuccess(true);
       setSubmitted(true);
-      toast({
-        title: "✅ Заявка отправлена!",
-        description: "Мы перезвоним в течение 30 минут. Или звоните: +7 (936) 666-99-58",
-      });
       setName("");
       setPhone("");
       setMessage("");
@@ -59,6 +58,7 @@ const ContactsPage = () => {
 
   return (
     <>
+      <SuccessOverlay open={showSuccess} onClose={() => setShowSuccess(false)} />
       <SEOHead title="Контакты" description="Свяжитесь с STRUKTURA: телефон, email, адрес офиса. Бесплатная консультация по строительным и демонтажным работам." canonical="/contacts" />
       <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
