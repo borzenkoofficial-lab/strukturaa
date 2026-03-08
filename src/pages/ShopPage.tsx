@@ -325,7 +325,7 @@ const ShopPage = () => {
                   : "Попробуйте изменить параметры поиска или выберите другую категорию"}
               </p>
               {user && activeTab === "my" && (
-                <Button onClick={() => {}} className="rounded-2xl gap-2 px-6 shadow-lg shadow-primary/20">
+                <Button onClick={() => setShowAddModal(true)} className="rounded-2xl gap-2 px-6 shadow-lg shadow-primary/20">
                   <Plus className="w-4 h-4" />
                   Разместить товар
                 </Button>
