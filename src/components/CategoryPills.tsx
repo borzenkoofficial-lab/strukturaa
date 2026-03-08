@@ -89,9 +89,9 @@ const CategoryPills = () => {
               </motion.button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {categoryKeys.map((key, i) => (
+              {categories.map((cat, i) => (
                 <motion.button
-                  key={key}
+                  key={cat.key}
                   onClick={() => toggleFilter(i)}
                   className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all ${
                     selectedFilters.has(i)
@@ -102,7 +102,7 @@ const CategoryPills = () => {
                   whileTap={{ scale: 0.97 }}
                 >
                   {selectedFilters.has(i) && <Check className="w-3.5 h-3.5 shrink-0" />}
-                  <span className="truncate">{t(key)}</span>
+                  <span className="truncate">{t(cat.key)}</span>
                 </motion.button>
               ))}
             </div>
