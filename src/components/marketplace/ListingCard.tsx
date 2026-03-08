@@ -82,7 +82,7 @@ const ListingCard = ({ listing, index, onClick }: Props) => {
       <div className="space-y-1.5">
         {budget && (
           <div className="flex items-center gap-2 text-xs">
-            <DollarSign className="w-3.5 h-3.5 text-primary" />
+            <RussianRuble className="w-3.5 h-3.5 text-primary" />
             <span className="font-semibold text-foreground">{budget}</span>
           </div>
         )}

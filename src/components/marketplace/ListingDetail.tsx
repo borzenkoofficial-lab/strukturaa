@@ -123,7 +123,7 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
           <div className="flex flex-wrap gap-3">
             {budget && (
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary text-sm">
-                <DollarSign className="w-4 h-4 text-primary" />
+                <RussianRuble className="w-4 h-4 text-primary" />
                 <span className="font-semibold text-foreground">{budget}</span>
               </div>
             )}
