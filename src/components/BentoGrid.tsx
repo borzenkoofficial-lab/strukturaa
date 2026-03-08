@@ -203,7 +203,7 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* Renovation */}
-        <motion.div className="glass-card overflow-hidden relative cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={7} whileHover={{ scale: 1.02 }} onClick={() => navigate("/services")}>
+        <motion.div className="glass-card overflow-hidden relative cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={7} whileHover={{ scale: 1.02 }} onClick={() => navigate("/services/renovation")}>
           <img src={serviceRenovation} alt={t("services.renovation")} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute inset-0 shimmer-overlay opacity-15" />
