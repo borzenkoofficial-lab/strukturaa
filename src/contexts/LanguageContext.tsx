@@ -198,7 +198,7 @@ const translations = {
   "bento.eco": { ru: "Экология", en: "Ecology" },
   "bento.ecoDesc": { ru: "Строительных отходов направляем на переработку. Заботимся о природе.", en: "Construction waste sent for recycling. We care about nature." },
   "bento.marketplace": { ru: "Строительная биржа", en: "Construction Marketplace" },
-  "bento.marketplaceDesc": { ru: "Доска объявлений: размещайте заявки на строительство и находите лучших подрядчиков прямо на нашем сайте", en: "Post construction requests and find the best contractors right on our site" },
+  "bento.marketplaceDesc": { ru: "Ищете лучшее предложение? Разместите заявку — десятки проверенных подрядчиков предложат свои условия. Выбор всегда за вами.", en: "Looking for a better deal? Post your request — dozens of verified contractors will offer their terms. The choice is always yours." },
 } as const;
 
 type TranslationKey = keyof typeof translations;
