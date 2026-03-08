@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { SlidersHorizontal, X, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 
-const categoryKeys: TranslationKey[] = [
-  "cat.demolition", "cat.construction", "cat.renovation", "cat.facades",
-  "cat.roofing", "cat.foundation", "cat.electrical", "cat.apartments", "cat.buildings",
+const categories: { key: TranslationKey; slug: string }[] = [
+  { key: "cat.demolition", slug: "demolition" },
+  { key: "cat.construction", slug: "construction" },
+  { key: "cat.renovation", slug: "renovation" },
+  { key: "cat.facades", slug: "dismantling" },
+  { key: "cat.roofing", slug: "building-demolition" },
+  { key: "cat.foundation", slug: "diamond-cutting" },
+  { key: "cat.electrical", slug: "waste-removal" },
+  { key: "cat.apartments", slug: "apartment-demolition" },
+  { key: "cat.buildings", slug: "building-demolition" },
 ];
 
 const CategoryPills = () => {
