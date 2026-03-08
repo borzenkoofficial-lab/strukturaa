@@ -82,6 +82,23 @@ const BentoGrid = () => {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-primary" />
           <div className="absolute inset-0 shimmer-overlay" />
+          {/* Spring petals */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={`mp-${i}`}
+              className="absolute pointer-events-none select-none"
+              style={{ left: `${10 + i * 15}%`, top: `-8%`, fontSize: 12 + (i % 3) * 4 }}
+              animate={{
+                y: ["0%", "1200%"],
+                x: [0, (i % 2 === 0 ? 1 : -1) * (15 + i * 5)],
+                rotate: [0, (i % 2 === 0 ? 1 : -1) * 360],
+                opacity: [0, 0.5, 0.35, 0],
+              }}
+              transition={{ duration: 6 + i * 1.5, repeat: Infinity, delay: i * 1.2, ease: "easeInOut" }}
+            >
+              {["🌸", "🌿", "✿", "🍃", "❀", "🌱"][i]}
+            </motion.div>
+          ))}
           <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
@@ -114,6 +131,23 @@ const BentoGrid = () => {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-accent via-secondary to-accent" />
           <div className="absolute inset-0 shimmer-overlay opacity-20" />
+          {/* Spring petals */}
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={`sh-${i}`}
+              className="absolute pointer-events-none select-none"
+              style={{ right: `${5 + i * 18}%`, top: `-10%`, fontSize: 12 + (i % 3) * 3 }}
+              animate={{
+                y: ["0%", "1100%"],
+                x: [0, (i % 2 === 0 ? -1 : 1) * (12 + i * 6)],
+                rotate: [0, (i % 2 === 0 ? -1 : 1) * 300],
+                opacity: [0, 0.45, 0.3, 0],
+              }}
+              transition={{ duration: 7 + i * 1.2, repeat: Infinity, delay: i * 1.5 + 0.5, ease: "easeInOut" }}
+            >
+              {["🍃", "🌸", "🌱", "✿", "🌿"][i]}
+            </motion.div>
+          ))}
           <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
