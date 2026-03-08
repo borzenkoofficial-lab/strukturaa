@@ -11,6 +11,7 @@ import CreateListingModal from "@/components/marketplace/CreateListingModal";
 import ListingCard from "@/components/marketplace/ListingCard";
 import ListingDetail from "@/components/marketplace/ListingDetail";
 import MarketplaceChat from "@/components/marketplace/MarketplaceChat";
+import MarketplaceIntro from "@/components/marketplace/MarketplaceIntro";
 import SEOHead from "@/components/SEOHead";
 
 const CATEGORIES = [
