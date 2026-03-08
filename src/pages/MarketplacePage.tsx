@@ -126,22 +126,22 @@ const MarketplacePage = () => {
           </div>
 
           {/* Navigation tabs */}
-          <div className="max-w-6xl mx-auto px-4 flex gap-1 pb-2">
+          <div className="max-w-6xl mx-auto px-4 flex gap-1 pb-2 overflow-x-auto scrollbar-hide">
             {[
               { key: "feed" as const, label: "Все заявки", icon: Briefcase },
-              { key: "my" as const, label: "Мои заявки", icon: User },
-              { key: "messages" as const, label: "Сообщения", icon: MessageCircle },
+              { key: "my" as const, label: "Мои", icon: User },
+              { key: "messages" as const, label: "Чат", icon: MessageCircle },
             ].map(tab => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap shrink-0 transition-all ${
                   activeTab === tab.key
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-secondary"
                 }`}
               >
-                <tab.icon className="w-4 h-4" />
+                <tab.icon className="w-4 h-4 shrink-0" />
                 {tab.label}
               </button>
             ))}
