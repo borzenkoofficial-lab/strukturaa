@@ -181,7 +181,7 @@ const MarketplacePage = () => {
                         : "bg-card text-muted-foreground hover:bg-secondary border border-border/50"
                     }`}
                   >
-                    <span>{cat.icon}</span>
+                    <cat.icon className="w-3.5 h-3.5" />
                     {cat.label}
                   </button>
                 ))}
