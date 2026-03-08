@@ -128,7 +128,7 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* Great Value */}
-        <motion.div className="col-span-2 lg:col-span-2 glass-card overflow-hidden relative cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} whileHover={{ scale: 1.01 }} onClick={() => navigate("/services")}>
+        <motion.div className="col-span-2 lg:col-span-2 glass-card overflow-hidden relative cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} whileHover={{ scale: 1.01 }} onClick={() => navigate("/services/waste-removal")}>
           <img src={serviceConstruction} alt={t("bento.bestDeals")} className="absolute inset-0 w-full h-full object-cover opacity-40" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-r from-card/80 to-card/40" />
           <div className="absolute inset-0 shimmer-overlay opacity-10" />
