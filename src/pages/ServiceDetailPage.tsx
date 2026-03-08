@@ -267,6 +267,9 @@ const ServiceDetailPage = () => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [submittedService, setSubmittedService] = useState<string | null>(null);
+  const [submittedPrice, setSubmittedPrice] = useState<number | null>(null);
 
   const isWaste = service?.slug === "waste-removal";
 
