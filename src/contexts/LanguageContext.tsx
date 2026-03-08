@@ -173,6 +173,18 @@ const translations = {
   "projects.area": { ru: "Площадь", en: "Area" },
   "projects.duration": { ru: "Срок", en: "Duration" },
   "projects.details": { ru: "Подробнее", en: "Details" },
+  "projects.5.title": { ru: "Демонтаж стен склада «Южный»", en: "Yuzhny Warehouse Wall Demolition" },
+  "projects.5.desc": { ru: "Снос несущих и перегородочных стен общей площадью 3 200 м² на складском комплексе. Работы выполнены за 18 дней.", en: "Demolition of load-bearing and partition walls totaling 3,200 sq.m at a warehouse complex. Completed in 18 days." },
+  "projects.6.title": { ru: "Фасадные работы ЖК «Панорама»", en: "Panorama RC Facade Renovation" },
+  "projects.6.desc": { ru: "Утепление и облицовка фасада жилого комплекса. Замена окон, монтаж вентфасада на 24 этажах.", en: "Insulation and facade cladding of residential complex. Window replacement, ventilated facade on 24 floors." },
+  "projects.7.title": { ru: "Снос промзоны «Серп и Молот»", en: "Serp i Molot Industrial Zone Demolition" },
+  "projects.7.desc": { ru: "Комплексный демонтаж 6 цехов бывшего металлургического завода. Рекультивация территории 25 000 м².", en: "Complex demolition of 6 workshops of a former metallurgical plant. Land reclamation of 25,000 sq.m." },
+  "projects.8.title": { ru: "Капремонт офиса «Альфа-Групп»", en: "Alfa-Group Office Renovation" },
+  "projects.8.desc": { ru: "Полный ремонт офисного пространства 1 800 м²: демонтаж, перепланировка, чистовая отделка под ключ.", en: "Full renovation of 1,800 sq.m office space: demolition, replanning, turnkey finishing." },
+  "projects.9.title": { ru: "Алмазная резка на станции метро", en: "Diamond Cutting at Metro Station" },
+  "projects.9.desc": { ru: "Прорезка 48 технических проёмов в железобетонных стенах толщиной до 600 мм без вибрации.", en: "Cutting 48 technical openings in reinforced concrete walls up to 600mm thick without vibration." },
+  "projects.10.title": { ru: "Вывоз мусора — ЖК «Новые Черёмушки»", en: "Waste Removal — Novye Cheryomushki RC" },
+  "projects.10.desc": { ru: "Организация вывоза 1 200 м³ строительного мусора с площадки жилого комплекса за 5 дней.", en: "Organized removal of 1,200 m³ of construction waste from residential complex site in 5 days." },
 
   // Search
   "search.title": { ru: "Поиск", en: "Search" },
