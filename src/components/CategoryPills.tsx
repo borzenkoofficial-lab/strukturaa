@@ -21,6 +21,7 @@ const CategoryPills = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<Set<number>>(new Set([0]));
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const toggleFilter = (i: number) => {
     setSelectedFilters(prev => {
