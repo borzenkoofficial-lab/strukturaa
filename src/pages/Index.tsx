@@ -23,6 +23,7 @@ const Index = () => {
 
   return (
     <>
+      <SEOHead canonical="/" />
       <AnimatePresence>
         {!introComplete && <CinematicIntro onComplete={handleIntroComplete} />}
       </AnimatePresence>

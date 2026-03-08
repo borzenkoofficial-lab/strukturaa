@@ -36,6 +36,7 @@ const BlogPage = () => {
 
   return (
     <div className="py-12 sm:py-20">
+      <SEOHead title="Блог" description="Статьи о строительстве, ремонте и демонтаже от компании STRUKTURA." canonical="/blog" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.h1
           className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-8"
