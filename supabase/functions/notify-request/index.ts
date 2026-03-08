@@ -43,22 +43,35 @@ serve(async (req) => {
       );
     }
 
-    // Send email notification via Lovable AI gateway
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (LOVABLE_API_KEY) {
+    // Send Telegram notification
+    const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN");
+    const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID");
+
+    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
       try {
-        const priceInfo = calculated_price ? `\nРасчётная стоимость: ${Number(calculated_price).toLocaleString("ru-RU")} ₽` : "";
-        const serviceInfo = service ? `\nУслуга: ${service}` : "";
-        const messageInfo = message ? `\nСообщение: ${message}` : "";
+        const priceInfo = calculated_price ? `\n💰 Стоимость: ${Number(calculated_price).toLocaleString("ru-RU")} ₽` : "";
+        const serviceInfo = service ? `\n🔧 Услуга: ${service}` : "";
+        const messageInfo = message ? `\n💬 Сообщение: ${message}` : "";
+        const sourceLabel: Record<string, string> = { service_page: "Страница услуги", contacts_page: "Контакты", cta: "CTA" };
 
-        const emailBody = `Новая заявка на сайте STRUKTURA!\n\nИмя: ${name}\nТелефон: ${phone}${serviceInfo}${priceInfo}${messageInfo}\nИсточник: ${source || "service_page"}\nДата: ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })}`;
+        const text = `🔔 *Новая заявка на сайте STRUKTURA!*\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}${serviceInfo}${priceInfo}${messageInfo}\n📍 Источник: ${sourceLabel[source] || source || "service_page"}\n🕐 ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })}`;
 
-        // Log for admin visibility
-        console.log("📧 New contact request:", { name, phone, service, calculated_price, source });
-        console.log("Email body:", emailBody);
-      } catch (emailErr) {
-        console.error("Email notification error:", emailErr);
+        const tgRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text, parse_mode: "Markdown" }),
+        });
+        const tgData = await tgRes.json();
+        if (!tgData.ok) {
+          console.error("Telegram error:", tgData);
+        } else {
+          console.log("✅ Telegram notification sent");
+        }
+      } catch (tgErr) {
+        console.error("Telegram notification error:", tgErr);
       }
+    } else {
+      console.log("⚠️ Telegram credentials not configured");
     }
 
     return new Response(
