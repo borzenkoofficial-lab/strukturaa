@@ -6,6 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import SEOHead from "@/components/SEOHead";
+import SuccessOverlay from "@/components/SuccessOverlay";
 
 const ContactsPage = () => {
   const { t } = useLanguage();
