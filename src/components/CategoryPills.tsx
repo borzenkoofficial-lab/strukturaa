@@ -17,7 +17,7 @@ const categories: { key: TranslationKey; slug: string }[] = [
 ];
 
 const CategoryPills = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState<number | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<Set<number>>(new Set([0]));
   const { t } = useLanguage();
