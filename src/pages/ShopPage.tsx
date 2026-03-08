@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/SEOHead";
 import ShopItemDetail from "@/components/shop/ShopItemDetail";
 import ShopIntro from "@/components/shop/ShopIntro";
+import AddShopItemModal from "@/components/shop/AddShopItemModal";
 
 const SHOP_CATEGORIES = [
   { value: "all", label: "Все", icon: Sparkles },
