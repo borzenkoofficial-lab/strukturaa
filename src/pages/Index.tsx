@@ -4,6 +4,7 @@ import CinematicIntro from "@/components/CinematicIntro";
 import Header from "@/components/Header";
 import CategoryPills from "@/components/CategoryPills";
 import BentoGrid from "@/components/BentoGrid";
+import StoriesBar from "@/components/stories/StoriesBar";
 import StatsSection from "@/components/StatsSection";
 import ServicesSection from "@/components/ServicesSection";
 import NewsSection from "@/components/NewsSection";
@@ -32,6 +33,7 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <Header />
+        <StoriesBar />
         <CategoryPills />
         <BentoGrid />
         <StatsSection />
