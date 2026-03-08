@@ -264,7 +264,7 @@ const MarketplacePage = () => {
             />
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </>
   );
 };
