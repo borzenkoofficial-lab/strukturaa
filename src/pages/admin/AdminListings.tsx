@@ -2,19 +2,18 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, Trash2, Eye, EyeOff, MoreVertical, Briefcase,
-  MapPin, Calendar, RussianRuble, CheckCircle, XCircle, Clock
+  MapPin, Calendar, RussianRuble, CheckCircle, XCircle, Clock,
+  Pencil, X, Save
 } from "lucide-react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 interface Listing {
@@ -54,11 +53,12 @@ const AdminListings = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
   const [loading, setLoading] = useState(true);
+  const [editItem, setEditItem] = useState<Listing | null>(null);
+  const [editForm, setEditForm] = useState({ title: "", description: "", budget_min: 0, budget_max: 0, address: "", category: "", status: "" });
   const { toast } = useToast();
 
   const fetchListings = async () => {
     setLoading(true);
-    // Use service-level access - admin RLS should allow viewing all
     const { data } = await supabase
       .from("listings")
       .select("*")
@@ -68,6 +68,39 @@ const AdminListings = () => {
   };
 
   useEffect(() => { fetchListings(); }, []);
+
+  const openEdit = (item: Listing) => {
+    setEditItem(item);
+    setEditForm({
+      title: item.title,
+      description: item.description,
+      budget_min: item.budget_min || 0,
+      budget_max: item.budget_max || 0,
+      address: item.address || "",
+      category: item.category,
+      status: item.status,
+    });
+  };
+
+  const saveEdit = async () => {
+    if (!editItem) return;
+    const { error } = await supabase.from("listings").update({
+      title: editForm.title,
+      description: editForm.description,
+      budget_min: editForm.budget_min || null,
+      budget_max: editForm.budget_max || null,
+      address: editForm.address || null,
+      category: editForm.category,
+      status: editForm.status,
+    }).eq("id", editItem.id);
+    if (error) {
+      toast({ title: "Ошибка", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Заявка обновлена" });
+      setEditItem(null);
+      fetchListings();
+    }
+  };
 
   const updateStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("listings").update({ status }).eq("id", id);
@@ -146,6 +179,7 @@ const AdminListings = () => {
           <option value="all">Все статусы</option>
           <option value="active">Активные</option>
           <option value="closed">Закрытые</option>
+          <option value="moderation">На модерации</option>
         </select>
         <select
           value={filterCategory}
@@ -159,10 +193,10 @@ const AdminListings = () => {
         </select>
       </div>
 
-      {/* Listings as tiles */}
+      {/* Listings grid */}
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1,2,3,4,5,6].map(i => <div key={i} className="h-48 rounded-2xl bg-card animate-pulse" />)}
+          {[1, 2, 3, 4, 5, 6].map(i => <div key={i} className="h-48 rounded-2xl bg-card animate-pulse" />)}
         </div>
       ) : filtered.length === 0 ? (
         <div className="glass-card p-12 text-center">
@@ -196,6 +230,10 @@ const AdminListings = () => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => openEdit(listing)}>
+                        <Pencil className="w-4 h-4 mr-2" />Редактировать
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
                       {listing.status !== "active" && (
                         <DropdownMenuItem onClick={() => updateStatus(listing.id, "active")}>
                           <Eye className="w-4 h-4 mr-2" />Активировать
@@ -250,6 +288,91 @@ const AdminListings = () => {
           })}
         </div>
       )}
+
+      {/* Edit modal */}
+      <AnimatePresence>
+        {editItem && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" onClick={() => setEditItem(null)} />
+            <motion.div
+              className="relative w-full max-w-lg bg-card border border-border/50 rounded-2xl p-6 space-y-4 max-h-[90vh] overflow-y-auto"
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="font-display font-bold text-lg text-foreground">Редактировать заявку</h2>
+                <button onClick={() => setEditItem(null)} className="text-muted-foreground hover:text-foreground">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-1 block">Заголовок</label>
+                  <Input value={editForm.title} onChange={e => setEditForm(p => ({ ...p, title: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-1 block">Описание</label>
+                  <Textarea value={editForm.description} onChange={e => setEditForm(p => ({ ...p, description: e.target.value }))} rows={3} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-1 block">Бюджет от (₽)</label>
+                    <Input type="number" value={editForm.budget_min} onChange={e => setEditForm(p => ({ ...p, budget_min: Number(e.target.value) }))} />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-1 block">Бюджет до (₽)</label>
+                    <Input type="number" value={editForm.budget_max} onChange={e => setEditForm(p => ({ ...p, budget_max: Number(e.target.value) }))} />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-1 block">Адрес</label>
+                  <Input value={editForm.address} onChange={e => setEditForm(p => ({ ...p, address: e.target.value }))} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-1 block">Категория</label>
+                    <select
+                      value={editForm.category}
+                      onChange={e => setEditForm(p => ({ ...p, category: e.target.value }))}
+                      className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm text-foreground"
+                    >
+                      {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
+                        <option key={k} value={k}>{v}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-1 block">Статус</label>
+                    <select
+                      value={editForm.status}
+                      onChange={e => setEditForm(p => ({ ...p, status: e.target.value }))}
+                      className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm text-foreground"
+                    >
+                      <option value="active">Активна</option>
+                      <option value="closed">Закрыта</option>
+                      <option value="moderation">На модерации</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <Button variant="outline" className="flex-1" onClick={() => setEditItem(null)}>Отмена</Button>
+                <Button className="flex-1 gap-2" onClick={saveEdit}>
+                  <Save className="w-4 h-4" />Сохранить
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
