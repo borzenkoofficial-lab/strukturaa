@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { Search, Menu, Sun, Moon, Globe, User } from "lucide-react";
+import { Search, Menu, Sun, Moon, Globe, User, ChevronLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import MobileMenu from "./MobileMenu";
 import SearchOverlay from "./SearchOverlay";
