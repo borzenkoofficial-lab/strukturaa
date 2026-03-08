@@ -43,7 +43,11 @@ const ContactsPage = () => {
                   <info.icon className="w-5 h-5 text-primary" />
                 </div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{info.label}</p>
-                <p className="text-sm font-medium text-foreground">{info.value}</p>
+                {(info as any).href ? (
+                  <a href={(info as any).href} className="text-sm font-medium text-foreground hover:text-primary transition-colors">{info.value}</a>
+                ) : (
+                  <p className="text-sm font-medium text-foreground">{info.value}</p>
+                )}
               </motion.div>
             </AnimatedSection>
           ))}
