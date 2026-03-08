@@ -86,6 +86,7 @@ const ContactsPage = () => {
         </AnimatedSection>
       </div>
     </div>
+    </>
   );
 };
 

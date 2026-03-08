@@ -56,6 +56,7 @@ const ProjectsPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

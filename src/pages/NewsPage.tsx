@@ -43,6 +43,7 @@ const NewsPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 
