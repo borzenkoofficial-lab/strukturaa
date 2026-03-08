@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/SEOHead";
+import ShopItemDetail from "@/components/shop/ShopItemDetail";
 
 const SHOP_CATEGORIES = [
   { value: "all", label: "Все" },
@@ -54,6 +55,7 @@ const ShopPage = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [activeTab, setActiveTab] = useState<"all" | "my">("all");
+  const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -221,6 +223,7 @@ const ShopPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05, duration: 0.4 }}
                   whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  onClick={() => setSelectedItem(item)}
                   className="group cursor-pointer rounded-2xl bg-card border border-border/50 overflow-hidden hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all"
                 >
                   {/* Photo placeholder */}
@@ -253,6 +256,12 @@ const ShopPage = () => {
             </div>
           )}
         </div>
+        {/* Detail modal */}
+        <AnimatePresence>
+          {selectedItem && (
+            <ShopItemDetail item={selectedItem} onClose={() => setSelectedItem(null)} />
+          )}
+        </AnimatePresence>
       </motion.div>
     </>
   );
