@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { Phone, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./AnimatedSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const CTASection = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
@@ -33,6 +35,7 @@ const CTASection = () => {
                 {t("cta.call")}
               </motion.a>
               <motion.button
+                onClick={() => navigate("/contacts")}
                 className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-secondary text-secondary-foreground font-display font-semibold hover:bg-secondary/80 transition-colors"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
