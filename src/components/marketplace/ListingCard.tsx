@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Calendar, RussianRuble, Clock } from "lucide-react";
+import { MapPin, Calendar, RussianRuble, Clock, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/integrations/supabase/client";
 import type { Listing } from "@/pages/MarketplacePage";
 
 const categoryLabels: Record<string, string> = {

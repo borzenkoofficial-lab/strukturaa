@@ -38,6 +38,7 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
   useEffect(() => {
     loadResponses();
     loadOwner();
+    trackView();
   }, [listing.id]);
 
   const loadOwner = async () => {
