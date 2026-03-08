@@ -282,6 +282,8 @@ const DashboardPage = () => {
         )}
 
         {activeTab === "projects" && <ProjectTracking />}
+
+        {activeTab === "chats" && <DashboardChats />}
       </div>
     </div>
     </>
