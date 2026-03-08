@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage } from "@/contexts/LanguageContext";
+import SEOHead from "@/components/SEOHead";
 
 const ContactsPage = () => {
   const { t } = useLanguage();
