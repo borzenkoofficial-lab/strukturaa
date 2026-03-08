@@ -145,7 +145,7 @@ const translations = {
   "footer.companyTitle": { ru: "Компания", en: "Company" },
   "footer.contactTitle": { ru: "Контакты", en: "Contact" },
   "footer.phone": { ru: "+7 (936) 666-99-58", en: "+7 (936) 666-99-58" },
-  "footer.email": { ru: "info@struktura.ru", en: "info@struktura.ru" },
+  "footer.email": { ru: "borzenkos@vk.com", en: "borzenkos@vk.com" },
   "footer.address": { ru: "г. Москва, ул. Строителей, д. 15", en: "15 Stroiteley St., Moscow" },
   "footer.privacy": { ru: "Политика конфиденциальности", en: "Privacy Policy" },
 

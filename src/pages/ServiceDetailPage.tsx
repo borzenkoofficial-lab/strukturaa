@@ -550,7 +550,7 @@ const ServiceDetailPage = () => {
                   {lang === "ru" ? "Позвонить" : "Call"}
                 </a>
                 <a
-                  href="mailto:info@struktura.ru"
+                  href="mailto:borzenkos@vk.com"
                   className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-secondary text-secondary-foreground text-sm hover:bg-secondary/80 transition-colors"
                 >
                   <Mail className="w-4 h-4" />

@@ -17,7 +17,7 @@ const ContactsPage = () => {
 
   const contactInfo = [
     { icon: Phone, label: t("contacts.phone"), value: "+7 (936) 666-99-58", href: "tel:+79366669958" },
-    { icon: Mail, label: t("contacts.email"), value: "info@struktura.ru" },
+    { icon: Mail, label: t("contacts.email"), value: "borzenkos@vk.com", href: "mailto:borzenkos@vk.com" },
     { icon: MapPin, label: t("contacts.address"), value: t("bento.address") },
     { icon: Clock, label: t("contacts.workHours"), value: t("bento.hours") },
   ];
