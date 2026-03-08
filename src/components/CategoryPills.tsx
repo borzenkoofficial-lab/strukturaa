@@ -44,7 +44,7 @@ const CategoryPills = () => {
         </motion.button>
         <div className="flex items-center gap-1.5 sm:gap-2">
           {categoryKeys.map((key, i) => (
-            <motion.button
+            <button
               key={key}
               onClick={() => setActive(i)}
               className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
@@ -52,12 +52,9 @@ const CategoryPills = () => {
                   ? "bg-primary text-primary-foreground"
                   : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
               }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              layout
             >
               {t(key)}
-            </motion.button>
+            </button>
           ))}
         </div>
       </div>
