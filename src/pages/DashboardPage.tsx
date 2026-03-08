@@ -158,6 +158,12 @@ const DashboardPage = () => {
           >
             <Heart className="w-4 h-4 inline mr-2" /> Избранное ({favoritesList.length})
           </button>
+          <button
+            onClick={() => setActiveTab("projects")}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${activeTab === "projects" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
+          >
+            <HardHat className="w-4 h-4 inline mr-2" /> Мои проекты
+          </button>
         </div>
 
         {activeTab === "profile" && (
