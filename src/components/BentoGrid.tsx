@@ -99,6 +99,7 @@ const BentoGrid = () => {
               {["🌸", "🌿", "✿", "🍃", "❀", "🌱"][i]}
             </motion.div>
           ))}
+          <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center">
