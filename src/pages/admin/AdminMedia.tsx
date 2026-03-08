@@ -46,7 +46,7 @@ const AdminMedia = () => {
         .upload(path, file);
 
       if (uploadError) {
-        toast({ title: "Upload failed", description: uploadError.message, variant: "destructive" });
+        toast({ title: "Ошибка загрузки", description: uploadError.message, variant: "destructive" });
         continue;
       }
 
@@ -63,13 +63,12 @@ const AdminMedia = () => {
 
     setUploading(false);
     fetchMedia();
-    toast({ title: "Upload complete" });
+    toast({ title: "Загрузка завершена" });
     if (fileRef.current) fileRef.current.value = "";
   };
 
   const handleDelete = async (item: MediaItem) => {
-    if (!confirm(`Delete "${item.name}"?`)) return;
-    // Extract path from URL
+    if (!confirm(`Удалить "${item.name}"?`)) return;
     const urlParts = item.url.split("/media/");
     const storagePath = urlParts[urlParts.length - 1];
     if (storagePath) {
@@ -77,21 +76,21 @@ const AdminMedia = () => {
     }
     await supabase.from("media").delete().eq("id", item.id);
     fetchMedia();
-    toast({ title: "Deleted" });
+    toast({ title: "Удалено" });
   };
 
   const copyUrl = (url: string) => {
     navigator.clipboard.writeText(url);
-    toast({ title: "URL copied!" });
+    toast({ title: "URL скопирован!" });
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold text-foreground">Media Manager</h1>
+        <h1 className="font-display text-2xl font-bold text-foreground">Медиа менеджер</h1>
         <Button onClick={() => fileRef.current?.click()} disabled={uploading}>
           <Upload className="w-4 h-4 mr-2" />
-          {uploading ? "Uploading..." : "Upload"}
+          {uploading ? "Загрузка..." : "Загрузить"}
         </Button>
         <input
           ref={fileRef}
@@ -106,7 +105,7 @@ const AdminMedia = () => {
       {media.length === 0 ? (
         <div className="glass-card p-12 text-center">
           <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground">No media files yet. Upload your first one!</p>
+          <p className="text-muted-foreground">Медиафайлов пока нет. Загрузите первый!</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -138,7 +137,7 @@ const AdminMedia = () => {
               <div className="p-3">
                 <div className="text-xs font-medium text-foreground truncate">{item.name}</div>
                 <div className="text-xs text-muted-foreground">
-                  {item.size ? `${(item.size / 1024).toFixed(0)} KB` : ""}
+                  {item.size ? `${(item.size / 1024).toFixed(0)} КБ` : ""}
                 </div>
               </div>
             </motion.div>

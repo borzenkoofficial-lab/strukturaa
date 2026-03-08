@@ -4,17 +4,18 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard, FileText, Image, Users, Settings, LogOut,
-  ChevronLeft, Menu, ArrowLeft, CircleDot
+  ChevronLeft, Menu, ArrowLeft, CircleDot, FolderOpen
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { label: "Dashboard", path: "/admin", icon: LayoutDashboard },
-  { label: "Stories", path: "/admin/stories", icon: CircleDot },
-  { label: "Articles", path: "/admin/articles", icon: FileText },
-  { label: "Media", path: "/admin/media", icon: Image },
-  { label: "Users", path: "/admin/users", icon: Users },
-  { label: "Settings", path: "/admin/settings", icon: Settings },
+  { label: "Главная", path: "/admin", icon: LayoutDashboard },
+  { label: "Истории", path: "/admin/stories", icon: CircleDot },
+  { label: "Статьи", path: "/admin/articles", icon: FileText },
+  { label: "Категории", path: "/admin/categories", icon: FolderOpen },
+  { label: "Медиа", path: "/admin/media", icon: Image },
+  { label: "Пользователи", path: "/admin/users", icon: Users },
+  { label: "Настройки", path: "/admin/settings", icon: Settings },
 ];
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
@@ -37,7 +38,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
             <span className="font-display font-bold text-sm text-primary-foreground">S</span>
           </div>
           {!collapsed && (
-            <span className="font-display font-bold text-foreground">Admin</span>
+            <span className="font-display font-bold text-foreground">Админ</span>
           )}
         </div>
       </div>
@@ -68,14 +69,14 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
         >
           <ArrowLeft className="w-5 h-5 shrink-0" />
-          {!collapsed && <span>My Dashboard</span>}
+          {!collapsed && <span>Мой кабинет</span>}
         </button>
         <button
           onClick={handleSignOut}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
         >
           <LogOut className="w-5 h-5 shrink-0" />
-          {!collapsed && <span>Sign Out</span>}
+          {!collapsed && <span>Выйти</span>}
         </button>
       </div>
     </div>
@@ -83,7 +84,6 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="min-h-screen bg-background gradient-dark flex">
-      {/* Desktop sidebar */}
       <motion.aside
         className="hidden md:flex flex-col border-r border-border/30 bg-card/40 backdrop-blur-xl shrink-0"
         animate={{ width: collapsed ? 72 : 240 }}
@@ -98,7 +98,6 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         </button>
       </motion.aside>
 
-      {/* Mobile sidebar */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -122,14 +121,13 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         )}
       </AnimatePresence>
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         <header className="h-14 border-b border-border/30 flex items-center px-4 gap-4 bg-card/20 backdrop-blur-sm">
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(true)}>
             <Menu className="w-5 h-5" />
           </Button>
           <div className="flex-1" />
-          <span className="text-sm text-muted-foreground">{profile?.display_name || "Admin"}</span>
+          <span className="text-sm text-muted-foreground">{profile?.display_name || "Админ"}</span>
         </header>
         <main className="flex-1 p-4 sm:p-6 overflow-auto">
           {children}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Edit3, Trash2, X, Eye, Save } from "lucide-react";
+import { Plus, Edit3, Trash2, X, Eye, Save, Upload, Image as ImageIcon } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 interface Article {
   id: string;
@@ -31,6 +32,14 @@ interface Category {
   slug: string;
 }
 
+const PLACEMENT_OPTIONS = [
+  { value: "blog", label: "Блог" },
+  { value: "news", label: "Новости" },
+  { value: "services", label: "Услуги" },
+  { value: "projects", label: "Проекты" },
+  { value: "main", label: "Главная страница" },
+];
+
 const emptyArticle = {
   title: "", slug: "", content: "", excerpt: "", featured_image: "",
   published: false, tags: [] as string[], seo_title: "", seo_description: "", category_id: "",
@@ -43,8 +52,13 @@ const AdminArticles = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [tagsInput, setTagsInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [filterCategory, setFilterCategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
 
   const fetchArticles = async () => {
     const { data } = await supabase
@@ -55,7 +69,7 @@ const AdminArticles = () => {
   };
 
   const fetchCategories = async () => {
-    const { data } = await supabase.from("categories").select("*");
+    const { data } = await supabase.from("categories").select("*").order("name");
     setCategories(data || []);
   };
 
@@ -63,6 +77,12 @@ const AdminArticles = () => {
     fetchArticles();
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("new") === "1") {
+      openNew();
+    }
+  }, [searchParams]);
 
   const generateSlug = (title: string) =>
     title.toLowerCase().replace(/[^a-z0-9а-яё]/gi, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
@@ -88,6 +108,25 @@ const AdminArticles = () => {
     });
     setEditingId(article.id);
     setTagsInput((article.tags || []).join(", "));
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editing) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop();
+      const fileName = `article-${Date.now()}.${ext}`;
+      const { error: uploadError } = await supabase.storage.from("media").upload(fileName, file);
+      if (uploadError) throw uploadError;
+      const { data } = supabase.storage.from("media").getPublicUrl(fileName);
+      setEditing({ ...editing, featured_image: data.publicUrl });
+      toast({ title: "Изображение загружено" });
+    } catch (err: any) {
+      toast({ title: "Ошибка загрузки", description: err.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSave = async () => {
@@ -119,9 +158,9 @@ const AdminArticles = () => {
     }
 
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: "Ошибка", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: editingId ? "Article updated" : "Article created" });
+      toast({ title: editingId ? "Статья обновлена" : "Статья создана" });
       setEditing(null);
       setEditingId(null);
       fetchArticles();
@@ -130,12 +169,12 @@ const AdminArticles = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this article?")) return;
+    if (!confirm("Удалить эту статью?")) return;
     const { error } = await supabase.from("articles").delete().eq("id", id);
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: "Ошибка", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Article deleted" });
+      toast({ title: "Статья удалена" });
       fetchArticles();
     }
   };
@@ -145,27 +184,38 @@ const AdminArticles = () => {
     fetchArticles();
   };
 
+  const getCategoryName = (categoryId: string | null) => {
+    if (!categoryId) return null;
+    return categories.find(c => c.id === categoryId)?.name || null;
+  };
+
+  const filteredArticles = articles.filter(article => {
+    const matchesCategory = !filterCategory || article.category_id === filterCategory;
+    const matchesSearch = !searchQuery || article.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold text-foreground">Articles</h1>
+        <h1 className="font-display text-2xl font-bold text-foreground">Статьи</h1>
         <Button onClick={openNew}>
           <Plus className="w-4 h-4 mr-2" />
-          New Article
+          Новая статья
         </Button>
       </div>
 
       <AnimatePresence>
         {editing && (
           <motion.div
-            className="glass-card p-6 space-y-4"
+            className="glass-card p-6 space-y-5"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
           >
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-semibold text-foreground">
-                {editingId ? "Edit Article" : "New Article"}
+                {editingId ? "Редактировать статью" : "Новая статья"}
               </h2>
               <Button variant="ghost" size="icon" onClick={() => { setEditing(null); setEditingId(null); }}>
                 <X className="w-5 h-5" />
@@ -174,15 +224,15 @@ const AdminArticles = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Title</Label>
+                <Label>Заголовок *</Label>
                 <Input
                   value={editing.title}
                   onChange={(e) => setEditing({ ...editing, title: e.target.value, slug: generateSlug(e.target.value) })}
-                  placeholder="Article title"
+                  placeholder="Название статьи"
                 />
               </div>
               <div className="space-y-2">
-                <Label>Slug</Label>
+                <Label>URL (slug)</Label>
                 <Input
                   value={editing.slug}
                   onChange={(e) => setEditing({ ...editing, slug: e.target.value })}
@@ -192,73 +242,88 @@ const AdminArticles = () => {
             </div>
 
             <div className="space-y-2">
-              <Label>Excerpt</Label>
+              <Label>Краткое описание</Label>
               <Input
                 value={editing.excerpt}
                 onChange={(e) => setEditing({ ...editing, excerpt: e.target.value })}
-                placeholder="Short description"
+                placeholder="Краткое описание для превью"
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Content</Label>
+              <Label>Содержание</Label>
               <Textarea
                 value={editing.content}
                 onChange={(e) => setEditing({ ...editing, content: e.target.value })}
                 rows={12}
-                placeholder="Article content (supports markdown)"
+                placeholder="Текст статьи (поддерживается markdown)"
                 className="font-mono text-sm"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Featured Image URL</Label>
-                <Input
-                  value={editing.featured_image}
-                  onChange={(e) => setEditing({ ...editing, featured_image: e.target.value })}
-                  placeholder="https://..."
-                />
+                <Label>Обложка статьи</Label>
+                <div className="flex gap-2">
+                  <Input
+                    value={editing.featured_image}
+                    onChange={(e) => setEditing({ ...editing, featured_image: e.target.value })}
+                    placeholder="URL изображения"
+                    className="flex-1"
+                  />
+                  <Button variant="secondary" onClick={() => fileRef.current?.click()} disabled={uploading}>
+                    <Upload className="w-4 h-4" />
+                  </Button>
+                  <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                </div>
+                {editing.featured_image && (
+                  <div className="mt-2 relative w-full h-32 rounded-lg overflow-hidden border border-border/30">
+                    <img src={editing.featured_image} alt="Превью" className="w-full h-full object-cover" />
+                  </div>
+                )}
               </div>
               <div className="space-y-2">
-                <Label>Category</Label>
+                <Label>Категория (размещение)</Label>
                 <select
                   value={editing.category_id}
                   onChange={(e) => setEditing({ ...editing, category_id: e.target.value })}
-                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm text-foreground"
                 >
-                  <option value="">None</option>
+                  <option value="">Без категории</option>
                   {categories.map(c => (
                     <option key={c.id} value={c.id}>{c.name}</option>
                   ))}
                 </select>
+                <p className="text-xs text-muted-foreground">
+                  Выберите категорию для размещения на нужной странице
+                </p>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label>Tags (comma separated)</Label>
+              <Label>Теги (через запятую)</Label>
               <Input
                 value={tagsInput}
                 onChange={(e) => setTagsInput(e.target.value)}
-                placeholder="demolition, construction, tips"
+                placeholder="демонтаж, строительство, советы"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>SEO Title</Label>
+                <Label>SEO заголовок</Label>
                 <Input
                   value={editing.seo_title}
                   onChange={(e) => setEditing({ ...editing, seo_title: e.target.value })}
-                  placeholder="SEO title"
+                  placeholder="Заголовок для поисковиков"
                 />
               </div>
               <div className="space-y-2">
-                <Label>SEO Description</Label>
+                <Label>SEO описание</Label>
                 <Input
                   value={editing.seo_description}
                   onChange={(e) => setEditing({ ...editing, seo_description: e.target.value })}
-                  placeholder="SEO meta description"
+                  placeholder="Мета-описание для поисковиков"
                 />
               </div>
             </div>
@@ -268,33 +333,74 @@ const AdminArticles = () => {
                 checked={editing.published}
                 onCheckedChange={(checked) => setEditing({ ...editing, published: checked })}
               />
-              <Label>Published</Label>
+              <Label>Опубликовать</Label>
             </div>
 
             <div className="flex gap-3">
               <Button onClick={handleSave} disabled={loading || !editing.title}>
                 <Save className="w-4 h-4 mr-2" />
-                {loading ? "Saving..." : "Save"}
+                {loading ? "Сохранение..." : "Сохранить"}
               </Button>
               <Button variant="outline" onClick={() => { setEditing(null); setEditingId(null); }}>
-                Cancel
+                Отмена
               </Button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Поиск по названию..."
+          className="sm:max-w-xs"
+        />
+        <select
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+          className="h-10 px-3 rounded-md border border-input bg-background text-sm text-foreground sm:max-w-xs"
+        >
+          <option value="">Все категории</option>
+          {categories.map(c => (
+            <option key={c.id} value={c.id}>{c.name}</option>
+          ))}
+        </select>
+      </div>
+
       <div className="glass-card overflow-hidden">
-        {articles.length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground">No articles yet</div>
+        {filteredArticles.length === 0 ? (
+          <div className="p-8 text-center text-muted-foreground">
+            {articles.length === 0 ? "Статей пока нет" : "Ничего не найдено"}
+          </div>
         ) : (
           <div className="divide-y divide-border/20">
-            {articles.map((article) => (
+            {filteredArticles.map((article) => (
               <div key={article.id} className="p-4 flex items-center justify-between gap-4">
-                <div className="min-w-0 flex-1">
-                  <div className="font-medium text-foreground truncate">{article.title}</div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    {new Date(article.created_at).toLocaleDateString()} · /{article.slug}
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  {article.featured_image ? (
+                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-border/20">
+                      <img src={article.featured_image} alt="" className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                      <ImageIcon className="w-5 h-5 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <div className="font-medium text-foreground truncate">{article.title}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5 flex items-center gap-2">
+                      <span>{new Date(article.created_at).toLocaleDateString("ru-RU")}</span>
+                      <span>·</span>
+                      <span>/{article.slug}</span>
+                      {getCategoryName(article.category_id) && (
+                        <>
+                          <span>·</span>
+                          <span className="text-primary">{getCategoryName(article.category_id)}</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
@@ -306,7 +412,7 @@ const AdminArticles = () => {
                         : "bg-muted text-muted-foreground hover:bg-muted/80"
                     }`}
                   >
-                    {article.published ? "Published" : "Draft"}
+                    {article.published ? "Опубликовано" : "Черновик"}
                   </button>
                   <Button variant="ghost" size="icon" onClick={() => openEdit(article)}>
                     <Edit3 className="w-4 h-4" />

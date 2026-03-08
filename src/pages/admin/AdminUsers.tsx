@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Shield, User, Trash2 } from "lucide-react";
+import { Shield, User } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type AppRole = Database["public"]["Enums"]["app_role"];
@@ -49,17 +49,17 @@ const AdminUsers = () => {
       await supabase.from("user_roles").insert({ user_id: userId, role: "admin" });
     }
 
-    toast({ title: isAdmin ? "Admin role removed" : "Admin role granted" });
+    toast({ title: isAdmin ? "Роль администратора снята" : "Роль администратора назначена" });
     fetchUsers();
   };
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-2xl font-bold text-foreground">User Management</h1>
+      <h1 className="font-display text-2xl font-bold text-foreground">Управление пользователями</h1>
 
       <div className="glass-card overflow-hidden">
         {users.length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground">No users found</div>
+          <div className="p-8 text-center text-muted-foreground">Пользователи не найдены</div>
         ) : (
           <div className="divide-y divide-border/20">
             {users.map((u) => (
@@ -71,9 +71,9 @@ const AdminUsers = () => {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-foreground truncate">{u.display_name || "Anonymous"}</div>
+                  <div className="font-medium text-foreground truncate">{u.display_name || "Аноним"}</div>
                   <div className="text-xs text-muted-foreground">
-                    Joined {new Date(u.created_at).toLocaleDateString()}
+                    Регистрация: {new Date(u.created_at).toLocaleDateString("ru-RU")}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ const AdminUsers = () => {
                       }`}
                     >
                       {r === "admin" ? <Shield className="w-3 h-3 inline mr-1" /> : <User className="w-3 h-3 inline mr-1" />}
-                      {r}
+                      {r === "admin" ? "Админ" : "Пользователь"}
                     </span>
                   ))}
                   <Button
@@ -93,7 +93,7 @@ const AdminUsers = () => {
                     size="sm"
                     onClick={() => toggleRole(u.user_id, u.roles)}
                   >
-                    {u.roles.includes("admin") ? "Remove Admin" : "Make Admin"}
+                    {u.roles.includes("admin") ? "Снять админа" : "Сделать админом"}
                   </Button>
                 </div>
               </div>

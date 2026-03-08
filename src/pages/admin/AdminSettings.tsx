@@ -37,16 +37,16 @@ const AdminSettings = () => {
       supabase.from("site_settings").update({ value: footerSettings as any }).eq("key", "footer"),
     ]);
     setLoading(false);
-    toast({ title: "Settings saved!" });
+    toast({ title: "Настройки сохранены!" });
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold text-foreground">Site Settings</h1>
+        <h1 className="font-display text-2xl font-bold text-foreground">Настройки сайта</h1>
         <Button onClick={save} disabled={loading}>
           <Save className="w-4 h-4 mr-2" />
-          {loading ? "Saving..." : "Save All"}
+          {loading ? "Сохранение..." : "Сохранить всё"}
         </Button>
       </div>
 
@@ -55,10 +55,10 @@ const AdminSettings = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h2 className="font-display text-lg font-semibold text-foreground">Theme</h2>
+        <h2 className="font-display text-lg font-semibold text-foreground">Тема оформления</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Primary Color</Label>
+            <Label>Основной цвет</Label>
             <div className="flex gap-2">
               <input
                 type="color"
@@ -73,7 +73,7 @@ const AdminSettings = () => {
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Font Family</Label>
+            <Label>Шрифт</Label>
             <select
               value={themeSettings.fontFamily}
               onChange={(e) => setThemeSettings({ ...themeSettings, fontFamily: e.target.value })}
@@ -94,17 +94,17 @@ const AdminSettings = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <h2 className="font-display text-lg font-semibold text-foreground">Header</h2>
+        <h2 className="font-display text-lg font-semibold text-foreground">Шапка сайта</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Logo Text</Label>
+            <Label>Текст логотипа</Label>
             <Input
               value={headerSettings.logoText}
               onChange={(e) => setHeaderSettings({ ...headerSettings, logoText: e.target.value })}
             />
           </div>
           <div className="space-y-2">
-            <Label>Phone Number</Label>
+            <Label>Номер телефона</Label>
             <Input
               value={headerSettings.phone}
               onChange={(e) => setHeaderSettings({ ...headerSettings, phone: e.target.value })}
@@ -119,9 +119,9 @@ const AdminSettings = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <h2 className="font-display text-lg font-semibold text-foreground">Footer</h2>
+        <h2 className="font-display text-lg font-semibold text-foreground">Подвал сайта</h2>
         <div className="space-y-2">
-          <Label>Copyright Text</Label>
+          <Label>Текст копирайта</Label>
           <Input
             value={footerSettings.copyright}
             onChange={(e) => setFooterSettings({ ...footerSettings, copyright: e.target.value })}
