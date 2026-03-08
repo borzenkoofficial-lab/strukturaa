@@ -86,6 +86,7 @@ const App = () => (
                   <Route path="/admin/settings" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminSettings /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/stories" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminStories /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/categories" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminCategories /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/listings" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminListings /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="*" element={<Suspense fallback={<PageLoading />}><NotFound /></Suspense>} />
                 </Routes>
               </BrowserRouter>
