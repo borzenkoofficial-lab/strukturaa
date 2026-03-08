@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/SEOHead";
 import ShopItemDetail from "@/components/shop/ShopItemDetail";
 import ShopIntro from "@/components/shop/ShopIntro";
+import AddShopItemModal from "@/components/shop/AddShopItemModal";
 
 const SHOP_CATEGORIES = [
   { value: "all", label: "Все", icon: Sparkles },
@@ -63,6 +64,7 @@ const ShopPage = () => {
   const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
   const [introComplete, setIntroComplete] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -193,7 +195,7 @@ const ShopPage = () => {
 
               {user && (
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <Button onClick={() => {}} className="rounded-2xl gap-2 shadow-lg shadow-primary/20 px-5">
+                  <Button onClick={() => setShowAddModal(true)} className="rounded-2xl gap-2 shadow-lg shadow-primary/20 px-5">
                     <Plus className="w-4 h-4" />
                     <span className="hidden sm:inline">Продать</span>
                   </Button>
@@ -323,7 +325,7 @@ const ShopPage = () => {
                   : "Попробуйте изменить параметры поиска или выберите другую категорию"}
               </p>
               {user && activeTab === "my" && (
-                <Button onClick={() => {}} className="rounded-2xl gap-2 px-6 shadow-lg shadow-primary/20">
+                <Button onClick={() => setShowAddModal(true)} className="rounded-2xl gap-2 px-6 shadow-lg shadow-primary/20">
                   <Plus className="w-4 h-4" />
                   Разместить товар
                 </Button>
@@ -396,6 +398,12 @@ const ShopPage = () => {
         <AnimatePresence>
           {selectedItem && (
             <ShopItemDetail item={selectedItem} onClose={() => setSelectedItem(null)} />
+          )}
+          {showAddModal && (
+            <AddShopItemModal
+              onClose={() => setShowAddModal(false)}
+              onCreated={() => { setShowAddModal(false); fetchItems(); }}
+            />
           )}
         </AnimatePresence>
       </motion.div>
