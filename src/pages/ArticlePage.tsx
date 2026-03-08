@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SEOHead from "@/components/SEOHead";
 
 interface Article {
   id: string;
@@ -54,9 +55,7 @@ const ArticlePage = () => {
     fetch();
   }, [slug]);
 
-  useEffect(() => {
-    if (article?.seo_title) document.title = article.seo_title;
-  }, [article]);
+  // SEO handled by SEOHead component below
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
 
@@ -86,6 +85,13 @@ const ArticlePage = () => {
 
   return (
     <div className="py-12 sm:py-20">
+      <SEOHead
+        title={article.seo_title || article.title}
+        description={article.seo_description || article.excerpt || undefined}
+        canonical={`/blog/${article.slug}`}
+        ogImage={article.featured_image || undefined}
+        ogType="article"
+      />
       <article className="max-w-3xl mx-auto px-4 sm:px-6">
         <button
           onClick={() => navigate("/blog")}

@@ -4,6 +4,13 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
+User-agent: Yandex
+Allow: /
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content
+
+User-agent: Mail.Ru
+Allow: /
+
 User-agent: Twitterbot
 Allow: /
 
@@ -12,3 +19,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://build-blossom-brand.lovable.app/sitemap.xml
+Host: https://build-blossom-brand.lovable.app
