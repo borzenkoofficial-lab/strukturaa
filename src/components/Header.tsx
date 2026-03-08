@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, Phone, Menu, Sun, Moon, Globe, User, LogOut } from "lucide-react";
+import { Search, Menu, Sun, Moon, Globe, User } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,7 +11,7 @@ import SearchOverlay from "./SearchOverlay";
 const Header = () => {
   const { lang, setLang, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { user, isAdmin, signOut } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -19,16 +19,11 @@ const Header = () => {
   const navItems: { label: string; path: string }[] = [
     { label: t("nav.services"), path: "/services" },
     { label: t("nav.projects"), path: "/projects" },
-    { label: t("nav.news"), path: "/news" },
-    { label: "Blog", path: "/blog" },
+    { label: t("nav.marketplace"), path: "/marketplace" },
+    { label: t("nav.blog"), path: "/blog" },
     { label: t("nav.about"), path: "/about" },
     { label: t("nav.contacts"), path: "/contacts" },
   ];
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
-  };
 
   return (
     <>
@@ -102,7 +97,6 @@ const Header = () => {
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </motion.button>
 
-            {/* Auth button */}
             {user ? (
               <motion.button
                 className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold"
@@ -111,7 +105,7 @@ const Header = () => {
                 onClick={() => navigate("/dashboard")}
               >
                 <User className="w-4 h-4" />
-                <span className="hidden md:inline">Dashboard</span>
+                <span className="hidden md:inline">{t("header.dashboard")}</span>
               </motion.button>
             ) : (
               <motion.button
@@ -121,7 +115,7 @@ const Header = () => {
                 onClick={() => navigate("/auth")}
               >
                 <User className="w-4 h-4" />
-                <span className="hidden sm:inline">Sign In</span>
+                <span className="hidden sm:inline">{t("header.signIn")}</span>
               </motion.button>
             )}
 
