@@ -1,1 +1,4 @@
 project_id = "ojrarkirvglirixtlwwc"
+
+[functions.generate-listings]
+verify_jwt = false
