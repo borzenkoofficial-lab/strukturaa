@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Flame, Newspaper, FolderOpen, Truck, Sparkles } from "lucide-react";
+import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Newspaper, FolderOpen, Truck, Sparkles, Hammer, HardHat, Building2, Trash2 as TrashIcon, Gem, Cable } from "lucide-react";
 import heroDemolition from "@/assets/hero-demolition.jpg";
 import serviceConstruction from "@/assets/service-construction.jpg";
 import serviceRenovation from "@/assets/service-renovation.jpg";
@@ -137,41 +137,43 @@ const BentoGrid = () => {
           </div>
         </motion.div>
 
-        {/* ═══════ 2. 🔥 ГОРЯЧИЕ ПРЕДЛОЖЕНИЯ — популярные услуги ═══════ */}
+        {/* ═══════ 2. ВСЕ УСЛУГИ — сетка карточек ═══════ */}
         <motion.div
-          className="col-span-2 lg:col-span-2 relative overflow-hidden rounded-2xl cursor-pointer group"
-          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}
-          whileHover={{ scale: 1.01 }}
-          onClick={() => navigate("/services")}
+          className="col-span-2 lg:col-span-4 relative overflow-hidden rounded-2xl"
+          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-destructive/90 via-destructive/70 to-accent/80" />
-          <div className="absolute inset-0 shimmer-overlay opacity-30" />
-          <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
-                  <Flame className="w-5 h-5 text-white" />
+          <div className="mb-3 flex items-center justify-between px-1">
+            <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">Наши услуги</h3>
+            <button onClick={() => navigate("/services")} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
+              Все услуги <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            {[
+              { slug: "demolition", label: "Демонтаж", price: "от 500₽/м²", icon: Hammer, gradient: "from-primary/20 to-accent/10" },
+              { slug: "diamond-cutting", label: "Алмазная резка", price: "от 1500₽/м.п.", icon: Gem, gradient: "from-blue-500/20 to-cyan-500/10" },
+              { slug: "renovation", label: "Ремонт под ключ", price: "от 800₽/м²", icon: Wrench, gradient: "from-emerald-500/20 to-green-500/10" },
+              { slug: "construction", label: "Монтаж конструкций", price: "от 1200₽/м²", icon: HardHat, gradient: "from-violet-500/20 to-purple-500/10" },
+              { slug: "apartment-demolition", label: "Демонтаж квартир", price: "от 400₽/м²", icon: Building2, gradient: "from-rose-500/20 to-pink-500/10" },
+              { slug: "building-demolition", label: "Снос зданий", price: "от 350₽/м²", icon: TrashIcon, gradient: "from-amber-500/20 to-orange-500/10" },
+              { slug: "waste-removal", label: "Вывоз мусора", price: "от 8000₽", icon: Truck, gradient: "from-teal-500/20 to-cyan-500/10" },
+              { slug: "dismantling", label: "Демонтаж коммуникаций", price: "от 600₽/м²", icon: Cable, gradient: "from-indigo-500/20 to-blue-500/10" },
+            ].map((svc, i) => (
+              <motion.div
+                key={svc.slug}
+                className="glass-card p-3 sm:p-4 flex flex-col justify-between cursor-pointer group hover:border-primary/30 transition-colors"
+                whileHover={{ scale: 1.03 }}
+                onClick={() => navigate(`/services/${svc.slug}`)}
+              >
+                <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${svc.gradient} flex items-center justify-center mb-2 sm:mb-3`}>
+                  <svc.icon className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
                 </div>
-                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-bold text-white uppercase tracking-wider">{t("bento.hotServices")}</span>
-              </div>
-              <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center group-hover:rotate-45 transition-transform">
-                <ArrowUpRight className="w-4 h-4 text-white" />
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-2 mt-3">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-white/20 transition-colors" onClick={(e) => { e.stopPropagation(); navigate("/services/demolition"); }}>
-                <p className="text-white font-display font-bold text-xs sm:text-sm leading-tight">{t("bento.hotDemolition")}</p>
-                <p className="text-white/70 text-[10px] sm:text-xs mt-1">{t("bento.hotDemolitionPrice")}</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-white/20 transition-colors" onClick={(e) => { e.stopPropagation(); navigate("/services/waste-removal"); }}>
-                <p className="text-white font-display font-bold text-xs sm:text-sm leading-tight">{t("bento.hotWaste")}</p>
-                <p className="text-white/70 text-[10px] sm:text-xs mt-1">{t("bento.hotWastePrice")}</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-white/20 transition-colors" onClick={(e) => { e.stopPropagation(); navigate("/services/renovation"); }}>
-                <p className="text-white font-display font-bold text-xs sm:text-sm leading-tight">{t("bento.hotReno")}</p>
-                <p className="text-white/70 text-[10px] sm:text-xs mt-1">{t("bento.hotRenoPrice")}</p>
-              </div>
-            </div>
+                <div>
+                  <p className="text-xs sm:text-sm font-display font-semibold text-foreground leading-tight">{svc.label}</p>
+                  <p className="text-[10px] sm:text-xs text-primary font-medium mt-1">{svc.price}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
 
