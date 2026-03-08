@@ -155,14 +155,15 @@ const DashboardPage = () => {
           )}
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              className="glass-card p-6 text-center"
+              className={`glass-card p-6 text-center ${stat.onClick ? "cursor-pointer hover:border-primary/30" : ""}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.1 }}
+              onClick={stat.onClick}
             >
               <stat.icon className="w-8 h-8 text-primary mx-auto mb-3" />
               <div className="font-display text-2xl font-bold text-foreground">{stat.value}</div>
