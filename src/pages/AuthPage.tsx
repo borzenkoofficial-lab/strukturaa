@@ -33,16 +33,16 @@ const AuthPage = () => {
       } else if (mode === "signup") {
         const { error } = await signUp(email, password, name);
         if (error) throw error;
-        toast({ title: "Account created!", description: "Check your email to confirm registration." });
+        toast({ title: "Аккаунт создан!", description: "Проверьте почту для подтверждения регистрации." });
         navigate("/dashboard");
       } else {
         const { error } = await resetPassword(email);
         if (error) throw error;
-        toast({ title: "Email sent", description: "Check your inbox for a password reset link." });
+        toast({ title: "Письмо отправлено", description: "Проверьте почту для сброса пароля." });
         setMode("login");
       }
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      toast({ title: "Ошибка", description: err.message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ const AuthPage = () => {
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to site
+          На главную
         </button>
 
         <div className="glass-card p-8 sm:p-10">
@@ -81,25 +81,25 @@ const AuthPage = () => {
               transition={{ duration: 0.3 }}
             >
               <h1 className="font-display text-2xl font-bold text-foreground mb-2">
-                {mode === "login" ? "Welcome back" : mode === "signup" ? "Create account" : "Reset password"}
+                {mode === "login" ? "С возвращением" : mode === "signup" ? "Создать аккаунт" : "Сброс пароля"}
               </h1>
               <p className="text-muted-foreground text-sm mb-6">
                 {mode === "login"
-                  ? "Sign in to your account"
+                  ? "Войдите в свой аккаунт"
                   : mode === "signup"
-                  ? "Join us to get started"
-                  : "Enter your email to receive a reset link"}
+                  ? "Зарегистрируйтесь, чтобы начать"
+                  : "Введите email для получения ссылки сброса"}
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {mode === "signup" && (
                   <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name">Имя</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="name"
-                        placeholder="Your name"
+                        placeholder="Ваше имя"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="pl-10"
@@ -109,7 +109,7 @@ const AuthPage = () => {
                 )}
 
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">Электронная почта</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
@@ -126,7 +126,7 @@ const AuthPage = () => {
 
                 {mode !== "reset" && (
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">Пароль</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
@@ -156,34 +156,34 @@ const AuthPage = () => {
                     onClick={() => setMode("reset")}
                     className="text-sm text-primary hover:underline"
                   >
-                    Forgot password?
+                    Забыли пароль?
                   </button>
                 )}
 
                 <Button type="submit" className="w-full" size="lg" disabled={loading}>
                   {loading
-                    ? "Loading..."
+                    ? "Загрузка..."
                     : mode === "login"
-                    ? "Sign In"
+                    ? "Войти"
                     : mode === "signup"
-                    ? "Create Account"
-                    : "Send Reset Link"}
+                    ? "Зарегистрироваться"
+                    : "Отправить ссылку"}
                 </Button>
               </form>
 
               <div className="mt-6 text-center text-sm text-muted-foreground">
                 {mode === "login" ? (
                   <>
-                    Don't have an account?{" "}
+                    Нет аккаунта?{" "}
                     <button onClick={() => setMode("signup")} className="text-primary hover:underline font-medium">
-                      Sign Up
+                      Зарегистрироваться
                     </button>
                   </>
                 ) : (
                   <>
-                    Already have an account?{" "}
+                    Уже есть аккаунт?{" "}
                     <button onClick={() => setMode("login")} className="text-primary hover:underline font-medium">
-                      Sign In
+                      Войти
                     </button>
                   </>
                 )}
