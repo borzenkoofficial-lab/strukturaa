@@ -3,6 +3,7 @@ import { ArrowUpRight, Building2, Home, Truck, Wrench, Hammer, Gem, HardHat } fr
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
+import SEOHead from "@/components/SEOHead";
 
 const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: TranslationKey; price: string; slug: string }[] = [
   { icon: Building2, titleKey: "services.demolition", descKey: "services.demolitionDesc", price: "500₽/м²", slug: "demolition" },
@@ -20,7 +21,9 @@ const ServicesPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <>
+      <SEOHead title="Услуги" description="Демонтаж зданий, монтаж конструкций, ремонт и отделка, вывоз мусора, алмазная резка — все строительные услуги от STRUKTURA." canonical="/services" />
+      <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("services.pageTitle")}</h1>
         <p className="text-muted-foreground mb-10">{t("services.pageSubtitle")}</p>
@@ -61,6 +64,7 @@ const ServicesPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage } from "@/contexts/LanguageContext";
+import SEOHead from "@/components/SEOHead";
 
 const ContactsPage = () => {
   const { t } = useLanguage();
@@ -22,7 +23,9 @@ const ContactsPage = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <>
+      <SEOHead title="Контакты" description="Свяжитесь с STRUKTURA: телефон, email, адрес офиса. Бесплатная консультация по строительным и демонтажным работам." canonical="/contacts" />
+      <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("contacts.title")}</h1>
         <p className="text-muted-foreground mb-10">{t("contacts.subtitle")}</p>
@@ -83,6 +86,7 @@ const ContactsPage = () => {
         </AnimatedSection>
       </div>
     </div>
+    </>
   );
 };
 

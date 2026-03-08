@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Shield, Award, Leaf } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
+import SEOHead from "@/components/SEOHead";
 
 const values: { icon: typeof Shield; titleKey: TranslationKey; descKey: TranslationKey }[] = [
   { icon: Shield, titleKey: "about.value1", descKey: "about.value1Desc" },
@@ -13,7 +14,9 @@ const AboutPage = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <>
+      <SEOHead title="О компании" description="STRUKTURA — профессиональная строительная компания с многолетним опытом. Надёжность, качество, безопасность." canonical="/about" />
+      <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("about.title")}</h1>
         <p className="text-muted-foreground mb-10">{t("about.subtitle")}</p>
@@ -43,6 +46,7 @@ const AboutPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 
