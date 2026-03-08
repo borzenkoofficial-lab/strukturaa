@@ -4,12 +4,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard, FileText, Image, Users, Settings, LogOut,
-  ChevronLeft, Menu, ArrowLeft
+  ChevronLeft, Menu, ArrowLeft, CircleDot
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
   { label: "Dashboard", path: "/admin", icon: LayoutDashboard },
+  { label: "Stories", path: "/admin/stories", icon: CircleDot },
   { label: "Articles", path: "/admin/articles", icon: FileText },
   { label: "Media", path: "/admin/media", icon: Image },
   { label: "Users", path: "/admin/users", icon: Users },
