@@ -85,6 +85,13 @@ const ArticlePage = () => {
 
   return (
     <div className="py-12 sm:py-20">
+      <SEOHead
+        title={article.seo_title || article.title}
+        description={article.seo_description || article.excerpt || undefined}
+        canonical={`/blog/${article.slug}`}
+        ogImage={article.featured_image || undefined}
+        ogType="article"
+      />
       <article className="max-w-3xl mx-auto px-4 sm:px-6">
         <button
           onClick={() => navigate("/blog")}
