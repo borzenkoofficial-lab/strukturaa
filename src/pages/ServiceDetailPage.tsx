@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calculator, Phone, Mail, CheckCircle2, Ruler, Clock, Shield } from "lucide-react";
+import { ArrowLeft, Calculator, Phone, Mail, CheckCircle2, Ruler, Clock, Shield, Loader2 } from "lucide-react";
 import { useState, useMemo } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import SEOHead from "@/components/SEOHead";
 
 interface ServiceData {
@@ -264,6 +265,7 @@ const ServiceDetailPage = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const isWaste = service?.slug === "waste-removal";
 
@@ -271,7 +273,6 @@ const ServiceDetailPage = () => {
     if (!service) return 0;
     const val = area[0];
     const base = val * service.priceValue;
-    // volume discount
     if (val > 1000) return Math.round(base * 0.85);
     if (val > 500) return Math.round(base * 0.9);
     if (val > 100) return Math.round(base * 0.95);
@@ -281,18 +282,40 @@ const ServiceDetailPage = () => {
   const formatPrice = (n: number) =>
     new Intl.NumberFormat(lang === "ru" ? "ru-RU" : "en-US").format(n);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: lang === "ru" ? "Заявка отправлена!" : "Request sent!",
-      description:
-        lang === "ru"
-          ? "Мы свяжемся с вами в течение 30 минут"
+    if (!name.trim() || !phone.trim()) return;
+    setSubmitting(true);
+    
+    try {
+      await supabase.functions.invoke("notify-request", {
+        body: {
+          name: name.trim(),
+          phone: phone.trim(),
+          message: message.trim() || null,
+          service: service ? t(service.titleKey) : null,
+          calculated_price: calculatedPrice || null,
+          source: "service_page",
+        },
+      });
+
+      toast({
+        title: lang === "ru" ? "✅ Заявка отправлена!" : "✅ Request submitted!",
+        description: lang === "ru"
+          ? "Мы перезвоним в течение 30 минут. Или звоните: +7 (936) 666-99-58"
           : "We'll contact you within 30 minutes",
-    });
-    setName("");
-    setPhone("");
-    setMessage("");
+      });
+      setName("");
+      setPhone("");
+      setMessage("");
+    } catch {
+      toast({
+        title: lang === "ru" ? "Ошибка" : "Error",
+        description: lang === "ru" ? "Попробуйте позвонить: +7 (936) 666-99-58" : "Please try calling us",
+        variant: "destructive",
+      });
+    }
+    setSubmitting(false);
   };
 
   if (!service) {
@@ -535,8 +558,12 @@ const ServiceDetailPage = () => {
                   rows={3}
                   className="bg-secondary border-border resize-none"
                 />
-                <Button type="submit" className="w-full">
-                  {lang === "ru" ? "Отправить заявку" : "Submit Request"}
+                <Button type="submit" className="w-full" disabled={submitting}>
+                  {submitting ? (
+                    <><Loader2 className="w-4 h-4 animate-spin mr-2" />{lang === "ru" ? "Отправляем..." : "Sending..."}</>
+                  ) : (
+                    lang === "ru" ? "Отправить заявку" : "Submit Request"
+                  )}
                 </Button>
               </form>
 

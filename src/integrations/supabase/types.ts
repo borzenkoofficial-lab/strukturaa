@@ -123,6 +123,39 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_requests: {
+        Row: {
+          calculated_price: number | null
+          created_at: string
+          id: string
+          message: string | null
+          name: string
+          phone: string
+          service: string | null
+          source: string
+        }
+        Insert: {
+          calculated_price?: number | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          name: string
+          phone: string
+          service?: string | null
+          source?: string
+        }
+        Update: {
+          calculated_price?: number | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          service?: string | null
+          source?: string
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           created_at: string
