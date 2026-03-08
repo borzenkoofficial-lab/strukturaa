@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SEOHead from "@/components/SEOHead";
 
 interface Article {
   id: string;
