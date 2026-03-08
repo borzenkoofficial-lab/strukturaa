@@ -81,6 +81,8 @@ const DashboardPage = () => {
   };
 
   return (
+    <>
+    <SEOHead title="Личный кабинет" description="Управляйте профилем, избранным и заказами в личном кабинете STRUKTURA." canonical="/dashboard" noindex />
     <div className="min-h-screen bg-background gradient-dark">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
