@@ -256,6 +256,12 @@ const ShopPage = () => {
             </div>
           )}
         </div>
+        {/* Detail modal */}
+        <AnimatePresence>
+          {selectedItem && (
+            <ShopItemDetail item={selectedItem} onClose={() => setSelectedItem(null)} />
+          )}
+        </AnimatePresence>
       </motion.div>
     </>
   );
