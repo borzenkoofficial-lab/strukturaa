@@ -1,18 +1,53 @@
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import SEOHead from "@/components/SEOHead";
 
 const ContactsPage = () => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    if (!name.trim() || !phone.trim()) return;
+    setSubmitting(true);
+
+    try {
+      await supabase.functions.invoke("notify-request", {
+        body: {
+          name: name.trim(),
+          phone: phone.trim(),
+          message: message.trim() || null,
+          source: "contacts_page",
+        },
+      });
+
+      setSubmitted(true);
+      toast({
+        title: "✅ Заявка отправлена!",
+        description: "Мы перезвоним в течение 30 минут. Или звоните: +7 (936) 666-99-58",
+      });
+      setName("");
+      setPhone("");
+      setMessage("");
+      setTimeout(() => setSubmitted(false), 4000);
+    } catch {
+      toast({
+        title: "Ошибка",
+        description: "Попробуйте позвонить: +7 (936) 666-99-58",
+        variant: "destructive",
+      });
+    }
+    setSubmitting(false);
   };
 
   const contactInfo = [
@@ -28,10 +63,9 @@ const ContactsPage = () => {
       <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("contacts.title")}</h1>
-        <p className="text-muted-foreground mb-10">{t("contacts.subtitle")}</p>
+        <p className="text-muted-foreground mb-8">{t("contacts.subtitle")}</p>
       </AnimatedSection>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {contactInfo.map((info, i) => (
             <AnimatedSection key={info.label} delay={i * 0.1}>
@@ -43,8 +77,8 @@ const ContactsPage = () => {
                   <info.icon className="w-5 h-5 text-primary" />
                 </div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{info.label}</p>
-                {(info as any).href ? (
-                  <a href={(info as any).href} className="text-sm font-medium text-foreground hover:text-primary transition-colors">{info.value}</a>
+                {info.href ? (
+                  <a href={info.href} className="text-sm font-medium text-foreground hover:text-primary transition-colors">{info.value}</a>
                 ) : (
                   <p className="text-sm font-medium text-foreground">{info.value}</p>
                 )}
@@ -62,28 +96,35 @@ const ContactsPage = () => {
               <input
                 type="text"
                 placeholder={t("contacts.formName")}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
                 className="w-full bg-input border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <input
                 type="tel"
                 placeholder={t("contacts.formPhone")}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
                 className="w-full bg-input border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <textarea
                 placeholder={t("contacts.formMessage")}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 rows={4}
                 className="w-full bg-input border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-none"
               />
               <motion.button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-display font-semibold"
+                disabled={submitting}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-display font-semibold disabled:opacity-50"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {submitted ? <CheckCircle className="w-5 h-5" /> : <Send className="w-5 h-5" />}
-                {submitted ? t("contacts.formSuccess") : t("contacts.formSubmit")}
+                {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : submitted ? <CheckCircle className="w-5 h-5" /> : <Send className="w-5 h-5" />}
+                {submitting ? "Отправляем..." : submitted ? t("contacts.formSuccess") : t("contacts.formSubmit")}
               </motion.button>
             </div>
           </motion.form>

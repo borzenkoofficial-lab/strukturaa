@@ -558,8 +558,12 @@ const ServiceDetailPage = () => {
                   rows={3}
                   className="bg-secondary border-border resize-none"
                 />
-                <Button type="submit" className="w-full">
-                  {lang === "ru" ? "Отправить заявку" : "Submit Request"}
+                <Button type="submit" className="w-full" disabled={submitting}>
+                  {submitting ? (
+                    <><Loader2 className="w-4 h-4 animate-spin mr-2" />{lang === "ru" ? "Отправляем..." : "Sending..."}</>
+                  ) : (
+                    lang === "ru" ? "Отправить заявку" : "Submit Request"
+                  )}
                 </Button>
               </form>
 
