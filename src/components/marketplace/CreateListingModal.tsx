@@ -47,6 +47,26 @@ const CreateListingModal = ({ onClose, onCreated }: Props) => {
     }
 
     setSubmitting(true);
+
+    // Модерация контента
+    try {
+      const modRes = await supabase.functions.invoke("moderate-listing", {
+        body: { title: form.title.trim(), description: form.description.trim() },
+      });
+      const modData = modRes.data;
+      if (modData && !modData.approved) {
+        toast({
+          title: "Заявка не прошла модерацию",
+          description: modData.reason || "Содержание не соответствует тематике строительной биржи.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return;
+      }
+    } catch {
+      // Если модерация недоступна — пропускаем
+    }
+
     const { error } = await supabase.from("listings").insert({
       user_id: user.id,
       title: form.title.trim(),
