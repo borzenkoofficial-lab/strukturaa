@@ -118,8 +118,25 @@ const ShopItemDetail = ({ item, onClose }: Props) => {
       sender_id: user.id,
       receiver_id: item.user_id,
       content: text,
+      listing_id: null,
     });
     setInput("");
+
+    // Notify seller via Telegram
+    try {
+      const profileRes = await supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle();
+      const senderName = profileRes.data?.display_name || user.email || "Покупатель";
+      await supabase.functions.invoke("notify-shop-message", {
+        body: {
+          receiver_id: item.user_id,
+          sender_name: senderName,
+          content: text,
+          item_title: item.title,
+        },
+      });
+    } catch (e) {
+      console.error("Notification error:", e);
+    }
   };
 
   const handleSharePhone = () => {
