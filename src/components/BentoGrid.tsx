@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus } from "lucide-react";
+import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Flame, Newspaper, FolderOpen, Truck, Sparkles } from "lucide-react";
 import heroDemolition from "@/assets/hero-demolition.jpg";
 import serviceConstruction from "@/assets/service-construction.jpg";
 import serviceRenovation from "@/assets/service-renovation.jpg";
 import teamWorker from "@/assets/team-worker.jpg";
+import projectIndustrial from "@/assets/project-industrial-demo.jpg";
+import projectWaste from "@/assets/project-waste-removal.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useState, useCallback, memo } from "react";
@@ -66,14 +68,10 @@ const BentoGrid = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 auto-rows-[minmax(140px,auto)] sm:auto-rows-[minmax(180px,auto)] [&>*]:overflow-hidden">
 
-        {/* 🔥 Marketplace Tile */}
+        {/* ═══════ 1. СТРОИТЕЛЬНАЯ БИРЖА — главный CTA ═══════ */}
         <motion.div
           className="col-span-2 lg:col-span-2 relative overflow-hidden rounded-2xl cursor-pointer group"
-          variants={cardVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          custom={0}
+          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0}
           whileHover={{ scale: 1.01 }}
           onClick={() => navigate("/marketplace")}
         >
@@ -102,8 +100,46 @@ const BentoGrid = () => {
           </div>
         </motion.div>
 
-        {/* Hero Card */}
-        <motion.div className="col-span-2 md:col-span-1 lg:col-span-1 md:row-span-2 glass-card overflow-hidden relative group cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }} onClick={() => navigate("/services/demolition")}>
+        {/* ═══════ 2. 🔥 ГОРЯЧИЕ ПРЕДЛОЖЕНИЯ — популярные услуги ═══════ */}
+        <motion.div
+          className="col-span-2 lg:col-span-2 relative overflow-hidden rounded-2xl cursor-pointer group"
+          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}
+          whileHover={{ scale: 1.01 }}
+          onClick={() => navigate("/services")}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-destructive/90 via-destructive/70 to-accent/80" />
+          <div className="absolute inset-0 shimmer-overlay opacity-30" />
+          <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+                  <Flame className="w-5 h-5 text-white" />
+                </div>
+                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-bold text-white uppercase tracking-wider">{t("bento.hotServices")}</span>
+              </div>
+              <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center group-hover:rotate-45 transition-transform">
+                <ArrowUpRight className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-2 mt-3">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-white/20 transition-colors" onClick={(e) => { e.stopPropagation(); navigate("/services/demolition"); }}>
+                <p className="text-white font-display font-bold text-xs sm:text-sm leading-tight">{t("bento.hotDemolition")}</p>
+                <p className="text-white/70 text-[10px] sm:text-xs mt-1">{t("bento.hotDemolitionPrice")}</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-white/20 transition-colors" onClick={(e) => { e.stopPropagation(); navigate("/services/waste-removal"); }}>
+                <p className="text-white font-display font-bold text-xs sm:text-sm leading-tight">{t("bento.hotWaste")}</p>
+                <p className="text-white/70 text-[10px] sm:text-xs mt-1">{t("bento.hotWastePrice")}</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-white/20 transition-colors" onClick={(e) => { e.stopPropagation(); navigate("/services/renovation"); }}>
+                <p className="text-white font-display font-bold text-xs sm:text-sm leading-tight">{t("bento.hotReno")}</p>
+                <p className="text-white/70 text-[10px] sm:text-xs mt-1">{t("bento.hotRenoPrice")}</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 3. ДЕМОНТАЖ — основная услуга, большая карточка ═══════ */}
+        <motion.div className="col-span-2 md:col-span-1 lg:col-span-1 md:row-span-2 glass-card overflow-hidden relative group cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }} onClick={() => navigate("/services/demolition")}>
           <img src={heroDemolition} alt={t("bento.demolition")} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
           <div className="absolute inset-0 shimmer-overlay opacity-20" />
@@ -127,71 +163,8 @@ const BentoGrid = () => {
           </div>
         </motion.div>
 
-        {/* Great Value */}
-        <motion.div className="col-span-2 lg:col-span-2 glass-card overflow-hidden relative cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} whileHover={{ scale: 1.01 }} onClick={() => navigate("/services/waste-removal")}>
-          <img src={serviceConstruction} alt={t("bento.bestDeals")} className="absolute inset-0 w-full h-full object-cover opacity-40" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-r from-card/80 to-card/40" />
-          <div className="absolute inset-0 shimmer-overlay opacity-10" />
-          <div className="relative h-full flex flex-col justify-between p-4 sm:p-6">
-            <div>
-              <h3 className="text-lg sm:text-2xl font-display font-bold text-foreground">{t("bento.bestDeals")}</h3>
-              <p className="text-muted-foreground text-xs sm:text-sm mt-1">{t("bento.dealsDesc")}</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <RatingStars id="best-deals" />
-              <FavButton id="best-deals" />
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Team */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3} whileHover={{ scale: 1.03 }} onClick={() => navigate("/about")}>
-          <div className="flex items-center justify-between">
-            <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.team")}</span>
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center group-hover:rotate-45 transition-transform">
-              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-secondary-foreground" />
-            </div>
-          </div>
-          <div>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-2 sm:mt-3">{t("bento.teamDesc")}</p>
-            <div className="flex -space-x-2 mt-2 sm:mt-3">
-              {[1,2,3,4,5].map((i) => (
-                <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary border-2 border-card overflow-hidden">
-                  <img src={teamWorker} alt="" className="w-full h-full object-cover" loading="lazy" style={{ objectPosition: `${i * 20}% center` }} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Quick Stats Tile */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={4} whileHover={{ scale: 1.03 }} onClick={() => navigate("/projects")}>
-          <div className="flex items-center justify-between">
-            <span className="px-2 sm:px-3 py-1 rounded-lg bg-primary/15 text-[10px] sm:text-xs font-medium text-primary uppercase tracking-wider">{t("bento.guarantee")}</span>
-            <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-          </div>
-          <div className="mt-2 sm:mt-3">
-            <h4 className="text-base sm:text-lg font-display font-bold text-foreground">{t("bento.guaranteeTitle")}</h4>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">{t("bento.guaranteeDesc")}</p>
-          </div>
-        </motion.div>
-
-        {/* Subscribe */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={5} whileHover={{ scale: 1.03 }}>
-          <div className="flex items-center justify-between">
-            <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.subscribe")}</span>
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center">
-              <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-secondary-foreground" />
-            </div>
-          </div>
-          <div className="mt-2 sm:mt-3">
-            <input type="email" placeholder="Email" className="w-full bg-input border border-border rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" />
-            <button className="w-full mt-2 py-2 sm:py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]">{t("bento.subscribeBtn")}</button>
-          </div>
-        </motion.div>
-
-        {/* Exclusive */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={6} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/diamond-cutting")}>
+        {/* ═══════ 4. АЛМАЗНАЯ РЕЗКА ═══════ */}
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/diamond-cutting")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-primary/15 text-[10px] sm:text-xs font-medium text-primary uppercase tracking-wider w-fit">{t("bento.exclusive")}</span>
             <FavButton id="exclusive" />
@@ -202,8 +175,8 @@ const BentoGrid = () => {
           </div>
         </motion.div>
 
-        {/* Renovation */}
-        <motion.div className="glass-card overflow-hidden relative cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={7} whileHover={{ scale: 1.02 }} onClick={() => navigate("/services/renovation")}>
+        {/* ═══════ 5. РЕМОНТ — с фото ═══════ */}
+        <motion.div className="glass-card overflow-hidden relative cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={4} whileHover={{ scale: 1.02 }} onClick={() => navigate("/services/renovation")}>
           <img src={serviceRenovation} alt={t("services.renovation")} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute inset-0 shimmer-overlay opacity-15" />
@@ -219,8 +192,77 @@ const BentoGrid = () => {
           </div>
         </motion.div>
 
-        {/* Fast Response */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={8} whileHover={{ scale: 1.03 }} onClick={() => navigate("/contacts")}>
+        {/* ═══════ 6. СКИДКИ ═══════ */}
+        <motion.div className="col-span-2 lg:col-span-2 glass-card overflow-hidden relative cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={5} whileHover={{ scale: 1.01 }} onClick={() => navigate("/services/waste-removal")}>
+          <img src={serviceConstruction} alt={t("bento.bestDeals")} className="absolute inset-0 w-full h-full object-cover opacity-40" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-r from-card/80 to-card/40" />
+          <div className="absolute inset-0 shimmer-overlay opacity-10" />
+          <div className="relative h-full flex flex-col justify-between p-4 sm:p-6">
+            <div>
+              <h3 className="text-lg sm:text-2xl font-display font-bold text-foreground">{t("bento.bestDeals")}</h3>
+              <p className="text-muted-foreground text-xs sm:text-sm mt-1">{t("bento.dealsDesc")}</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <RatingStars id="best-deals" />
+              <FavButton id="best-deals" />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 7. ПАРК ТЕХНИКИ ═══════ */}
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={6} whileHover={{ scale: 1.03 }} onClick={() => navigate("/equipment")}>
+          <div className="flex items-center justify-between">
+            <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.equipment")}</span>
+            <Wrench className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+          </div>
+          <div className="mt-2 sm:mt-3">
+            <h4 className="text-base sm:text-lg font-display font-semibold text-foreground">{t("bento.equipmentTitle")}</h4>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">{t("bento.equipmentDesc")}</p>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 8. НОВОСТИ — видное место ═══════ */}
+        <motion.div
+          className="col-span-2 lg:col-span-2 glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer group"
+          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={7}
+          whileHover={{ scale: 1.01 }}
+          onClick={() => navigate("/news")}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center">
+                <Newspaper className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <h4 className="text-sm sm:text-base font-display font-bold text-foreground">{t("bento.newsTitle")}</h4>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">{t("bento.newsDesc")}</p>
+              </div>
+            </div>
+            <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center group-hover:rotate-45 transition-transform">
+              <ArrowUpRight className="w-4 h-4 text-secondary-foreground" />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 9. ПРОЕКТЫ ═══════ */}
+        <motion.div className="col-span-2 md:col-span-1 glass-card overflow-hidden relative cursor-pointer group" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={8} whileHover={{ scale: 1.02 }} onClick={() => navigate("/projects")}>
+          <img src={projectIndustrial} alt={t("bento.projectsTitle")} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
+          <div className="relative h-full flex flex-col justify-between p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <span className="px-2 sm:px-3 py-1 rounded-lg bg-primary/20 backdrop-blur-sm text-[10px] sm:text-xs font-medium text-primary uppercase tracking-wider">{t("bento.projectsTitle")}</span>
+              <div className="w-8 h-8 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center group-hover:rotate-45 transition-transform">
+                <FolderOpen className="w-4 h-4 text-primary" />
+              </div>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm text-foreground font-medium">{t("bento.projectsDesc")}</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 10. СКОРОСТЬ ОТВЕТА ═══════ */}
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={9} whileHover={{ scale: 1.03 }} onClick={() => navigate("/contacts")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.speed")}</span>
             <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -231,20 +273,52 @@ const BentoGrid = () => {
           </div>
         </motion.div>
 
-        {/* Equipment */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={9} whileHover={{ scale: 1.03 }} onClick={() => navigate("/equipment")}>
+        {/* ═══════ 11. ГАРАНТИЯ ═══════ */}
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={10} whileHover={{ scale: 1.03 }} onClick={() => navigate("/projects")}>
           <div className="flex items-center justify-between">
-            <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.equipment")}</span>
-            <Wrench className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+            <span className="px-2 sm:px-3 py-1 rounded-lg bg-primary/15 text-[10px] sm:text-xs font-medium text-primary uppercase tracking-wider">{t("bento.guarantee")}</span>
+            <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
           </div>
           <div className="mt-2 sm:mt-3">
-            <h4 className="text-base sm:text-lg font-display font-semibold text-foreground">{t("bento.equipmentTitle")}</h4>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">{t("bento.equipmentDesc")}</p>
+            <h4 className="text-base sm:text-lg font-display font-bold text-foreground">{t("bento.guaranteeTitle")}</h4>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">{t("bento.guaranteeDesc")}</p>
           </div>
         </motion.div>
 
-        {/* Office */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={10} whileHover={{ scale: 1.03 }} onClick={() => navigate("/contacts")}>
+        {/* ═══════ 12. КОМАНДА ═══════ */}
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={11} whileHover={{ scale: 1.03 }} onClick={() => navigate("/about")}>
+          <div className="flex items-center justify-between">
+            <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.team")}</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center">
+              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-secondary-foreground" />
+            </div>
+          </div>
+          <div>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-2 sm:mt-3">{t("bento.teamDesc")}</p>
+            <div className="flex -space-x-2 mt-2 sm:mt-3">
+              {[1,2,3,4,5].map((i) => (
+                <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary border-2 border-card overflow-hidden">
+                  <img src={teamWorker} alt="" className="w-full h-full object-cover" loading="lazy" style={{ objectPosition: `${i * 20}% center` }} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 13. ЭКОЛОГИЯ ═══════ */}
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={12} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/waste-removal")}>
+          <div className="flex items-center justify-between">
+            <span className="px-2 sm:px-3 py-1 rounded-lg bg-accent/15 text-[10px] sm:text-xs font-medium text-accent uppercase tracking-wider">{t("bento.eco")}</span>
+            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+          </div>
+          <div className="mt-2 sm:mt-3">
+            <h4 className="text-2xl sm:text-3xl font-display font-bold text-foreground">85%</h4>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">{t("bento.ecoDesc")}</p>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 14. ОФИС ═══════ */}
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={13} whileHover={{ scale: 1.03 }} onClick={() => navigate("/contacts")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.office")}</span>
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center">
@@ -257,26 +331,24 @@ const BentoGrid = () => {
           </div>
         </motion.div>
 
-        {/* Eco Tile */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={11} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/waste-removal")}>
+        {/* ═══════ 15. ПОДПИСКА ═══════ */}
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={14} whileHover={{ scale: 1.03 }}>
           <div className="flex items-center justify-between">
-            <span className="px-2 sm:px-3 py-1 rounded-lg bg-accent/15 text-[10px] sm:text-xs font-medium text-accent uppercase tracking-wider">{t("bento.eco")}</span>
-            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+            <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.subscribe")}</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center">
+              <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-secondary-foreground" />
+            </div>
           </div>
           <div className="mt-2 sm:mt-3">
-            <h4 className="text-2xl sm:text-3xl font-display font-bold text-foreground">85%</h4>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">{t("bento.ecoDesc")}</p>
+            <input type="email" placeholder="Email" className="w-full bg-input border border-border rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" />
+            <button className="w-full mt-2 py-2 sm:py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]">{t("bento.subscribeBtn")}</button>
           </div>
         </motion.div>
 
-        {/* Install App Tile */}
+        {/* ═══════ 16. УСТАНОВИТЬ ПРИЛОЖЕНИЕ ═══════ */}
         <motion.div
           className="col-span-2 glass-card-hover p-4 sm:p-5 flex flex-col gap-3 cursor-pointer overflow-hidden relative"
-          variants={cardVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          custom={12}
+          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={15}
           whileHover={{ scale: 1.01 }}
           onClick={() => navigate("/install")}
         >
@@ -296,7 +368,6 @@ const BentoGrid = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-            {/* iOS */}
             <div className="bg-card/60 rounded-xl p-3 border border-border/30 space-y-2">
               <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">iPhone / iPad</span>
               <div className="space-y-1.5">
@@ -315,7 +386,6 @@ const BentoGrid = () => {
               </div>
             </div>
 
-            {/* Android */}
             <div className="bg-card/60 rounded-xl p-3 border border-border/30 space-y-2">
               <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Android</span>
               <div className="space-y-1.5">

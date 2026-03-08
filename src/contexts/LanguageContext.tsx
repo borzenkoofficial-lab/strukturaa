@@ -219,6 +219,18 @@ const translations = {
   "bento.ecoDesc": { ru: "Строительных отходов направляем на переработку. Заботимся о природе.", en: "Construction waste sent for recycling. We care about nature." },
   "bento.marketplace": { ru: "Строительная биржа", en: "Construction Marketplace" },
   "bento.marketplaceDesc": { ru: "Ищете лучшее предложение? Разместите заявку — десятки проверенных подрядчиков предложат свои условия. Выбор всегда за вами.", en: "Looking for a better deal? Post your request — dozens of verified contractors will offer their terms. The choice is always yours." },
+  "bento.hotServices": { ru: "Горячие предложения", en: "Hot Deals" },
+  "bento.hotServicesDesc": { ru: "Самые востребованные услуги с максимальным спросом", en: "Most in-demand services with highest demand" },
+  "bento.hotDemolition": { ru: "Демонтаж стен от 1000 м²", en: "Wall demolition from 1000 sq.m" },
+  "bento.hotDemolitionPrice": { ru: "от 350 ₽/м²", en: "from 350 ₽/sq.m" },
+  "bento.hotWaste": { ru: "Вывоз мусора", en: "Waste Removal" },
+  "bento.hotWastePrice": { ru: "от 8 000 ₽", en: "from 8,000 ₽" },
+  "bento.hotReno": { ru: "Ремонт под ключ", en: "Turnkey Renovation" },
+  "bento.hotRenoPrice": { ru: "от 800 ₽/м²", en: "from 800 ₽/sq.m" },
+  "bento.newsTitle": { ru: "Новости компании", en: "Company News" },
+  "bento.newsDesc": { ru: "Последние обновления, акции и события STRUKTURA", en: "Latest updates, promotions and events" },
+  "bento.projectsTitle": { ru: "Наши проекты", en: "Our Projects" },
+  "bento.projectsDesc": { ru: "200+ объектов выполнено. Посмотрите портфолио.", en: "200+ projects completed. View our portfolio." },
 } as const;
 
 type TranslationKey = keyof typeof translations;
