@@ -26,6 +26,7 @@ const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const MarketplacePage = lazy(() => import("./pages/MarketplacePage"));
+const ShopPage = lazy(() => import("./pages/ShopPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
 const EquipmentPage = lazy(() => import("./pages/EquipmentPage"));
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
