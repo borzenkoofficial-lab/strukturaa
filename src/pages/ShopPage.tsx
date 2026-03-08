@@ -223,6 +223,7 @@ const ShopPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05, duration: 0.4 }}
                   whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  onClick={() => setSelectedItem(item)}
                   className="group cursor-pointer rounded-2xl bg-card border border-border/50 overflow-hidden hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all"
                 >
                   {/* Photo placeholder */}
