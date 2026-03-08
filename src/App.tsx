@@ -26,6 +26,7 @@ const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const MarketplacePage = lazy(() => import("./pages/MarketplacePage"));
+const ShopPage = lazy(() => import("./pages/ShopPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
 const EquipmentPage = lazy(() => import("./pages/EquipmentPage"));
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
@@ -79,6 +80,7 @@ const App = () => (
                   <Route path="/reset-password" element={<Suspense fallback={<PageLoading />}><ResetPasswordPage /></Suspense>} />
                   <Route path="/dashboard" element={<ProtectedRoute><Suspense fallback={<PageLoading />}><DashboardPage /></Suspense></ProtectedRoute>} />
                   <Route path="/marketplace" element={<Suspense fallback={<PageLoading />}><MarketplacePage /></Suspense>} />
+                  <Route path="/shop" element={<Suspense fallback={<PageLoading />}><ShopPage /></Suspense>} />
                   <Route path="/install" element={<Suspense fallback={<PageLoading />}><InstallPage /></Suspense>} />
                   <Route path="/equipment" element={<PageLayout><EquipmentPage /></PageLayout>} />
                   <Route path="/admin" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminDashboard /></AdminLayout></Suspense></AdminRoute>} />

@@ -105,6 +105,38 @@ const BentoGrid = () => {
           </div>
         </motion.div>
 
+        {/* ═══════ 1.5. МАГАЗИН ИНСТРУМЕНТОВ — б/у и новые ═══════ */}
+        <motion.div
+          className="col-span-2 lg:col-span-2 relative overflow-hidden rounded-2xl cursor-pointer group"
+          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}
+          whileHover={{ scale: 1.01 }}
+          onClick={() => navigate("/shop")}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-accent via-secondary to-accent" />
+          <div className="absolute inset-0 shimmer-overlay opacity-20" />
+          <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-foreground/10 backdrop-blur-sm flex items-center justify-center">
+                  <Wrench className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
+                </div>
+                <span className="px-2 py-0.5 rounded-full bg-foreground/10 text-[10px] font-bold text-foreground uppercase tracking-wider">Магазин</span>
+              </div>
+              <div className="w-9 h-9 rounded-full bg-foreground/10 flex items-center justify-center group-hover:rotate-45 transition-transform">
+                <ArrowUpRight className="w-4 h-4 text-foreground" />
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg sm:text-2xl font-display font-bold text-foreground leading-tight">{t("bento.shop")}</h3>
+              <p className="text-foreground/70 text-xs sm:text-sm mt-1 max-w-md">{t("bento.shopDesc")}</p>
+              <div className="flex items-center gap-3 mt-3">
+                <span className="px-3 py-1.5 rounded-full bg-foreground/10 text-xs font-semibold text-foreground">Б/У инструмент</span>
+                <span className="px-3 py-1.5 rounded-full bg-foreground/5 text-xs font-medium text-foreground/70">Новый инструмент</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* ═══════ 2. 🔥 ГОРЯЧИЕ ПРЕДЛОЖЕНИЯ — популярные услуги ═══════ */}
         <motion.div
           className="col-span-2 lg:col-span-2 relative overflow-hidden rounded-2xl cursor-pointer group"
