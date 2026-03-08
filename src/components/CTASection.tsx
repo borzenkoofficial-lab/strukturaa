@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Phone, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./AnimatedSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 
