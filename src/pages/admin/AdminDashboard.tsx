@@ -40,17 +40,17 @@ const AdminDashboard = () => {
   }, []);
 
   const cards = [
-    { icon: FileText, label: "Total Articles", value: stats.articles, color: "text-primary" },
-    { icon: Eye, label: "Published", value: stats.published, color: "text-accent" },
-    { icon: Users, label: "Users", value: stats.users, color: "text-primary" },
-    { icon: Image, label: "Media Files", value: stats.media, color: "text-accent" },
+    { icon: FileText, label: "Всего статей", value: stats.articles, color: "text-primary" },
+    { icon: Eye, label: "Опубликовано", value: stats.published, color: "text-accent" },
+    { icon: Users, label: "Пользователи", value: stats.users, color: "text-primary" },
+    { icon: Image, label: "Медиафайлы", value: stats.media, color: "text-accent" },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold text-foreground">Dashboard</h1>
-        <Button onClick={() => navigate("/admin/articles?new=1")}>+ New Article</Button>
+        <h1 className="font-display text-2xl font-bold text-foreground">Панель управления</h1>
+        <Button onClick={() => navigate("/admin/articles?new=1")}>+ Новая статья</Button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -70,9 +70,9 @@ const AdminDashboard = () => {
       </div>
 
       <div className="glass-card p-6">
-        <h2 className="font-display text-lg font-semibold text-foreground mb-4">Recent Articles</h2>
+        <h2 className="font-display text-lg font-semibold text-foreground mb-4">Последние статьи</h2>
         {recentArticles.length === 0 ? (
-          <p className="text-muted-foreground text-sm">No articles yet. Create your first one!</p>
+          <p className="text-muted-foreground text-sm">Статей пока нет. Создайте первую!</p>
         ) : (
           <div className="space-y-3">
             {recentArticles.map((article) => (
@@ -83,7 +83,7 @@ const AdminDashboard = () => {
                 <div>
                   <div className="text-sm font-medium text-foreground">{article.title}</div>
                   <div className="text-xs text-muted-foreground">
-                    {new Date(article.created_at).toLocaleDateString()}
+                    {new Date(article.created_at).toLocaleDateString("ru-RU")}
                   </div>
                 </div>
                 <span
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
                       : "bg-muted text-muted-foreground"
                   }`}
                 >
-                  {article.published ? "Published" : "Draft"}
+                  {article.published ? "Опубликовано" : "Черновик"}
                 </span>
               </div>
             ))}
