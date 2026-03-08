@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Search, Plus, Filter, MapPin, Calendar, DollarSign, ArrowLeft, MessageCircle, ChevronDown, Briefcase, Home, User, Bell, Flame, HardHat, Building2, Hammer, Building, Landmark, Zap, Droplets, ClipboardList } from "lucide-react";
+import { Search, Plus, Filter, MapPin, Calendar, RussianRuble, ArrowLeft, MessageCircle, ChevronDown, Briefcase, Home, User, Bell, Flame, HardHat, Building2, Hammer, Building, Landmark, Zap, Droplets, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
