@@ -12,6 +12,7 @@ import { User, Mail, LogOut, Edit3, Camera, ArrowLeft, Shield, FileText, Heart, 
 import { useToast } from "@/hooks/use-toast";
 import SEOHead from "@/components/SEOHead";
 import ProjectTracking from "@/components/dashboard/ProjectTracking";
+import DashboardChats from "@/components/dashboard/DashboardChats";
 
 const serviceNames: Record<string, string> = {
   demolition: "Демонтаж",
