@@ -195,7 +195,7 @@ const ShopPage = () => {
 
               {user && (
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <Button onClick={() => {}} className="rounded-2xl gap-2 shadow-lg shadow-primary/20 px-5">
+                  <Button onClick={() => setShowAddModal(true)} className="rounded-2xl gap-2 shadow-lg shadow-primary/20 px-5">
                     <Plus className="w-4 h-4" />
                     <span className="hidden sm:inline">Продать</span>
                   </Button>
