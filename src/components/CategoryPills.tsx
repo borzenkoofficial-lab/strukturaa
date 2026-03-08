@@ -1,60 +1,134 @@
 import { useState } from "react";
-import { Building2, HardHat, Home, Hammer, Truck, Wrench, Gem, Building, Warehouse } from "lucide-react";
-import { motion } from "framer-motion";
+import { SlidersHorizontal, X, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 
-const categories: { key: TranslationKey; slug: string; icon: typeof Building2; gradient: string }[] = [
-  { key: "cat.demolition", slug: "demolition", icon: Building2, gradient: "from-orange-500/80 to-red-600/80" },
-  { key: "cat.construction", slug: "construction", icon: HardHat, gradient: "from-blue-500/80 to-indigo-600/80" },
-  { key: "cat.renovation", slug: "renovation", icon: Home, gradient: "from-emerald-500/80 to-teal-600/80" },
-  { key: "cat.facades", slug: "dismantling", icon: Wrench, gradient: "from-violet-500/80 to-purple-600/80" },
-  { key: "cat.roofing", slug: "building-demolition", icon: Warehouse, gradient: "from-amber-500/80 to-orange-600/80" },
-  { key: "cat.foundation", slug: "diamond-cutting", icon: Gem, gradient: "from-cyan-500/80 to-blue-600/80" },
-  { key: "cat.electrical", slug: "waste-removal", icon: Truck, gradient: "from-rose-500/80 to-pink-600/80" },
-  { key: "cat.apartments", slug: "apartment-demolition", icon: Hammer, gradient: "from-lime-500/80 to-green-600/80" },
-  { key: "cat.buildings", slug: "building-demolition", icon: Building, gradient: "from-slate-500/80 to-zinc-600/80" },
+const categories: { key: TranslationKey; slug: string }[] = [
+  { key: "cat.demolition", slug: "demolition" },
+  { key: "cat.construction", slug: "construction" },
+  { key: "cat.renovation", slug: "renovation" },
+  { key: "cat.facades", slug: "dismantling" },
+  { key: "cat.roofing", slug: "building-demolition" },
+  { key: "cat.foundation", slug: "diamond-cutting" },
+  { key: "cat.electrical", slug: "waste-removal" },
+  { key: "cat.apartments", slug: "apartment-demolition" },
+  { key: "cat.buildings", slug: "building-demolition" },
 ];
 
 const CategoryPills = () => {
   const [active, setActive] = useState<number | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<Set<number>>(new Set([0]));
   const { t } = useLanguage();
   const navigate = useNavigate();
 
+  const toggleFilter = (i: number) => {
+    setSelectedFilters(prev => {
+      const next = new Set(prev);
+      if (next.has(i)) {
+        if (next.size > 1) next.delete(i);
+      } else {
+        next.add(i);
+      }
+      return next;
+    });
+  };
+
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-      <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto scrollbar-hide pb-1">
-        {categories.map((cat, i) => {
-          const Icon = cat.icon;
-          const isActive = active === i;
-          return (
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+      <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
+        <motion.button
+          className="p-2 sm:p-2.5 rounded-xl bg-secondary text-secondary-foreground shrink-0 relative"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setFilterOpen(!filterOpen)}
+        >
+          <SlidersHorizontal className="w-4 h-4" />
+          {selectedFilters.size > 1 && (
+            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-bold">
+              {selectedFilters.size}
+            </span>
+          )}
+        </motion.button>
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {categories.map((cat, i) => (
             <motion.button
               key={cat.key}
               onClick={() => { setActive(i); navigate(`/services/${cat.slug}`); }}
-              className="group flex flex-col items-center gap-1.5 shrink-0"
-              whileHover={{ y: -4 }}
-              whileTap={{ scale: 0.95 }}
+              className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
+                active === i
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.92 }}
             >
-              <motion.div
-                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-gradient-to-br ${cat.gradient} flex items-center justify-center transition-shadow duration-300 ${
-                  isActive
-                    ? "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg"
-                    : "shadow-md group-hover:shadow-lg"
-                }`}
-                layout
-              >
-                <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-md" strokeWidth={1.8} />
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
-              </motion.div>
-              <span className={`text-[10px] sm:text-xs font-medium text-center leading-tight max-w-[4.5rem] sm:max-w-[5.5rem] line-clamp-2 transition-colors ${
-                isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
-              }`}>
-                {t(cat.key)}
-              </span>
+              {t(cat.key)}
             </motion.button>
-          );
-        })}
+          ))}
+        </div>
       </div>
+
+      <AnimatePresence>
+        {filterOpen && (
+          <motion.div
+            className="absolute left-4 sm:left-6 right-4 sm:right-6 top-full z-30 mt-2 glass-card p-4 sm:p-5"
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-display font-semibold text-foreground text-sm">{t("filter.title")}</h3>
+              <motion.button
+                onClick={() => setFilterOpen(false)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-7 h-7 rounded-lg bg-secondary flex items-center justify-center"
+              >
+                <X className="w-3.5 h-3.5 text-secondary-foreground" />
+              </motion.button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {categories.map((cat, i) => (
+                <motion.button
+                  key={cat.key}
+                  onClick={() => toggleFilter(i)}
+                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all ${
+                    selectedFilters.has(i)
+                      ? "bg-primary/15 text-primary border border-primary/30"
+                      : "bg-secondary text-secondary-foreground border border-transparent hover:bg-secondary/80"
+                  }`}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  {selectedFilters.has(i) && <Check className="w-3.5 h-3.5 shrink-0" />}
+                  <span className="truncate">{t(cat.key)}</span>
+                </motion.button>
+              ))}
+            </div>
+            <div className="flex gap-2 mt-4">
+              <motion.button
+                className="flex-1 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setFilterOpen(false)}
+              >
+                {t("filter.apply")}
+              </motion.button>
+              <motion.button
+                className="px-4 py-2.5 rounded-xl bg-secondary text-secondary-foreground text-sm font-medium"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => { setSelectedFilters(new Set([0])); setFilterOpen(false); }}
+              >
+                {t("filter.reset")}
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
