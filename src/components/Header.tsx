@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Search, Phone, Menu, Sun, Moon, Globe } from "lucide-react";
+import { Search, Phone, Menu, Sun, Moon, Globe, User, LogOut } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import MobileMenu from "./MobileMenu";
@@ -10,6 +11,7 @@ import SearchOverlay from "./SearchOverlay";
 const Header = () => {
   const { lang, setLang, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -18,9 +20,15 @@ const Header = () => {
     { label: t("nav.services"), path: "/services" },
     { label: t("nav.projects"), path: "/projects" },
     { label: t("nav.news"), path: "/news" },
+    { label: "Blog", path: "/blog" },
     { label: t("nav.about"), path: "/about" },
     { label: t("nav.contacts"), path: "/contacts" },
   ];
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <>
@@ -66,7 +74,6 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {/* Mobile search */}
             <motion.button
               onClick={() => setSearchOpen(true)}
               className="md:hidden p-2 rounded-xl bg-secondary text-secondary-foreground"
@@ -95,15 +102,28 @@ const Header = () => {
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </motion.button>
 
-            <motion.button
-              className="hidden sm:flex md:hidden lg:flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/contacts")}
-            >
-              <Phone className="w-4 h-4" />
-              <span className="hidden sm:inline">{t("header.contact")}</span>
-            </motion.button>
+            {/* Auth button */}
+            {user ? (
+              <motion.button
+                className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate("/dashboard")}
+              >
+                <User className="w-4 h-4" />
+                <span className="hidden md:inline">Dashboard</span>
+              </motion.button>
+            ) : (
+              <motion.button
+                className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate("/auth")}
+              >
+                <User className="w-4 h-4" />
+                <span className="hidden sm:inline">Sign In</span>
+              </motion.button>
+            )}
 
             <motion.button
               className="lg:hidden p-2 rounded-xl bg-secondary text-secondary-foreground"
