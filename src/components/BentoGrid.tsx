@@ -42,13 +42,18 @@ const RatingStars = memo(({ id }: { id: string }) => {
 });
 
 const FavButton = memo(({ id, className = "" }: { id: string; className?: string }) => {
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const { isFavorite, toggleFavorite, requireAuth } = useFavorites();
+  const navigate = useNavigate();
   const fav = isFavorite(id);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleFavorite(id);
-  }, [id, toggleFavorite]);
+    if (!requireAuth()) {
+      navigate("/auth");
+      return;
+    }
+    toggleFavorite(id, "service");
+  }, [id, toggleFavorite, requireAuth, navigate]);
 
   return (
     <button

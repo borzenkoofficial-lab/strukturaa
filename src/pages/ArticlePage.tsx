@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter } from "lucide-react";
+import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter, Heart, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/SEOHead";
+import { useFavorites } from "@/contexts/FavoritesContext";
 
 interface Article {
   id: string;
@@ -27,6 +28,7 @@ const ArticlePage = () => {
   const [related, setRelated] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { isFavorite, toggleFavorite, requireAuth, isArticleLiked, toggleArticleLike, getArticleLikeCount, loadArticleLikeCounts } = useFavorites();
 
   useEffect(() => {
     const fetch = async () => {
@@ -39,6 +41,10 @@ const ArticlePage = () => {
         .single();
 
       setArticle(data as any);
+
+      if (data) {
+        loadArticleLikeCounts([data.id]);
+      }
 
       if (data?.category_id) {
         const { data: rel } = await supabase
@@ -53,11 +59,21 @@ const ArticlePage = () => {
       setLoading(false);
     };
     fetch();
-  }, [slug]);
-
-  // SEO handled by SEOHead component below
+  }, [slug, loadArticleLikeCounts]);
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  const handleLike = () => {
+    if (!article) return;
+    if (!requireAuth()) { navigate("/auth"); return; }
+    toggleArticleLike(article.id);
+  };
+
+  const handleFav = () => {
+    if (!article) return;
+    if (!requireAuth()) { navigate("/auth"); return; }
+    toggleFavorite(article.id, "article");
+  };
 
   if (loading) {
     return (
@@ -77,8 +93,8 @@ const ArticlePage = () => {
   if (!article) {
     return (
       <div className="py-20 text-center">
-        <h1 className="font-display text-2xl font-bold text-foreground mb-4">Article not found</h1>
-        <Button onClick={() => navigate("/blog")}>Back to Blog</Button>
+        <h1 className="font-display text-2xl font-bold text-foreground mb-4">Статья не найдена</h1>
+        <Button onClick={() => navigate("/blog")}>Вернуться в блог</Button>
       </div>
     );
   }
@@ -98,20 +114,36 @@ const ArticlePage = () => {
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Blog
+          Назад в блог
         </button>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          {article.categories?.name && (
-            <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-              {article.categories.name}
-            </span>
-          )}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              {article.categories?.name && (
+                <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
+                  {article.categories.name}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleFav}
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 ${isFavorite(article.id) ? "bg-primary/20" : "bg-secondary"}`}
+              >
+                <Bookmark className={`w-4 h-4 ${isFavorite(article.id) ? "text-primary fill-primary" : "text-muted-foreground"}`} />
+              </button>
+              <button
+                onClick={handleLike}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-full transition-all hover:scale-105 ${isArticleLiked(article.id) ? "bg-destructive/15" : "bg-secondary"}`}
+              >
+                <Heart className={`w-4 h-4 ${isArticleLiked(article.id) ? "text-destructive fill-destructive" : "text-muted-foreground"}`} />
+                <span className="text-xs font-medium text-foreground">{getArticleLikeCount(article.id) || 0}</span>
+              </button>
+            </div>
+          </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground mt-4 mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
             {article.title}
           </h1>
 
@@ -124,17 +156,13 @@ const ArticlePage = () => {
             )}
             <span className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
-              {new Date(article.created_at).toLocaleDateString()}
+              {new Date(article.created_at).toLocaleDateString("ru-RU")}
             </span>
           </div>
 
           {article.featured_image && (
             <div className="rounded-2xl overflow-hidden mb-8">
-              <img
-                src={article.featured_image}
-                alt={article.title}
-                className="w-full h-auto"
-              />
+              <img src={article.featured_image} alt={article.title} className="w-full h-auto" />
             </div>
           )}
 
@@ -152,40 +180,46 @@ const ArticlePage = () => {
             </div>
           )}
 
-          {/* Share buttons */}
-          <div className="flex items-center gap-3 mt-8 pt-6 border-t border-border/30">
-            <span className="text-sm text-muted-foreground flex items-center gap-2">
-              <Share2 className="w-4 h-4" /> Share:
-            </span>
-            <a
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(article.title)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
-            >
-              <Twitter className="w-4 h-4 text-secondary-foreground" />
-            </a>
-            <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
-            >
-              <Facebook className="w-4 h-4 text-secondary-foreground" />
-            </a>
+          {/* Share + like bar */}
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-border/30">
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted-foreground flex items-center gap-2">
+                <Share2 className="w-4 h-4" /> Поделиться:
+              </span>
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(article.title)}`}
+                target="_blank" rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
+              >
+                <Twitter className="w-4 h-4 text-secondary-foreground" />
+              </a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                target="_blank" rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
+              >
+                <Facebook className="w-4 h-4 text-secondary-foreground" />
+              </a>
+              <button
+                onClick={() => { navigator.clipboard.writeText(shareUrl); }}
+                className="text-xs px-3 py-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+              >
+                Копировать
+              </button>
+            </div>
             <button
-              onClick={() => { navigator.clipboard.writeText(shareUrl); }}
-              className="text-xs px-3 py-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+              onClick={handleLike}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all hover:scale-105 ${isArticleLiked(article.id) ? "bg-destructive/15" : "bg-secondary"}`}
             >
-              Copy Link
+              <Heart className={`w-4 h-4 ${isArticleLiked(article.id) ? "text-destructive fill-destructive" : "text-muted-foreground"}`} />
+              <span className="text-sm font-medium">{getArticleLikeCount(article.id) || 0}</span>
             </button>
           </div>
         </motion.div>
 
-        {/* Related articles */}
         {related.length > 0 && (
           <div className="mt-16">
-            <h2 className="font-display text-xl font-bold text-foreground mb-6">Related Articles</h2>
+            <h2 className="font-display text-xl font-bold text-foreground mb-6">Похожие статьи</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {related.map((r) => (
                 <div
