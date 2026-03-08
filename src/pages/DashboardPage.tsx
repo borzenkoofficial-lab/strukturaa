@@ -65,6 +65,7 @@ const DashboardPage = () => {
     { icon: FileText, label: "Articles Read", value: "12" },
     { icon: Heart, label: "Favorites", value: "5" },
     { icon: Shield, label: "Role", value: isAdmin ? "Admin" : "User" },
+    { icon: Megaphone, label: "Биржа", value: "→", onClick: () => navigate("/marketplace") },
   ];
 
   return (
