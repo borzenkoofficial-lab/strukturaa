@@ -8,6 +8,11 @@ const newsItems: { titleKey: TranslationKey; dateKey: TranslationKey; descKey: T
   { titleKey: "news.1.title", dateKey: "news.1.date", descKey: "news.1.desc" },
   { titleKey: "news.2.title", dateKey: "news.2.date", descKey: "news.2.desc" },
   { titleKey: "news.3.title", dateKey: "news.3.date", descKey: "news.3.desc" },
+  { titleKey: "news.4.title", dateKey: "news.4.date", descKey: "news.4.desc" },
+  { titleKey: "news.5.title", dateKey: "news.5.date", descKey: "news.5.desc" },
+  { titleKey: "news.6.title", dateKey: "news.6.date", descKey: "news.6.desc" },
+  { titleKey: "news.7.title", dateKey: "news.7.date", descKey: "news.7.desc" },
+  { titleKey: "news.8.title", dateKey: "news.8.date", descKey: "news.8.desc" },
 ];
 
 const NewsPage = () => {
