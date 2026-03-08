@@ -219,6 +219,8 @@ const translations = {
   "bento.ecoDesc": { ru: "Строительных отходов направляем на переработку. Заботимся о природе.", en: "Construction waste sent for recycling. We care about nature." },
   "bento.marketplace": { ru: "Строительная биржа", en: "Construction Marketplace" },
   "bento.marketplaceDesc": { ru: "Ищете лучшее предложение? Разместите заявку — десятки проверенных подрядчиков предложат свои условия. Выбор всегда за вами.", en: "Looking for a better deal? Post your request — dozens of verified contractors will offer their terms. The choice is always yours." },
+  "bento.shop": { ru: "Магазин инструментов", en: "Tool Shop" },
+  "bento.shopDesc": { ru: "Покупайте и продавайте б/у и новый строительный инструмент. Электроинструмент, ручной инструмент, расходники — всё в одном месте.", en: "Buy and sell used & new construction tools. Power tools, hand tools, consumables — all in one place." },
   "bento.hotServices": { ru: "Горячие предложения", en: "Hot Deals" },
   "bento.hotServicesDesc": { ru: "Самые востребованные услуги с максимальным спросом", en: "Most in-demand services with highest demand" },
   "bento.hotDemolition": { ru: "Демонтаж стен от 1000 м²", en: "Wall demolition from 1000 sq.m" },

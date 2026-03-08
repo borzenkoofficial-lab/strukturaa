@@ -57,7 +57,7 @@ const ShopPage = () => {
 
   const fetchItems = async () => {
     setLoading(true);
-    let query = supabase.from("shop_items").select("*").eq("status", "active").order("created_at", { ascending: false });
+    let query = (supabase.from as any)("shop_items").select("*").eq("status", "active").order("created_at", { ascending: false });
     if (category !== "all") query = query.eq("category", category);
     if (search) query = query.ilike("title", `%${search}%`);
     const { data } = await query;
