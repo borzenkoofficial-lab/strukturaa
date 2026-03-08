@@ -16,7 +16,7 @@ const ContactsPage = () => {
   };
 
   const contactInfo = [
-    { icon: Phone, label: t("contacts.phone"), value: "+7 (495) 123-45-67" },
+    { icon: Phone, label: t("contacts.phone"), value: "+7 (936) 666-99-58", href: "tel:+79366669958" },
     { icon: Mail, label: t("contacts.email"), value: "info@struktura.ru" },
     { icon: MapPin, label: t("contacts.address"), value: t("bento.address") },
     { icon: Clock, label: t("contacts.workHours"), value: t("bento.hours") },
@@ -43,7 +43,11 @@ const ContactsPage = () => {
                   <info.icon className="w-5 h-5 text-primary" />
                 </div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{info.label}</p>
-                <p className="text-sm font-medium text-foreground">{info.value}</p>
+                {(info as any).href ? (
+                  <a href={(info as any).href} className="text-sm font-medium text-foreground hover:text-primary transition-colors">{info.value}</a>
+                ) : (
+                  <p className="text-sm font-medium text-foreground">{info.value}</p>
+                )}
               </motion.div>
             </AnimatedSection>
           ))}

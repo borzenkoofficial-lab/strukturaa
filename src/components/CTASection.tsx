@@ -23,14 +23,15 @@ const CTASection = () => {
               <p className="text-muted-foreground max-w-lg">{t("cta.desc")}</p>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-3">
-              <motion.button
+              <motion.a
+                href="tel:+79366669958"
                 className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-display font-semibold hover:opacity-90 transition-opacity"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >
                 <Phone className="w-5 h-5" />
                 {t("cta.call")}
-              </motion.button>
+              </motion.a>
               <motion.button
                 className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-secondary text-secondary-foreground font-display font-semibold hover:bg-secondary/80 transition-colors"
                 whileHover={{ scale: 1.03 }}
