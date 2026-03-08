@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Shield, Award, Leaf } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
+import SEOHead from "@/components/SEOHead";
 
 const values: { icon: typeof Shield; titleKey: TranslationKey; descKey: TranslationKey }[] = [
   { icon: Shield, titleKey: "about.value1", descKey: "about.value1Desc" },
