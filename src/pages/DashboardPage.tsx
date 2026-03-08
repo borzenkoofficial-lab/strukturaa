@@ -34,7 +34,6 @@ const DashboardPage = () => {
   const fileRef = useRef<HTMLInputElement>(null);
 
   if (!user) {
-    navigate("/auth");
     return null;
   }
 

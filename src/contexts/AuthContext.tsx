@@ -44,24 +44,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    // Set up listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+
       if (session?.user) {
+        // Use setTimeout to avoid potential deadlocks with Supabase calls inside callback
         setTimeout(() => {
           fetchProfile(session.user.id);
           checkAdmin(session.user.id);
         }, 0);
-      } else {
+      } else if (event === "SIGNED_OUT") {
         setProfile(null);
         setIsAdmin(false);
       }
       setLoading(false);
     });
 
+    // Then get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+      // Only set if no auth state change has fired yet
+      setSession(prev => prev ?? session);
+      setUser(prev => prev ?? session?.user ?? null);
       if (session?.user) {
         fetchProfile(session.user.id);
         checkAdmin(session.user.id);
@@ -90,7 +95,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: "local" });
+    setUser(null);
+    setSession(null);
+    setProfile(null);
+    setIsAdmin(false);
   };
 
   const resetPassword = async (email: string) => {
