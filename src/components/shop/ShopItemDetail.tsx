@@ -156,7 +156,7 @@ const ShopItemDetail = ({ item, onClose }: Props) => {
         onClick={e => e.stopPropagation()}
       >
         {/* Photo gallery */}
-        <div className="relative aspect-square bg-secondary/50 shrink-0">
+        <div className="relative aspect-[4/3] sm:aspect-[16/10] bg-secondary/50 shrink-0">
           {hasPhotos ? (
             <>
               <img
