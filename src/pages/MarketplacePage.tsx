@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Search, Plus, Filter, MapPin, Calendar, DollarSign, ArrowLeft, MessageCircle, ChevronDown, Briefcase, Home, User, Bell } from "lucide-react";
+import { Search, Plus, Filter, MapPin, Calendar, DollarSign, ArrowLeft, MessageCircle, ChevronDown, Briefcase, Home, User, Bell, Flame, HardHat, Building2, Hammer, Building, Landmark, Zap, Droplets, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -14,15 +14,15 @@ import MarketplaceChat from "@/components/marketplace/MarketplaceChat";
 import SEOHead from "@/components/SEOHead";
 
 const CATEGORIES = [
-  { value: "all", label: "Все", icon: "🔥" },
-  { value: "demolition", label: "Демонтаж", icon: "🏗️" },
-  { value: "construction", label: "Строительство", icon: "🏠" },
-  { value: "renovation", label: "Ремонт", icon: "🔨" },
-  { value: "facades", label: "Фасады", icon: "🏢" },
-  { value: "roofing", label: "Кровля", icon: "🏛️" },
-  { value: "electrical", label: "Электрика", icon: "⚡" },
-  { value: "plumbing", label: "Сантехника", icon: "🚿" },
-  { value: "other", label: "Другое", icon: "📋" },
+  { value: "all", label: "Все", icon: Flame },
+  { value: "demolition", label: "Демонтаж", icon: HardHat },
+  { value: "construction", label: "Строительство", icon: Building2 },
+  { value: "renovation", label: "Ремонт", icon: Hammer },
+  { value: "facades", label: "Фасады", icon: Building },
+  { value: "roofing", label: "Кровля", icon: Landmark },
+  { value: "electrical", label: "Электрика", icon: Zap },
+  { value: "plumbing", label: "Сантехника", icon: Droplets },
+  { value: "other", label: "Другое", icon: ClipboardList },
 ];
 
 export interface Listing {
@@ -181,7 +181,7 @@ const MarketplacePage = () => {
                         : "bg-card text-muted-foreground hover:bg-secondary border border-border/50"
                     }`}
                   >
-                    <span>{cat.icon}</span>
+                    <cat.icon className="w-3.5 h-3.5" />
                     {cat.label}
                   </button>
                 ))}
