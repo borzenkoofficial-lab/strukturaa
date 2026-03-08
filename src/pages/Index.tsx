@@ -4,6 +4,7 @@ import CinematicIntro from "@/components/CinematicIntro";
 import Header from "@/components/Header";
 import CategoryPills from "@/components/CategoryPills";
 import BentoGrid from "@/components/BentoGrid";
+import FeaturesCarousel from "@/components/FeaturesCarousel";
 import StoriesBar from "@/components/stories/StoriesBar";
 import StatsSection from "@/components/StatsSection";
 import ServicesSection from "@/components/ServicesSection";
@@ -38,6 +39,7 @@ const Index = () => {
         <StoriesBar />
         <CategoryPills />
         <BentoGrid />
+        <FeaturesCarousel />
         <StatsSection />
         <ServicesSection />
         <NewsSection />
