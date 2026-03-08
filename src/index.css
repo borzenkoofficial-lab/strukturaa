@@ -122,7 +122,7 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-card/60 backdrop-blur-xl border border-border/30 rounded-2xl;
+    @apply bg-card/60 backdrop-blur-xl border border-border/30 rounded-2xl overflow-hidden break-words;
   }
 
   .light .glass-card {
