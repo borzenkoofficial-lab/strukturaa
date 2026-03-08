@@ -28,7 +28,7 @@ const Header = () => {
   return (
     <>
       <motion.header
-        className="w-full py-3 sm:py-4 px-4 sm:px-6 sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/20"
+        className="w-full pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 sm:pt-[max(1rem,env(safe-area-inset-top))] sm:pb-4 px-4 sm:px-6 sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/20"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
