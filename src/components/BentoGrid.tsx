@@ -119,7 +119,7 @@ const BentoGrid = () => {
               <p className="text-base sm:text-lg font-display font-semibold text-foreground">{t("bento.demolition")}</p>
               <div className="flex items-center gap-2 mt-2 sm:mt-3">
                 <FavButton id="demolition" />
-                <button className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-secondary/60 backdrop-blur-sm flex items-center justify-center transition-transform hover:scale-110 active:scale-90" onClick={(e) => { e.stopPropagation(); navigate("/services"); }}>
+                <button className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-secondary/60 backdrop-blur-sm flex items-center justify-center transition-transform hover:scale-110 active:scale-90" onClick={(e) => { e.stopPropagation(); navigate("/services/demolition"); }}>
                   <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-secondary-foreground" />
                 </button>
               </div>
