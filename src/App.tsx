@@ -1,3 +1,4 @@
+import { Suspense, lazy, useCallback, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,36 +10,44 @@ import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute, AdminRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
-import ServicesPage from "./pages/ServicesPage";
-import ServiceDetailPage from "./pages/ServiceDetailPage";
-import ProjectsPage from "./pages/ProjectsPage";
-import AboutPage from "./pages/AboutPage";
-import ContactsPage from "./pages/ContactsPage";
-import NewsPage from "./pages/NewsPage";
-import AuthPage from "./pages/AuthPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import DashboardPage from "./pages/DashboardPage";
-import BlogPage from "./pages/BlogPage";
-import ArticlePage from "./pages/ArticlePage";
-import AdminLayout from "./pages/admin/AdminLayout";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminArticles from "./pages/admin/AdminArticles";
-import AdminMedia from "./pages/admin/AdminMedia";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminSettings from "./pages/admin/AdminSettings";
-import AdminStories from "./pages/admin/AdminStories";
-import AdminCategories from "./pages/admin/AdminCategories";
-import MarketplacePage from "./pages/MarketplacePage";
-import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+// Lazy load non-critical routes
+const ServicesPage = lazy(() => import("./pages/ServicesPage"));
+const ServiceDetailPage = lazy(() => import("./pages/ServiceDetailPage"));
+const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ContactsPage = lazy(() => import("./pages/ContactsPage"));
+const NewsPage = lazy(() => import("./pages/NewsPage"));
+const AuthPage = lazy(() => import("./pages/AuthPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const ArticlePage = lazy(() => import("./pages/ArticlePage"));
+const MarketplacePage = lazy(() => import("./pages/MarketplacePage"));
+const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminArticles = lazy(() => import("./pages/admin/AdminArticles"));
+const AdminMedia = lazy(() => import("./pages/admin/AdminMedia"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AdminStories = lazy(() => import("./pages/admin/AdminStories"));
+const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
 const queryClient = new QueryClient();
+
+const PageLoading = () => (
+  <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="w-8 h-8 rounded-lg bg-primary animate-pulse" />
+  </div>
+);
 
 const PageLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="min-h-screen bg-background gradient-dark">
     <Header />
-    {children}
+    <Suspense fallback={<PageLoading />}>{children}</Suspense>
     <Footer />
   </div>
 );
@@ -63,18 +72,18 @@ const App = () => (
                   <Route path="/news" element={<PageLayout><NewsPage /></PageLayout>} />
                   <Route path="/blog" element={<PageLayout><BlogPage /></PageLayout>} />
                   <Route path="/blog/:slug" element={<PageLayout><ArticlePage /></PageLayout>} />
-                  <Route path="/auth" element={<AuthPage />} />
-                  <Route path="/reset-password" element={<ResetPasswordPage />} />
-                  <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-                  <Route path="/admin" element={<AdminRoute><AdminLayout><AdminDashboard /></AdminLayout></AdminRoute>} />
-                  <Route path="/admin/articles" element={<AdminRoute><AdminLayout><AdminArticles /></AdminLayout></AdminRoute>} />
-                  <Route path="/admin/media" element={<AdminRoute><AdminLayout><AdminMedia /></AdminLayout></AdminRoute>} />
-                  <Route path="/admin/users" element={<AdminRoute><AdminLayout><AdminUsers /></AdminLayout></AdminRoute>} />
-                  <Route path="/admin/settings" element={<AdminRoute><AdminLayout><AdminSettings /></AdminLayout></AdminRoute>} />
-                  <Route path="/admin/stories" element={<AdminRoute><AdminLayout><AdminStories /></AdminLayout></AdminRoute>} />
-                  <Route path="/admin/categories" element={<AdminRoute><AdminLayout><AdminCategories /></AdminLayout></AdminRoute>} />
-                  <Route path="/marketplace" element={<MarketplacePage />} />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="/auth" element={<Suspense fallback={<PageLoading />}><AuthPage /></Suspense>} />
+                  <Route path="/reset-password" element={<Suspense fallback={<PageLoading />}><ResetPasswordPage /></Suspense>} />
+                  <Route path="/dashboard" element={<ProtectedRoute><Suspense fallback={<PageLoading />}><DashboardPage /></Suspense></ProtectedRoute>} />
+                  <Route path="/marketplace" element={<Suspense fallback={<PageLoading />}><MarketplacePage /></Suspense>} />
+                  <Route path="/admin" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminDashboard /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/articles" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminArticles /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/media" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminMedia /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/users" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminUsers /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/settings" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminSettings /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/stories" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminStories /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/categories" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminCategories /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="*" element={<Suspense fallback={<PageLoading />}><NotFound /></Suspense>} />
                 </Routes>
               </BrowserRouter>
             </FavoritesProvider>
