@@ -55,9 +55,7 @@ const ArticlePage = () => {
     fetch();
   }, [slug]);
 
-  useEffect(() => {
-    if (article?.seo_title) document.title = article.seo_title;
-  }, [article]);
+  // SEO handled by SEOHead component below
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
 
