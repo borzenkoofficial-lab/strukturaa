@@ -65,26 +65,38 @@ const MarketplaceChat = () => {
 
     if (!data) return;
 
-    const partnerMap = new Map<string, { messages: Message[] }>();
+    const partnerMap = new Map<string, { lastMsg: Message; unread: number }>();
     for (const msg of data) {
       const partnerId = msg.sender_id === user.id ? msg.receiver_id : msg.sender_id;
-      if (!partnerMap.has(partnerId)) partnerMap.set(partnerId, { messages: [] });
-      partnerMap.get(partnerId)!.messages.push(msg);
+      if (!partnerMap.has(partnerId)) {
+        partnerMap.set(partnerId, { lastMsg: msg, unread: 0 });
+      }
+      if (msg.receiver_id === user.id && !msg.read) {
+        partnerMap.get(partnerId)!.unread++;
+      }
     }
 
-    const threadList: ChatThread[] = [];
-    for (const [partnerId, { messages: msgs }] of partnerMap) {
-      const { data: profile } = await supabase.from("profiles").select("display_name").eq("user_id", partnerId).maybeSingle();
-      const last = msgs[0];
-      const unread = msgs.filter(m => m.receiver_id === user.id && !m.read).length;
-      threadList.push({
-        partnerId,
-        partnerName: profile?.display_name || "Пользователь",
-        lastMessage: last.content,
-        lastAt: last.created_at,
-        unread,
-      });
-    }
+    const partnerIds = Array.from(partnerMap.keys());
+    if (partnerIds.length === 0) { setThreads([]); return; }
+
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("user_id, display_name")
+      .in("user_id", partnerIds);
+
+    const profileMap = new Map<string, string>();
+    profiles?.forEach(p => profileMap.set(p.user_id, p.display_name || "Пользователь"));
+
+    const threadList: ChatThread[] = partnerIds.map(id => {
+      const entry = partnerMap.get(id)!;
+      return {
+        partnerId: id,
+        partnerName: profileMap.get(id) || "Пользователь",
+        lastMessage: entry.lastMsg.content,
+        lastAt: entry.lastMsg.created_at,
+        unread: entry.unread,
+      };
+    });
     setThreads(threadList);
   };
 
