@@ -13,11 +13,9 @@ const CTASection = () => {
           className="relative rounded-3xl overflow-hidden p-8 md:p-14"
           style={{ background: "linear-gradient(135deg, hsl(35 80% 55% / 0.2), hsl(30 60% 40% / 0.1))" }}
         >
-          <motion.div
-            className="absolute -top-20 -right-20 w-80 h-80 rounded-full"
+          <div
+            className="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-60"
             style={{ background: "radial-gradient(circle, hsl(35 80% 55% / 0.15), transparent 70%)" }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
