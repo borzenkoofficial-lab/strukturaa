@@ -175,6 +175,77 @@ export type Database = {
         }
         Relationships: []
       }
+      stories: {
+        Row: {
+          active: boolean
+          author_id: string | null
+          created_at: string
+          cta_label: string | null
+          cta_link: string | null
+          expires_at: string | null
+          id: string
+          image_url: string
+          overlay_text: string | null
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          author_id?: string | null
+          created_at?: string
+          cta_label?: string | null
+          cta_link?: string | null
+          expires_at?: string | null
+          id?: string
+          image_url: string
+          overlay_text?: string | null
+          sort_order?: number
+          title: string
+        }
+        Update: {
+          active?: boolean
+          author_id?: string | null
+          created_at?: string
+          cta_label?: string | null
+          cta_link?: string | null
+          expires_at?: string | null
+          id?: string
+          image_url?: string
+          overlay_text?: string | null
+          sort_order?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      story_views: {
+        Row: {
+          id: string
+          story_id: string
+          viewed_at: string
+          viewer_id: string | null
+        }
+        Insert: {
+          id?: string
+          story_id: string
+          viewed_at?: string
+          viewer_id?: string | null
+        }
+        Update: {
+          id?: string
+          story_id?: string
+          viewed_at?: string
+          viewer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_views_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
