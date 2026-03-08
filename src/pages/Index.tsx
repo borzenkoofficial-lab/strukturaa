@@ -41,7 +41,6 @@ const Index = () => {
         <BentoGrid />
         <FeaturesCarousel />
         <StatsSection />
-        <ServicesSection />
         <NewsSection />
         <ProcessSection />
         <TestimonialsSection />
