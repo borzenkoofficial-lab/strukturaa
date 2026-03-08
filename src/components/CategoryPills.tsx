@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { SlidersHorizontal, X, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 
-const categoryKeys: TranslationKey[] = [
-  "cat.demolition", "cat.construction", "cat.renovation", "cat.facades",
-  "cat.roofing", "cat.foundation", "cat.electrical", "cat.apartments", "cat.buildings",
+const categories: { key: TranslationKey; slug: string }[] = [
+  { key: "cat.demolition", slug: "demolition" },
+  { key: "cat.construction", slug: "construction" },
+  { key: "cat.renovation", slug: "renovation" },
+  { key: "cat.facades", slug: "dismantling" },
+  { key: "cat.roofing", slug: "building-demolition" },
+  { key: "cat.foundation", slug: "diamond-cutting" },
+  { key: "cat.electrical", slug: "waste-removal" },
+  { key: "cat.apartments", slug: "apartment-demolition" },
+  { key: "cat.buildings", slug: "building-demolition" },
 ];
 
 const CategoryPills = () => {
@@ -13,6 +21,7 @@ const CategoryPills = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<Set<number>>(new Set([0]));
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const toggleFilter = (i: number) => {
     setSelectedFilters(prev => {
@@ -43,17 +52,17 @@ const CategoryPills = () => {
           )}
         </motion.button>
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {categoryKeys.map((key, i) => (
+          {categories.map((cat, i) => (
             <button
-              key={key}
-              onClick={() => setActive(i)}
+              key={cat.key}
+              onClick={() => { setActive(i); navigate(`/services/${cat.slug}`); }}
               className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
                 active === i
                   ? "bg-primary text-primary-foreground"
                   : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
               }`}
             >
-              {t(key)}
+              {t(cat.key)}
             </button>
           ))}
         </div>
@@ -80,9 +89,9 @@ const CategoryPills = () => {
               </motion.button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {categoryKeys.map((key, i) => (
+              {categories.map((cat, i) => (
                 <motion.button
-                  key={key}
+                  key={cat.key}
                   onClick={() => toggleFilter(i)}
                   className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all ${
                     selectedFilters.has(i)
@@ -93,7 +102,7 @@ const CategoryPills = () => {
                   whileTap={{ scale: 0.97 }}
                 >
                   {selectedFilters.has(i) && <Check className="w-3.5 h-3.5 shrink-0" />}
-                  <span className="truncate">{t(key)}</span>
+                  <span className="truncate">{t(cat.key)}</span>
                 </motion.button>
               ))}
             </div>
