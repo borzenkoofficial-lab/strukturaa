@@ -39,6 +39,7 @@ const AdminStories = lazy(() => import("./pages/admin/AdminStories"));
 const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
 const AdminListings = lazy(() => import("./pages/admin/AdminListings"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
+const AdminShopItems = lazy(() => import("./pages/admin/AdminShopItems"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
