@@ -19,7 +19,9 @@ const ProjectsPage = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <>
+      <SEOHead title="Проекты" description="Портфолио выполненных проектов STRUKTURA: демонтаж, строительство, реновация промышленных и жилых объектов." canonical="/projects" />
+      <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("projects.title")}</h1>
         <p className="text-muted-foreground mb-10">{t("projects.subtitle")}</p>

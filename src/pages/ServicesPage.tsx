@@ -21,7 +21,9 @@ const ServicesPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <>
+      <SEOHead title="Услуги" description="Демонтаж зданий, монтаж конструкций, ремонт и отделка, вывоз мусора, алмазная резка — все строительные услуги от STRUKTURA." canonical="/services" />
+      <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("services.pageTitle")}</h1>
         <p className="text-muted-foreground mb-10">{t("services.pageSubtitle")}</p>

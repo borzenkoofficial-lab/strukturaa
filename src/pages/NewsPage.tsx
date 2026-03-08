@@ -14,7 +14,9 @@ const NewsPage = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <>
+      <SEOHead title="Новости" description="Последние новости строительной компании STRUKTURA: проекты, события, обновления." canonical="/news" />
+      <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
         <div className="flex items-center gap-3 mb-2">
           <Newspaper className="w-6 h-6 text-primary" />
