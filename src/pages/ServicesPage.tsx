@@ -3,6 +3,7 @@ import { ArrowUpRight, Building2, Home, Truck, Wrench, Hammer, Gem, HardHat } fr
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
+import SEOHead from "@/components/SEOHead";
 
 const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: TranslationKey; price: string; slug: string }[] = [
   { icon: Building2, titleKey: "services.demolition", descKey: "services.demolitionDesc", price: "500₽/м²", slug: "demolition" },
