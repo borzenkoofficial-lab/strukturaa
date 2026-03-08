@@ -175,6 +175,7 @@ const EquipmentPage = () => {
         </div>
       </AnimatedSection>
     </div>
+    </>
   );
 };
 
