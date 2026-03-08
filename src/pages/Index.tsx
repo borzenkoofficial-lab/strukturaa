@@ -39,6 +39,7 @@ const Index = () => {
         <StoriesBar />
         <CategoryPills />
         <BentoGrid />
+        <FeaturesCarousel />
         <StatsSection />
         <ServicesSection />
         <NewsSection />
