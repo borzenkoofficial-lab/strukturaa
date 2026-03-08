@@ -34,6 +34,15 @@ interface Props {
 }
 
 const ListingCard = ({ listing, index, onClick }: Props) => {
+  const [viewCount, setViewCount] = useState(0);
+
+  useEffect(() => {
+    supabase
+      .from("listing_views")
+      .select("id", { count: "exact", head: true })
+      .eq("listing_id", listing.id)
+      .then(({ count }) => setViewCount(count || 0));
+  }, [listing.id]);
   const timeAgo = (date: string) => {
     const diff = Date.now() - new Date(date).getTime();
     const hours = Math.floor(diff / 3600000);
