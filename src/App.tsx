@@ -10,6 +10,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute, AdminRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import ServicesPage from "./pages/ServicesPage";
+import ServiceDetailPage from "./pages/ServiceDetailPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import AboutPage from "./pages/AboutPage";
 import ContactsPage from "./pages/ContactsPage";
@@ -52,6 +53,7 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/services" element={<PageLayout><ServicesPage /></PageLayout>} />
+                  <Route path="/services/:slug" element={<PageLayout><ServiceDetailPage /></PageLayout>} />
                   <Route path="/projects" element={<PageLayout><ProjectsPage /></PageLayout>} />
                   <Route path="/about" element={<PageLayout><AboutPage /></PageLayout>} />
                   <Route path="/contacts" element={<PageLayout><ContactsPage /></PageLayout>} />
