@@ -17,6 +17,7 @@ const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: Tra
 
 const ServicesPage = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
