@@ -268,6 +268,73 @@ const BentoGrid = () => {
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">{t("bento.ecoDesc")}</p>
           </div>
         </motion.div>
+
+        {/* Install App Tile */}
+        <motion.div
+          className="col-span-2 glass-card-hover p-4 sm:p-5 flex flex-col gap-3 cursor-pointer overflow-hidden relative"
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          custom={12}
+          whileHover={{ scale: 1.01 }}
+          onClick={() => navigate("/install")}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center">
+                <Smartphone className="w-4.5 h-4.5 text-primary" />
+              </div>
+              <div>
+                <h4 className="text-sm sm:text-base font-display font-bold text-foreground leading-tight">Установить приложение</h4>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">Без App Store — прямо из браузера</p>
+              </div>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <Download className="w-4 h-4 text-primary" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            {/* iOS */}
+            <div className="bg-card/60 rounded-xl p-3 border border-border/30 space-y-2">
+              <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">iPhone / iPad</span>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+                    <Share className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="text-[10px] sm:text-xs text-foreground">Нажмите «Поделиться»</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+                    <Plus className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="text-[10px] sm:text-xs text-foreground">«На экран Домой»</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Android */}
+            <div className="bg-card/60 rounded-xl p-3 border border-border/30 space-y-2">
+              <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Android</span>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+                    <MoreVertical className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="text-[10px] sm:text-xs text-foreground">Меню браузера (⋮)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+                    <Download className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="text-[10px] sm:text-xs text-foreground">«Установить»</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
