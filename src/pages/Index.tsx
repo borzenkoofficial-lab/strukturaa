@@ -7,7 +7,7 @@ import BentoGrid from "@/components/BentoGrid";
 import FeaturesCarousel from "@/components/FeaturesCarousel";
 import StoriesBar from "@/components/stories/StoriesBar";
 import StatsSection from "@/components/StatsSection";
-import ServicesSection from "@/components/ServicesSection";
+import StatsSection from "@/components/StatsSection";
 import NewsSection from "@/components/NewsSection";
 import ProcessSection from "@/components/ProcessSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
