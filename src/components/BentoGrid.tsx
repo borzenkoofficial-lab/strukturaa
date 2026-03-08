@@ -82,7 +82,23 @@ const BentoGrid = () => {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-primary" />
           <div className="absolute inset-0 shimmer-overlay" />
-          <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
+          {/* Spring petals */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={`mp-${i}`}
+              className="absolute pointer-events-none select-none"
+              style={{ left: `${10 + i * 15}%`, top: `-8%`, fontSize: 12 + (i % 3) * 4 }}
+              animate={{
+                y: ["0%", "1200%"],
+                x: [0, (i % 2 === 0 ? 1 : -1) * (15 + i * 5)],
+                rotate: [0, (i % 2 === 0 ? 1 : -1) * 360],
+                opacity: [0, 0.5, 0.35, 0],
+              }}
+              transition={{ duration: 6 + i * 1.5, repeat: Infinity, delay: i * 1.2, ease: "easeInOut" }}
+            >
+              {["🌸", "🌿", "✿", "🍃", "❀", "🌱"][i]}
+            </motion.div>
+          ))}
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center">
