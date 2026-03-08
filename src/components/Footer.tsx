@@ -1,9 +1,10 @@
+import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
-const Footer = () => {
+const Footer = forwardRef<HTMLElement>((_, ref) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
