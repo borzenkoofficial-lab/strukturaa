@@ -32,6 +32,7 @@ const ServicesPage = () => {
               className="glass-card-hover p-6 h-full flex flex-col justify-between group cursor-pointer relative overflow-hidden"
               whileHover={{ y: -6, scale: 1.02 }}
               transition={{ duration: 0.3 }}
+              onClick={() => navigate(`/services/${service.slug}`)}
             >
               <div>
                 <div className="flex items-start justify-between mb-4">
