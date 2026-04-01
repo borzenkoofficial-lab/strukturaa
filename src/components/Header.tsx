@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, Menu, Sun, Moon, Globe, User, ChevronLeft } from "lucide-react";
+import { Search, Menu, Sun, Moon, Globe, User, ChevronLeft, Briefcase } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import MobileMenu from "./MobileMenu";
 import SearchOverlay from "./SearchOverlay";
+import JobApplicationModal from "./JobApplicationModal";
 
 const Header = () => {
   const { lang, setLang, t } = useLanguage();
