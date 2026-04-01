@@ -29,6 +29,7 @@ const MarketplacePage = lazy(() => import("./pages/MarketplacePage"));
 const ShopPage = lazy(() => import("./pages/ShopPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
 const EquipmentPage = lazy(() => import("./pages/EquipmentPage"));
+const GigsPage = lazy(() => import("./pages/GigsPage"));
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminArticles = lazy(() => import("./pages/admin/AdminArticles"));
@@ -86,6 +87,7 @@ const App = () => (
                   <Route path="/shop" element={<Suspense fallback={<PageLoading />}><ShopPage /></Suspense>} />
                   <Route path="/install" element={<Suspense fallback={<PageLoading />}><InstallPage /></Suspense>} />
                   <Route path="/equipment" element={<PageLayout><EquipmentPage /></PageLayout>} />
+                  <Route path="/gigs" element={<Suspense fallback={<PageLoading />}><GigsPage /></Suspense>} />
                   <Route path="/admin" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminDashboard /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/articles" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminArticles /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/media" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminMedia /></AdminLayout></Suspense></AdminRoute>} />

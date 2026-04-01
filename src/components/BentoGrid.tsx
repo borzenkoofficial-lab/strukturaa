@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Newspaper, FolderOpen, Truck, Sparkles, Hammer, HardHat, Building2, Trash2 as TrashIcon, Gem, Cable } from "lucide-react";
+import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Newspaper, FolderOpen, Truck, Sparkles, Hammer, HardHat, Building2, Trash2 as TrashIcon, Gem, Cable, Pickaxe } from "lucide-react";
 import heroDemolition from "@/assets/hero-demolition.jpg";
 import serviceConstruction from "@/assets/service-construction.jpg";
 import serviceRenovation from "@/assets/service-renovation.jpg";
@@ -166,6 +166,33 @@ const BentoGrid = () => {
               <div className="flex items-center gap-3 mt-3">
                 <span className="px-3 py-1.5 rounded-full bg-foreground/10 text-xs font-semibold text-foreground">Б/У инструмент</span>
                 <span className="px-3 py-1.5 rounded-full bg-foreground/5 text-xs font-medium text-foreground/70">Новый инструмент</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 1.6. ПОДРАБОТКА ═══════ */}
+        <motion.div
+          className="glass-card overflow-hidden relative cursor-pointer group"
+          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1.5}
+          whileHover={{ scale: 1.03 }}
+          onClick={() => navigate("/gigs")}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-yellow-500/10" />
+          <div className="relative h-full flex flex-col justify-between p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center">
+                <Pickaxe className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-500" />
+              </div>
+              <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center group-hover:rotate-45 transition-transform">
+                <ArrowUpRight className="w-3.5 h-3.5 text-amber-500" />
+              </div>
+            </div>
+            <div className="mt-auto">
+              <h4 className="text-base sm:text-lg font-display font-bold text-foreground leading-tight">Подработка</h4>
+              <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">Короткие заявки — быстрый заработок</p>
+              <div className="flex items-center gap-1.5 mt-2">
+                <span className="px-2 py-0.5 rounded-full bg-amber-500/15 text-[9px] sm:text-[10px] font-bold text-amber-500 uppercase">Новое</span>
               </div>
             </div>
           </div>
