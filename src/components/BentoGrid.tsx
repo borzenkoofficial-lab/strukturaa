@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Newspaper, FolderOpen, Truck, Sparkles, Hammer, HardHat, Building2, Trash2 as TrashIcon, Gem, Cable } from "lucide-react";
+import { ArrowUpRight, Heart, ShoppingBag, Star, Mail, MapPin, Wrench, Shield, Clock, Zap, Megaphone, Smartphone, Share, MoreVertical, Download, Plus, Newspaper, FolderOpen, Truck, Sparkles, Hammer, HardHat, Building2, Trash2 as TrashIcon, Gem, Cable, Briefcase } from "lucide-react";
+import JobApplicationModal from "@/components/JobApplicationModal";
 import heroDemolition from "@/assets/hero-demolition.jpg";
 import serviceConstruction from "@/assets/service-construction.jpg";
 import serviceRenovation from "@/assets/service-renovation.jpg";
@@ -68,9 +69,11 @@ const FavButton = memo(({ id, className = "" }: { id: string; className?: string
 const BentoGrid = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [jobModalOpen, setJobModalOpen] = useState(false);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
+      <JobApplicationModal open={jobModalOpen} onClose={() => setJobModalOpen(false)} />
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 auto-rows-[minmax(140px,auto)] sm:auto-rows-[minmax(180px,auto)] [&>*]:overflow-hidden">
 
         {/* ═══════ 1. СТРОИТЕЛЬНАЯ БИРЖА — главный CTA ═══════ */}
@@ -166,6 +169,37 @@ const BentoGrid = () => {
               <div className="flex items-center gap-3 mt-3">
                 <span className="px-3 py-1.5 rounded-full bg-foreground/10 text-xs font-semibold text-foreground">Б/У инструмент</span>
                 <span className="px-3 py-1.5 rounded-full bg-foreground/5 text-xs font-medium text-foreground/70">Новый инструмент</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══════ 1.6. РАБОТА — устроиться на работу ═══════ */}
+        <motion.div
+          className="col-span-2 lg:col-span-4 relative overflow-hidden rounded-2xl cursor-pointer group"
+          variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1.5}
+          whileHover={{ scale: 1.01 }}
+          onClick={() => setJobModalOpen(true)}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-green-500 to-emerald-700" />
+          <div className="absolute inset-0 shimmer-overlay opacity-15" />
+          <div className="relative h-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
+                <Briefcase className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-lg sm:text-2xl font-display font-bold text-white leading-tight">Устроиться на работу</h3>
+                  <span className="px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-bold text-white uppercase tracking-wider hidden sm:inline">JOB</span>
+                </div>
+                <p className="text-white/80 text-xs sm:text-sm max-w-md">Заполните анкету — мы рассмотрим вашу кандидатуру и свяжемся с вами в ближайшее время</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="px-4 py-2 rounded-full bg-white/20 text-xs sm:text-sm font-semibold text-white group-hover:bg-white/30 transition-colors">Заполнить анкету</span>
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:rotate-45 transition-transform">
+                <ArrowUpRight className="w-5 h-5 text-white" />
               </div>
             </div>
           </div>
