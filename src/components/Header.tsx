@@ -149,6 +149,24 @@ const Header = () => {
         </div>
       </motion.header>
 
+      {/* Job banner */}
+      <motion.div
+        className="sticky top-[57px] sm:top-[61px] z-40 bg-gradient-to-r from-emerald-600 via-green-500 to-emerald-600 cursor-pointer"
+        onClick={() => setJobModalOpen(true)}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        whileHover={{ brightness: 1.1 }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 sm:py-2 flex items-center justify-center gap-2">
+          <Briefcase className="w-3.5 h-3.5 text-white shrink-0" />
+          <span className="text-white text-[11px] sm:text-xs font-semibold">Устроиться на работу</span>
+          <span className="text-white/70 text-[10px] sm:text-xs hidden sm:inline">— заполните анкету</span>
+          <span className="ml-1 px-2 py-0.5 rounded-full bg-white/20 text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider">JOB</span>
+        </div>
+      </motion.div>
+
+      <JobApplicationModal open={jobModalOpen} onClose={() => setJobModalOpen(false)} />
       <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
