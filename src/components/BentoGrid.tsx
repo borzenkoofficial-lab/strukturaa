@@ -69,9 +69,11 @@ const FavButton = memo(({ id, className = "" }: { id: string; className?: string
 const BentoGrid = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [jobModalOpen, setJobModalOpen] = useState(false);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
+      <JobApplicationModal open={jobModalOpen} onClose={() => setJobModalOpen(false)} />
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 auto-rows-[minmax(140px,auto)] sm:auto-rows-[minmax(180px,auto)] [&>*]:overflow-hidden">
 
         {/* ═══════ 1. СТРОИТЕЛЬНАЯ БИРЖА — главный CTA ═══════ */}
