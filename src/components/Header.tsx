@@ -156,7 +156,7 @@ const Header = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        whileHover={{ brightness: 1.1 }}
+        whileHover={{ opacity: 0.9 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 sm:py-2 flex items-center justify-center gap-2">
           <Briefcase className="w-3.5 h-3.5 text-white shrink-0" />
