@@ -52,7 +52,7 @@ serve(async (req) => {
         const priceInfo = calculated_price ? `\n💰 Стоимость: ${Number(calculated_price).toLocaleString("ru-RU")} ₽` : "";
         const serviceInfo = service ? `\n🔧 Услуга: ${service}` : "";
         const messageInfo = message ? `\n💬 Сообщение: ${message}` : "";
-        const sourceLabel: Record<string, string> = { service_page: "Страница услуги", contacts_page: "Контакты", cta: "CTA", job_application: "🧑‍🔧 Анкета соискателя" };
+        const sourceLabel: Record<string, string> = { service_page: "Страница услуги", contacts_page: "Контакты", cta: "CTA", job_application: "🧑‍🔧 Анкета соискателя", gigs_page: "🔨 Подработка" };
 
         const text = `🔔 *Новая заявка на сайте STRUKTURA!*\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}${serviceInfo}${priceInfo}${messageInfo}\n📍 Источник: ${sourceLabel[source] || source || "service_page"}\n🕐 ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })}`;
 
