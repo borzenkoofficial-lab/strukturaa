@@ -18,6 +18,7 @@ const Header = () => {
   const isHome = location.pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [jobModalOpen, setJobModalOpen] = useState(false);
 
   const navItems: { label: string; path: string }[] = [
     { label: t("nav.services"), path: "/services" },
