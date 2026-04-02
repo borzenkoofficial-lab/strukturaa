@@ -26,6 +26,9 @@ interface ServiceData {
   features: { ru: string; en: string }[];
   details: { ru: string; en: string };
   includes: { ru: string; en: string }[];
+  process: { ru: string; en: string }[];
+  faq: { q: { ru: string; en: string }; a: { ru: string; en: string } }[];
+  relatedSlugs: string[];
 }
 
 const servicesData: ServiceData[] = [
