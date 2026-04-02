@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Send, User, MessageCircle } from "lucide-react";
+import { Send, User, MessageCircle, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 
@@ -23,13 +23,18 @@ interface Message {
   listing_id: string | null;
 }
 
-const MarketplaceChat = () => {
+interface Props {
+  initialPartnerId?: string | null;
+}
+
+const MarketplaceChat = ({ initialPartnerId }: Props) => {
   const { user } = useAuth();
   const [threads, setThreads] = useState<ChatThread[]>([]);
   const [selectedPartner, setSelectedPartner] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const messagesEnd = useRef<HTMLDivElement>(null);
+  const [initialHandled, setInitialHandled] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -50,6 +55,14 @@ const MarketplaceChat = () => {
 
     return () => { supabase.removeChannel(channel); };
   }, [user, selectedPartner]);
+
+  // Handle initial partner ID - auto open chat
+  useEffect(() => {
+    if (initialPartnerId && user && !initialHandled) {
+      setInitialHandled(true);
+      loadMessages(initialPartnerId);
+    }
+  }, [initialPartnerId, user, initialHandled]);
 
   useEffect(() => {
     messagesEnd.current?.scrollIntoView({ behavior: "smooth" });
@@ -110,7 +123,6 @@ const MarketplaceChat = () => {
       .order("created_at", { ascending: true });
     setMessages((data as Message[]) || []);
 
-    // Mark as read
     await supabase
       .from("messages")
       .update({ read: true })
@@ -140,7 +152,7 @@ const MarketplaceChat = () => {
 
   return (
     <div className="flex flex-col md:flex-row gap-4 h-[70vh]">
-      {/* Threads - full width on mobile, fixed on desktop */}
+      {/* Threads */}
       <div className={`${selectedPartner ? "hidden md:flex" : "flex"} w-full md:w-80 md:shrink-0 bg-card rounded-2xl border border-border/50 overflow-hidden flex-col`}>
         <div className="p-4 border-b border-border/30">
           <h3 className="font-display font-semibold text-foreground">Диалоги</h3>
@@ -179,7 +191,7 @@ const MarketplaceChat = () => {
         </div>
       </div>
 
-      {/* Chat - full width on mobile, flex on desktop */}
+      {/* Chat */}
       <div className={`${!selectedPartner ? "hidden md:flex" : "flex"} flex-1 bg-card rounded-2xl border border-border/50 overflow-hidden flex-col min-w-0`}>
         {!selectedPartner ? (
           <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
@@ -187,19 +199,27 @@ const MarketplaceChat = () => {
           </div>
         ) : (
           <>
-            {/* Mobile back button */}
-            <div className="flex items-center gap-3 p-3 border-b border-border/30 md:hidden">
+            {/* Mobile back + header */}
+            <div className="flex items-center gap-3 p-3 border-b border-border/30">
               <button
                 onClick={() => setSelectedPartner(null)}
-                className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0"
+                className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0 md:hidden"
               >
-                <MessageCircle className="w-4 h-4 text-secondary-foreground" />
+                <ArrowLeft className="w-4 h-4 text-secondary-foreground" />
               </button>
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                <User className="w-4 h-4 text-primary" />
+              </div>
               <span className="text-sm font-medium text-foreground truncate">
                 {threads.find(t => t.partnerId === selectedPartner)?.partnerName || "Диалог"}
               </span>
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
+              {messages.length === 0 && (
+                <div className="text-center py-12 text-muted-foreground text-sm">
+                  Начните переписку — напишите первое сообщение
+                </div>
+              )}
               {messages.map(msg => (
                 <motion.div
                   key={msg.id}
@@ -232,7 +252,7 @@ const MarketplaceChat = () => {
               <button
                 onClick={sendMessage}
                 disabled={!input.trim()}
-                className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0 disabled:opacity-50"
+                className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0 disabled:opacity-50 hover:opacity-90 transition-opacity"
               >
                 <Send className="w-4 h-4" />
               </button>
