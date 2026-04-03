@@ -327,7 +327,7 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
                             size="sm"
                             variant="outline"
                             className="mt-2 rounded-xl text-xs gap-1"
-                            onClick={() => onChat(r.user_id)}
+                            onClick={() => onChat(r.user_id, listing.id)}
                           >
                             <MessageCircle className="w-3 h-3" />
                             Написать
@@ -419,68 +419,6 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
           )}
         </div>
       </motion.div>
-    {/* Payment modal */}
-    <AnimatePresence>
-        {showPayModal && (
-          <motion.div
-            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowPayModal(false)}
-          >
-            <motion.div
-              className="w-full max-w-sm bg-card rounded-2xl border border-border/50 shadow-2xl p-6 space-y-5"
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={e => e.stopPropagation()}
-            >
-              <div className="text-center">
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <Wallet className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="font-display font-bold text-lg text-foreground">Открыть диалог</h3>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Чтобы связаться с заказчиком, оплатите отклик
-                </p>
-              </div>
-
-              <div className="bg-secondary/50 rounded-xl p-4 space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Стоимость отклика</span>
-                  <span className="font-bold text-foreground">200 ₽</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Ваш баланс</span>
-                  <span className={`font-bold ${(balance ?? 0) >= 200 ? "text-green-500" : "text-destructive"}`}>
-                    {balance?.toLocaleString() ?? "..."} ₽
-                  </span>
-                </div>
-                {(balance ?? 0) < 200 && (
-                  <div className="flex items-center gap-2 text-xs text-destructive mt-2">
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    Недостаточно средств
-                  </div>
-                )}
-              </div>
-
-              <div className="flex gap-2">
-                <Button
-                  onClick={handlePayAndRespond}
-                  disabled={paying || (balance ?? 0) < 200}
-                  className="flex-1 rounded-xl gap-2"
-                >
-                  <Wallet className="w-4 h-4" />
-                  {paying ? "Оплата..." : "Оплатить 200 ₽"}
-                </Button>
-                <Button variant="ghost" onClick={() => setShowPayModal(false)} className="rounded-xl">
-                  Отмена
-                </Button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
     </motion.div>
     <AnimatePresence>
         {showPayModal && (
