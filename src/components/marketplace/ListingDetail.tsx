@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { X, MapPin, Calendar, RussianRuble, Send, MessageCircle, User, Pencil, Trash2, XCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, MapPin, Calendar, RussianRuble, Send, MessageCircle, User, Pencil, Trash2, XCircle, Wallet, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ interface Response {
 interface Props {
   listing: Listing;
   onClose: () => void;
-  onChat: (receiverId: string) => void;
+  onChat: (receiverId: string, listingId: string) => void;
   onRefresh: () => void;
 }
 
@@ -34,6 +34,10 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [ownerName, setOwnerName] = useState<string>("Заказчик");
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [balance, setBalance] = useState<number | null>(null);
+  const [alreadyUnlocked, setAlreadyUnlocked] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(listing.title);
   const [editDescription, setEditDescription] = useState(listing.description);
@@ -46,6 +50,8 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
     loadResponses();
     loadOwner();
     trackView();
+    checkUnlock();
+    loadBalance();
   }, [listing.id]);
 
   const trackView = async () => {
@@ -53,6 +59,18 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
       listing_id: listing.id,
       viewer_id: user?.id || null,
     });
+  };
+
+  const loadBalance = async () => {
+    if (!user) return;
+    const { data } = await supabase.from("wallets").select("balance").eq("user_id", user.id).maybeSingle();
+    if (data) setBalance(Number(data.balance));
+  };
+
+  const checkUnlock = async () => {
+    if (!user) return;
+    const { data } = await supabase.from("chat_unlocks").select("id").eq("user_id", user.id).eq("listing_id", listing.id).maybeSingle();
+    setAlreadyUnlocked(!!data);
   };
 
   const loadOwner = async () => {
@@ -76,6 +94,52 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
       );
       setResponses(withProfiles);
     }
+  };
+
+  const handlePayAndRespond = async () => {
+    if (!user) return;
+    setPaying(true);
+
+    // Check balance
+    const { data: wallet } = await supabase.from("wallets").select("balance").eq("user_id", user.id).maybeSingle();
+    if (!wallet || Number(wallet.balance) < 200) {
+      toast({ title: "Недостаточно средств", description: "На балансе менее 200 ₽", variant: "destructive" });
+      setPaying(false);
+      return;
+    }
+
+    // Deduct 200₽
+    const newBalance = Number(wallet.balance) - 200;
+    const { error: walletErr } = await supabase.from("wallets").update({ balance: newBalance }).eq("user_id", user.id);
+    if (walletErr) {
+      toast({ title: "Ошибка списания", variant: "destructive" });
+      setPaying(false);
+      return;
+    }
+
+    // Record transaction
+    await supabase.from("wallet_transactions").insert({
+      user_id: user.id,
+      amount: -200,
+      type: "payment",
+      description: `Отклик на заявку: ${listing.title}`,
+      listing_id: listing.id,
+    });
+
+    // Record unlock
+    await supabase.from("chat_unlocks").insert({
+      user_id: user.id,
+      listing_id: listing.id,
+    });
+
+    setBalance(newBalance);
+    setAlreadyUnlocked(true);
+    setShowPayModal(false);
+    setPaying(false);
+    toast({ title: "Оплачено! Открываю чат..." });
+
+    // Open chat with listing owner
+    onChat(listing.user_id, listing.id);
   };
 
   const handleRespond = async (e: React.FormEvent) => {
@@ -330,13 +394,20 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
           )}
           {!isOwner && user && !showRespond && !editing && (
             <>
-              <Button onClick={() => setShowRespond(true)} className="flex-1 rounded-xl gap-2">
-                <Send className="w-4 h-4" />
-                Откликнуться
-              </Button>
-              <Button variant="outline" onClick={() => onChat(listing.user_id)} className="rounded-xl gap-2">
-                <MessageCircle className="w-4 h-4" />
-                Чат
+              {alreadyUnlocked ? (
+                <Button onClick={() => onChat(listing.user_id, listing.id)} className="flex-1 rounded-xl gap-2">
+                  <MessageCircle className="w-4 h-4" />
+                  Написать заказчику
+                </Button>
+              ) : (
+                <Button onClick={() => setShowPayModal(true)} className="flex-1 rounded-xl gap-2">
+                  <Send className="w-4 h-4" />
+                  Откликнуться — 200 ₽
+                </Button>
+              )}
+              <Button variant="outline" onClick={() => setShowRespond(true)} className="rounded-xl gap-2">
+                <RussianRuble className="w-4 h-4" />
+                Предложить цену
               </Button>
             </>
           )}
@@ -347,6 +418,74 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
           )}
         </div>
       </motion.div>
+    </motion.div>
+  );
+};
+
+
+      {/* Payment modal */}
+      <AnimatePresence>
+        {showPayModal && (
+          <motion.div
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowPayModal(false)}
+          >
+            <motion.div
+              className="w-full max-w-sm bg-card rounded-2xl border border-border/50 shadow-2xl p-6 space-y-5"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Wallet className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="font-display font-bold text-lg text-foreground">Открыть диалог</h3>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Чтобы связаться с заказчиком, оплатите отклик
+                </p>
+              </div>
+
+              <div className="bg-secondary/50 rounded-xl p-4 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Стоимость отклика</span>
+                  <span className="font-bold text-foreground">200 ₽</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Ваш баланс</span>
+                  <span className={`font-bold ${(balance ?? 0) >= 200 ? "text-green-500" : "text-destructive"}`}>
+                    {balance?.toLocaleString() ?? "..."} ₽
+                  </span>
+                </div>
+                {(balance ?? 0) < 200 && (
+                  <div className="flex items-center gap-2 text-xs text-destructive mt-2">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    Недостаточно средств
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  onClick={handlePayAndRespond}
+                  disabled={paying || (balance ?? 0) < 200}
+                  className="flex-1 rounded-xl gap-2"
+                >
+                  <Wallet className="w-4 h-4" />
+                  {paying ? "Оплата..." : "Оплатить 200 ₽"}
+                </Button>
+                <Button variant="ghost" onClick={() => setShowPayModal(false)} className="rounded-xl">
+                  Отмена
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
