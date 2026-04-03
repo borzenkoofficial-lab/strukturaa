@@ -418,13 +418,8 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
           )}
         </div>
       </motion.div>
-    </motion.div>
-  );
-};
-
-
-      {/* Payment modal */}
-      <AnimatePresence>
+    {/* Payment modal */}
+    <AnimatePresence>
         {showPayModal && (
           <motion.div
             className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
@@ -485,9 +480,10 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
     </motion.div>
-  );
-};
+    </AnimatePresence>
+    </>
+   );
+ };
 
 export default ListingDetail;
