@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Search, Plus, Filter, MapPin, Calendar, RussianRuble, ArrowLeft, MessageCircle, ChevronDown, Briefcase, Home, User, Bell, Flame, HardHat, Building2, Hammer, Building, Landmark, Zap, Droplets, ClipboardList } from "lucide-react";
+import { Search, Plus, Filter, MapPin, Calendar, RussianRuble, ArrowLeft, MessageCircle, ChevronDown, Briefcase, Home, User, Bell, Flame, HardHat, Building2, Hammer, Building, Landmark, Zap, Droplets, ClipboardList, Wallet, TrendingUp, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -52,7 +52,9 @@ const MarketplacePage = () => {
   const [category, setCategory] = useState("all");
   const [showCreate, setShowCreate] = useState(false);
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
-  const [chatListing, setChatListing] = useState<{ listing: Listing; receiverId: string } | null>(null);
+  const [chatPartnerId, setChatPartnerId] = useState<string | null>(null);
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [listingCount, setListingCount] = useState(0);
   const [activeTab, setActiveTab] = useState<"feed" | "my" | "messages">("feed");
 
   const fetchListings = async () => {
@@ -62,12 +64,20 @@ const MarketplacePage = () => {
     if (search) query = query.ilike("title", `%${search}%`);
     const { data } = await query;
     setListings((data as Listing[]) || []);
+    setListingCount((data as Listing[])?.length || 0);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchListings();
+    loadBalance();
   }, [category, search]);
+
+  const loadBalance = async () => {
+    if (!user) return;
+    const { data } = await supabase.from("wallets").select("balance").eq("user_id", user.id).maybeSingle();
+    if (data) setWalletBalance(Number(data.balance));
+  };
 
   const filteredListings = activeTab === "my" 
     ? listings.filter(l => l.user_id === user?.id)
@@ -101,11 +111,17 @@ const MarketplacePage = () => {
               </motion.button>
               <div>
                 <h1 className="font-display font-bold text-lg text-foreground leading-tight">Биржа</h1>
-                <p className="text-[10px] text-muted-foreground">Строительные заявки</p>
+                <p className="text-[10px] text-muted-foreground">{listingCount} заявок</p>
               </div>
             </div>
             
             <div className="flex items-center gap-2">
+              {user && walletBalance !== null && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20">
+                  <Wallet className="w-3.5 h-3.5 text-primary" />
+                  <span className="text-xs font-bold text-primary">{walletBalance.toLocaleString()} ₽</span>
+                </div>
+              )}
               {user && (
                 <motion.button
                   onClick={() => navigate("/dashboard")}
@@ -150,7 +166,7 @@ const MarketplacePage = () => {
 
         {activeTab === "messages" ? (
           <div className="max-w-6xl mx-auto px-4 py-8">
-            <MarketplaceChat initialPartnerId={chatListing?.receiverId || null} />
+            <MarketplaceChat initialPartnerId={chatPartnerId} />
           </div>
         ) : (
           <>
@@ -256,7 +272,7 @@ const MarketplacePage = () => {
               listing={selectedListing}
               onClose={() => setSelectedListing(null)}
               onChat={(receiverId) => {
-                setChatListing({ listing: selectedListing, receiverId });
+                setChatPartnerId(receiverId);
                 setSelectedListing(null);
                 setActiveTab("messages");
               }}
