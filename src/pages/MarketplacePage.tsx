@@ -271,7 +271,7 @@ const MarketplacePage = () => {
             <ListingDetail
               listing={selectedListing}
               onClose={() => setSelectedListing(null)}
-              onChat={(receiverId) => {
+              onChat={(receiverId, _listingId) => {
                 setChatPartnerId(receiverId);
                 setSelectedListing(null);
                 setActiveTab("messages");
