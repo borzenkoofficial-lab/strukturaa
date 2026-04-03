@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Mail, LogOut, Edit3, Camera, ArrowLeft, Shield, FileText, Heart, Megaphone, Bookmark, Wrench, Newspaper, Trash2, HardHat, MessageCircle } from "lucide-react";
+import { User, Mail, LogOut, Edit3, Camera, ArrowLeft, Shield, FileText, Heart, Megaphone, Bookmark, Wrench, Newspaper, Trash2, HardHat, MessageCircle, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import SEOHead from "@/components/SEOHead";
 import ProjectTracking from "@/components/dashboard/ProjectTracking";
@@ -32,6 +32,15 @@ const DashboardPage = () => {
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState<"profile" | "favorites" | "projects" | "chats">("profile");
   const fileRef = useRef<HTMLInputElement>(null);
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      supabase.from("wallets").select("balance").eq("user_id", user.id).maybeSingle().then(({ data }) => {
+        if (data) setWalletBalance(Number(data.balance));
+      });
+    }
+  }, [user]);
 
   if (!user) {
     return null;
@@ -178,6 +187,7 @@ const DashboardPage = () => {
               { icon: FileText, label: "Статьи", value: String(articleFavs.length) },
               { icon: Heart, label: "Избранное", value: String(favoritesList.length) },
               { icon: Shield, label: "Роль", value: isAdmin ? "Админ" : "Пользователь" },
+              { icon: Wallet, label: "Баланс", value: walletBalance !== null ? `${walletBalance.toLocaleString()} ₽` : "..." },
               { icon: Megaphone, label: "Биржа", value: "→", onClick: () => navigate("/marketplace") },
             ].map((stat, i) => (
               <motion.div
