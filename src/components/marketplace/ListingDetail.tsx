@@ -480,8 +480,8 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
             </motion.div>
           </motion.div>
         )}
-    </motion.div>
     </AnimatePresence>
+    </motion.div>
     </>
    );
  };
