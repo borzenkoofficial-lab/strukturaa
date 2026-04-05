@@ -31,7 +31,8 @@ const navGroups = [
     items: [
       { label: "Биржа заявок", path: "/admin/listings", icon: Briefcase },
       { label: "Маркетплейс", path: "/admin/shop", icon: ShoppingBag },
-      { label: "Проекты", path: "/admin/projects", icon: HardHat },
+      { label: "Проекты (клиенты)", path: "/admin/projects", icon: HardHat },
+      { label: "Портфолио", path: "/admin/portfolio", icon: FolderOpen },
       { label: "Лиды с сайта", path: "/admin/requests", icon: ClipboardList },
     ],
   },

@@ -40,6 +40,7 @@ const AdminStories = lazy(() => import("./pages/admin/AdminStories"));
 const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
 const AdminListings = lazy(() => import("./pages/admin/AdminListings"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
+const AdminPortfolio = lazy(() => import("./pages/admin/AdminPortfolio"));
 const AdminShopItems = lazy(() => import("./pages/admin/AdminShopItems"));
 const AdminRequests = lazy(() => import("./pages/admin/AdminRequests"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -97,6 +98,7 @@ const App = () => (
                   <Route path="/admin/categories" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminCategories /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/listings" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminListings /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/projects" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminProjects /></AdminLayout></Suspense></AdminRoute>} />
+                  <Route path="/admin/portfolio" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminPortfolio /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/shop" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminShopItems /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/requests" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminRequests /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="*" element={<Suspense fallback={<PageLoading />}><NotFound /></Suspense>} />
