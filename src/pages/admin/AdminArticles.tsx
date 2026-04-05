@@ -36,8 +36,6 @@ const PLACEMENT_OPTIONS = [
   { value: "blog", label: "Блог" },
   { value: "news", label: "Новости" },
   { value: "services", label: "Услуги" },
-  { value: "projects", label: "Проекты" },
-  { value: "portfolio", label: "Портфолио" },
   { value: "main", label: "Главная страница" },
 ];
 

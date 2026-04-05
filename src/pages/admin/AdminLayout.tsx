@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard, FileText, Image, Users, Settings, LogOut,
   ChevronLeft, Menu, ArrowLeft, CircleDot, FolderOpen, Briefcase,
-  HardHat, ShoppingBag, ClipboardList, Shield,
+  HardHat, ShoppingBag, ClipboardList, Shield, Images,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +31,8 @@ const navGroups = [
     items: [
       { label: "Биржа заявок", path: "/admin/listings", icon: Briefcase },
       { label: "Маркетплейс", path: "/admin/shop", icon: ShoppingBag },
-      { label: "Проекты", path: "/admin/projects", icon: HardHat },
+      { label: "Проекты (клиенты)", path: "/admin/projects", icon: HardHat },
+      { label: "Портфолио", path: "/admin/portfolio", icon: Images },
       { label: "Лиды с сайта", path: "/admin/requests", icon: ClipboardList },
     ],
   },
