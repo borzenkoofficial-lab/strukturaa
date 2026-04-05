@@ -1,113 +1,99 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { Briefcase } from "lucide-react";
 
+const INTRO_KEY = "struktura-marketplace-intro";
+
 const MarketplaceIntro = ({ onComplete }: { onComplete: () => void }) => {
-  const [phase, setPhase] = useState<"logo" | "tagline" | "reveal">("logo");
   const completedRef = useRef(false);
+  const [progress, setProgress] = useState(0);
 
   const safeComplete = () => {
     if (!completedRef.current) {
       completedRef.current = true;
+      sessionStorage.setItem(INTRO_KEY, "1");
       onComplete();
     }
   };
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("tagline"), 1000);
-    const t2 = setTimeout(() => setPhase("reveal"), 2400);
-    const t3 = setTimeout(safeComplete, 3200);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    if (sessionStorage.getItem(INTRO_KEY)) { safeComplete(); return; }
+    const start = performance.now();
+    const duration = 1500;
+    const tick = () => {
+      const p = Math.min((performance.now() - start) / duration, 1);
+      setProgress(p);
+      if (p < 1) requestAnimationFrame(tick);
+      else setTimeout(safeComplete, 200);
+    };
+    requestAnimationFrame(tick);
   }, []);
+
+  if (sessionStorage.getItem(INTRO_KEY)) return null;
 
   return (
     <motion.div
       key="marketplace-intro"
-      className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center overflow-hidden"
-      initial={{ opacity: 1 }}
-      animate={phase === "reveal" ? { opacity: 0, scale: 1.05 } : { opacity: 1 }}
-      transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-      onAnimationComplete={() => {
-        if (phase === "reveal") safeComplete();
-      }}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
+      style={{ background: "hsl(var(--background))", willChange: "opacity" }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
     >
-      {/* Glow */}
-      <div
-        className="absolute w-[500px] h-[500px] rounded-full opacity-0 animate-[fadeIn_1.5s_ease-out_forwards]"
-        style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.12), transparent 70%)" }}
+      {/* Hex grid pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `radial-gradient(circle, hsl(var(--primary)) 1px, transparent 1px)`,
+        backgroundSize: "30px 30px",
+      }} />
+
+      <motion.div
+        className="absolute w-[500px] h-[500px] rounded-full"
+        style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.12), transparent 60%)" }}
+        initial={{ scale: 0.3, opacity: 0 }}
+        animate={{ scale: [0.3, 1.5], opacity: [0, 0.5, 0] }}
+        transition={{ duration: 1.8, ease: "easeOut" }}
       />
 
-      {/* Line */}
       <motion.div
-        className="absolute top-1/2 left-0 right-0 h-px bg-border/40"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
-      />
-
-      {/* Logo */}
-      <motion.div
-        className="relative flex items-center gap-3"
-        initial={{ opacity: 0, y: 25 }}
+        className="relative flex flex-col items-center gap-4"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.4 }}
       >
         <motion.div
-          className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center"
-          initial={{ rotate: -90, scale: 0 }}
-          animate={{ rotate: 0, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30"
+          initial={{ scale: 0, rotate: -90 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="font-display font-bold text-2xl text-primary-foreground">S</span>
+          <Briefcase className="w-7 h-7 text-primary-foreground" />
         </motion.div>
-        <motion.span
-          className="font-display font-bold text-3xl md:text-4xl text-foreground tracking-tight"
-          initial={{ opacity: 0, x: -15 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
-        >
-          STRUKTURA
-        </motion.span>
-      </motion.div>
 
-      {/* Tagline */}
-      <AnimatePresence>
-        {(phase === "tagline" || phase === "reveal") && (
-          <motion.div
-            key="tagline"
-            className="relative mt-6 flex flex-col items-center gap-2"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className="flex items-center gap-2 text-primary">
-              <Briefcase className="w-5 h-5" />
-              <span className="font-display font-semibold text-lg md:text-xl tracking-wide">
-                Биржа заказов
-              </span>
-            </div>
-            <p className="text-muted-foreground text-sm md:text-base text-center max-w-xs">
-              Добро пожаловать — находите подрядчиков и заказы в один клик
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Progress bar */}
-      <motion.div
-        className="relative mt-8 w-40 h-0.5 bg-border/30 rounded-full overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-      >
         <motion.div
-          className="absolute inset-y-0 left-0 bg-primary rounded-full"
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        />
+          className="text-center"
+          initial={{ opacity: 0, filter: "blur(8px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-foreground tracking-tight">
+            Биржа заказов
+          </h2>
+          <p className="text-muted-foreground text-sm mt-1">
+            Подрядчики и заказы в один клик
+          </p>
+        </motion.div>
       </motion.div>
+
+      {/* Progress */}
+      <div className="relative mt-8 w-40 h-1 bg-border/20 rounded-full overflow-hidden">
+        <div
+          className="absolute inset-y-0 left-0 rounded-full transition-none"
+          style={{
+            width: `${progress * 100}%`,
+            background: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary) / 0.5))",
+            boxShadow: "0 0 10px hsl(var(--primary) / 0.4)",
+          }}
+        />
+      </div>
     </motion.div>
   );
 };
