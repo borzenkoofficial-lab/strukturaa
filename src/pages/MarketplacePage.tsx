@@ -17,6 +17,8 @@ import ListingCard from "@/components/marketplace/ListingCard";
 import ListingDetail from "@/components/marketplace/ListingDetail";
 import MarketplaceChat from "@/components/marketplace/MarketplaceChat";
 import MarketplaceIntro from "@/components/marketplace/MarketplaceIntro";
+import ContractorProfileEdit from "@/components/marketplace/ContractorProfileEdit";
+import ContractorProfileView from "@/components/marketplace/ContractorProfileView";
 import SEOHead from "@/components/SEOHead";
 
 const CATEGORIES = [
@@ -67,6 +69,8 @@ const MarketplacePage = () => {
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [listingCount, setListingCount] = useState(0);
   const [activeTab, setActiveTab] = useState<"feed" | "my" | "messages">("feed");
+  const [showContractorEdit, setShowContractorEdit] = useState(false);
+  const [viewContractorId, setViewContractorId] = useState<string | null>(null);
 
   const fetchListings = async () => {
     setLoading(true);
@@ -228,10 +232,16 @@ const MarketplacePage = () => {
                     />
                   </div>
                   {user ? (
-                    <Button onClick={() => setShowCreate(true)} className="h-12 rounded-2xl gap-2 px-5 shadow-md shadow-primary/20">
-                      <Plus className="w-4 h-4" />
-                      <span className="hidden sm:inline">Создать</span>
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button onClick={() => setShowContractorEdit(true)} variant="outline" className="h-12 rounded-2xl gap-2 px-4">
+                        <HardHat className="w-4 h-4" />
+                        <span className="hidden sm:inline">Я исполнитель</span>
+                      </Button>
+                      <Button onClick={() => setShowCreate(true)} className="h-12 rounded-2xl gap-2 px-5 shadow-md shadow-primary/20">
+                        <Plus className="w-4 h-4" />
+                        <span className="hidden sm:inline">Создать</span>
+                      </Button>
+                    </div>
                   ) : (
                     <Button onClick={() => navigate("/auth")} variant="outline" className="h-12 rounded-2xl gap-2 px-5">
                       <User className="w-4 h-4" />
@@ -438,6 +448,27 @@ const MarketplacePage = () => {
                 setActiveTab("messages");
               }}
               onRefresh={fetchListings}
+              onViewContractor={(uid) => {
+                setSelectedListing(null);
+                setViewContractorId(uid);
+              }}
+            />
+          )}
+          {showContractorEdit && (
+            <ContractorProfileEdit
+              onClose={() => setShowContractorEdit(false)}
+              onSaved={() => setShowContractorEdit(false)}
+            />
+          )}
+          {viewContractorId && (
+            <ContractorProfileView
+              userId={viewContractorId}
+              onClose={() => setViewContractorId(null)}
+              onChat={(uid) => {
+                setChatPartnerId(uid);
+                setViewContractorId(null);
+                setActiveTab("messages");
+              }}
             />
           )}
         </AnimatePresence>

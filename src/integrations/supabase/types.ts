@@ -177,6 +177,69 @@ export type Database = {
         }
         Relationships: []
       }
+      contractor_profiles: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          company_name: string | null
+          company_type: string | null
+          completed_projects: number | null
+          created_at: string
+          description: string | null
+          experience_years: number | null
+          id: string
+          inn: string | null
+          phone: string | null
+          portfolio_photos: string[] | null
+          published: boolean | null
+          specializations: string[] | null
+          updated_at: string
+          user_id: string
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          company_name?: string | null
+          company_type?: string | null
+          completed_projects?: number | null
+          created_at?: string
+          description?: string | null
+          experience_years?: number | null
+          id?: string
+          inn?: string | null
+          phone?: string | null
+          portfolio_photos?: string[] | null
+          published?: boolean | null
+          specializations?: string[] | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          company_name?: string | null
+          company_type?: string | null
+          completed_projects?: number | null
+          created_at?: string
+          description?: string | null
+          experience_years?: number | null
+          id?: string
+          inn?: string | null
+          phone?: string | null
+          portfolio_photos?: string[] | null
+          published?: boolean | null
+          specializations?: string[] | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           created_at: string

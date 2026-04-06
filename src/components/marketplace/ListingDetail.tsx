@@ -23,9 +23,10 @@ interface Props {
   onClose: () => void;
   onChat: (receiverId: string, listingId: string) => void;
   onRefresh: () => void;
+  onViewContractor?: (userId: string) => void;
 }
 
-const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
+const ListingDetail = ({ listing, onClose, onChat, onRefresh, onViewContractor }: Props) => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [responses, setResponses] = useState<Response[]>([]);
@@ -242,7 +243,8 @@ const ListingDetail = ({ listing, onClose, onChat, onRefresh }: Props) => {
             ) : (
               <>
                 <h2 className="font-display font-bold text-lg text-foreground break-words">{listing.title}</h2>
-                <p className="text-xs text-muted-foreground mt-1">от {ownerName}</p>
+                <button onClick={() => onViewContractor?.(listing.user_id)}
+                  className="text-xs text-primary hover:underline mt-1 text-left">от {ownerName}</button>
               </>
             )}
           </div>
