@@ -448,6 +448,10 @@ const MarketplacePage = () => {
                 setActiveTab("messages");
               }}
               onRefresh={fetchListings}
+              onViewContractor={(uid) => {
+                setSelectedListing(null);
+                setViewContractorId(uid);
+              }}
             />
           )}
           {showContractorEdit && (
