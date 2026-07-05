@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "struktura-mcp",
+      "version": "0.1.0",
+      "title": "STRUKTURA MCP"
+    },
+    "tools": [
+      {
+        "name": "list_portfolio_projects",
+        "title": "List portfolio projects",
+        "description": "List published STRUKTURA portfolio projects (title, category, area, duration, description, featured image).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Max projects to return (default 20)."
+            },
+            "category": {
+              "type": "string",
+              "description": "Filter by category slug."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_articles",
+        "title": "List published articles",
+        "description": "List published STRUKTURA blog articles with title, excerpt, category, and slug.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Max articles (default 20)."
+            },
+            "search": {
+              "type": "string",
+              "description": "Case-insensitive substring match on title."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_marketplace_listings",
+        "title": "List marketplace listings",
+        "description": "List active STRUKTURA construction marketplace (Birzha) listings — customer job requests across categories like demolition, electrical, landscaping.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Max listings (default 20)."
+            },
+            "category": {
+              "type": "string",
+              "description": "Filter by category slug (e.g. 'demolition')."
+            },
+            "search": {
+              "type": "string",
+              "description": "Substring match on title."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_shop_items",
+        "title": "List shop items",
+        "description": "List STRUKTURA shop items — tools and equipment listed for sale.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Max items (default 20)."
+            },
+            "search": {
+              "type": "string",
+              "description": "Substring match on title."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
