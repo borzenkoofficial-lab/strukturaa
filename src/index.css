@@ -6,6 +6,10 @@
 
 /* Safe area for PWA standalone mode — background behind status bar */
 html {
+  background: hsl(40 30% 98%);
+}
+
+html.dark-mode-preload {
   background: hsl(30 10% 12%);
 }
 
