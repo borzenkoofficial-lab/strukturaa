@@ -91,7 +91,7 @@ const SuccessOverlay = ({ open, onClose, service, price }: SuccessOverlayProps) 
                 Заявка принята
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Мы свяжемся с вами в течение 30 минут
+                Мы свяжемся с вами по указанным контактам
               </p>
 
               {(service || price) && (
