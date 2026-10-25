@@ -14,5 +14,4 @@
   <url><loc>https://strukturaa.vercel.app/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://strukturaa.vercel.app/contacts</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://strukturaa.vercel.app/news</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://strukturaa.vercel.app/blog</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
 </urlset>
