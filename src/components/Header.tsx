@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <>
       <motion.header
-        className="w-full pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 sm:pt-[max(1rem,env(safe-area-inset-top))] sm:pb-4 px-4 sm:px-6 sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/20"
+        className="skol-site-header w-full pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 sm:pt-[max(1rem,env(safe-area-inset-top))] sm:pb-4 px-4 sm:px-6 sticky top-0 z-50 bg-background/85 backdrop-blur-2xl border-b border-border/30"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
@@ -53,10 +53,10 @@ const Header = () => {
               whileHover={{ scale: 1.03 }}
               onClick={() => navigate("/")}
             >
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="font-display font-bold text-xs sm:text-sm text-primary-foreground">С</span>
+              <div className="skol-brand-mark w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary flex items-center justify-center">
+                <span className="font-display font-bold text-sm sm:text-base text-primary-foreground">С</span>
               </div>
-              <span className="font-display font-bold text-base sm:text-lg text-foreground tracking-tight">СКОЛ</span>
+              <span className="font-display font-bold text-base sm:text-lg text-foreground tracking-[0.12em]">СКОЛ</span>
             </motion.div>
           </div>
 
@@ -71,7 +71,7 @@ const Header = () => {
             {navItems.map((item, i) => (
               <motion.button
                 key={item.path}
-                className="px-3 xl:px-4 py-2 rounded-xl text-sm font-medium text-secondary-foreground hover:bg-secondary transition-colors"
+                className="skol-nav-link px-3 xl:px-4 py-2 rounded-xl text-sm font-medium text-secondary-foreground hover:bg-secondary transition-colors"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08 }}
