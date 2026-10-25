@@ -45,7 +45,7 @@ const Header = () => {
                
               >
                 <ChevronLeft className="w-5 h-5" />
-              </button
+              </button>
             )}
             <div
               className="flex items-center gap-1.5 sm:gap-2 cursor-pointer"
@@ -57,7 +57,7 @@ const Header = () => {
                 <i className="skol-mark-cut" />
               </div>
               <span className="font-display font-semibold text-base sm:text-lg text-foreground tracking-[0.18em]">СКОЛ</span>
-            </div
+            </div>
           </div>
 
           <div className="hidden md:flex items-center flex-1 max-w-md mx-8 cursor-pointer" onClick={() => setSearchOpen(true)}>
@@ -79,7 +79,7 @@ const Header = () => {
                 onClick={() => navigate(item.path)}
               >
                 {item.label}
-              </button
+              </button>
             ))}
           </nav>
 
@@ -91,7 +91,7 @@ const Header = () => {
              
             >
               <Search className="w-4 h-4" />
-            </button
+            </button>
 
             <button
               onClick={() => setLang(lang === "ru" ? "en" : "ru")}
@@ -101,7 +101,7 @@ const Header = () => {
             >
               <Globe className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">{lang === "ru" ? "EN" : "RU"}</span>
-            </button
+            </button>
 
             <button
               onClick={toggleTheme}
@@ -110,7 +110,7 @@ const Header = () => {
              
             >
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button
+            </button>
 
             {user ? (
               <button
@@ -121,7 +121,7 @@ const Header = () => {
               >
                 <User className="w-4 h-4" />
                 <span className="hidden md:inline">{t("header.dashboard")}</span>
-              </button
+              </button>
             ) : (
               <button
                 className="skol-header-cta hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold"
@@ -130,7 +130,7 @@ const Header = () => {
               >
                 <span>Обсудить объект</span>
                 <ArrowUpRight className="h-4 w-4" />
-              </button
+              </button>
             )}
 
             <button
@@ -140,10 +140,10 @@ const Header = () => {
              
             >
               <Menu className="w-5 h-5" />
-            </button
+            </button>
           </div>
         </div>
-      </header
+      </header>
 
       <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
