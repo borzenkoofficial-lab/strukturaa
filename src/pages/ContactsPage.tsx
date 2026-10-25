@@ -60,20 +60,24 @@ const ContactsPage = () => {
     <>
       <SuccessOverlay open={showSuccess} onClose={() => setShowSuccess(false)} />
       <SEOHead title="Контакты" description="Свяжитесь с STRUKTURA: телефон, email, адрес офиса. Бесплатная консультация по строительным и демонтажным работам." canonical="/contacts" />
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <main className="mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
       <AnimatedSection>
-        <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("contacts.title")}</h1>
-        <p className="text-muted-foreground mb-8">{t("contacts.subtitle")}</p>
+        <header className="skol-page-intro">
+          <p className="skol-page-kicker">СКОЛ / СВЯЗАТЬСЯ</p>
+          <h1 className="skol-page-title text-foreground">{t("contacts.title")}</h1>
+          <p className="skol-page-subtitle">{t("contacts.subtitle")}</p>
+        </header>
       </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:content-start">
           {contactInfo.map((info, i) => (
             <AnimatedSection key={info.label} delay={i * 0.1}>
               <motion.div
-                className="glass-card-hover p-5 group"
+                className="glass-card-hover group p-5"
                 whileHover={{ y: -4 }}
               >
-                <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center mb-3 group-hover:bg-primary/25 transition-colors">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-secondary/60 text-primary transition-colors group-hover:border-primary/40">
                   <info.icon className="w-5 h-5 text-primary" />
                 </div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{info.label}</p>
@@ -87,9 +91,10 @@ const ContactsPage = () => {
           ))}
         </div>
 
-        <AnimatedSection delay={0.3}>
+        <div className="lg:sticky lg:top-36 lg:self-start">
+        <AnimatedSection delay={0.12}>
           <motion.form
-            className="glass-card p-6"
+            className="glass-card p-5 sm:p-7"
             onSubmit={handleSubmit}
           >
             <div className="space-y-4">
@@ -129,7 +134,8 @@ const ContactsPage = () => {
             </div>
           </motion.form>
         </AnimatedSection>
-      </div>
+        </div>
+      </main>
     </>
   );
 };
