@@ -144,7 +144,7 @@ const servicesData: ServiceData[] = [
       { ru: "Финальная уборка и сдача", en: "Final cleanup and handover" },
     ],
     faq: [
-      { q: { ru: "Сколько стоит ремонт квартиры?", en: "How much does apartment renovation cost?" }, a: { ru: "Стоимость зависит от площади и сложности: косметический от 800₽/м², капитальный от 1500₽/м². Точная цена — после осмотра.", en: "Depends on area and complexity: cosmetic from 800₽/m², major from 1500₽/m²." } },
+      { q: { ru: "Сколько стоит ремонт квартиры?", en: "How much does apartment renovation cost?" }, a: { ru: "Стоимость зависит от площади, состояния помещения, состава работ, материалов и доступа на объект. Расчёт готовится после уточнения этих условий.", en: "Cost depends on area, room condition, scope, materials and site access. An estimate is prepared after clarifying these factors." } },
       { q: { ru: "Вы делаете дизайн-проект?", en: "Do you make design projects?" }, a: { ru: "Возможность разработки дизайн-проекта и 3D-визуализации уточняется отдельно под задачу.", en: "Design and 3D visualization availability is confirmed separately for each project." } },
     ],
     relatedSlugs: ["apartment-demolition", "construction", "dismantling"],
