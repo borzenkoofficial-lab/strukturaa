@@ -20,7 +20,7 @@ const NewsPage = () => {
 
   return (
     <>
-      <SEOHead title="Новости" description="Последние новости строительной компании STRUKTURA: проекты, события, обновления." canonical="/news" />
+      <SEOHead title="Материалы — СКОЛ" description="Практические материалы о подготовке объектов, сметах, демонтаже и организации строительных работ." canonical="/news" />
       <div className="max-w-7xl mx-auto px-6 py-12">
       <AnimatedSection>
         <div className="flex items-center gap-3 mb-2">
