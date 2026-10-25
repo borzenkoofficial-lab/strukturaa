@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight, MoveUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -18,40 +17,40 @@ const HomepageHero = () => {
 
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-10 pt-10 sm:px-6 sm:pb-16 sm:pt-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14 lg:pb-24 lg:pt-20">
         <div className="relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
+          <div
+           
+           
+           
             className="mb-7 flex items-center gap-3 sm:mb-8"
           >
             <span className="skol-signature-rule h-px w-8 bg-primary" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">{t("hero.eyebrow")}</span>
-          </motion.div>
+          </div
 
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.08 }}
+          <h1
+           
+           
+           
             className="max-w-4xl font-display text-[clamp(3.2rem,8vw,7.4rem)] font-semibold leading-[0.88] tracking-[-0.075em] text-foreground"
           >
             {t("hero.titleA")}
             <span className="block text-foreground/48">{t("hero.titleB")}</span>
             <span className="block">{t("hero.titleC")}</span>
-          </motion.h1>
+          </h1
 
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.18 }}
+          <p
+           
+           
+           
             className="mt-6 max-w-lg text-sm leading-7 text-foreground/70 sm:mt-8 sm:text-base sm:leading-8"
           >
             {t("hero.description")}
-          </motion.p>
+          </p
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.25 }}
+          <div
+           
+           
+           
             className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row"
           >
             <button onClick={() => navigate("/contacts")} className="skol-hero-cta group inline-flex min-h-12 items-center justify-center gap-4 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110">
@@ -62,7 +61,7 @@ const HomepageHero = () => {
               {t("hero.secondary")}
               <ArrowDownRight className="h-4 w-4 text-muted-foreground" />
             </button>
-          </motion.div>
+          </div
 
           <div className="mt-9 flex flex-wrap gap-x-5 gap-y-2 border-t border-border/60 pt-5 text-[11px] uppercase tracking-[0.12em] text-muted-foreground sm:mt-12 sm:pt-6">
             <span>{t("hero.location")}</span>
@@ -73,10 +72,10 @@ const HomepageHero = () => {
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 18 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.75, delay: 0.2 }}
+        <div
+         
+         
+         
           className="relative mx-auto w-full max-w-xl lg:ml-auto"
         >
           <div className="skol-hero-panel relative min-h-[330px] overflow-hidden border-y border-border/65 bg-card/20 px-4 py-6 sm:min-h-[430px] sm:px-7 sm:py-8">
@@ -98,11 +97,11 @@ const HomepageHero = () => {
                 { n: "02", title: t("hero.stage2"), detail: t("hero.stage2Desc"), width: "w-[88%]" },
                 { n: "03", title: t("hero.stage3"), detail: t("hero.stage3Desc"), width: "w-[76%]" },
               ].map((stage, index) => (
-                <motion.div
+                <div
                   key={stage.n}
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.45 + index * 0.12, duration: 0.4 }}
+                 
+                 
+                 
                   className={`skol-hero-stage relative ${stage.width} border-l border-border/70 bg-background/35 py-4 pl-4 pr-3 transition-colors duration-300 hover:border-primary sm:py-5 sm:pl-5`}
                 >
                   <div className="flex items-start gap-3 sm:gap-4">
@@ -113,7 +112,7 @@ const HomepageHero = () => {
                     </div>
                     {index === 2 && <MoveUpRight className="mt-1 h-4 w-4 shrink-0 text-primary" />}
                   </div>
-                </motion.div>
+                </div
               ))}
             </div>
 
@@ -124,7 +123,7 @@ const HomepageHero = () => {
             </div>
           </div>
           <div className="absolute -bottom-2 left-6 right-6 -z-10 h-8 bg-primary/10 blur-2xl" />
-        </motion.div>
+        </div
       </div>
     </section>
   );
