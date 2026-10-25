@@ -16,6 +16,28 @@ const translations = {
   "header.signIn": { ru: "Войти", en: "Sign In" },
   "header.dashboard": { ru: "Кабинет", en: "Dashboard" },
 
+  // Homepage hero
+  "hero.eyebrow": { ru: "Демонтаж · монтаж · комплексные работы", en: "Demolition · installation · integrated works" },
+  "hero.titleA": { ru: "Работаем", en: "We handle" },
+  "hero.titleB": { ru: "с объектом.", en: "the whole" },
+  "hero.titleC": { ru: "Не с обещаниями.", en: "scope of work." },
+  "hero.description": { ru: "СКОЛ — строительные и демонтажные работы для коммерческих и частных объектов в Москве и Московской области. Сначала разбираемся в задаче, затем согласуем объём работ и последовательность действий.", en: "SKOL provides construction and demolition services for commercial and private properties in Moscow and the Moscow region. We clarify the scope first, then agree on work volume and sequence." },
+  "hero.primary": { ru: "Обсудить объект", en: "Discuss a project" },
+  "hero.secondary": { ru: "Направления работ", en: "Explore services" },
+  "hero.location": { ru: "Москва и Московская область", en: "Moscow and Moscow region" },
+  "hero.scope": { ru: "Частные и коммерческие объекты", en: "Private and commercial properties" },
+  "hero.format": { ru: "Отдельные и комплексные работы", en: "Individual and integrated works" },
+  "hero.panelTitle": { ru: "Последовательность работ", en: "Work sequence" },
+  "hero.stage1": { ru: "Оценка задачи", en: "Scope assessment" },
+  "hero.stage1Desc": { ru: "Объём, ограничения и условия объекта", en: "Scope, constraints and site conditions" },
+  "hero.stage2": { ru: "План и смета", en: "Plan and estimate" },
+  "hero.stage2Desc": { ru: "Состав работ и согласованные этапы", en: "Defined scope and agreed stages" },
+  "hero.stage3": { ru: "Выполнение работ", en: "Execution" },
+  "hero.stage3Desc": { ru: "Работа по согласованной последовательности", en: "Work delivered to the agreed sequence" },
+  "hero.panelFoot": { ru: "От задачи к результату", en: "From scope to delivery" },
+  "category.heading": { ru: "Направления работ", en: "Areas of work" },
+  "category.description": { ru: "Выберите услугу, чтобы посмотреть состав и ориентиры по стоимости.", en: "Choose a service to review scope and indicative pricing." },
+
   // Intro
   "intro.tagline": { ru: "Строим будущее. Разбираем прошлое.", en: "Building the future. Dismantling the past." },
 
