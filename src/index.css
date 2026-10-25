@@ -616,3 +616,63 @@ img {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* SKOL signature direction: architectural luxury, not decorative gloss */
+.skol-site-header {
+  background-color: hsl(var(--background) / 0.97);
+  box-shadow: 0 1px 0 hsl(var(--foreground) / 0.025);
+}
+
+.skol-brand-mark {
+  box-shadow: none;
+  border-radius: 2px !important;
+}
+
+.skol-brand-mark::after {
+  inset: 3px;
+  border-color: hsl(var(--primary) / 0.32);
+  border-radius: 0 !important;
+}
+
+.skol-nav-link {
+  border-radius: 0 !important;
+}
+
+.skol-nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+.skol-nav-link.is-active {
+  color: hsl(var(--foreground));
+}
+
+.skol-story-ring {
+  background: linear-gradient(145deg, hsl(var(--foreground) / 0.36), hsl(var(--primary) / 0.88) 58%, hsl(var(--foreground) / 0.18));
+}
+
+.skol-stories-bar {
+  box-shadow: 0 8px 22px -22px hsl(0 0% 0% / 0.7);
+}
+
+.skol-stories-bar img {
+  filter: saturate(0.88);
+  transition: filter 280ms ease, transform 500ms ease;
+}
+
+.skol-stories-bar button:hover img {
+  filter: saturate(1.04);
+}
+
+@media (max-width: 639px) {
+  .skol-stories-bar .max-w-7xl {
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skol-stories-bar img {
+    transition: none;
+  }
+}
