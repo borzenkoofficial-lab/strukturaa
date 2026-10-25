@@ -12,12 +12,12 @@ const CTASection = () => {
     <div className="max-w-7xl mx-auto px-6 py-16">
       <AnimatedSection>
         <motion.div
-          className="relative rounded-3xl overflow-hidden p-8 md:p-14"
-          style={{ background: "linear-gradient(135deg, hsl(35 80% 55% / 0.2), hsl(30 60% 40% / 0.1))" }}
+          className="relative overflow-hidden border border-border/70 p-8 sm:p-10 md:p-14"
+          style={{ background: "linear-gradient(135deg, rgba(112,45,59,0.28), rgba(36,38,41,0.94) 58%, rgba(29,30,32,0.98))" }}
         >
           <div
             className="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-60"
-            style={{ background: "radial-gradient(circle, hsl(35 80% 55% / 0.15), transparent 70%)" }}
+            style={{ background: "radial-gradient(circle, rgba(112,45,59,0.26), transparent 70%)" }}
           />
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
@@ -27,7 +27,7 @@ const CTASection = () => {
             <div className="flex flex-col sm:flex-row items-center gap-3">
               <motion.a
                 href="tel:+79366669958"
-                className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-display font-semibold hover:opacity-90 transition-opacity"
+                className="flex items-center gap-2 px-8 py-4 rounded-sm bg-primary text-primary-foreground font-display font-semibold hover:opacity-90 transition-opacity"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -36,7 +36,7 @@ const CTASection = () => {
               </motion.a>
               <motion.button
                 onClick={() => navigate("/contacts")}
-                className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-secondary text-secondary-foreground font-display font-semibold hover:bg-secondary/80 transition-colors"
+                className="flex items-center gap-2 px-8 py-4 rounded-sm bg-secondary text-secondary-foreground font-display font-semibold hover:bg-secondary/80 transition-colors"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >
