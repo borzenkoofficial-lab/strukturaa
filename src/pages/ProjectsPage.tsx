@@ -72,16 +72,22 @@ const ProjectsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("portfolio_projects")
-        .select("id, title, description, category, area, duration, featured_image, gallery, sort_order")
-        .eq("published", true)
-        .order("sort_order", { ascending: true });
-      setProjects(data?.length ? (data as DbProject[]) : portfolioExamples);
-      setLoading(false);
+    const loadProjects = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("portfolio_projects")
+          .select("id, title, description, category, area, duration, featured_image, gallery, sort_order")
+          .eq("published", true)
+          .order("sort_order", { ascending: true });
+        if (error) throw error;
+        setProjects(data?.length ? (data as DbProject[]) : portfolioExamples);
+      } catch {
+        setProjects(portfolioExamples);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetch();
+    void loadProjects();
   }, []);
 
   const categories = ["all", ...new Set(projects.map(p => p.category))];
