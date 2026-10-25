@@ -64,7 +64,7 @@ const translations = {
   "bento.subscribeBtn": { ru: "Подписаться", en: "Subscribe" },
   "bento.exclusive": { ru: "Эксклюзив", en: "Exclusive" },
   "bento.exclusiveTitle": { ru: "Алмазная резка бетона", en: "Diamond Concrete Cutting" },
-  "bento.exclusiveDesc": { ru: "Точный и бесшумный демонтаж конструкций с алмазным оборудованием. Без вибрации и пыли.", en: "Precise and silent structural demolition with diamond equipment. No vibration or dust." },
+  "bento.exclusiveDesc": { ru: "Алмазная резка и бурение бетона с подбором метода и мер пылеподавления под условия объекта.", en: "Diamond cutting and drilling of concrete, with methods and dust control selected for site conditions." },
   "bento.open": { ru: "Открыть", en: "Open" },
   "bento.office": { ru: "Наш офис", en: "Our Office" },
   "bento.address": { ru: "Москва и Московская область", en: "Moscow and Moscow region" },
@@ -122,7 +122,7 @@ const translations = {
   "services.dismantling": { ru: "Демонтаж коммуникаций", en: "Utility Dismantling" },
   "services.dismantlingDesc": { ru: "Демонтаж электрики, сантехники, вентиляции, отопления. Безопасное отключение и разборка.", en: "Dismantling of electrical, plumbing, ventilation, heating systems. Safe disconnection and disassembly." },
   "services.concrete": { ru: "Алмазная резка", en: "Diamond Cutting" },
-  "services.concreteDesc": { ru: "Алмазное бурение и резка бетона, кирпича, железобетона. Без вибрации и пыли.", en: "Diamond drilling and cutting of concrete, brick, reinforced concrete. No vibration or dust." },
+  "services.concreteDesc": { ru: "Алмазное бурение и резка бетона, кирпича и железобетона. Метод и меры пылеподавления подбираются под объект.", en: "Diamond drilling and cutting of concrete, brick and reinforced concrete. Method and dust control are selected for the site." },
 
   // Services page
   "services.pageTitle": { ru: "Все услуги", en: "All Services" },
