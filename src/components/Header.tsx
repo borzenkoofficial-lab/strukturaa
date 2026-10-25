@@ -50,7 +50,7 @@ const Header = () => {
             )}
             <motion.div
               className="flex items-center gap-1.5 sm:gap-2 cursor-pointer"
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: 1.01 }}
               onClick={() => navigate("/")}
             >
               <div className="skol-brand-mark w-8 h-8 sm:w-9 sm:h-9 rounded-sm border border-primary/70 bg-transparent flex items-center justify-center">
@@ -75,7 +75,7 @@ const Header = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08 }}
-                whileHover={{ y: -2 }}
+                whileHover={{ y: -1 }}
                 onClick={() => navigate(item.path)}
               >
                 {item.label}
@@ -87,7 +87,7 @@ const Header = () => {
             <motion.button
               onClick={() => setSearchOpen(true)}
               className="md:hidden p-2 text-secondary-foreground"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.95 }}
             >
               <Search className="w-4 h-4" />
@@ -114,7 +114,7 @@ const Header = () => {
 
             {user ? (
               <motion.button
-                className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold"
+                className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-md bg-secondary text-secondary-foreground text-xs font-semibold"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate("/dashboard")}
@@ -124,7 +124,7 @@ const Header = () => {
               </motion.button>
             ) : (
               <motion.button
-                className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold"
+                className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-sm bg-primary text-primary-foreground text-xs sm:text-sm font-semibold"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate("/auth")}
