@@ -15,7 +15,7 @@ const StatsSection = () => {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20">
       <AnimatedSection>
-        <div className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#242629] px-5 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-14">
+        <div className="skol-format-panel relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#242629] px-5 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-14">
           <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
             <div className="absolute -right-20 -top-32 h-80 w-80 rounded-full border border-white/[0.045]" />
             <div className="absolute -right-8 -top-20 h-56 w-56 rounded-full border border-white/[0.045]" />
