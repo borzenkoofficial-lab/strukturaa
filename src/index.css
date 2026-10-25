@@ -15,54 +15,54 @@ html.dark-mode-preload {
 
 @layer base {
   :root {
-    --background: 30 10% 12%;
-    --foreground: 40 20% 92%;
+    --background: 220 7% 11%;
+    --foreground: 36 24% 94%;
 
-    --card: 30 8% 18%;
-    --card-foreground: 40 20% 92%;
+    --card: 220 6% 16%;
+    --card-foreground: 36 24% 94%;
 
-    --popover: 30 8% 16%;
-    --popover-foreground: 40 20% 92%;
+    --popover: 220 7% 14%;
+    --popover-foreground: 36 24% 94%;
 
-    --primary: 35 80% 55%;
-    --primary-foreground: 30 10% 8%;
+    --primary: 348 48% 47%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 6% 24%;
-    --secondary-foreground: 40 15% 85%;
+    --secondary: 220 5% 22%;
+    --secondary-foreground: 36 18% 88%;
 
-    --muted: 30 6% 20%;
-    --muted-foreground: 30 10% 55%;
+    --muted: 220 5% 19%;
+    --muted-foreground: 220 5% 63%;
 
-    --accent: 35 60% 45%;
-    --accent-foreground: 40 20% 95%;
+    --accent: 18 43% 49%;
+    --accent-foreground: 36 24% 96%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 30 8% 25%;
-    --input: 30 8% 22%;
-    --ring: 35 80% 55%;
+    --border: 220 5% 27%;
+    --input: 220 5% 23%;
+    --ring: 348 48% 47%;
 
     --radius: 1rem;
 
-    --glass: 30 8% 20% / 0.6;
-    --glass-border: 30 10% 30% / 0.3;
-    --glass-hover: 30 8% 24% / 0.7;
+    --glass: 220 6% 19% / 0.72;
+    --glass-border: 220 6% 34% / 0.48;
+    --glass-hover: 220 6% 23% / 0.84;
 
     --warm-50: 35 30% 96%;
     --warm-100: 35 25% 88%;
     --warm-200: 35 20% 75%;
     --warm-800: 30 12% 18%;
-    --warm-900: 30 10% 12%;
+    --warm-900: 220 7% 11%;
 
-    --sidebar-background: 30 10% 10%;
-    --sidebar-foreground: 40 20% 92%;
-    --sidebar-primary: 35 80% 55%;
-    --sidebar-primary-foreground: 30 10% 8%;
-    --sidebar-accent: 30 6% 20%;
-    --sidebar-accent-foreground: 40 15% 85%;
-    --sidebar-border: 30 8% 25%;
-    --sidebar-ring: 35 80% 55%;
+    --sidebar-background: 220 8% 9%;
+    --sidebar-foreground: 36 24% 94%;
+    --sidebar-primary: 348 48% 47%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 5% 19%;
+    --sidebar-accent-foreground: 36 18% 88%;
+    --sidebar-border: 220 5% 25%;
+    --sidebar-ring: 348 48% 47%;
   }
 
   .light {
@@ -210,12 +210,12 @@ html.dark-mode-preload {
   }
 
   :root .gradient-dark {
-    background: linear-gradient(180deg, hsl(30 10% 14%), hsl(30 10% 10%));
+    background: linear-gradient(180deg, hsl(220 7% 13%), hsl(220 8% 9%));
   }
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(35 80% 60%), hsl(35 50% 45%));
+    background-image: linear-gradient(135deg, hsl(18 48% 57%), hsl(348 48% 43%));
   }
 
   .light .text-gradient {
