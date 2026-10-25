@@ -27,7 +27,7 @@ const NewsPage = () => {
           <Newspaper className="w-6 h-6 text-primary" />
           <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground">{t("news.title")}</h1>
         </div>
-        <p className="text-muted-foreground mb-10">{t("projects.subtitle")}</p>
+        <p className="text-muted-foreground mb-10 max-w-2xl leading-7">Практические рекомендации по подготовке объектов, расчёту объёмов и организации строительных работ.</p>
       </AnimatedSection>
 
       <div className="space-y-6">
