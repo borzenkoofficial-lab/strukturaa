@@ -8,7 +8,7 @@ const translations = {
   "nav.projects": { ru: "Проекты", en: "Projects" },
   "nav.about": { ru: "О нас", en: "About" },
   "nav.contacts": { ru: "Контакты", en: "Contacts" },
-  "nav.news": { ru: "Новости", en: "News" },
+  "nav.news": { ru: "Материалы", en: "Guides" },
   "nav.blog": { ru: "Блог", en: "Blog" },
   "nav.marketplace": { ru: "Биржа", en: "Marketplace" },
   "header.search": { ru: "Демонтаж, строительство...", en: "Demolition, construction..." },
@@ -71,7 +71,7 @@ const translations = {
   "bento.hours": { ru: "Выезд и встреча — по согласованию", en: "Site visits and meetings by arrangement" },
 
   // News
-  "news.title": { ru: "Новости", en: "News" },
+  "news.title": { ru: "Практические материалы", en: "Practical guides" },
   "news.1.title": { ru: "Что подготовить перед демонтажом", en: "What to prepare before demolition" },
   "news.1.date": { ru: "ПАМЯТКА", en: "GUIDE" },
   "news.1.desc": { ru: "Доступ к объекту, ограничения по шуму, отключение коммуникаций и порядок вывоза отходов стоит обсудить до начала работ.", en: "Access, noise restrictions, utility isolation and waste removal should be discussed before work begins." },
@@ -96,7 +96,7 @@ const translations = {
   "news.8.title": { ru: "Что важно в техническом задании", en: "What matters in a scope of work" },
   "news.8.date": { ru: "ЧЕК-ЛИСТ", en: "CHECKLIST" },
   "news.8.desc": { ru: "Фиксируйте результат каждого этапа, ограничения объекта, требования к сохранению конструкций и порядок приёмки.", en: "Define each stage’s deliverable, site constraints, elements to preserve and acceptance process." },
-  "news.readMore": { ru: "Читать далее", en: "Read more" },
+  "news.readMore": { ru: "Все материалы", en: "All guides" },
 
   // Stats
   "stats.projects": { ru: "Проектов выполнено", en: "Projects Completed" },
