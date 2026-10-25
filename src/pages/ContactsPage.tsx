@@ -135,6 +135,7 @@ const ContactsPage = () => {
           </motion.form>
         </AnimatedSection>
         </div>
+      </div>
       </main>
     </>
   );
