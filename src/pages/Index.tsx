@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CinematicIntro from "@/components/CinematicIntro";
 import Header from "@/components/Header";
+import HomepageHero from "@/components/HomepageHero";
 import CategoryPills from "@/components/CategoryPills";
 import BentoGrid from "@/components/BentoGrid";
 import FeaturesCarousel from "@/components/FeaturesCarousel";
@@ -35,8 +36,9 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <Header />
-        <StoriesBar />
+        <HomepageHero />
         <CategoryPills />
+        <StoriesBar />
         <BentoGrid />
         <FeaturesCarousel />
         <StatsSection />
