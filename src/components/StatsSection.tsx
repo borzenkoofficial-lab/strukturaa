@@ -1,45 +1,65 @@
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./AnimatedSection";
-import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
+
+const serviceLines = [
+  { index: "01", title: "Демонтаж", note: "Разборка и подготовка помещений" },
+  { index: "02", title: "Монтаж", note: "Конструкции и инженерные задачи" },
+  { index: "03", title: "Комплексные работы", note: "Несколько этапов в одном плане" },
+];
 
 const StatsSection = () => {
-  const { t } = useLanguage();
-
-  const stats: { value: string; labelKey: TranslationKey; accent: boolean }[] = [
-    { value: "500+", labelKey: "stats.projects", accent: false },
-    { value: "15", labelKey: "stats.years", accent: false },
-    { value: "98%", labelKey: "stats.clients", accent: true },
-  ];
+  const navigate = useNavigate();
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {stats.map((stat, i) => (
-          <AnimatedSection key={stat.labelKey} delay={i * 0.15}>
-            <motion.div
-              className={`rounded-2xl p-6 flex flex-col justify-between min-h-[120px] ${
-                stat.accent ? "bg-primary text-primary-foreground" : "glass-card"
-              }`}
-              whileHover={{ scale: 1.03, y: -4 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.span
-                className={`text-3xl font-display font-bold ${stat.accent ? "" : "text-foreground"}`}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 + i * 0.15, type: "spring", stiffness: 200 }}
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20">
+      <AnimatedSection>
+        <div className="relative overflow-hidden rounded-3xl bg-[#25282B] px-5 py-8 sm:px-10 sm:py-12">
+          <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
+            <div className="absolute -right-20 -top-32 h-80 w-80 rounded-full border border-white/[0.07]" />
+            <div className="absolute -right-8 -top-20 h-56 w-56 rounded-full border border-white/[0.07]" />
+            <div className="absolute bottom-0 left-0 h-px w-2/3 bg-gradient-to-r from-primary/70 via-white/10 to-transparent" />
+          </div>
+          <div className="relative grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+            <div className="flex flex-col items-start justify-between gap-6">
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-primary">Направления работ</p>
+                <h2 className="max-w-lg font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
+                  От отдельных задач
+                  <span className="block text-white/55">до комплексного объекта</span>
+                </h2>
+              </div>
+              <button
+                onClick={() => navigate("/services")}
+                className="group inline-flex items-center gap-2 border-b border-white/25 pb-2 text-sm font-medium text-white transition-colors hover:border-primary"
               >
-                {stat.value}
-              </motion.span>
-              <span className={`text-sm mt-2 ${stat.accent ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
-                {t(stat.labelKey)}
-              </span>
-            </motion.div>
-          </AnimatedSection>
-        ))}
-      </div>
-    </div>
+                Смотреть все услуги
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </button>
+            </div>
+            <div className="divide-y divide-white/10">
+              {serviceLines.map((line, index) => (
+                <motion.button
+                  key={line.index}
+                  onClick={() => navigate(index === 0 ? "/services/demolition" : "/services")}
+                  className="group flex w-full items-center gap-4 py-5 text-left sm:gap-6 sm:py-6"
+                  whileHover={{ x: 4 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <span className="font-mono text-xs text-primary/90">{line.index}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-display text-lg font-medium text-white transition-colors group-hover:text-primary sm:text-xl">{line.title}</span>
+                    <span className="mt-1 block text-sm text-white/50">{line.note}</span>
+                  </span>
+                  <ArrowUpRight className="h-5 w-5 shrink-0 text-white/40 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
+    </section>
   );
 };
 
