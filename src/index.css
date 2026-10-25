@@ -1457,3 +1457,8 @@ html.light .skol-home-hero .skol-signature-stamp { color: #625f5a; border-color:
 html.light .skol-home-hero .skol-signature-rule { background: #702d3b !important; }
 html.light :focus-visible { outline-color: #702d3b; }
 html.light ::selection { color: #fff; background: #702d3b; }
+
+html.light .skol-mobile-backdrop { background: rgba(36,38,41,.32) !important; }
+html.light .skol-mobile-menu { background: #f1efea !important; color: #242629 !important; }
+html.light .skol-mobile-menu .text-primary { color: #702d3b !important; }
+html.light .skol-mobile-menu button:focus-visible { outline: 2px solid #702d3b; outline-offset: -2px; }
