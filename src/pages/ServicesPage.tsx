@@ -5,15 +5,15 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 import SEOHead from "@/components/SEOHead";
 
-const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: TranslationKey; price: string; slug: string }[] = [
-  { icon: Building2, titleKey: "services.demolition", descKey: "services.demolitionDesc", price: "500₽/м²", slug: "demolition" },
-  { icon: HardHat, titleKey: "services.construction", descKey: "services.constructionDesc", price: "1200₽/м²", slug: "construction" },
-  { icon: Home, titleKey: "services.renovation", descKey: "services.renovationDesc", price: "800₽/м²", slug: "renovation" },
-  { icon: Hammer, titleKey: "services.apartmentDemo", descKey: "services.apartmentDemoDesc", price: "400₽/м²", slug: "apartment-demolition" },
-  { icon: Building2, titleKey: "services.buildingDemo", descKey: "services.buildingDemoDesc", price: "350₽/м²", slug: "building-demolition" },
-  { icon: Truck, titleKey: "services.wasteRemoval", descKey: "services.wasteRemovalDesc", price: "8000₽", slug: "waste-removal" },
-  { icon: Wrench, titleKey: "services.dismantling", descKey: "services.dismantlingDesc", price: "600₽/м²", slug: "dismantling" },
-  { icon: Gem, titleKey: "services.concrete", descKey: "services.concreteDesc", price: "1500₽/м.п.", slug: "diamond-cutting" },
+const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: TranslationKey; slug: string }[] = [
+  { icon: Building2, titleKey: "services.demolition", descKey: "services.demolitionDesc", slug: "demolition" },
+  { icon: HardHat, titleKey: "services.construction", descKey: "services.constructionDesc", slug: "construction" },
+  { icon: Home, titleKey: "services.renovation", descKey: "services.renovationDesc", slug: "renovation" },
+  { icon: Hammer, titleKey: "services.apartmentDemo", descKey: "services.apartmentDemoDesc", slug: "apartment-demolition" },
+  { icon: Building2, titleKey: "services.buildingDemo", descKey: "services.buildingDemoDesc", slug: "building-demolition" },
+  { icon: Truck, titleKey: "services.wasteRemoval", descKey: "services.wasteRemovalDesc", slug: "waste-removal" },
+  { icon: Wrench, titleKey: "services.dismantling", descKey: "services.dismantlingDesc", slug: "dismantling" },
+  { icon: Gem, titleKey: "services.concrete", descKey: "services.concreteDesc", slug: "diamond-cutting" },
 ];
 
 const ServicesPage = () => {
@@ -68,8 +68,8 @@ const ServicesPage = () => {
 
                 <div className="skol-service-footer mt-6 flex items-end justify-between gap-3 pt-4">
                   <div className="min-w-0">
-                    <span className="block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{t("services.priceFrom")}</span>
-                    <span className="mt-1 block text-base font-semibold tracking-tight text-foreground">{service.price}</span>
+                    <span className="block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Стоимость</span>
+                    <span className="mt-1 block text-sm font-semibold tracking-tight text-foreground">После оценки объекта</span>
                   </div>
                   <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold text-foreground transition-colors group-hover:text-primary">
                     {t("services.orderBtn")}
