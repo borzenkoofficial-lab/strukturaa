@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, Menu, Sun, Moon, Globe, User, ChevronLeft } from "lucide-react";
+import { Search, Menu, Sun, Moon, Globe, User, ChevronLeft, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -124,13 +124,12 @@ const Header = () => {
               </motion.button>
             ) : (
               <motion.button
-                className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-sm bg-primary text-primary-foreground text-xs sm:text-sm font-semibold"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate("/auth")}
+                className="skol-header-cta hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold"
+                whileTap={{ scale: 0.98 }}
+                onClick={() => navigate("/contacts")}
               >
-                <User className="w-4 h-4" />
-                <span className="hidden sm:inline">{t("header.signIn")}</span>
+                <span>Обсудить объект</span>
+                <ArrowUpRight className="h-4 w-4" />
               </motion.button>
             )}
 
