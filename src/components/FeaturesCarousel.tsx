@@ -1,156 +1,82 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { ArrowUpRight, ClipboardCheck, Layers3, HardHat } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import {
-  ClipboardCheck, Briefcase, ShoppingBag, Shield, Zap, Users, MessageSquare, Heart,
-  ChevronLeft, ChevronRight
-} from "lucide-react";
+import AnimatedSection from "./AnimatedSection";
 
-interface Feature {
-  icon: typeof ClipboardCheck;
-  title: string;
-  description: string;
-  gradient: string;
-  link?: string;
-}
-
-const features: Feature[] = [
+const principles = [
   {
+    number: "01",
     icon: ClipboardCheck,
-    title: "Трекер проектов",
-    description: "Отслеживайте каждый этап вашего ремонта или демонтажа в реальном времени — от начала работ до сдачи объекта. Фото-отчёты, статусы, прогресс.",
-    gradient: "from-primary/20 to-accent/10",
-    link: "/dashboard",
+    title: "Понятная смета",
+    description: "Согласуем состав работ, объёмы и стоимость до начала работ. Изменения обсуждаем отдельно, а не ставим перед фактом.",
   },
   {
-    icon: ShoppingBag,
-    title: "Маркетплейс инструментов",
-    description: "Покупайте и продавайте б/у и новый строительный инструмент. Экономьте до 70% на профессиональном оборудовании.",
-    gradient: "from-emerald-500/20 to-green-500/10",
-    link: "/shop",
+    number: "02",
+    icon: Layers3,
+    title: "Комплексный подход",
+    description: "Демонтаж, подготовка и последующие строительные работы можно собрать в единый план — без разрозненных подрядчиков на каждом этапе.",
   },
   {
-    icon: Shield,
-    title: "Гарантия 3 года",
-    description: "Даём гарантию на все виды работ. Если что-то пошло не так — исправим бесплатно. Работаем по договору.",
-    gradient: "from-amber-500/20 to-orange-500/10",
-    link: "/services",
-  },
-  {
-    icon: Users,
-    title: "Личный кабинет",
-    description: "Управляйте профилем, избранными услугами, историей заказов и общением — всё в одном месте.",
-    gradient: "from-rose-500/20 to-pink-500/10",
-    link: "/dashboard",
-  },
-  {
-    icon: Zap,
-    title: "Реакция за 30 минут",
-    description: "Оставьте заявку — и мы свяжемся с вами в течение 30 минут. Быстрый выезд на объект в день обращения.",
-    gradient: "from-yellow-500/20 to-amber-500/10",
-    link: "/contacts",
+    number: "03",
+    icon: HardHat,
+    title: "Работа по этапам",
+    description: "Фиксируем последовательность работ и контрольные точки, чтобы заказчик понимал, что происходит на объекте и что будет дальше.",
   },
 ];
 
 const FeaturesCarousel = () => {
   const navigate = useNavigate();
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
-
-  const paginate = useCallback((dir: number) => {
-    setDirection(dir);
-    setCurrent((prev) => (prev + dir + features.length) % features.length);
-  }, []);
-
-  useEffect(() => {
-    if (!autoplay) return;
-    const timer = setInterval(() => paginate(1), 5000);
-    return () => clearInterval(timer);
-  }, [autoplay, paginate]);
-
-  const feature = features[current];
-
-  const variants = {
-    enter: (d: number) => ({ x: d > 0 ? 200 : -200, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (d: number) => ({ x: d > 0 ? -200 : 200, opacity: 0 }),
-  };
 
   return (
-    <section className="py-12 sm:py-16 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
-            Возможности платформы
-          </h2>
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Больше, чем строительная компания — целая экосистема
-          </p>
-        </div>
+    <section className="relative overflow-hidden py-16 sm:py-24">
+      <div className="pointer-events-none absolute inset-0 opacity-40" aria-hidden="true">
+        <div className="absolute left-1/2 top-0 h-px w-[min(88%,1200px)] -translate-x-1/2 bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="absolute right-[8%] top-12 h-64 w-64 rounded-full border border-foreground/[0.04]" />
+        <div className="absolute right-[11%] top-20 h-52 w-52 rounded-full border border-foreground/[0.04]" />
+      </div>
 
-        <div
-          className="relative"
-          onMouseEnter={() => setAutoplay(false)}
-          onMouseLeave={() => setAutoplay(true)}
-        >
-          {/* Main card */}
-          <div className="relative overflow-hidden rounded-2xl glass-card min-h-[220px] sm:min-h-[200px]">
-            <AnimatePresence custom={direction} mode="wait">
-              <motion.div
-                key={current}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 cursor-pointer"
-                onClick={() => feature.link && navigate(feature.link)}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
+        <AnimatedSection>
+          <div className="mb-8 flex flex-col justify-between gap-5 sm:mb-12 sm:flex-row sm:items-end">
+            <div className="max-w-2xl">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-primary">Подход СКОЛ</p>
+              <h2 className="font-display text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
+                Строительные работы
+                <span className="block text-muted-foreground">без лишней неопределённости</span>
+              </h2>
+            </div>
+            <button
+              onClick={() => navigate("/contacts")}
+              className="group inline-flex w-fit items-center gap-2 border-b border-primary/50 pb-2 text-sm font-medium text-foreground transition-colors hover:border-primary"
+            >
+              Обсудить объект
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </button>
+          </div>
+        </AnimatedSection>
+
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
+          {principles.map((item, index) => (
+            <AnimatedSection key={item.number} delay={index * 0.1}>
+              <motion.article
+                className="group relative flex h-full min-h-[250px] flex-col justify-between overflow-hidden rounded-2xl border border-border/50 bg-card/55 p-5 transition-colors duration-300 hover:border-primary/35 sm:min-h-[300px] sm:p-7"
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.25 }}
               >
-                <div className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center border border-border/20`}>
-                  <feature.icon className="w-8 h-8 sm:w-10 sm:h-10 text-foreground" />
+                <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border border-foreground/[0.05] transition-transform duration-500 group-hover:scale-125" />
+                <div className="flex items-start justify-between">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+                    <item.icon className="h-5 w-5" strokeWidth={1.7} />
+                  </div>
+                  <span className="font-mono text-xs tracking-widest text-muted-foreground/60">{item.number}</span>
                 </div>
-                <div className="text-center sm:text-left flex-1">
-                  <h3 className="font-display text-lg sm:text-xl font-bold text-foreground mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-lg">
-                    {feature.description}
-                  </p>
+                <div className="relative mt-12 sm:mt-16">
+                  <h3 className="mb-3 font-display text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{item.title}</h3>
+                  <p className="max-w-sm text-sm leading-6 text-muted-foreground">{item.description}</p>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Nav arrows */}
-            <button
-              onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/60 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background/80 transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); paginate(1); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/60 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background/80 transition-colors"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Dots */}
-          <div className="flex items-center justify-center gap-2 mt-4">
-            {features.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === current
-                    ? "w-6 bg-primary"
-                    : "w-1.5 bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                }`}
-              />
-            ))}
-          </div>
+              </motion.article>
+            </AnimatedSection>
+          ))}
         </div>
       </div>
     </section>
