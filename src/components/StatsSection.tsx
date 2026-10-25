@@ -15,16 +15,16 @@ const StatsSection = () => {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20">
       <AnimatedSection>
-        <div className="relative overflow-hidden rounded-3xl bg-[#25282B] px-5 py-8 sm:px-10 sm:py-12">
+        <div className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#242629] px-5 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-14">
           <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
-            <div className="absolute -right-20 -top-32 h-80 w-80 rounded-full border border-white/[0.07]" />
-            <div className="absolute -right-8 -top-20 h-56 w-56 rounded-full border border-white/[0.07]" />
+            <div className="absolute -right-20 -top-32 h-80 w-80 rounded-full border border-white/[0.045]" />
+            <div className="absolute -right-8 -top-20 h-56 w-56 rounded-full border border-white/[0.045]" />
             <div className="absolute bottom-0 left-0 h-px w-2/3 bg-gradient-to-r from-primary/70 via-white/10 to-transparent" />
           </div>
           <div className="relative grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
             <div className="flex flex-col items-start justify-between gap-6">
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-primary">Направления работ</p>
+                <p className="skol-section-label mb-4 text-primary">Направления работ</p>
                 <h2 className="max-w-lg font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
                   От отдельных задач
                   <span className="block text-white/55">до комплексного объекта</span>
