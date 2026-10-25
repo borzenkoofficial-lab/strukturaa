@@ -1377,3 +1377,83 @@ html.light .skol-site-header button { color:#464440; }
 html.light .skol-site-header .skol-header-cta { color:#fff !important; }
 html.light .skol-theme-toggle .theme-toggle-label { color:#464440; }
 @media (max-width:639px) { html.light .skol-hero-panel { background:transparent !important; } }
+
+
+/* Light-theme audit pass: normalize sections that previously retained dark-only styling. */
+html.light .skol-format-panel {
+  color: #242629 !important;
+  background: #fff !important;
+  border-color: #d4cec5 !important;
+  box-shadow: 0 12px 32px rgba(36,38,41,.055) !important;
+}
+html.light .skol-format-panel .text-white,
+html.light .skol-format-panel [class*="text-white/"] {
+  color: #242629 !important;
+}
+html.light .skol-format-panel .text-white\/55,
+html.light .skol-format-panel .text-white\/50,
+html.light .skol-format-panel .text-white\/45,
+html.light .skol-format-panel .text-white\/40 {
+  color: #625f5a !important;
+}
+html.light .skol-format-panel [class*="border-white/"] { border-color: #d8d2c9 !important; }
+html.light .skol-format-panel [class*="divide-white/"] > :not([hidden]) ~ :not([hidden]) { border-color: #ded8cf !important; }
+html.light .skol-format-panel .skol-section-label { color: #702d3b !important; }
+html.light .skol-format-panel button { color: #343230; border-color: #cfc8be; }
+html.light .skol-format-panel button:hover { color: #702d3b; }
+html.light .skol-format-panel button .text-primary { color: #702d3b !important; }
+html.light .skol-cta-panel {
+  color: #242629;
+  background: #fff !important;
+  border-color: #d4cec5 !important;
+  box-shadow: 0 12px 32px rgba(36,38,41,.05);
+}
+html.light .skol-cta-panel h2 { color: #242629 !important; }
+html.light .skol-cta-panel p { color: #55514b !important; }
+html.light .skol-cta-panel .skol-cta-decoration { opacity: .12 !important; }
+html.light .skol-cta-panel .bg-secondary {
+  color: #343230 !important;
+  background: #eee9e1 !important;
+  border: 1px solid #d4cec5;
+}
+html.light .skol-cta-panel .bg-secondary:hover { background: #e4ddd4 !important; }
+html.light #skol-mobile-menu {
+  color: #242629 !important;
+  background: #f1efea !important;
+  border-color: #d4cec5 !important;
+}
+html.light #skol-mobile-menu .text-foreground { color: #242629 !important; }
+html.light #skol-mobile-menu .text-muted-foreground { color: #625f5a !important; }
+html.light #skol-mobile-menu .border-border,
+html.light #skol-mobile-menu [class*="border-border/"] { border-color: #d4cec5 !important; }
+html.light #skol-mobile-menu button:hover { background: #e8e2d9 !important; }
+html.light .skol-search-backdrop { background: rgba(36,38,41,.24) !important; backdrop-filter: blur(2px) !important; }
+html.light .skol-search-window {
+  background: #f1efea !important;
+  border: 1px solid #d4cec5 !important;
+  box-shadow: 0 24px 70px rgba(36,38,41,.18) !important;
+}
+html.light .skol-search-window input { color: #242629 !important; background: #fff !important; }
+html.light .skol-search-window input::placeholder { color: #716d67 !important; }
+html.light .skol-search-window button { color: #343230; }
+html.light .skol-search-window button:hover { background: #e8e2d9 !important; }
+html.light .skol-search-window .text-foreground { color: #242629 !important; }
+html.light .skol-search-window .text-muted-foreground { color: #625f5a !important; }
+html.light .skol-page-kicker,
+html.light .skol-section-label,
+html.light .skol-portfolio-note,
+html.light .skol-services-intro-meta { color: #5b5751; }
+html.light .skol-portfolio-note,
+html.light .skol-services-intro-meta { border-color: #d4cec5 !important; }
+html.light .skol-service-card .skol-service-index,
+html.light .skol-project-card .skol-project-open-label { color: #625f5a; }
+html.light .skol-service-card:hover .skol-service-index,
+html.light .skol-project-card:hover .skol-project-open-label { color: #702d3b !important; }
+html.light .skol-project-card .skol-project-card-content { background: #fff !important; }
+html.light .skol-project-card .skol-project-image-label { color: #f1efea; }
+html.light .skol-site-footer a:hover,
+html.light .skol-site-footer button:hover { color: #702d3b !important; }
+html.light .skol-home-hero .skol-signature-stamp { color: #625f5a; border-color: #d4cec5; }
+html.light .skol-home-hero .skol-signature-rule { background: #702d3b !important; }
+html.light :focus-visible { outline-color: #702d3b; }
+html.light ::selection { color: #fff; background: #702d3b; }
