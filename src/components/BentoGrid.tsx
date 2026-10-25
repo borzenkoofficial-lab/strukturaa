@@ -73,6 +73,7 @@ const BentoGrid = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 auto-rows-[minmax(140px,auto)] sm:auto-rows-[minmax(180px,auto)] [&>*]:overflow-hidden">
 
+        {false && (
         {/* ═══════ 1. СТРОИТЕЛЬНАЯ БИРЖА — главный CTA ═══════ */}
         <motion.div
           className="col-span-2 lg:col-span-2 relative overflow-hidden rounded-2xl cursor-pointer group"
@@ -121,6 +122,8 @@ const BentoGrid = () => {
             </div>
           </div>
         </motion.div>
+
+        )}
 
         {/* ═══════ 1.5. МАГАЗИН ИНСТРУМЕНТОВ — б/у и новые ═══════ */}
         <motion.div
