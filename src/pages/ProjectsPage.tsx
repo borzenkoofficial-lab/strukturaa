@@ -97,12 +97,13 @@ const ProjectsPage = () => {
   return (
     <>
       <SEOHead title="Портфолио — СКОЛ" description="Примеры демонтажных, монтажных и комплексных строительных работ компании СКОЛ." canonical="/projects" />
-      <main className="mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
+      <main className="skol-projects-page mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
         <AnimatedSection>
           <header className="skol-page-intro">
             <p className="skol-page-kicker">СКОЛ / ВЫПОЛНЕННЫЕ РАБОТЫ</p>
             <h1 className="skol-page-title text-foreground">{t("projects.title")}</h1>
             <p className="skol-page-subtitle">{t("projects.subtitle")}</p>
+            <div className="skol-portfolio-note mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"><span>ПОРТФОЛИО / ВЫПОЛНЕННЫЕ ЗАДАЧИ</span><span>Публикуем только подтверждённые сведения об объектах</span></div>
           </header>
         </AnimatedSection>
 
@@ -142,7 +143,7 @@ const ProjectsPage = () => {
             {filtered.map((p, i) => (
               <AnimatedSection key={p.id} delay={i * 0.06}>
                 <motion.div
-                  className={`glass-card group cursor-pointer ${i === 0 ? "md:col-span-2 lg:col-span-2" : ""}`}
+                  className={`skol-project-card glass-card group cursor-pointer ${i === 0 ? "skol-project-card-featured md:col-span-2 lg:col-span-2" : ""}`}
                   whileHover={{ y: -2 }}
                   transition={{ duration: 0.3 }}
                   onClick={() => setSelected({
@@ -155,7 +156,8 @@ const ProjectsPage = () => {
                     gallery: p.gallery,
                   })}
                 >
-                  <div className={`skol-project-image overflow-hidden ${i === 0 ? "aspect-[2/1]" : "aspect-video"}`}>
+                  <div className={`skol-project-image relative overflow-hidden ${i === 0 ? "aspect-[2/1]" : "aspect-[5/3]"}`}>
+                    <div className="skol-project-image-label absolute left-4 top-4 z-10 flex items-center gap-2"><span>{String(i + 1).padStart(2, "0")}</span><span>СКОЛ / ОБЪЕКТ</span></div>
                     {p.featured_image ? (
                       <motion.img
                         src={p.featured_image}
@@ -164,14 +166,15 @@ const ProjectsPage = () => {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="relative flex h-full w-full flex-col justify-between overflow-hidden bg-[#242629] p-5 sm:p-7"><div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(rgba(241,239,234,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(241,239,234,.08) 1px, transparent 1px)", backgroundSize: "28px 28px" }} /><div className="relative flex items-center justify-between"><span className="font-mono text-[10px] tracking-[0.22em] text-white/45">СКОЛ / АРХИВ ОБЪЕКТА</span><span className="font-mono text-xs text-white/55">{String(i + 1).padStart(2, "0")}</span></div><div className="relative"><div className="mb-3 h-px w-14 bg-[#b7838d]" /><p className="max-w-xs font-display text-lg font-medium leading-snug text-white/85 sm:text-xl">Материалы объекта готовятся к публикации</p></div><div className="absolute -right-8 top-1/4 h-44 w-44 rounded-full border border-white/10" /><div className="absolute -right-2 top-1/3 h-28 w-28 rounded-full border border-[#b7838d]/35" /></div>
+                      <div className="relative flex h-full w-full flex-col justify-between overflow-hidden bg-[#242629] p-5 sm:p-7"><div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(rgba(241,239,234,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(241,239,234,.08) 1px, transparent 1px)", backgroundSize: "28px 28px" }} /><div className="relative flex items-center justify-between"><span className="font-mono text-[10px] tracking-[0.22em] text-white/45">СКОЛ / АРХИВ ОБЪЕКТА</span><span className="font-mono text-xs text-white/55">{String(i + 1).padStart(2, "0")}</span></div><div className="relative"><div className="mb-3 h-px w-14 bg-[#b7838d]" /><p className="max-w-xs font-display text-lg font-medium leading-snug text-white/85 sm:text-xl">Фотоархив объекта готовится к публикации</p></div><div className="absolute -right-8 top-1/4 h-44 w-44 rounded-full border border-white/10" /><div className="absolute -right-2 top-1/3 h-28 w-28 rounded-full border border-[#b7838d]/35" /></div>
                     )}
                   </div>
-                  <div className="p-5 sm:p-6 lg:p-7">
-                    <div className="flex items-center gap-2 mb-2">
+                  <div className="skol-project-card-content p-5 sm:p-6 lg:p-7">
+                    <div className="mb-3 flex flex-wrap items-center gap-2">
                       <span className="border border-primary/25 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/80">
                         {p.category}
                       </span>
+                      <span className="skol-project-open-label">Смотреть карточку <span aria-hidden="true">↗</span></span>
                     </div>
                     <h2 className="mb-2 text-lg font-display font-semibold tracking-tight text-foreground sm:text-xl">{p.title}</h2>
                     <p className="text-xs sm:text-sm text-muted-foreground mb-3 line-clamp-2">{p.description}</p>
