@@ -9,9 +9,9 @@ interface SEOHeadProps {
   noindex?: boolean;
 }
 
-const SITE_NAME = "STRUKTURA";
+const SITE_NAME = "СКОЛ";
 const BASE_URL = "https://strukturaa.lovable.app";
-const DEFAULT_DESC = "STRUKTURA — профессиональная строительная компания. Демонтаж, ремонт, строительство, реновация. Строительная биржа и магазин инструментов.";
+const DEFAULT_DESC = "СКОЛ — профессиональная строительная компания. Демонтаж, ремонт, строительство, реновация. Комплексные строительные работы, демонтаж и отделка.";
 
 const SEOHead = ({
   title,
