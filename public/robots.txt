@@ -32,5 +32,5 @@ Allow: /
 Disallow: /admin
 Disallow: /dashboard
 
-Sitemap: https://strukturaa.lovable.app/sitemap.xml
-Host: https://strukturaa.lovable.app
+Sitemap: https://strukturaa.vercel.app/sitemap.xml
+Host: strukturaa.vercel.app
