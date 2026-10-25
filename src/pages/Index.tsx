@@ -36,9 +36,9 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <Header />
+        <StoriesBar />
         <HomepageHero />
         <CategoryPills />
-        <StoriesBar />
         <BentoGrid />
         <FeaturesCarousel />
         <StatsSection />
