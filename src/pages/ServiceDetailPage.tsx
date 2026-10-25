@@ -359,8 +359,6 @@ const ServiceDetailPage = () => {
 
   const isWaste = service?.slug === "waste-removal";
 
-  const calculatedPrice = 0;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) return;
@@ -692,20 +690,11 @@ const ServiceDetailPage = () => {
                 </div>
               </div>
 
-              {false && !isWaste && area[0] > 100 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="mb-4 p-3 rounded-xl bg-primary/10 text-sm"
-                >
-                  <span className="text-primary font-semibold">
-                    {area[0] > 1000 ? "−15%" : area[0] > 500 ? "−10%" : "−5%"}
-                  </span>
-                  <span className="text-muted-foreground ml-2">
-                    {lang === "ru" ? "параметр для оценки объёма" : "scope assessment factor"}
-                  </span>
-                </motion.div>
-              )}
+              <p className="mb-4 border-l border-primary/60 pl-3 text-xs leading-5 text-muted-foreground">
+                {lang === "ru"
+                  ? "Площадь — только один из факторов. Итог зависит от материалов, доступа, ограничений и состава работ."
+                  : "Area is only one factor. Final cost depends on materials, access, constraints and scope."}
+              </p>
 
               <div className="border-t border-border/30 pt-4 mb-6">
                 <div className="flex justify-between items-center">
@@ -713,7 +702,7 @@ const ServiceDetailPage = () => {
                     {lang === "ru" ? "Стоимость:" : "Cost:"}
                   </span>
                   <motion.span
-                    key={calculatedPrice}
+                    key={area[0]}
                     initial={{ scale: 1.1 }}
                     animate={{ scale: 1 }}
                     className="text-2xl font-display font-bold text-primary"
