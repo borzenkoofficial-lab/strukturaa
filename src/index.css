@@ -1262,3 +1262,46 @@ body {
   .skol-home-hero .skol-signature-stamp { display: none !important; }
   .skol-hero-panel { min-height: auto !important; padding-top: 1.25rem !important; padding-bottom: 1.25rem !important; }
 }
+
+/* SKOL contrast pass: burgundy is an accent, not a low-contrast text color. */
+:root {
+  --primary: 348 43% 31%;
+  --primary-foreground: 0 0% 100%;
+}
+.dark, :root:not(.light) {
+  --primary: 348 42% 62%;
+  --primary-foreground: 220 8% 10%;
+}
+
+/* Keep accent text and icons readable on both graphite and ivory surfaces. */
+.text-primary,
+svg.text-primary,
+[class*="text-primary"] svg,
+.skol-service-icon,
+.skol-category-index,
+.skol-principle-card svg {
+  color: hsl(var(--primary)) !important;
+}
+.dark .text-primary,
+.dark svg.text-primary,
+.dark [class*="text-primary"] svg,
+.dark .skol-service-icon,
+.dark .skol-category-index,
+.dark .skol-principle-card svg {
+  color: hsl(348 48% 70%) !important;
+}
+.text-primary-foreground,
+.bg-primary .text-primary,
+.bg-primary svg {
+  color: hsl(var(--primary-foreground));
+}
+a.text-primary:hover,
+button.text-primary:hover,
+.text-primary:hover {
+  color: hsl(348 48% 72%);
+}
+.dark a.text-primary:hover,
+.dark button.text-primary:hover,
+.dark .text-primary:hover {
+  color: hsl(348 55% 78%);
+}
