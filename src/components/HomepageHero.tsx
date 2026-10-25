@@ -8,7 +8,7 @@ const HomepageHero = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative isolate overflow-hidden">
+    <section className="skol-home-hero relative isolate overflow-hidden">
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
         <div className="absolute right-[-10rem] top-[-10rem] h-[32rem] w-[32rem] rounded-full border border-foreground/[0.045]" />
         <div className="absolute right-[-5rem] top-[-5rem] h-[22rem] w-[22rem] rounded-full border border-foreground/[0.045]" />
@@ -53,7 +53,7 @@ const HomepageHero = () => {
             transition={{ duration: 0.55, delay: 0.25 }}
             className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row"
           >
-            <button onClick={() => navigate("/contacts")} className="group inline-flex min-h-12 items-center justify-center gap-4 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110">
+            <button onClick={() => navigate("/contacts")} className="skol-hero-cta group inline-flex min-h-12 items-center justify-center gap-4 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110">
               {t("hero.primary")}
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </button>
@@ -78,7 +78,7 @@ const HomepageHero = () => {
           transition={{ duration: 0.75, delay: 0.2 }}
           className="relative mx-auto w-full max-w-xl lg:ml-auto"
         >
-          <div className="relative min-h-[330px] overflow-hidden border-y border-border/65 bg-card/20 px-4 py-6 sm:min-h-[430px] sm:px-7 sm:py-8">
+          <div className="skol-hero-panel relative min-h-[330px] overflow-hidden border-y border-border/65 bg-card/20 px-4 py-6 sm:min-h-[430px] sm:px-7 sm:py-8">
             <div className="absolute inset-0 opacity-25" aria-hidden="true" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground) / 0.05) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground) / 0.05) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
             <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full border border-primary/20 sm:h-80 sm:w-80" />
             <div className="absolute -right-2 -top-2 h-44 w-44 rounded-full border border-foreground/[0.08] sm:h-56 sm:w-56" />
@@ -102,7 +102,7 @@ const HomepageHero = () => {
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.45 + index * 0.12, duration: 0.4 }}
-                  className={`relative ${stage.width} border-l border-border/70 bg-background/35 py-4 pl-4 pr-3 transition-colors duration-300 hover:border-primary sm:py-5 sm:pl-5`}
+                  className={`skol-hero-stage relative ${stage.width} border-l border-border/70 bg-background/35 py-4 pl-4 pr-3 transition-colors duration-300 hover:border-primary sm:py-5 sm:pl-5`}
                 >
                   <div className="flex items-start gap-3 sm:gap-4">
                     <span className="pt-0.5 font-mono text-xs text-primary">{stage.n}</span>
