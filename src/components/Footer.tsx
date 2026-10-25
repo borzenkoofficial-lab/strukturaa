@@ -20,7 +20,6 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
     { label: t("nav.projects"), path: "/projects" },
     { label: t("nav.blog"), path: "/blog" },
     { label: t("nav.news"), path: "/news" },
-    { label: t("nav.marketplace"), path: "/marketplace" },
     { label: t("nav.contacts"), path: "/contacts" },
   ];
 
@@ -42,9 +41,9 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
               onClick={() => navigate("/")}
             >
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="font-display font-bold text-sm text-primary-foreground">S</span>
+                <span className="font-display font-bold text-sm text-primary-foreground">С</span>
               </div>
-              <span className="font-display font-bold text-lg text-foreground tracking-tight">STRUKTURA</span>
+              <span className="font-display font-bold text-lg text-foreground tracking-tight">СКОЛ</span>
             </motion.div>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               {t("about.mission")}
