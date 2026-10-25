@@ -12,11 +12,11 @@ const CTASection = () => {
     <div className="max-w-7xl mx-auto px-6 py-16">
       <AnimatedSection>
         <motion.div
-          className="relative overflow-hidden border border-border/70 p-8 sm:p-10 md:p-14"
+          className="skol-cta-panel relative overflow-hidden border border-border/70 p-8 sm:p-10 md:p-14"
           style={{ background: "linear-gradient(135deg, rgba(112,45,59,0.28), rgba(36,38,41,0.94) 58%, rgba(29,30,32,0.98))" }}
         >
           <div
-            className="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-60"
+            className="skol-cta-decoration absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-60"
             style={{ background: "radial-gradient(circle, rgba(112,45,59,0.26), transparent 70%)" }}
           />
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
