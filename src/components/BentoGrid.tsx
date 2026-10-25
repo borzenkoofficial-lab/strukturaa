@@ -71,7 +71,7 @@ const BentoGrid = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 auto-rows-[minmax(140px,auto)] sm:auto-rows-[minmax(180px,auto)] [&>*]:overflow-hidden">
+      <div className="skol-bento-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 auto-rows-[minmax(148px,auto)] sm:auto-rows-[minmax(190px,auto)] [&>*]:overflow-hidden">
 
         {/* ═══════ 1.5. МАГАЗИН ИНСТРУМЕНТОВ — б/у и новые ═══════ */}
         <motion.div
@@ -82,23 +82,12 @@ const BentoGrid = () => {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-accent via-secondary to-accent" />
           <div className="absolute inset-0 shimmer-overlay opacity-20" />
-          {/* Spring petals */}
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={`sh-${i}`}
-              className="absolute pointer-events-none select-none"
-              style={{ right: `${5 + i * 18}%`, top: `-10%`, fontSize: 12 + (i % 3) * 3 }}
-              animate={{
-                y: ["0%", "1100%"],
-                x: [0, (i % 2 === 0 ? -1 : 1) * (12 + i * 6)],
-                rotate: [0, (i % 2 === 0 ? -1 : 1) * 300],
-                opacity: [0, 0.45, 0.3, 0],
-              }}
-              transition={{ duration: 7 + i * 1.2, repeat: Infinity, delay: i * 1.5 + 0.5, ease: "easeInOut" }}
-            >
-              {["🍃", "🌸", "🌱", "✿", "🌿"][i]}
-            </motion.div>
-          ))}
+          <div className="skol-card-blueprint absolute inset-0 pointer-events-none" aria-hidden="true">
+            <span className="absolute right-[-7%] top-[-42%] h-64 w-64 rounded-full border border-foreground/10" />
+            <span className="absolute right-[3%] top-[-28%] h-44 w-44 rounded-full border border-foreground/10" />
+            <span className="absolute right-[13%] top-[-14%] h-24 w-24 rounded-full border border-foreground/10" />
+            <span className="absolute right-0 bottom-0 h-px w-2/3 bg-gradient-to-l from-foreground/20 to-transparent" />
+          </div>
           <div className="relative h-full flex flex-col justify-between p-5 sm:p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
@@ -135,14 +124,14 @@ const BentoGrid = () => {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
             {[
-              { slug: "demolition", label: "Демонтаж", price: "от 500₽/м²", icon: Hammer, gradient: "from-primary/20 to-accent/10" },
-              { slug: "diamond-cutting", label: "Алмазная резка", price: "от 1500₽/м.п.", icon: Gem, gradient: "from-blue-500/20 to-cyan-500/10" },
-              { slug: "renovation", label: "Ремонт под ключ", price: "от 800₽/м²", icon: Wrench, gradient: "from-emerald-500/20 to-green-500/10" },
-              { slug: "construction", label: "Монтаж конструкций", price: "от 1200₽/м²", icon: HardHat, gradient: "from-violet-500/20 to-purple-500/10" },
-              { slug: "apartment-demolition", label: "Демонтаж квартир", price: "от 400₽/м²", icon: Building2, gradient: "from-rose-500/20 to-pink-500/10" },
-              { slug: "building-demolition", label: "Снос зданий", price: "от 350₽/м²", icon: TrashIcon, gradient: "from-amber-500/20 to-orange-500/10" },
-              { slug: "waste-removal", label: "Вывоз мусора", price: "от 8000₽", icon: Truck, gradient: "from-teal-500/20 to-cyan-500/10" },
-              { slug: "dismantling", label: "Демонтаж коммуникаций", price: "от 600₽/м²", icon: Cable, gradient: "from-indigo-500/20 to-blue-500/10" },
+              { slug: "demolition", label: "Демонтаж", price: "от 500₽/м²", icon: Hammer, gradient: "from-primary/20 to-primary/5" },
+              { slug: "diamond-cutting", label: "Алмазная резка", price: "от 1500₽/м.п.", icon: Gem, gradient: "from-primary/14 to-secondary" },
+              { slug: "renovation", label: "Ремонт под ключ", price: "от 800₽/м²", icon: Wrench, gradient: "from-secondary to-card" },
+              { slug: "construction", label: "Монтаж конструкций", price: "от 1200₽/м²", icon: HardHat, gradient: "from-primary/12 to-secondary" },
+              { slug: "apartment-demolition", label: "Демонтаж квартир", price: "от 400₽/м²", icon: Building2, gradient: "from-primary/16 to-card" },
+              { slug: "building-demolition", label: "Снос зданий", price: "от 350₽/м²", icon: TrashIcon, gradient: "from-secondary to-primary/10" },
+              { slug: "waste-removal", label: "Вывоз мусора", price: "от 8000₽", icon: Truck, gradient: "from-primary/10 to-secondary" },
+              { slug: "dismantling", label: "Демонтаж коммуникаций", price: "от 600₽/м²", icon: Cable, gradient: "from-secondary to-primary/10" },
             ].map((svc, i) => (
               <motion.div
                 key={svc.slug}
