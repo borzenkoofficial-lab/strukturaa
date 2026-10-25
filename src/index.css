@@ -676,3 +676,127 @@ img {
     transition: none;
   }
 }
+
+
+/* SKOL SIGNATURE — premium editorial system */
+:root {
+  --skol-graphite: #242629;
+  --skol-burgundy: #702d3b;
+  --skol-ivory: #f1efea;
+  --skol-steel: #96938e;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background-image:
+    radial-gradient(ellipse at 82% 0%, hsl(var(--primary) / 0.045), transparent 34rem),
+    linear-gradient(180deg, transparent, hsl(0 0% 0% / 0.035));
+}
+::selection { background: var(--skol-burgundy); color: var(--skol-ivory); }
+:focus-visible { outline: 2px solid hsl(348 30% 58%); outline-offset: 3px; }
+
+.skol-site-header {
+  min-height: 4.1rem;
+  background: hsl(var(--background) / 0.97);
+  border-bottom-color: hsl(var(--foreground) / 0.075);
+  box-shadow: 0 1px 0 hsl(var(--foreground) / 0.025);
+}
+.skol-brand-mark {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+.skol-brand-mark::after {
+  inset: 3px;
+  border-radius: 0 !important;
+  border-color: hsl(var(--primary) / 0.38);
+}
+.skol-nav-link { border-radius: 0 !important; }
+.skol-nav-link::after { height: 1px; background: var(--skol-burgundy); }
+.skol-nav-link.is-active::after { transform: scaleX(1); }
+
+.skol-home-hero {
+  border-bottom: 1px solid hsl(var(--border) / 0.48);
+}
+.skol-home-hero h1 {
+  font-weight: 500;
+  letter-spacing: -0.085em;
+  line-height: 0.86;
+}
+.skol-home-hero .skol-hero-panel {
+  border: 1px solid hsl(var(--border) / 0.72);
+  background:
+    linear-gradient(135deg, hsl(var(--card) / 0.76), hsl(var(--background) / 0.35));
+  box-shadow: inset 0 1px 0 hsl(var(--foreground) / 0.04);
+}
+.skol-home-hero .skol-hero-panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 4.5rem;
+  background: var(--skol-burgundy);
+}
+.skol-home-hero .skol-hero-stage {
+  border-left-color: hsl(var(--primary) / 0.62);
+  background: hsl(var(--foreground) / 0.018);
+}
+.skol-home-hero .skol-hero-stage:hover {
+  background: hsl(var(--foreground) / 0.045);
+}
+.skol-home-hero .skol-hero-cta {
+  border-radius: 2px !important;
+  background: var(--skol-burgundy);
+  box-shadow: none;
+}
+.skol-home-hero .skol-hero-cta:hover { background: #823747; }
+
+.skol-stories-bar {
+  background: hsl(var(--background) / 0.98);
+  box-shadow: 0 1px 0 hsl(var(--foreground) / 0.025);
+}
+.skol-story-ring {
+  background: linear-gradient(145deg, hsl(var(--foreground) / 0.24), hsl(var(--primary) / 0.85) 58%, hsl(var(--foreground) / 0.12));
+}
+.skol-stories-bar img { filter: saturate(0.84) contrast(1.02); }
+.skol-stories-bar button:hover img { filter: saturate(1); }
+
+.glass-card,
+.glass-card-hover {
+  border-radius: 0.7rem;
+  box-shadow: inset 0 1px 0 hsl(var(--foreground) / 0.025), 0 5px 18px hsl(0 0% 0% / 0.07);
+  backdrop-filter: none;
+}
+@media (hover:hover) and (pointer:fine) {
+  .glass-card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 hsl(var(--foreground) / 0.04), 0 12px 28px hsl(0 0% 0% / 0.13);
+  }
+}
+.skol-bento-grid .glass-card,
+.skol-bento-grid .glass-card-hover { border-radius: 0.65rem; }
+
+.skol-section-label {
+  font-size: 0.67rem;
+  font-weight: 650;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.skol-editorial-rule {
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.85), hsl(var(--border) / 0.55) 30%, transparent);
+}
+.skol-project-image { background: hsl(var(--secondary)); }
+.skol-project-image img { transition: transform 650ms cubic-bezier(.2,.7,.2,1), filter 500ms ease; filter: saturate(.82); }
+@media (hover:hover) and (pointer:fine) {
+  .group:hover .skol-project-image img { transform: scale(1.025); filter: saturate(1); }
+}
+
+@media (max-width: 639px) {
+  .skol-home-hero h1 { letter-spacing: -0.075em; line-height: 0.9; }
+  .skol-site-header { padding-bottom: 0.6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
