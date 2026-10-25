@@ -18,7 +18,6 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
   const companyLinks = [
     { label: t("nav.about"), path: "/about" },
     { label: t("nav.projects"), path: "/projects" },
-    { label: t("nav.blog"), path: "/blog" },
     { label: t("nav.news"), path: "/news" },
     { label: t("nav.contacts"), path: "/contacts" },
   ];
