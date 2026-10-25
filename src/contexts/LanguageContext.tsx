@@ -36,7 +36,7 @@ const translations = {
   "hero.stage3Desc": { ru: "Работа по согласованной последовательности", en: "Work delivered to the agreed sequence" },
   "hero.panelFoot": { ru: "От задачи к результату", en: "From scope to delivery" },
   "category.heading": { ru: "Направления работ", en: "Areas of work" },
-  "category.description": { ru: "Выберите услугу, чтобы посмотреть состав и ориентиры по стоимости.", en: "Choose a service to review scope and indicative pricing." },
+  "category.description": { ru: "Выберите направление, чтобы изучить состав работ и запросить расчёт под условия объекта.", en: "Choose a service to review its scope and request a site-specific estimate." },
 
   // Intro
   "intro.tagline": { ru: "Строим будущее. Разбираем прошлое.", en: "Building the future. Dismantling the past." },
@@ -157,7 +157,7 @@ const translations = {
 
   // CTA
   "cta.title": { ru: "Готовы начать проект?", en: "Ready to Start?" },
-  "cta.desc": { ru: "Получите бесплатную консультацию и расчёт стоимости. Мы перезвоним в течение 30 минут.", en: "Get a free consultation and cost estimate. We'll call you back within 30 minutes." },
+  "cta.desc": { ru: "Опишите задачу и условия объекта. Уточним состав работ и подготовим расчёт после оценки исходных данных.", en: "Describe the task and site conditions. We will clarify the scope and prepare an estimate after reviewing the details." },
   "cta.call": { ru: "Позвонить", en: "Call Us" },
   "cta.request": { ru: "Оставить заявку", en: "Submit Request" },
 
