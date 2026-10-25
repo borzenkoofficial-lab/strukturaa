@@ -36,9 +36,9 @@ const StoriesBar = () => {
 
   return (
     <>
-      <div className="sticky top-[64px] sm:top-[76px] z-40 bg-background/90 backdrop-blur-xl border-b border-border/30 shadow-[0_8px_24px_-22px_rgba(0,0,0,0.7)]">
+      <div className="skol-stories-bar sticky top-[60px] sm:top-[68px] z-40 bg-background/95 backdrop-blur-xl border-b border-border/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-2.5">
-        <div className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide pb-2">
+        <div className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide pb-1">
           {stories.map((story, i) => (
             <motion.button
               key={story.id}
@@ -48,7 +48,7 @@ const StoriesBar = () => {
               transition={{ delay: i * 0.05, duration: 0.3 }}
               onClick={() => setActiveIndex(i)}
             >
-              <div className="relative w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full p-[2.5px] bg-gradient-to-tr from-primary via-accent to-primary group-hover:scale-105 transition-transform">
+              <div className="skol-story-ring relative w-[58px] h-[58px] sm:w-[66px] sm:h-[66px] rounded-full p-[2px] group-hover:scale-[1.03] transition-transform duration-300">
                 <div className="w-full h-full rounded-full border-2 border-background overflow-hidden">
                   <img
                     src={story.image_url}
@@ -57,7 +57,7 @@ const StoriesBar = () => {
                   />
                 </div>
               </div>
-              <span className="text-[10px] sm:text-xs text-muted-foreground max-w-[64px] sm:max-w-[72px] truncate text-center">
+              <span className="text-[10px] sm:text-[11px] font-medium tracking-wide text-foreground/65 group-hover:text-foreground max-w-[70px] sm:max-w-[76px] truncate text-center transition-colors">
                 {story.title}
               </span>
             </motion.button>
