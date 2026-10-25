@@ -90,10 +90,17 @@ const Header = () => {
             </button>
 
             <button
+              type="button"
               onClick={toggleTheme}
-              className="p-2 text-secondary-foreground transition-colors hover:text-foreground"
-      >
-              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              className="skol-theme-toggle inline-flex min-h-9 items-center justify-center gap-2 border border-border/70 px-2.5 sm:px-3 text-secondary-foreground transition-colors hover:text-foreground"
+              aria-label={theme === "dark" ? "Включить светлую тему" : "Включить тёмную тему"}
+              title={theme === "dark" ? "Светлая тема" : "Тёмная тема"}
+              aria-pressed={theme === "light"}
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4" aria-hidden="true" /> : <Moon className="w-4 h-4" aria-hidden="true" />}
+              <span className="theme-toggle-label hidden xl:inline text-[11px] font-medium tracking-wide">
+                {theme === "dark" ? "СВЕТЛАЯ" : "ТЁМНАЯ"}
+              </span>
             </button>
 
             {user ? (
