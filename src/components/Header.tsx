@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <>
       <motion.header
-        className="skol-site-header w-full pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 sm:pt-[max(1rem,env(safe-area-inset-top))] sm:pb-4 px-4 sm:px-6 sticky top-0 z-50 bg-background/85 backdrop-blur-2xl border-b border-border/30"
+        className="skol-site-header w-full pt-[max(0.65rem,env(safe-area-inset-top))] pb-2.5 sm:pt-[max(0.85rem,env(safe-area-inset-top))] sm:pb-3 px-4 sm:px-6 sticky top-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/30"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
@@ -39,7 +39,7 @@ const Header = () => {
             {/* Mobile back button */}
             {!isHome && (
               <motion.button
-                className="lg:hidden p-2 rounded-xl bg-secondary text-secondary-foreground"
+                className="lg:hidden p-2 text-secondary-foreground"
                 onClick={() => navigate(-1)}
                 whileTap={{ scale: 0.9 }}
                 initial={{ opacity: 0, x: -10 }}
@@ -53,10 +53,10 @@ const Header = () => {
               whileHover={{ scale: 1.03 }}
               onClick={() => navigate("/")}
             >
-              <div className="skol-brand-mark w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary flex items-center justify-center">
-                <span className="font-display font-bold text-sm sm:text-base text-primary-foreground">С</span>
+              <div className="skol-brand-mark w-8 h-8 sm:w-9 sm:h-9 rounded-sm border border-primary/70 bg-transparent flex items-center justify-center">
+                <span className="font-display font-semibold text-sm sm:text-base text-foreground">С</span>
               </div>
-              <span className="font-display font-bold text-base sm:text-lg text-foreground tracking-[0.12em]">СКОЛ</span>
+              <span className="font-display font-semibold text-base sm:text-lg text-foreground tracking-[0.18em]">СКОЛ</span>
             </motion.div>
           </div>
 
@@ -71,7 +71,7 @@ const Header = () => {
             {navItems.map((item, i) => (
               <motion.button
                 key={item.path}
-                className="skol-nav-link px-3 xl:px-4 py-2 rounded-xl text-sm font-medium text-secondary-foreground hover:bg-secondary transition-colors"
+                className={`skol-nav-link px-3 xl:px-4 py-2 text-[12px] font-medium tracking-wide transition-colors ${location.pathname === item.path || location.pathname.startsWith(item.path + "/") ? "text-foreground is-active" : "text-secondary-foreground hover:text-foreground"}`}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08 }}
@@ -86,7 +86,7 @@ const Header = () => {
           <div className="flex items-center gap-1.5 sm:gap-2">
             <motion.button
               onClick={() => setSearchOpen(true)}
-              className="md:hidden p-2 rounded-xl bg-secondary text-secondary-foreground"
+              className="md:hidden p-2 text-secondary-foreground"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -95,7 +95,7 @@ const Header = () => {
 
             <motion.button
               onClick={() => setLang(lang === "ru" ? "en" : "ru")}
-              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold uppercase"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 border border-border/70 text-secondary-foreground text-xs font-semibold uppercase transition-colors hover:border-primary/50"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -105,7 +105,7 @@ const Header = () => {
 
             <motion.button
               onClick={toggleTheme}
-              className="p-2 rounded-xl bg-secondary text-secondary-foreground"
+              className="p-2 text-secondary-foreground transition-colors hover:text-foreground"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -135,7 +135,7 @@ const Header = () => {
             )}
 
             <motion.button
-              className="lg:hidden p-2 rounded-xl bg-secondary text-secondary-foreground"
+              className="lg:hidden p-2 text-secondary-foreground"
               onClick={() => setMenuOpen(true)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
