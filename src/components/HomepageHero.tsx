@@ -8,7 +8,8 @@ const HomepageHero = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="skol-home-hero relative isolate overflow-hidden">
+    <section className="skol-home-hero relative isolate overflow-hidden" aria-label="СКОЛ — строительные работы">
+      <div className="skol-signature-stamp pointer-events-none absolute right-5 top-5 z-10 hidden xl:flex" aria-hidden="true"><span>СКОЛ</span><i /><span>МСК / МО</span><span className="skol-stamp-index">01—26</span></div>
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
         <div className="absolute right-[-10rem] top-[-10rem] h-[32rem] w-[32rem] rounded-full border border-foreground/[0.045]" />
         <div className="absolute right-[-5rem] top-[-5rem] h-[22rem] w-[22rem] rounded-full border border-foreground/[0.045]" />
@@ -23,7 +24,7 @@ const HomepageHero = () => {
             transition={{ duration: 0.55 }}
             className="mb-7 flex items-center gap-3 sm:mb-8"
           >
-            <span className="h-px w-8 bg-primary" />
+            <span className="skol-signature-rule h-px w-8 bg-primary" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">{t("hero.eyebrow")}</span>
           </motion.div>
 
@@ -85,7 +86,7 @@ const HomepageHero = () => {
 
             <div className="relative flex items-start justify-between">
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">СКОЛ / ПОРЯДОК РАБОТ</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground"><span className="text-primary">SK—01</span><span className="mx-2 text-foreground/20">/</span>СКОЛ · ПОРЯДОК РАБОТ</p>
                 <p className="mt-2 text-sm font-medium text-foreground">{t("hero.panelTitle")}</p>
               </div>
               <span className="border border-border/70 px-2.5 py-1 font-mono text-[10px] tracking-widest text-muted-foreground">01 — 03</span>
@@ -118,7 +119,8 @@ const HomepageHero = () => {
 
             <div className="relative mt-6 flex items-center justify-between border-t border-border/50 pt-4 sm:mt-8">
               <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{t("hero.panelFoot")}</span>
-              <span className="font-display text-sm font-bold tracking-[0.2em] text-foreground">СКОЛ<span className="text-primary">.</span></span>
+              <span className="skol-signature-wordmark font-display text-sm font-bold tracking-[0.2em] text-foreground">СКОЛ<span className="text-primary">.</span></span>
+              <span className="font-mono text-[9px] tracking-[0.16em] text-muted-foreground">РАБОТАЕМ ПО ПЛАНУ</span>
             </div>
           </div>
           <div className="absolute -bottom-2 left-6 right-6 -z-10 h-8 bg-primary/10 blur-2xl" />
