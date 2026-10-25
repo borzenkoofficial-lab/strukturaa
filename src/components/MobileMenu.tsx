@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Home, Briefcase, FolderOpen, Users, Phone, Newspaper, BookOpen, Megaphone } from "lucide-react";
+import { X, Home, Briefcase, FolderOpen, Users, Phone, Newspaper, BookOpen } from "lucide-react";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useCallback } from "react";
@@ -10,7 +10,6 @@ const menuItems: { icon: typeof Home; labelKey: TranslationKey; path: string }[]
   { icon: Home, labelKey: "menu.home", path: "/" },
   { icon: Briefcase, labelKey: "nav.services", path: "/services" },
   { icon: FolderOpen, labelKey: "nav.projects", path: "/projects" },
-  { icon: Megaphone, labelKey: "nav.marketplace", path: "/marketplace" },
   { icon: BookOpen, labelKey: "nav.blog", path: "/blog" },
   { icon: Newspaper, labelKey: "nav.news", path: "/news" },
   { icon: Users, labelKey: "nav.about", path: "/about" },
