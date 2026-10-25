@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -37,7 +36,8 @@ const StoriesBar = () => {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+      <div className="sticky top-[64px] sm:top-[76px] z-40 bg-background/90 backdrop-blur-xl border-b border-border/30 shadow-[0_8px_24px_-22px_rgba(0,0,0,0.7)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-2.5">
         <div className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide pb-2">
           {stories.map((story, i) => (
             <motion.button
@@ -62,6 +62,7 @@ const StoriesBar = () => {
               </span>
             </motion.button>
           ))}
+        </div>
         </div>
       </div>
 
