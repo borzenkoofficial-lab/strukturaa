@@ -23,8 +23,6 @@ const NewsPage = lazy(() => import("./pages/NewsPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
-const BlogPage = lazy(() => import("./pages/BlogPage"));
-const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const MarketplacePage = lazy(() => import("./pages/MarketplacePage"));
 const GigsPage = lazy(() => import("./pages/GigsPage"));
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
@@ -76,8 +74,8 @@ const App = () => (
                   <Route path="/about" element={<PageLayout><AboutPage /></PageLayout>} />
                   <Route path="/contacts" element={<PageLayout><ContactsPage /></PageLayout>} />
                   <Route path="/news" element={<PageLayout><NewsPage /></PageLayout>} />
-                  <Route path="/blog" element={<PageLayout><BlogPage /></PageLayout>} />
-                  <Route path="/blog/:slug" element={<PageLayout><ArticlePage /></PageLayout>} />
+                  <Route path="/blog" element={<Navigate to="/news" replace />} />
+                  <Route path="/blog/:slug" element={<Navigate to="/news" replace />} />
                   <Route path="/auth" element={<Suspense fallback={<PageLoading />}><AuthPage /></Suspense>} />
                   <Route path="/reset-password" element={<Suspense fallback={<PageLoading />}><ResetPasswordPage /></Suspense>} />
                   <Route path="/dashboard" element={<ProtectedRoute><Suspense fallback={<PageLoading />}><DashboardPage /></Suspense></ProtectedRoute>} />
