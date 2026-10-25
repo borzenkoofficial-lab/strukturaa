@@ -22,48 +22,65 @@ const ServicesPage = () => {
 
   return (
     <>
-      <SEOHead title="Услуги" description="Демонтаж зданий, монтаж конструкций, ремонт и отделка, вывоз мусора, алмазная резка — все строительные услуги от STRUKTURA." canonical="/services" />
-      <div className="max-w-7xl mx-auto px-6 py-12">
-      <AnimatedSection>
-        <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("services.pageTitle")}</h1>
-        <p className="text-muted-foreground mb-10">{t("services.pageSubtitle")}</p>
-      </AnimatedSection>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {services.map((service, i) => (
-          <AnimatedSection key={service.titleKey} delay={i * 0.08}>
-            <motion.div
-              className="glass-card-hover p-6 h-full flex flex-col justify-between group cursor-pointer relative overflow-hidden"
-              whileHover={{ y: -6, scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-              onClick={() => navigate(`/services/${service.slug}`)}
-            >
-              <div>
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center group-hover:bg-primary/25 transition-colors">
-                    <service.icon className="w-6 h-6 text-primary" />
+      <SEOHead title="Услуги — СКОЛ" description="Демонтаж, монтаж конструкций, ремонт, вывоз строительного мусора и алмазная резка." canonical="/services" />
+      <main className="mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
+        <AnimatedSection>
+          <header className="skol-page-intro">
+            <p className="skol-page-kicker">СКОЛ / НАПРАВЛЕНИЯ РАБОТ</p>
+            <h1 className="skol-page-title text-foreground">{t("services.pageTitle")}</h1>
+            <p className="skol-page-subtitle">{t("services.pageSubtitle")}</p>
+          </header>
+        </AnimatedSection>
+
+        <div className="mb-5 flex items-center justify-between gap-4">
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">Каталог услуг</p>
+          <span className="font-mono text-xs text-muted-foreground">01—08</span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+          {services.map((service, i) => (
+            <AnimatedSection key={service.titleKey} delay={Math.min(i * 0.045, 0.22)}>
+              <motion.article
+                role="link"
+                tabIndex={0}
+                aria-label={t(service.titleKey)}
+                className="glass-card-hover skol-service-card group relative flex h-full cursor-pointer flex-col justify-between"
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.22 }}
+                onClick={() => navigate(`/services/${service.slug}`)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    navigate(`/services/${service.slug}`);
+                  }
+                }}
+              >
+                <div>
+                  <div className="mb-7 flex items-start justify-between">
+                    <span className="skol-service-index">0{i + 1} / SKOL</span>
+                    <div className="skol-service-icon flex items-center justify-center text-primary transition-colors group-hover:border-primary/40 group-hover:bg-primary/10">
+                      <service.icon className="h-5 w-5" strokeWidth={1.6} />
+                    </div>
                   </div>
-                  <motion.div whileHover={{ rotate: 45 }} className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ArrowUpRight className="w-4 h-4 text-secondary-foreground" />
-                  </motion.div>
+                  <h2 className="skol-service-title mb-2 font-display font-semibold text-foreground">{t(service.titleKey)}</h2>
+                  <p className="skol-service-description text-sm text-muted-foreground">{t(service.descKey)}</p>
                 </div>
-                <h3 className="font-display font-semibold text-foreground mb-2">{t(service.titleKey)}</h3>
-                <p className="text-sm text-muted-foreground">{t(service.descKey)}</p>
-              </div>
-              <div className="flex items-center justify-between mt-5 pt-4 border-t border-border/30">
-                <span className="text-sm text-muted-foreground">{t("services.priceFrom")} <span className="text-foreground font-semibold">{service.price}</span></span>
-                <motion.button
-                  className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {t("services.orderBtn")}
-                </motion.button>
-              </div>
-            </motion.div>
-          </AnimatedSection>
-        ))}
-      </div>
-    </div>
+
+                <div className="skol-service-footer mt-6 flex items-end justify-between gap-3 pt-4">
+                  <div className="min-w-0">
+                    <span className="block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{t("services.priceFrom")}</span>
+                    <span className="mt-1 block text-base font-semibold tracking-tight text-foreground">{service.price}</span>
+                  </div>
+                  <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold text-foreground transition-colors group-hover:text-primary">
+                    {t("services.orderBtn")}
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+              </motion.article>
+            </AnimatedSection>
+          ))}
+        </div>
+      </main>
     </>
   );
 };
