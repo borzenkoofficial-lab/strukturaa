@@ -39,7 +39,7 @@ const FeaturesCarousel = () => {
         <AnimatedSection>
           <div className="mb-8 flex flex-col justify-between gap-5 sm:mb-12 sm:flex-row sm:items-end">
             <div className="max-w-2xl">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-primary">Подход СКОЛ</p>
+              <p className="skol-section-label mb-4 text-primary">Подход СКОЛ</p>
               <h2 className="font-display text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
                 Строительные работы
                 <span className="block text-muted-foreground">без лишней неопределённости</span>
@@ -59,13 +59,13 @@ const FeaturesCarousel = () => {
           {principles.map((item, index) => (
             <AnimatedSection key={item.number} delay={index * 0.1}>
               <motion.article
-                className="group relative flex h-full min-h-[250px] flex-col justify-between overflow-hidden rounded-2xl border border-border/50 bg-card/55 p-5 transition-colors duration-300 hover:border-primary/35 sm:min-h-[300px] sm:p-7"
-                whileHover={{ y: -4 }}
+                className="group relative flex h-full min-h-[250px] flex-col justify-between overflow-hidden rounded-lg border border-border/65 bg-card/35 p-5 transition-colors duration-300 hover:border-primary/40 sm:min-h-[300px] sm:p-7"
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.25 }}
               >
-                <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border border-foreground/[0.05] transition-transform duration-500 group-hover:scale-125" />
+                <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border border-foreground/[0.035] transition-transform duration-500 group-hover:scale-110" />
                 <div className="flex items-start justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-border/60 bg-secondary/50 text-primary transition-colors group-hover:border-primary/35">
                     <item.icon className="h-5 w-5" strokeWidth={1.7} />
                   </div>
                   <span className="font-mono text-xs tracking-widest text-muted-foreground/60">{item.number}</span>
