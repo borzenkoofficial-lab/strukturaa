@@ -38,15 +38,31 @@ const ProjectDetailModal = ({ project, onClose }: ProjectDetailProps) => {
         >
           {/* Image gallery */}
           <div className="relative aspect-[16/9] bg-muted">
-            <motion.img
-              key={currentImg}
-              src={allImages[currentImg]}
-              alt={project.title}
-              className="w-full h-full object-cover"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            />
+            {allImages[currentImg] ? (
+              <motion.img
+                key={currentImg}
+                src={allImages[currentImg]}
+                alt={project.title}
+                className="w-full h-full object-cover"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+            ) : (
+              <div className="relative flex h-full w-full flex-col justify-between overflow-hidden bg-[#242629] p-6 sm:p-9">
+                <div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(rgba(241,239,234,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(241,239,234,.08) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+                <div className="relative flex items-center justify-between">
+                  <span className="font-mono text-[10px] tracking-[0.22em] text-white/45">СКОЛ / АРХИВ ОБЪЕКТА</span>
+                  <span className="font-mono text-xs text-white/55">01—03</span>
+                </div>
+                <div className="relative">
+                  <div className="mb-3 h-px w-14 bg-[#b7838d]" />
+                  <p className="max-w-sm font-display text-xl font-medium text-white/85 sm:text-2xl">Фотографии и видео объекта будут добавлены</p>
+                </div>
+                <div className="absolute -right-10 top-1/4 h-64 w-64 rounded-full border border-white/10" />
+                <div className="absolute -right-2 top-1/3 h-40 w-40 rounded-full border border-[#b7838d]/35" />
+              </div>
+            )}
 
             {/* Close */}
             <button
