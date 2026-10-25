@@ -24,7 +24,7 @@ const ContactsPage = () => {
     setSubmitting(true);
 
     try {
-      await supabase.functions.invoke("notify-request", {
+      const { error } = await supabase.functions.invoke("notify-request", {
         body: {
           name: name.trim(),
           phone: phone.trim(),
@@ -32,6 +32,7 @@ const ContactsPage = () => {
           source: "contacts_page",
         },
       });
+      if (error) throw error;
 
       setShowSuccess(true);
       setSubmitted(true);
@@ -59,7 +60,7 @@ const ContactsPage = () => {
   return (
     <>
       <SuccessOverlay open={showSuccess} onClose={() => setShowSuccess(false)} />
-      <SEOHead title="Контакты" description="Свяжитесь с STRUKTURA: телефон, email, адрес офиса. Бесплатная консультация по строительным и демонтажным работам." canonical="/contacts" />
+      <SEOHead title="Контакты" description="Свяжитесь со СКОЛ по вопросам демонтажных, монтажных и комплексных строительных работ в Москве и Московской области." canonical="/contacts" />
       <main className="mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
       <AnimatedSection>
         <header className="skol-page-intro">
