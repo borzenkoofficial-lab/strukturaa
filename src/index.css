@@ -1059,3 +1059,110 @@ form button[type="submit"] {
 .skol-site-footer .skol-footer-mark{background:linear-gradient(135deg,hsl(var(--foreground)/.035),transparent 70%)}
 @media(max-width:639px){.skol-category-index{font-size:.58rem}.skol-category-section button{gap:.45rem;padding-left:.65rem;padding-right:.65rem}.skol-signature-stamp{display:none}}
 @media(prefers-reduced-motion:reduce){.skol-category-section button::before,.skol-category-index{transition:none}}
+
+
+/* Portfolio and contractor catalogue: clearer editorial structure */
+.skol-portfolio-note,
+.skol-services-intro-meta {
+  padding-top: .9rem;
+  border-top: 1px solid hsl(var(--border) / .65);
+  color: hsl(var(--foreground) / .48);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .61rem;
+  letter-spacing: .09em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+.skol-portfolio-note > span:first-child,
+.skol-services-intro-meta > span:first-child { color: hsl(var(--foreground) / .72); }
+.skol-project-card {
+  border-radius: .35rem !important;
+  cursor: pointer;
+}
+.skol-project-card:focus-visible { outline-offset: 4px; }
+.skol-project-image-label {
+  padding: .48rem .58rem;
+  border: 1px solid hsl(0 0% 100% / .18);
+  background: hsl(220 5% 12% / .84);
+  color: hsl(40 19% 93% / .78);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .57rem;
+  letter-spacing: .12em;
+}
+.skol-project-image-label > span:first-child { color: #d1a3aa; }
+.skol-project-card .skol-project-image > div:not(.skol-project-image-label) {
+  transition: opacity 220ms ease;
+}
+.skol-project-card-content { min-width: 0; }
+.skol-project-card-content h2 { text-wrap: balance; }
+.skol-project-card-content > div:first-child {
+  justify-content: space-between;
+}
+.skol-project-open-label {
+  margin-left: auto;
+  color: hsl(var(--foreground) / .42);
+  font-size: .65rem;
+  transition: color 180ms ease;
+  white-space: nowrap;
+}
+.skol-project-card:hover .skol-project-open-label,
+.skol-project-card:focus-visible .skol-project-open-label { color: hsl(var(--primary) / 1); }
+.skol-project-card-featured .skol-project-card-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  column-gap: 1.25rem;
+  align-items: start;
+}
+.skol-project-card-featured .skol-project-card-content > div:first-child,
+.skol-project-card-featured .skol-project-card-content h2,
+.skol-project-card-featured .skol-project-card-content p {
+  grid-column: 1;
+}
+.skol-project-card-featured .skol-project-card-content > div:last-child {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  padding-top: .15rem;
+}
+.skol-services-count {
+  padding-bottom: .85rem;
+  border-bottom: 1px solid hsl(var(--border) / .65);
+}
+.skol-service-card {
+  border-radius: .35rem !important;
+  background: linear-gradient(145deg, hsl(var(--card) / .92), hsl(var(--background) / .68));
+}
+.skol-service-card::before { left: 0; width: 2.4rem; }
+.skol-service-card .skol-service-index {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  letter-spacing: .13em;
+  font-size: .6rem;
+}
+.skol-service-index-number { color: hsl(var(--foreground) / .8); font-size: .75rem; }
+.skol-service-index-divider { color: var(--skol-burgundy); }
+.skol-service-card .skol-service-icon { border-radius: .2rem; }
+.skol-service-card .skol-service-footer { margin-top: 1.5rem; }
+@media (max-width: 767px) {
+  .skol-project-card-featured { grid-column: auto !important; }
+  .skol-project-card-featured .skol-project-image { aspect-ratio: 5 / 3 !important; }
+  .skol-project-card-featured .skol-project-card-content {
+    display: block;
+  }
+  .skol-project-open-label { font-size: .6rem; }
+  .skol-portfolio-note,
+  .skol-services-intro-meta { font-size: .57rem; letter-spacing: .06em; }
+}
+@media (max-width: 420px) {
+  .skol-project-image-label { left: .65rem; top: .65rem; font-size: .52rem; }
+  .skol-project-card-content { padding: 1rem !important; }
+  .skol-project-open-label { width: 100%; margin-left: 0; }
+  .skol-services-page .skol-service-card { padding: 1rem; }
+  .skol-services-page .skol-service-card .skol-service-title { font-size: 1.08rem; }
+  .skol-services-page .skol-service-card .skol-service-footer { align-items: flex-start; }
+  .skol-services-page .skol-service-card .skol-service-footer > div { max-width: 70%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-project-card .skol-project-image > div:not(.skol-project-image-label),
+  .skol-project-open-label { transition: none; }
+}
