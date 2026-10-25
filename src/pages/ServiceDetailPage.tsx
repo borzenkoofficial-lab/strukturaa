@@ -51,13 +51,13 @@ const servicesData: ServiceData[] = [
     includes: [
       { ru: "Выезд специалиста для оценки", en: "Specialist visit for assessment" },
       { ru: "Составление плана демонтажа", en: "Demolition plan preparation" },
-      { ru: "Получение разрешений", en: "Obtaining permits" },
+      { ru: "Уточнение необходимых согласований", en: "Clarifying required approvals" },
       { ru: "Демонтажные работы", en: "Demolition work" },
       { ru: "Вывоз строительного мусора", en: "Construction waste removal" },
       { ru: "Уборка территории", en: "Site cleanup" },
     ],
     process: [
-      { ru: "Заявка и бесплатная консультация", en: "Application and free consultation" },
+      { ru: "Обсуждение задачи и условий", en: "Discussing the task and site conditions" },
       { ru: "Выезд инженера на объект", en: "Engineer visit to the site" },
       { ru: "Составление сметы и плана работ", en: "Cost estimate and work plan" },
       { ru: "Заключение договора", en: "Contract signing" },
@@ -67,7 +67,7 @@ const servicesData: ServiceData[] = [
     ],
     faq: [
       { q: { ru: "Нужно ли разрешение на демонтаж?", en: "Is a demolition permit required?" }, a: { ru: "Требования зависят от типа объекта и состава работ. Необходимые согласования определяются до начала работ.", en: "Requirements depend on the structure and scope. Necessary approvals are identified before work starts." } },
-      { q: { ru: "Сколько по времени занимает демонтаж?", en: "How long does demolition take?" }, a: { ru: "Зависит от объёма: квартира 1–3 дня, здание — от 5 дней. Точные сроки определяем после осмотра объекта.", en: "Depends on volume: apartment 1–3 days, building — from 5 days." } },
+      { q: { ru: "Сколько по времени занимает демонтаж?", en: "How long does demolition take?" }, a: { ru: "Срок зависит от объёма, материалов, доступа и ограничений площадки. График согласуется после оценки.", en: "Timing depends on scope, materials, access and site constraints. The schedule is agreed after assessment." } },
       { q: { ru: "Вы вывозите мусор после демонтажа?", en: "Do you remove debris?" }, a: { ru: "Вывоз и обращение с отходами согласуются отдельно с учётом объёма и условий доступа.", en: "Waste removal and handling are agreed separately based on volume and access conditions." } },
     ],
     relatedSlugs: ["apartment-demolition", "building-demolition", "waste-removal"],
@@ -137,7 +137,7 @@ const servicesData: ServiceData[] = [
       { ru: "Уборка после ремонта", en: "Post-renovation cleanup" },
     ],
     process: [
-      { ru: "Бесплатные замеры помещения", en: "Free room measurements" },
+      { ru: "Замеры по согласованию", en: "Measurements by arrangement" },
       { ru: "Разработка дизайн-проекта", en: "Design project development" },
       { ru: "Утверждение сметы", en: "Cost estimate approval" },
       { ru: "Черновые и чистовые работы", en: "Rough and finish work" },
@@ -202,7 +202,7 @@ const servicesData: ServiceData[] = [
       { ru: "Рекультивация территории", en: "Land reclamation" },
     ],
     details: {
-      ru: "Полный снос промышленных объектов, складов, гаражей и других строений. Выполняем механизированный и ручной демонтаж в зависимости от условий. Обеспечиваем безопасность на объекте, получаем все необходимые разрешения. После сноса проводим рекультивацию и подготовку площадки.",
+      ru: "Демонтаж промышленных объектов, складов, гаражей и других строений. Способ выполнения, требования к согласованиям и подготовка площадки определяются с учётом типа объекта и условий работ.",
       en: "Complete demolition of industrial facilities, warehouses, garages and other structures.",
     },
     includes: [
@@ -236,7 +236,7 @@ const servicesData: ServiceData[] = [
     duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Контейнеры 8–27 м³", en: "8–27 m³ containers" },
-      { ru: "Погрузка включена", en: "Loading included" },
+      { ru: "Погрузка по согласованию", en: "Loading by arrangement" },
       { ru: "Легальная утилизация", en: "Legal disposal" },
       { ru: "Работа без выходных", en: "7 days a week" },
     ],
@@ -332,8 +332,8 @@ const servicesData: ServiceData[] = [
       { ru: "Уборка и сдача результата", en: "Cleanup and result handover" },
     ],
     faq: [
-      { q: { ru: "Какую толщину бетона можно резать?", en: "What concrete thickness can be cut?" }, a: { ru: "До 1500 мм — стены, перекрытия, фундаменты. Для больших толщин применяем канатную резку.", en: "Up to 1500mm — walls, slabs, foundations." } },
-      { q: { ru: "Можно ли резать в жилом доме?", en: "Can you cut in a residential building?" }, a: { ru: "Да, технология безвибрационная и практически бесшумная. Подходит для многоквартирных домов.", en: "Yes, the technology is vibration-free and nearly silent." } },
+      { q: { ru: "Какую толщину бетона можно резать?", en: "What concrete thickness can be cut?" }, a: { ru: "Допустимая толщина зависит от материала, оборудования и условий площадки. Возможный метод уточняется до начала работ.", en: "Up to 1500mm — walls, slabs, foundations." } },
+      { q: { ru: "Можно ли резать в жилом доме?", en: "Can you cut in a residential building?" }, a: { ru: "Алмазная резка может снизить вибрационную нагрузку по сравнению с ударным способом. Уровень шума и меры защиты оцениваются для конкретного объекта.", en: "Yes, the technology is vibration-free and nearly silent." } },
     ],
     relatedSlugs: ["demolition", "apartment-demolition", "construction"],
   },
@@ -505,7 +505,7 @@ const ServiceDetailPage = () => {
           <AnimatedSection delay={0.2}>
             <div className="glass-card p-8">
               <h2 className="text-xl font-display font-bold text-foreground mb-4">
-                {lang === "ru" ? "Что входит в стоимость" : "What's Included"}
+                {lang === "ru" ? "Возможный состав работ" : "Potential scope of work"}
               </h2>
               <div className="space-y-3">
                 {service.includes.map((item, i) => (
