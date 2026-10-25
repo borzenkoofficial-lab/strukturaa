@@ -25,7 +25,7 @@ const HomepageHero = () => {
           >
             <span className="skol-signature-rule h-px w-8 bg-primary" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">{t("hero.eyebrow")}</span>
-          </div
+          </div>
 
           <h1
            
@@ -36,7 +36,7 @@ const HomepageHero = () => {
             {t("hero.titleA")}
             <span className="block text-foreground/48">{t("hero.titleB")}</span>
             <span className="block">{t("hero.titleC")}</span>
-          </h1
+          </h1>
 
           <p
            
@@ -45,7 +45,7 @@ const HomepageHero = () => {
             className="mt-6 max-w-lg text-sm leading-7 text-foreground/70 sm:mt-8 sm:text-base sm:leading-8"
           >
             {t("hero.description")}
-          </p
+          </p>
 
           <div
            
@@ -61,7 +61,7 @@ const HomepageHero = () => {
               {t("hero.secondary")}
               <ArrowDownRight className="h-4 w-4 text-muted-foreground" />
             </button>
-          </div
+          </div>
 
           <div className="mt-9 flex flex-wrap gap-x-5 gap-y-2 border-t border-border/60 pt-5 text-[11px] uppercase tracking-[0.12em] text-muted-foreground sm:mt-12 sm:pt-6">
             <span>{t("hero.location")}</span>
@@ -112,7 +112,7 @@ const HomepageHero = () => {
                     </div>
                     {index === 2 && <MoveUpRight className="mt-1 h-4 w-4 shrink-0 text-primary" />}
                   </div>
-                </div
+                </div>
               ))}
             </div>
 
@@ -123,7 +123,7 @@ const HomepageHero = () => {
             </div>
           </div>
           <div className="absolute -bottom-2 left-6 right-6 -z-10 h-8 bg-primary/10 blur-2xl" />
-        </div
+        </div>
       </div>
     </section>
   );
