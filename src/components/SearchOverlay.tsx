@@ -55,14 +55,14 @@ const SearchOverlay = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
       {isOpen && (
         <>
           <motion.div
-            className="fixed inset-0 z-[90] bg-background/80 backdrop-blur-md"
+            className="skol-search-backdrop fixed inset-0 z-[90] bg-background/80 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
           <motion.div
-            className="fixed top-0 left-0 right-0 z-[95] max-w-2xl mx-auto mt-20 p-4"
+            className="skol-search-window fixed top-0 left-0 right-0 z-[95] max-w-2xl mx-auto mt-20 p-4"
             initial={{ opacity: 0, y: -30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -30, scale: 0.95 }}
