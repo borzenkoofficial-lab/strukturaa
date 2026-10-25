@@ -42,7 +42,8 @@ const CategoryPills = () => {
             whileTap={{ scale: 0.98 }}
             className="group flex min-h-[62px] items-center justify-between gap-2 rounded-md border border-border/60 bg-card/25 px-3 py-3.5 text-left transition-colors hover:border-primary/45 hover:bg-card/60 sm:px-4"
           >
-            <span className="text-xs font-medium leading-5 text-foreground sm:text-sm">{t(cat.key)}</span>
+            <span className="skol-category-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            <span className="min-w-0 flex-1 text-xs font-medium leading-5 text-foreground sm:text-sm">{t(cat.key)}</span>
             <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
           </motion.button>
         ))}
