@@ -34,13 +34,13 @@ const MobileMenu = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
       <button
         type="button"
         aria-label="Закрыть меню"
-        className="absolute inset-0 bg-background/75"
+        className="skol-mobile-backdrop absolute inset-0 bg-background/75"
         onClick={onClose}
       />
       <aside
         id="skol-mobile-menu"
         aria-label="Мобильная навигация"
-        className="absolute inset-y-0 right-0 z-[95] flex w-full max-w-sm flex-col overflow-y-auto border-l border-border bg-card p-5 sm:p-6"
+        className="skol-mobile-menu absolute inset-y-0 right-0 z-[95] flex w-full max-w-sm flex-col overflow-y-auto border-l border-border bg-card p-5 sm:p-6"
       >
         <div className="mb-7 flex items-center justify-between border-b border-border pb-5">
           <div>
