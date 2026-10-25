@@ -1032,3 +1032,30 @@ form button[type="submit"] {
 @media (hover: hover) and (pointer: fine) {
   .skol-principle-card:hover { background-color: hsl(var(--card) / 0.5); }
 }
+
+
+/* SKOL signature details */
+.skol-brand-mark,.skol-footer-mark{position:relative;isolation:isolate;overflow:hidden;border-radius:1px!important;border-color:hsl(var(--primary)/.82)!important}
+.skol-brand-mark::before,.skol-footer-mark::before{content:"";position:absolute;inset:2px;border:1px solid hsl(var(--foreground)/.1);pointer-events:none}
+.skol-brand-mark::after,.skol-footer-mark::after{content:"";position:absolute;right:2px;bottom:2px;width:6px;height:6px;border:0!important;border-right:1px solid var(--skol-ivory);border-bottom:1px solid var(--skol-ivory);opacity:.75;pointer-events:none}
+.skol-monogram{position:relative;z-index:1;transform:translateX(-.5px);font-weight:600;letter-spacing:-.12em}
+.skol-mark-cut{display:none}
+.skol-signature-stamp{align-items:center;gap:.65rem;padding:.65rem .8rem;border:1px solid hsl(var(--foreground)/.13);background:hsl(var(--background)/.72);color:hsl(var(--foreground)/.55);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.16em}
+.skol-signature-stamp>span:first-child{color:hsl(var(--foreground)/.92);font-family:"Space Grotesk",sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em}
+.skol-signature-stamp i{display:block;width:1.1rem;height:1px;background:var(--skol-burgundy)}
+.skol-signature-stamp .skol-stamp-index{margin-left:.25rem;padding-left:.7rem;border-left:1px solid hsl(var(--foreground)/.14);color:hsl(var(--foreground)/.36)}
+.skol-signature-rule{position:relative;flex:0 0 auto}
+.skol-signature-rule::after{content:"";position:absolute;right:-4px;top:-2px;width:5px;height:5px;background:var(--skol-burgundy)}
+.skol-signature-wordmark{position:relative;display:inline-flex;align-items:baseline;gap:.08em}
+.skol-signature-wordmark::after{content:"";position:absolute;right:-.55rem;top:-.15rem;width:3px;height:3px;background:var(--skol-burgundy)}
+.skol-category-index{flex:0 0 auto;align-self:flex-start;padding-top:.12rem;color:hsl(var(--foreground)/.36);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.62rem;letter-spacing:.03em;transition:color 180ms ease}
+.skol-category-section button:hover .skol-category-index{color:hsl(var(--primary)/1)}
+.skol-category-section button{position:relative;overflow:hidden}
+.skol-category-section button::before{content:"";position:absolute;left:0;top:0;width:2px;height:0;background:var(--skol-burgundy);transition:height 200ms ease}
+.skol-category-section button:hover::before,.skol-category-section button:focus-visible::before{height:100%}
+.skol-home-hero .skol-hero-panel{outline:1px solid hsl(var(--foreground)/.025);outline-offset:4px}
+.skol-home-hero .skol-hero-panel>.relative:last-child{position:relative}
+.skol-home-hero .skol-hero-panel>.relative:last-child::before{content:"SK / SITE SYSTEM";position:absolute;left:0;top:-1px;transform:translateY(-100%);color:hsl(var(--foreground)/.28);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;letter-spacing:.18em}
+.skol-site-footer .skol-footer-mark{background:linear-gradient(135deg,hsl(var(--foreground)/.035),transparent 70%)}
+@media(max-width:639px){.skol-category-index{font-size:.58rem}.skol-category-section button{gap:.45rem;padding-left:.65rem;padding-right:.65rem}.skol-signature-stamp{display:none}}
+@media(prefers-reduced-motion:reduce){.skol-category-section button::before,.skol-category-index{transition:none}}
