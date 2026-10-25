@@ -1166,3 +1166,99 @@ form button[type="submit"] {
   .skol-project-card .skol-project-image > div:not(.skol-project-image-label),
   .skol-project-open-label { transition: none; }
 }
+
+
+/* SKOL art direction v2 — remove synthetic gloss; use material, type and grid */
+body {
+  background-image: none !important;
+  background-attachment: initial !important;
+}
+.skol-site-header {
+  background: #242629 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: 0 1px 0 rgba(241,239,234,.12) !important;
+}
+.light .skol-site-header { background: #f1efea !important; }
+.glass-card,
+.glass-card-hover,
+.light .glass-card,
+.light .glass-card-hover {
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border) / .8) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+@media (hover:hover) and (pointer:fine) {
+  .glass-card:hover,
+  .glass-card-hover:hover,
+  .light .glass-card:hover,
+  .light .glass-card-hover:hover {
+    background: hsl(var(--secondary)) !important;
+    border-color: hsl(var(--primary) / .65) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}
+.skol-brand-mark,
+.skol-brand-mark::after {
+  box-shadow: none !important;
+}
+.skol-brand-mark::after { border-radius: 0 !important; }
+.skol-home-hero {
+  background: #242629 !important;
+  background-image: none !important;
+}
+.light .skol-home-hero { background: #f1efea !important; }
+.skol-home-hero .rounded-full.border,
+.skol-home-hero .blur-2xl {
+  display: none !important;
+}
+.skol-home-hero [style*="mask-image"],
+.skol-home-hero [style*="maskImage"] {
+  display: none !important;
+}
+.skol-hero-panel {
+  background: transparent !important;
+  border-top: 1px solid hsl(var(--foreground) / .2) !important;
+  border-bottom: 1px solid hsl(var(--foreground) / .2) !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+}
+.skol-hero-stage {
+  background: transparent !important;
+  border-left: 2px solid hsl(var(--border)) !important;
+  transition: border-color 160ms ease !important;
+}
+.skol-hero-stage:hover { border-left-color: var(--skol-burgundy) !important; }
+.skol-hero-cta {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+.skol-service-card {
+  background: hsl(var(--card)) !important;
+  box-shadow: none !important;
+  border-radius: 2px !important;
+}
+.skol-service-card:hover { transform: none !important; }
+.skol-project-card,
+.skol-project-image,
+.skol-project-card-content {
+  box-shadow: none !important;
+}
+.skol-project-image img { transition: none !important; }
+.skol-project-card:hover .skol-project-image img { transform: none !important; }
+.skol-page-intro::after { height: 1px !important; }
+.shimmer-overlay { animation: none !important; background: none !important; }
+.text-gradient {
+  background-image: none !important;
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .skol-nav-link::after { transition: transform 160ms ease !important; }
+}
+@media (max-width: 639px) {
+  .skol-home-hero .skol-signature-stamp { display: none !important; }
+  .skol-hero-panel { min-height: auto !important; padding-top: 1.25rem !important; padding-bottom: 1.25rem !important; }
+}
