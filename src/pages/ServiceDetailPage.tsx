@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calculator, Phone, Mail, CheckCircle2, Ruler, Clock, Shield, Loader2, ArrowUpRight, ChevronDown, HelpCircle, Layers, FolderOpen } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -17,9 +17,7 @@ interface ServiceData {
   slug: string;
   titleKey: TranslationKey;
   descKey: TranslationKey;
-  price: string;
   priceUnit: string;
-  priceValue: number;
   minArea: number;
   maxArea: number;
   duration: { ru: string; en: string };
@@ -36,17 +34,15 @@ const servicesData: ServiceData[] = [
     slug: "demolition",
     titleKey: "services.demolition",
     descKey: "services.demolitionDesc",
-    price: "500₽/м²",
     priceUnit: "м²",
-    priceValue: 500,
     minArea: 10,
     maxArea: 5000,
-    duration: { ru: "от 3 дней", en: "from 3 days" },
+    duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Механизированный снос", en: "Mechanized demolition" },
       { ru: "Ручной демонтаж", en: "Manual demolition" },
       { ru: "Работа на высоте", en: "High-altitude work" },
-      { ru: "Сертифицированная техника", en: "Certified equipment" },
+      { ru: "Оборудование под задачу", en: "Equipment matched to the task" },
     ],
     details: {
       ru: "Мы выполняем полный и частичный демонтаж зданий любой сложности — от небольших построек до масштабных промышленных объектов. Используем современную технику: экскаваторы с гидромолотами, погрузчики, самосвалы. Все работы выполняются в соответствии с требованиями безопасности и экологическими нормами. Перед началом работ проводим техническое обследование объекта и составляем подробный план демонтажа.",
@@ -70,9 +66,9 @@ const servicesData: ServiceData[] = [
       { ru: "Сдача объекта заказчику", en: "Handover to customer" },
     ],
     faq: [
-      { q: { ru: "Нужно ли разрешение на демонтаж?", en: "Is a demolition permit required?" }, a: { ru: "Для сноса капитальных строений — да. Мы берём оформление всех документов на себя и включаем это в стоимость.", en: "For capital structures — yes. We handle all documentation and include it in the price." } },
+      { q: { ru: "Нужно ли разрешение на демонтаж?", en: "Is a demolition permit required?" }, a: { ru: "Требования зависят от типа объекта и состава работ. Необходимые согласования определяются до начала работ.", en: "Requirements depend on the structure and scope. Necessary approvals are identified before work starts." } },
       { q: { ru: "Сколько по времени занимает демонтаж?", en: "How long does demolition take?" }, a: { ru: "Зависит от объёма: квартира 1–3 дня, здание — от 5 дней. Точные сроки определяем после осмотра объекта.", en: "Depends on volume: apartment 1–3 days, building — from 5 days." } },
-      { q: { ru: "Вы вывозите мусор после демонтажа?", en: "Do you remove debris?" }, a: { ru: "Да, вывоз строительного мусора включён в стоимость. Утилизация проводится по всем нормам.", en: "Yes, construction waste removal is included in the price." } },
+      { q: { ru: "Вы вывозите мусор после демонтажа?", en: "Do you remove debris?" }, a: { ru: "Вывоз и обращение с отходами согласуются отдельно с учётом объёма и условий доступа.", en: "Waste removal and handling are agreed separately based on volume and access conditions." } },
     ],
     relatedSlugs: ["apartment-demolition", "building-demolition", "waste-removal"],
   },
@@ -80,12 +76,10 @@ const servicesData: ServiceData[] = [
     slug: "construction",
     titleKey: "services.construction",
     descKey: "services.constructionDesc",
-    price: "1200₽/м²",
     priceUnit: "м²",
-    priceValue: 1200,
     minArea: 10,
     maxArea: 3000,
-    duration: { ru: "от 7 дней", en: "from 7 days" },
+    duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Металлоконструкции", en: "Metal structures" },
       { ru: "Железобетонные элементы", en: "Reinforced concrete" },
@@ -113,7 +107,7 @@ const servicesData: ServiceData[] = [
     ],
     faq: [
       { q: { ru: "Какие конструкции вы монтируете?", en: "What structures do you assemble?" }, a: { ru: "Металлоконструкции, каркасы зданий, железобетонные элементы, сборные конструкции, фермы и балки любой сложности.", en: "Metal structures, building frames, RC elements, prefab structures." } },
-      { q: { ru: "Есть ли гарантия на монтажные работы?", en: "Is there a warranty?" }, a: { ru: "Да, гарантия 3 года на все виды монтажных работ. При обнаружении дефектов — бесплатное устранение.", en: "Yes, 3 year warranty on all assembly work." } },
+      { q: { ru: "Есть ли гарантия на монтажные работы?", en: "Is there a warranty?" }, a: { ru: "Гарантийные обязательства фиксируются в договоре с учётом состава и условий работ.", en: "Warranty terms are defined in the contract based on the scope and conditions." } },
     ],
     relatedSlugs: ["renovation", "demolition", "diamond-cutting"],
   },
@@ -121,12 +115,10 @@ const servicesData: ServiceData[] = [
     slug: "renovation",
     titleKey: "services.renovation",
     descKey: "services.renovationDesc",
-    price: "800₽/м²",
     priceUnit: "м²",
-    priceValue: 800,
     minArea: 10,
     maxArea: 2000,
-    duration: { ru: "от 14 дней", en: "from 14 days" },
+    duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Капитальный ремонт", en: "Major renovation" },
       { ru: "Косметический ремонт", en: "Cosmetic renovation" },
@@ -134,7 +126,7 @@ const servicesData: ServiceData[] = [
       { ru: "Под ключ", en: "Turnkey" },
     ],
     details: {
-      ru: "Выполняем капитальный и косметический ремонт квартир, офисов и коммерческих помещений. От разработки дизайн-проекта до финишной отделки — все работы под ключ. Используем качественные материалы проверенных производителей. Гарантия на все виды работ — 3 года.",
+      ru: "Выполняем капитальный и косметический ремонт квартир, офисов и коммерческих помещений. От разработки дизайн-проекта до финишной отделки — все работы под ключ. Используем качественные материалы проверенных производителей. Гарантийные условия согласуются в договоре.",
       en: "We perform major and cosmetic renovation of apartments, offices and commercial spaces. From design project development to finishing — all work is turnkey.",
     },
     includes: [
@@ -153,7 +145,7 @@ const servicesData: ServiceData[] = [
     ],
     faq: [
       { q: { ru: "Сколько стоит ремонт квартиры?", en: "How much does apartment renovation cost?" }, a: { ru: "Стоимость зависит от площади и сложности: косметический от 800₽/м², капитальный от 1500₽/м². Точная цена — после осмотра.", en: "Depends on area and complexity: cosmetic from 800₽/m², major from 1500₽/m²." } },
-      { q: { ru: "Вы делаете дизайн-проект?", en: "Do you make design projects?" }, a: { ru: "Да, наша команда дизайнеров разработает проект под ваш бюджет и пожелания. Визуализация 3D включена.", en: "Yes, our design team will develop a project. 3D visualization included." } },
+      { q: { ru: "Вы делаете дизайн-проект?", en: "Do you make design projects?" }, a: { ru: "Возможность разработки дизайн-проекта и 3D-визуализации уточняется отдельно под задачу.", en: "Design and 3D visualization availability is confirmed separately for each project." } },
     ],
     relatedSlugs: ["apartment-demolition", "construction", "dismantling"],
   },
@@ -161,12 +153,10 @@ const servicesData: ServiceData[] = [
     slug: "apartment-demolition",
     titleKey: "services.apartmentDemo",
     descKey: "services.apartmentDemoDesc",
-    price: "400₽/м²",
     priceUnit: "м²",
-    priceValue: 400,
     minArea: 10,
     maxArea: 500,
-    duration: { ru: "от 1 дня", en: "from 1 day" },
+    duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Снос перегородок", en: "Wall removal" },
       { ru: "Демонтаж полов", en: "Floor demolition" },
@@ -201,12 +191,10 @@ const servicesData: ServiceData[] = [
     slug: "building-demolition",
     titleKey: "services.buildingDemo",
     descKey: "services.buildingDemoDesc",
-    price: "350₽/м²",
     priceUnit: "м²",
-    priceValue: 350,
     minArea: 50,
     maxArea: 20000,
-    duration: { ru: "от 5 дней", en: "from 5 days" },
+    duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Промышленные объекты", en: "Industrial facilities" },
       { ru: "Склады и гаражи", en: "Warehouses and garages" },
@@ -242,12 +230,10 @@ const servicesData: ServiceData[] = [
     slug: "waste-removal",
     titleKey: "services.wasteRemoval",
     descKey: "services.wasteRemovalDesc",
-    price: "8000₽",
     priceUnit: "контейнер",
-    priceValue: 8000,
     minArea: 1,
     maxArea: 50,
-    duration: { ru: "в день заказа", en: "same day" },
+    duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Контейнеры 8–27 м³", en: "8–27 m³ containers" },
       { ru: "Погрузка включена", en: "Loading included" },
@@ -282,12 +268,10 @@ const servicesData: ServiceData[] = [
     slug: "dismantling",
     titleKey: "services.dismantling",
     descKey: "services.dismantlingDesc",
-    price: "600₽/м²",
     priceUnit: "м²",
-    priceValue: 600,
     minArea: 5,
     maxArea: 2000,
-    duration: { ru: "от 2 дней", en: "from 2 days" },
+    duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Электрика", en: "Electrical" },
       { ru: "Сантехника", en: "Plumbing" },
@@ -320,12 +304,10 @@ const servicesData: ServiceData[] = [
     slug: "diamond-cutting",
     titleKey: "services.concrete",
     descKey: "services.concreteDesc",
-    price: "1500₽/м.п.",
     priceUnit: "м.п.",
-    priceValue: 1500,
     minArea: 1,
     maxArea: 500,
-    duration: { ru: "от 1 дня", en: "from 1 day" },
+    duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
       { ru: "Без вибрации", en: "No vibration" },
       { ru: "Без пыли", en: "No dust" },
@@ -377,18 +359,7 @@ const ServiceDetailPage = () => {
 
   const isWaste = service?.slug === "waste-removal";
 
-  const calculatedPrice = useMemo(() => {
-    if (!service) return 0;
-    const val = area[0];
-    const base = val * service.priceValue;
-    if (val > 1000) return Math.round(base * 0.85);
-    if (val > 500) return Math.round(base * 0.9);
-    if (val > 100) return Math.round(base * 0.95);
-    return base;
-  }, [area, service]);
-
-  const formatPrice = (n: number) =>
-    new Intl.NumberFormat(lang === "ru" ? "ru-RU" : "en-US").format(n);
+  const calculatedPrice = 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -396,19 +367,20 @@ const ServiceDetailPage = () => {
     setSubmitting(true);
     
     try {
-      await supabase.functions.invoke("notify-request", {
+      const { error } = await supabase.functions.invoke("notify-request", {
         body: {
           name: name.trim(),
           phone: phone.trim(),
           message: message.trim() || null,
           service: service ? t(service.titleKey) : null,
-          calculated_price: calculatedPrice || null,
+          calculated_price: null,
           source: "service_page",
         },
       });
+      if (error) throw error;
 
       setSubmittedService(service ? t(service.titleKey) : null);
-      setSubmittedPrice(calculatedPrice);
+      setSubmittedPrice(null);
       setShowSuccess(true);
       setName("");
       setPhone("");
@@ -446,7 +418,7 @@ const ServiceDetailPage = () => {
     .filter(Boolean) as ServiceData[];
 
   const seoTitle = t(service.titleKey);
-  const seoDesc = `${seoTitle} от STRUKTURA. Цена от ${service.price}. Сроки ${service.duration.ru}. Бесплатный расчёт стоимости онлайн.`;
+  const seoDesc = `${t(service.descKey)} Состав и стоимость работ уточняются после оценки условий объекта.`;
 
   return (
     <>
@@ -478,7 +450,7 @@ const ServiceDetailPage = () => {
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-xl text-sm font-semibold">
               <Ruler className="w-4 h-4" />
-              {lang === "ru" ? "от" : "from"} {service.price}
+              {lang === "ru" ? "Расчёт по объекту" : "Site-specific estimate"}
             </div>
             <div className="flex items-center gap-2 bg-secondary text-secondary-foreground px-4 py-2 rounded-xl text-sm">
               <Clock className="w-4 h-4" />
@@ -486,7 +458,7 @@ const ServiceDetailPage = () => {
             </div>
             <div className="flex items-center gap-2 bg-secondary text-secondary-foreground px-4 py-2 rounded-xl text-sm">
               <Shield className="w-4 h-4" />
-              {lang === "ru" ? "Гарантия 3 года" : "3 year warranty"}
+              {lang === "ru" ? "Условия по договорённости" : "Terms agreed per project"}
             </div>
           </div>
         </div>
@@ -668,7 +640,7 @@ const ServiceDetailPage = () => {
                         {t(rs.titleKey)}
                       </h4>
                       <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{t(rs.descKey)}</p>
-                      <span className="text-xs font-semibold text-primary">{lang === "ru" ? "от" : "from"} {rs.price}</span>
+                      <span className="text-xs font-semibold text-primary">{lang === "ru" ? "По смете" : "By estimate"}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -684,7 +656,7 @@ const ServiceDetailPage = () => {
               <div className="flex items-center gap-2 mb-6">
                 <Calculator className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-display font-bold text-foreground">
-                  {lang === "ru" ? "Калькулятор стоимости" : "Cost Calculator"}
+                  {lang === "ru" ? "Параметры объекта" : "Site details"}
                 </h3>
               </div>
 
@@ -720,7 +692,7 @@ const ServiceDetailPage = () => {
                 </div>
               </div>
 
-              {!isWaste && area[0] > 100 && (
+              {false && !isWaste && area[0] > 100 && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
@@ -730,7 +702,7 @@ const ServiceDetailPage = () => {
                     {area[0] > 1000 ? "−15%" : area[0] > 500 ? "−10%" : "−5%"}
                   </span>
                   <span className="text-muted-foreground ml-2">
-                    {lang === "ru" ? "скидка за объём" : "volume discount"}
+                    {lang === "ru" ? "параметр для оценки объёма" : "scope assessment factor"}
                   </span>
                 </motion.div>
               )}
@@ -738,7 +710,7 @@ const ServiceDetailPage = () => {
               <div className="border-t border-border/30 pt-4 mb-6">
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">
-                    {lang === "ru" ? "Итого:" : "Total:"}
+                    {lang === "ru" ? "Стоимость:" : "Cost:"}
                   </span>
                   <motion.span
                     key={calculatedPrice}
@@ -746,13 +718,13 @@ const ServiceDetailPage = () => {
                     animate={{ scale: 1 }}
                     className="text-2xl font-display font-bold text-primary"
                   >
-                    {formatPrice(calculatedPrice)} ₽
+                    {lang === "ru" ? "После оценки" : "After assessment"}
                   </motion.span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {lang === "ru"
-                    ? "* Точная стоимость после осмотра объекта"
-                    : "* Exact price after site inspection"}
+                    ? "Стоимость определяется после уточнения состава работ, материалов и условий площадки"
+                    : "Cost is confirmed after clarifying scope, materials and site conditions"}
                 </p>
               </div>
 
