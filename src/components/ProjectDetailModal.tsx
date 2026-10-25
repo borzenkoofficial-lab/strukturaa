@@ -117,16 +117,22 @@ const ProjectDetailModal = ({ project, onClose }: ProjectDetailProps) => {
               {project.title}
             </h2>
 
-            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <Ruler className="w-4 h-4 text-primary" />
-                <span>Площадь: <strong className="text-foreground">{project.area}</strong></span>
+            {(project.area || project.duration) && (
+              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                {project.area && (
+                  <div className="flex items-center gap-1.5">
+                    <Ruler className="w-4 h-4 text-primary" />
+                    <span>Площадь: <strong className="text-foreground">{project.area}</strong></span>
+                  </div>
+                )}
+                {project.duration && (
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-4 h-4 text-primary" />
+                    <span>Срок: <strong className="text-foreground">{project.duration}</strong></span>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-primary" />
-                <span>Срок: <strong className="text-foreground">{project.duration}</strong></span>
-              </div>
-            </div>
+            )}
 
             <p className="text-muted-foreground text-sm leading-relaxed">
               {project.description}
