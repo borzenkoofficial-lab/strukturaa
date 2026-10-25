@@ -75,7 +75,7 @@ html.dark-mode-preload {
     --popover: 0 0% 100%;
     --popover-foreground: 25 15% 15%;
 
-    --primary: 28 85% 52%;
+    --primary: 348 48% 43%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 35 20% 93%;
@@ -84,7 +84,7 @@ html.dark-mode-preload {
     --muted: 35 15% 94%;
     --muted-foreground: 25 10% 42%;
 
-    --accent: 28 70% 48%;
+    --accent: 18 43% 46%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -92,7 +92,7 @@ html.dark-mode-preload {
 
     --border: 35 18% 88%;
     --input: 35 18% 91%;
-    --ring: 28 85% 52%;
+    --ring: 348 48% 43%;
 
     --glass: 0 0% 100% / 0.8;
     --glass-border: 35 20% 85% / 0.6;
@@ -106,12 +106,12 @@ html.dark-mode-preload {
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 25 15% 15%;
-    --sidebar-primary: 28 85% 52%;
+    --sidebar-primary: 348 48% 43%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 35 20% 94%;
     --sidebar-accent-foreground: 25 15% 25%;
     --sidebar-border: 35 18% 88%;
-    --sidebar-ring: 28 85% 52%;
+    --sidebar-ring: 348 48% 43%;
   }
 }
 
@@ -202,7 +202,7 @@ html.dark-mode-preload {
   }
 
   .gradient-warm {
-    background: linear-gradient(135deg, hsl(35 80% 55% / 0.15), hsl(30 60% 40% / 0.05));
+    background: linear-gradient(135deg, hsl(18 43% 49% / 0.16), hsl(348 48% 43% / 0.06));
   }
 
   .gradient-dark {
@@ -219,7 +219,7 @@ html.dark-mode-preload {
   }
 
   .light .text-gradient {
-    background-image: linear-gradient(135deg, hsl(28 85% 52%), hsl(28 70% 40%));
+    background-image: linear-gradient(135deg, hsl(18 48% 52%), hsl(348 48% 40%));
   }
 
   .scrollbar-hide {
@@ -231,7 +231,7 @@ html.dark-mode-preload {
   }
 
   .shimmer-overlay {
-    background: linear-gradient(90deg, transparent 0%, hsl(35 80% 55% / 0.3) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, hsl(348 48% 47% / 0.16) 50%, transparent 100%);
     background-size: 200% 100%;
     animation: shimmer 3s linear infinite;
   }
