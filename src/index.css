@@ -977,3 +977,58 @@ form button[type="submit"] {
   .skol-site-header .skol-brand-mark { width: 2rem; height: 2rem; }
   form button[type="submit"] { width: 100%; }
 }
+
+
+/* Brand finish — footer and principles */
+.skol-site-footer {
+  position: relative;
+  background: linear-gradient(180deg, hsl(var(--background) / 0.2), hsl(0 0% 0% / 0.12));
+}
+.skol-site-footer::before {
+  content: "";
+  display: block;
+  width: min(7rem, 22vw);
+  height: 2px;
+  background: var(--skol-burgundy);
+  margin-top: -1px;
+}
+.skol-footer-mark {
+  border-radius: 2px;
+  background: transparent;
+}
+.skol-site-footer h4 {
+  position: relative;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.skol-site-footer h4::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1.7rem;
+  height: 1px;
+  background: var(--skol-burgundy);
+}
+.skol-site-footer li a,
+.skol-site-footer li button { line-height: 1.65; }
+.skol-principles-section {
+  border-top: 1px solid var(--skol-muted-line);
+  border-bottom: 1px solid var(--skol-muted-line);
+  background: linear-gradient(180deg, hsl(var(--foreground) / 0.012), transparent 60%);
+}
+.skol-principle-card {
+  border-radius: 2px;
+  background: linear-gradient(145deg, hsl(var(--foreground) / 0.025), transparent 48%), hsl(var(--card) / 0.28);
+}
+.skol-principle-card > div:first-child > div {
+  border-radius: 2px;
+  background: transparent;
+}
+.skol-principle-card h3 { max-width: 14ch; text-wrap: balance; }
+@media (hover: hover) and (pointer: fine) {
+  .skol-principle-card:hover { background-color: hsl(var(--card) / 0.5); }
+}
