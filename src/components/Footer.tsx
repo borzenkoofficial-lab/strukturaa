@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
@@ -24,7 +24,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
 
   return (
     <motion.footer
-      className="border-t border-border/30"
+      className="skol-site-footer border-t border-border/30"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
@@ -39,8 +39,8 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
               whileHover={{ scale: 1.03 }}
               onClick={() => navigate("/")}
             >
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="font-display font-bold text-sm text-primary-foreground">С</span>
+              <div className="skol-footer-mark w-9 h-9 border border-primary/70 flex items-center justify-center">
+                <span className="font-display font-bold text-sm text-foreground">С</span>
               </div>
               <span className="font-display font-bold text-lg text-foreground tracking-tight">СКОЛ</span>
             </motion.div>
@@ -93,9 +93,11 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
                   {t("footer.phone")}
                 </a>
               </li>
-              <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                <Mail className="w-4 h-4 text-primary shrink-0" />
-                {t("footer.email")}
+              <li>
+                <a href="mailto:borzenkos@vk.com" className="flex items-center gap-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
+                  <Mail className="w-4 h-4 text-primary shrink-0" />
+                  {t("footer.email")}
+                </a>
               </li>
               <li className="flex items-start gap-2.5 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
@@ -110,9 +112,10 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
           <p className="text-xs text-muted-foreground">{t("footer.rights")}</p>
           <button
             onClick={() => navigate("/contacts")}
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="group inline-flex items-center gap-2 text-xs font-medium text-foreground/75 transition-colors hover:text-foreground"
           >
-            {t("footer.privacy")}
+            Обсудить объект
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </button>
         </div>
       </div>
