@@ -54,10 +54,13 @@ const ProjectsPage = () => {
   return (
     <>
       <SEOHead title="Проекты — STRUKTURA" description="Портфолио выполненных проектов STRUKTURA: демонтаж, строительство, реновация." canonical="/projects" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <main className="mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
         <AnimatedSection>
-          <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">{t("projects.title")}</h1>
-          <p className="text-muted-foreground mb-6 sm:mb-8">{t("projects.subtitle")}</p>
+          <header className="skol-page-intro">
+            <p className="skol-page-kicker">СКОЛ / ВЫПОЛНЕННЫЕ РАБОТЫ</p>
+            <h1 className="skol-page-title text-foreground">{t("projects.title")}</h1>
+            <p className="skol-page-subtitle">{t("projects.subtitle")}</p>
+          </header>
         </AnimatedSection>
 
         {/* Category filter */}
@@ -96,8 +99,8 @@ const ProjectsPage = () => {
             {filtered.map((p, i) => (
               <AnimatedSection key={p.id} delay={i * 0.06}>
                 <motion.div
-                  className={`glass-card overflow-hidden group cursor-pointer ${i === 0 ? "md:col-span-2 lg:col-span-2" : ""}`}
-                  whileHover={{ y: -4, scale: 1.01 }}
+                  className={`glass-card group cursor-pointer ${i === 0 ? "md:col-span-2 lg:col-span-2" : ""}`}
+                  whileHover={{ y: -2 }}
                   transition={{ duration: 0.3 }}
                   onClick={() => setSelected({
                     title: p.title,
@@ -109,25 +112,25 @@ const ProjectsPage = () => {
                     gallery: p.gallery,
                   })}
                 >
-                  <div className={`overflow-hidden ${i === 0 ? "aspect-[2/1]" : "aspect-video"}`}>
+                  <div className={`skol-project-image overflow-hidden ${i === 0 ? "aspect-[2/1]" : "aspect-video"}`}>
                     {p.featured_image ? (
                       <motion.img
                         src={p.featured_image}
                         alt={p.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="h-full w-full object-cover"
                         loading="lazy"
                       />
                     ) : (
                       <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm">Нет фото</div>
                     )}
                   </div>
-                  <div className="p-4 sm:p-6">
+                  <div className="p-5 sm:p-6 lg:p-7">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="px-2 py-0.5 rounded-full bg-primary/15 text-[10px] font-semibold text-primary uppercase tracking-wider">
+                      <span className="border border-primary/25 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/80">
                         {p.category}
                       </span>
                     </div>
-                    <h3 className="text-base sm:text-lg font-display font-semibold text-foreground mb-2">{p.title}</h3>
+                    <h2 className="mb-2 text-lg font-display font-semibold tracking-tight text-foreground sm:text-xl">{p.title}</h2>
                     <p className="text-xs sm:text-sm text-muted-foreground mb-3 line-clamp-2">{p.description}</p>
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       {p.area && <span>{t("projects.area")}: <strong className="text-foreground">{p.area}</strong></span>}
@@ -139,7 +142,7 @@ const ProjectsPage = () => {
             ))}
           </div>
         )}
-      </div>
+      </main>
 
       <AnimatePresence>
         {selected && (
