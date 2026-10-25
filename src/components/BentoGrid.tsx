@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Building2, ClipboardList, HardHat, Layers3, Ruler, Truck } from "lucide-react";
+import { ArrowUpRight, ClipboardList, Layers3 } from "lucide-react";
 import heroDemolition from "@/assets/hero-demolition.jpg";
 import serviceConstruction from "@/assets/service-construction.jpg";
 import serviceRenovation from "@/assets/service-renovation.jpg";
-import projectIndustrial from "@/assets/project-industrial-demo.jpg";
 import projectWaste from "@/assets/project-waste-removal.jpg";
 import AnimatedSection from "./AnimatedSection";
 import { useNavigate } from "react-router-dom";
