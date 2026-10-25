@@ -39,10 +39,11 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
               whileHover={{ scale: 1.03 }}
               onClick={() => navigate("/")}
             >
-              <div className="skol-footer-mark w-9 h-9 border border-primary/70 flex items-center justify-center">
-                <span className="font-display font-bold text-sm text-foreground">С</span>
+              <div className="skol-footer-mark w-9 h-9 border border-primary/70 flex items-center justify-center" aria-hidden="true">
+                <span className="skol-monogram font-display font-bold text-sm text-foreground">С</span>
+                <i className="skol-mark-cut" />
               </div>
-              <span className="font-display font-bold text-lg text-foreground tracking-tight">СКОЛ</span>
+              <span className="font-display font-bold text-lg text-foreground tracking-[0.18em]">СКОЛ<span className="text-primary">.</span></span>
             </motion.div>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               {t("about.mission")}
