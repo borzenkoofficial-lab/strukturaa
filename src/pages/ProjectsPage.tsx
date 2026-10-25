@@ -28,6 +28,42 @@ interface SelectedProject {
   gallery?: string[];
 }
 
+const portfolioExamples: DbProject[] = [
+  {
+    id: "skol-project-01",
+    title: "Демонтаж административного здания",
+    description: "Демонтажные работы на объекте площадью около 500 м². Название заказчика не публикуется.",
+    category: "Демонтаж",
+    area: "500 м²",
+    duration: "",
+    featured_image: null,
+    gallery: [],
+    sort_order: 1,
+  },
+  {
+    id: "skol-project-02",
+    title: "Демонтаж актового зала",
+    description: "Демонтаж помещения с учётом существующих конструкций и подготовки к следующему этапу работ.",
+    category: "Демонтаж",
+    area: "",
+    duration: "",
+    featured_image: null,
+    gallery: [],
+    sort_order: 2,
+  },
+  {
+    id: "skol-project-03",
+    title: "Фасад главного офиса LADA",
+    description: "Демонтаж фасада и восстановление фасадного решения, включая работы с окнами и ограждениями.",
+    category: "Фасадные работы",
+    area: "",
+    duration: "",
+    featured_image: null,
+    gallery: [],
+    sort_order: 3,
+  },
+];
+
 const ProjectsPage = () => {
   const { t } = useLanguage();
   const [selected, setSelected] = useState<SelectedProject | null>(null);
@@ -42,7 +78,7 @@ const ProjectsPage = () => {
         .select("id, title, description, category, area, duration, featured_image, gallery, sort_order")
         .eq("published", true)
         .order("sort_order", { ascending: true });
-      setProjects((data as any[]) || []);
+      setProjects(data?.length ? (data as DbProject[]) : portfolioExamples);
       setLoading(false);
     };
     fetch();
@@ -121,7 +157,7 @@ const ProjectsPage = () => {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm">Нет фото</div>
+                      <div className="relative flex h-full w-full flex-col justify-between overflow-hidden bg-[#242629] p-5 sm:p-7"><div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(rgba(241,239,234,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(241,239,234,.08) 1px, transparent 1px)", backgroundSize: "28px 28px" }} /><div className="relative flex items-center justify-between"><span className="font-mono text-[10px] tracking-[0.22em] text-white/45">СКОЛ / АРХИВ ОБЪЕКТА</span><span className="font-mono text-xs text-white/55">{String(i + 1).padStart(2, "0")}</span></div><div className="relative"><div className="mb-3 h-px w-14 bg-[#b7838d]" /><p className="max-w-xs font-display text-lg font-medium leading-snug text-white/85 sm:text-xl">Материалы объекта готовятся к публикации</p></div><div className="absolute -right-8 top-1/4 h-44 w-44 rounded-full border border-white/10" /><div className="absolute -right-2 top-1/3 h-28 w-28 rounded-full border border-[#b7838d]/35" /></div>
                     )}
                   </div>
                   <div className="p-5 sm:p-6 lg:p-7">
