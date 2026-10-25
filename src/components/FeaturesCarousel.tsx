@@ -28,7 +28,7 @@ const FeaturesCarousel = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative overflow-hidden py-16 sm:py-24">
+    <section className="skol-principles-section relative overflow-hidden py-16 sm:py-24">
       <div className="pointer-events-none absolute inset-0 opacity-40" aria-hidden="true">
         <div className="absolute left-1/2 top-0 h-px w-[min(88%,1200px)] -translate-x-1/2 bg-gradient-to-r from-transparent via-border to-transparent" />
         <div className="absolute right-[8%] top-12 h-64 w-64 rounded-full border border-foreground/[0.04]" />
@@ -59,7 +59,7 @@ const FeaturesCarousel = () => {
           {principles.map((item, index) => (
             <AnimatedSection key={item.number} delay={index * 0.1}>
               <motion.article
-                className="group relative flex h-full min-h-[250px] flex-col justify-between overflow-hidden rounded-lg border border-border/65 bg-card/35 p-5 transition-colors duration-300 hover:border-primary/40 sm:min-h-[300px] sm:p-7"
+                className="skol-principle-card group relative flex h-full min-h-[250px] flex-col justify-between overflow-hidden border border-border/65 bg-card/35 p-5 transition-colors duration-300 hover:border-primary/40 sm:min-h-[300px] sm:p-7"
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.25 }}
               >
