@@ -18,9 +18,6 @@ const HomepageHero = () => {
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-10 pt-10 sm:px-6 sm:pb-16 sm:pt-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14 lg:pb-24 lg:pt-20">
         <div className="relative z-10">
           <div
-           
-           
-           
             className="mb-7 flex items-center gap-3 sm:mb-8"
           >
             <span className="skol-signature-rule h-px w-8 bg-primary" />
@@ -28,9 +25,6 @@ const HomepageHero = () => {
           </div>
 
           <h1
-           
-           
-           
             className="max-w-4xl font-display text-[clamp(3.2rem,8vw,7.4rem)] font-semibold leading-[0.88] tracking-[-0.075em] text-foreground"
           >
             {t("hero.titleA")}
@@ -39,21 +33,15 @@ const HomepageHero = () => {
           </h1>
 
           <p
-           
-           
-           
             className="mt-6 max-w-lg text-sm leading-7 text-foreground/70 sm:mt-8 sm:text-base sm:leading-8"
           >
             {t("hero.description")}
           </p>
 
           <div
-           
-           
-           
             className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row"
           >
-            <button onClick={() => navigate("/contacts")} className="skol-hero-cta group inline-flex min-h-12 items-center justify-center gap-4 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:brightness-110">
+            <button onClick={() => navigate("/contacts")} className="skol-hero-cta group inline-flex min-h-12 items-center justify-center gap-4 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-colors duration-150 hover:brightness-105">
               {t("hero.primary")}
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </button>
@@ -73,10 +61,7 @@ const HomepageHero = () => {
         </div>
 
         <div
-         
-         
-         
-          className="relative mx-auto w-full max-w-xl lg:ml-auto"
+            className="relative mx-auto w-full max-w-xl lg:ml-auto"
         >
           <div className="skol-hero-panel relative min-h-[330px] overflow-hidden border-y border-border/65 bg-card/20 px-4 py-6 sm:min-h-[430px] sm:px-7 sm:py-8">
             <div className="absolute inset-0 opacity-25" aria-hidden="true" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground) / 0.05) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground) / 0.05) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
@@ -99,10 +84,7 @@ const HomepageHero = () => {
               ].map((stage, index) => (
                 <div
                   key={stage.n}
-                 
-                 
-                 
-                  className={`skol-hero-stage relative ${stage.width} border-l border-border/70 bg-background/35 py-4 pl-4 pr-3 transition-colors duration-300 hover:border-primary sm:py-5 sm:pl-5`}
+            className={`skol-hero-stage relative ${stage.width} border-l border-border/70 bg-background/35 py-4 pl-4 pr-3 transition-colors duration-150 hover:border-primary sm:py-5 sm:pl-5`}
                 >
                   <div className="flex items-start gap-3 sm:gap-4">
                     <span className="pt-0.5 font-mono text-xs text-primary">{stage.n}</span>
@@ -122,7 +104,6 @@ const HomepageHero = () => {
               <span className="font-mono text-[9px] tracking-[0.16em] text-muted-foreground">РАБОТАЕМ ПО ПЛАНУ</span>
             </div>
           </div>
-          <div className="absolute -bottom-2 left-6 right-6 -z-10 h-8 bg-primary/10 blur-2xl" />
         </div>
       </div>
     </section>
