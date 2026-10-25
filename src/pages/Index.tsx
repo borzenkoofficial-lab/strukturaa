@@ -8,9 +8,7 @@ import BentoGrid from "@/components/BentoGrid";
 import FeaturesCarousel from "@/components/FeaturesCarousel";
 import StoriesBar from "@/components/stories/StoriesBar";
 import StatsSection from "@/components/StatsSection";
-import NewsSection from "@/components/NewsSection";
 import ProcessSection from "@/components/ProcessSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -42,9 +40,7 @@ const Index = () => {
         <BentoGrid />
         <FeaturesCarousel />
         <StatsSection />
-        <NewsSection />
         <ProcessSection />
-        <TestimonialsSection />
         <CTASection />
         <Footer />
       </motion.div>
