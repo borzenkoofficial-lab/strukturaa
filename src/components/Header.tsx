@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, Menu, Sun, Moon, Globe, User, ChevronLeft, Briefcase } from "lucide-react";
+import { Search, Menu, Sun, Moon, Globe, User, ChevronLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -7,7 +7,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import MobileMenu from "./MobileMenu";
 import SearchOverlay from "./SearchOverlay";
-import JobApplicationModal from "./JobApplicationModal";
 
 const Header = () => {
   const { lang, setLang, t } = useLanguage();
@@ -18,12 +17,10 @@ const Header = () => {
   const isHome = location.pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [jobModalOpen, setJobModalOpen] = useState(false);
 
   const navItems: { label: string; path: string }[] = [
     { label: t("nav.services"), path: "/services" },
     { label: t("nav.projects"), path: "/projects" },
-    { label: t("nav.marketplace"), path: "/marketplace" },
     { label: t("nav.blog"), path: "/blog" },
     { label: t("nav.about"), path: "/about" },
     { label: t("nav.contacts"), path: "/contacts" },
@@ -57,9 +54,9 @@ const Header = () => {
               onClick={() => navigate("/")}
             >
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="font-display font-bold text-xs sm:text-sm text-primary-foreground">S</span>
+                <span className="font-display font-bold text-xs sm:text-sm text-primary-foreground">С</span>
               </div>
-              <span className="font-display font-bold text-base sm:text-lg text-foreground tracking-tight">STRUKTURA</span>
+              <span className="font-display font-bold text-base sm:text-lg text-foreground tracking-tight">СКОЛ</span>
             </motion.div>
           </div>
 
@@ -149,24 +146,6 @@ const Header = () => {
         </div>
       </motion.header>
 
-      {/* Job banner */}
-      <motion.div
-        className="sticky top-[57px] sm:top-[61px] z-40 bg-gradient-to-r from-emerald-600 via-green-500 to-emerald-600 cursor-pointer"
-        onClick={() => setJobModalOpen(true)}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        whileHover={{ opacity: 0.9 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 sm:py-2 flex items-center justify-center gap-2">
-          <Briefcase className="w-3.5 h-3.5 text-white shrink-0" />
-          <span className="text-white text-[11px] sm:text-xs font-semibold">Устроиться на работу</span>
-          <span className="text-white/70 text-[10px] sm:text-xs hidden sm:inline">— заполните анкету</span>
-          <span className="ml-1 px-2 py-0.5 rounded-full bg-white/20 text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider">JOB</span>
-        </div>
-      </motion.div>
-
-      <JobApplicationModal open={jobModalOpen} onClose={() => setJobModalOpen(false)} />
       <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
