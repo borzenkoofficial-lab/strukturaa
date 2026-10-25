@@ -17,10 +17,10 @@ const CategoryPills = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-8 pt-2 sm:px-6 sm:pb-12">
+    <section className="skol-category-section mx-auto max-w-7xl px-4 pb-8 pt-8 sm:px-6 sm:pb-14 sm:pt-12">
       <div className="mb-4 flex flex-col gap-2 sm:mb-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">{t("category.heading")}</p>
+          <p className="skol-section-label mb-2 text-primary">{t("category.heading")}</p>
           <p className="text-sm text-muted-foreground">{t("category.description")}</p>
         </div>
         <button onClick={() => navigate("/services")} className="group inline-flex w-fit items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-primary">
@@ -29,7 +29,7 @@ const CategoryPills = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-6">
         {categories.map((cat, index) => (
           <motion.button
             key={cat.slug}
@@ -40,7 +40,7 @@ const CategoryPills = () => {
             transition={{ delay: index * 0.04, duration: 0.3 }}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="group flex min-h-[54px] items-center justify-between gap-2 rounded-xl border border-border/60 bg-card/35 px-3 py-3 text-left transition-colors hover:border-primary/40 hover:bg-card/75 sm:px-4"
+            className="group flex min-h-[62px] items-center justify-between gap-2 rounded-md border border-border/60 bg-card/25 px-3 py-3.5 text-left transition-colors hover:border-primary/45 hover:bg-card/60 sm:px-4"
           >
             <span className="text-xs font-medium leading-5 text-foreground sm:text-sm">{t(cat.key)}</span>
             <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
