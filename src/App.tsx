@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
@@ -84,11 +84,11 @@ const App = () => (
                   <Route path="/auth" element={<Suspense fallback={<PageLoading />}><AuthPage /></Suspense>} />
                   <Route path="/reset-password" element={<Suspense fallback={<PageLoading />}><ResetPasswordPage /></Suspense>} />
                   <Route path="/dashboard" element={<ProtectedRoute><Suspense fallback={<PageLoading />}><DashboardPage /></Suspense></ProtectedRoute>} />
-                  <Route path="/marketplace" element={<Suspense fallback={<PageLoading />}><MarketplacePage /></Suspense>} />
+                  <Route path="/marketplace" element={<Navigate to="/" replace />} />
                   <Route path="/shop" element={<Suspense fallback={<PageLoading />}><ShopPage /></Suspense>} />
                   <Route path="/install" element={<Suspense fallback={<PageLoading />}><InstallPage /></Suspense>} />
                   <Route path="/equipment" element={<PageLayout><EquipmentPage /></PageLayout>} />
-                  <Route path="/gigs" element={<Suspense fallback={<PageLoading />}><GigsPage /></Suspense>} />
+                  <Route path="/gigs" element={<Navigate to="/" replace />} />
                   <Route path="/admin" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminDashboard /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/articles" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminArticles /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/media" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminMedia /></AdminLayout></Suspense></AdminRoute>} />
