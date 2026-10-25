@@ -80,7 +80,8 @@ const ProjectsPage = () => {
           .eq("published", true)
           .order("sort_order", { ascending: true });
         if (error) throw error;
-        setProjects(data?.length ? (data as DbProject[]) : portfolioExamples);
+        const validProjects = (data as DbProject[] | null)?.filter((project) => project.title?.trim().length > 8 && project.description?.trim().length > 20) ?? [];
+        setProjects(validProjects.length ? validProjects : portfolioExamples);
       } catch {
         setProjects(portfolioExamples);
       } finally {
