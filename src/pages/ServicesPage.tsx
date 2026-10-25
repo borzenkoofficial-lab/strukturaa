@@ -23,17 +23,18 @@ const ServicesPage = () => {
   return (
     <>
       <SEOHead title="Услуги — СКОЛ" description="Демонтаж, монтаж конструкций, ремонт, вывоз строительного мусора и алмазная резка." canonical="/services" />
-      <main className="mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
+      <main className="skol-services-page mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
         <AnimatedSection>
           <header className="skol-page-intro">
             <p className="skol-page-kicker">СКОЛ / НАПРАВЛЕНИЯ РАБОТ</p>
             <h1 className="skol-page-title text-foreground">{t("services.pageTitle")}</h1>
             <p className="skol-page-subtitle">{t("services.pageSubtitle")}</p>
+            <div className="skol-services-intro-meta mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"><span>СКОЛ / ПРОИЗВОДСТВЕННЫЙ КАТАЛОГ</span><span>Состав и стоимость определяются после оценки объекта</span></div>
           </header>
         </AnimatedSection>
 
-        <div className="mb-5 flex items-center justify-between gap-4">
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">Каталог услуг</p>
+        <div className="skol-services-count mb-5 flex items-center justify-between gap-4">
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">Направления работ</p>
           <span className="font-mono text-xs text-muted-foreground">01—08</span>
         </div>
 
@@ -57,7 +58,7 @@ const ServicesPage = () => {
               >
                 <div>
                   <div className="mb-7 flex items-start justify-between">
-                    <span className="skol-service-index">0{i + 1} / SKOL</span>
+                    <span className="skol-service-index"><span className="skol-service-index-number">{String(i + 1).padStart(2, "0")}</span><span className="skol-service-index-divider">/</span><span>НАПРАВЛЕНИЕ</span></span>
                     <div className="skol-service-icon flex items-center justify-center text-primary transition-colors group-hover:border-primary/40 group-hover:bg-primary/10">
                       <service.icon className="h-5 w-5" strokeWidth={1.6} />
                     </div>
@@ -68,8 +69,8 @@ const ServicesPage = () => {
 
                 <div className="skol-service-footer mt-6 flex items-end justify-between gap-3 pt-4">
                   <div className="min-w-0">
-                    <span className="block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Стоимость</span>
-                    <span className="mt-1 block text-sm font-semibold tracking-tight text-foreground">После оценки объекта</span>
+                    <span className="block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Расчёт</span>
+                    <span className="mt-1 block text-sm font-semibold tracking-tight text-foreground">По объёму и условиям объекта</span>
                   </div>
                   <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold text-foreground transition-colors group-hover:text-primary">
                     {t("services.orderBtn")}
