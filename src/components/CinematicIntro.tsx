@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const INTRO_SEEN_KEY = "struktura-intro-seen";
+const INTRO_SEEN_KEY = "skol-intro-seen";
 
 const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
   const { t } = useLanguage();
@@ -73,7 +73,7 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           animate={{ rotate: 0, scale: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="font-display font-bold text-2xl sm:text-3xl text-primary-foreground">S</span>
+          <span className="font-display font-bold text-2xl sm:text-3xl text-primary-foreground">С</span>
         </motion.div>
         <motion.span
           className="font-display font-bold text-3xl sm:text-4xl md:text-5xl text-foreground tracking-tighter"
@@ -81,7 +81,7 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          STRUKTURA
+          СКОЛ
         </motion.span>
       </motion.div>
 
