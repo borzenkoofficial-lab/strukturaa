@@ -23,25 +23,11 @@ const features: Feature[] = [
     link: "/dashboard",
   },
   {
-    icon: Briefcase,
-    title: "Биржа заказов",
-    description: "Не подходит наш прайс? Разместите заявку на бирже — десятки проверенных исполнителей предложат свои цены. Выберите лучшего!",
-    gradient: "from-blue-500/20 to-cyan-500/10",
-    link: "/marketplace",
-  },
-  {
     icon: ShoppingBag,
     title: "Маркетплейс инструментов",
     description: "Покупайте и продавайте б/у и новый строительный инструмент. Экономьте до 70% на профессиональном оборудовании.",
     gradient: "from-emerald-500/20 to-green-500/10",
     link: "/shop",
-  },
-  {
-    icon: MessageSquare,
-    title: "Встроенный чат",
-    description: "Общайтесь напрямую с исполнителями и заказчиками через защищённый чат. Все переписки привязаны к заявкам.",
-    gradient: "from-violet-500/20 to-purple-500/10",
-    link: "/marketplace",
   },
   {
     icon: Shield,
