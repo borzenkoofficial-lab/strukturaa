@@ -1305,3 +1305,75 @@ button.text-primary:hover,
 .dark .text-primary:hover {
   color: hsl(348 55% 78%);
 }
+
+
+/* SKOL light theme — complete warm-ivory surface system */
+html.light {
+  color-scheme: light;
+  --background: 40 19% 94%; --foreground: 220 6% 15%;
+  --card: 0 0% 100%; --card-foreground: 220 6% 15%;
+  --popover: 0 0% 100%; --popover-foreground: 220 6% 15%;
+  --primary: 348 43% 31%; --primary-foreground: 0 0% 100%;
+  --secondary: 35 13% 89%; --secondary-foreground: 220 6% 20%;
+  --muted: 35 12% 91%; --muted-foreground: 220 5% 37%;
+  --accent: 348 22% 91%; --accent-foreground: 348 43% 25%;
+  --border: 35 10% 80%; --input: 35 10% 83%; --ring: 348 43% 31%;
+  --sidebar-background: 40 19% 96%; --sidebar-foreground: 220 6% 15%;
+  --sidebar-primary: 348 43% 31%; --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 35 13% 90%; --sidebar-accent-foreground: 220 6% 20%;
+  --sidebar-border: 35 10% 80%; --sidebar-ring: 348 43% 31%;
+  --skol-line: rgba(36,38,41,.14); --skol-muted-line: rgba(36,38,41,.09);
+}
+html.dark { color-scheme: dark; }
+html.light body { color: hsl(var(--foreground)); background: hsl(var(--background)); background-image: none !important; }
+html.light .gradient-dark, html.light .min-h-screen.bg-background.gradient-dark { background: hsl(var(--background)) !important; }
+html.light .skol-site-header { color:#242629; background:#f1efea !important; border-bottom:1px solid rgba(36,38,41,.13) !important; box-shadow:0 2px 8px rgba(36,38,41,.035) !important; }
+html.light .skol-home-hero { color:#242629; background:#f1efea !important; background-image:none !important; }
+html.light .skol-home-hero h1, html.light .skol-home-hero h2, html.light .skol-home-hero h3, html.light .skol-home-hero .text-foreground { color:#242629; }
+html.light .skol-home-hero .text-muted-foreground, html.light .skol-home-hero .text-secondary-foreground { color:#55534f !important; }
+html.light .skol-hero-panel, html.light .skol-home-hero .skol-hero-panel { background:rgba(255,255,255,.48) !important; border-top-color:rgba(36,38,41,.18) !important; border-bottom-color:rgba(36,38,41,.18) !important; }
+html.light .skol-hero-stage { color:#242629; border-left-color:rgba(36,38,41,.2) !important; }
+html.light .skol-hero-stage:hover { background:rgba(112,45,59,.055) !important; }
+html.light .skol-home-hero .skol-hero-cta, html.light .skol-hero-cta, html.light .skol-header-cta { color:#fff !important; background:#702d3b !important; border:1px solid #702d3b !important; }
+html.light .skol-home-hero .skol-hero-cta:hover, html.light .skol-hero-cta:hover, html.light .skol-header-cta:hover { background:#582330 !important; border-color:#582330 !important; }
+html.light .glass-card, html.light .glass-card-hover, html.light .skol-service-card, html.light .skol-project-card, html.light .skol-project-card-content { color:#242629; background:#fff !important; border-color:#d7d1c8 !important; box-shadow:0 2px 8px rgba(36,38,41,.035) !important; }
+html.light .glass-card:hover, html.light .glass-card-hover:hover, html.light .skol-service-card:hover { background:#faf8f4 !important; border-color:rgba(112,45,59,.55) !important; }
+html.light .text-muted-foreground { color:#625f5a !important; }
+html.light .text-secondary-foreground { color:#464440 !important; }
+html.light .border-border, html.light [class*="border-border/"] { border-color:#d4cec5; }
+html.light input, html.light textarea, html.light select { color:#242629 !important; background-color:#fff !important; border-color:#cfc8be !important; color-scheme:light !important; }
+html.light input::placeholder, html.light textarea::placeholder { color:#716d67 !important; opacity:1; }
+html.light input:focus, html.light textarea:focus, html.light select:focus { border-color:#702d3b !important; box-shadow:0 0 0 2px rgba(112,45,59,.12); outline:none; }
+html.light .bg-background { background-color:#f1efea !important; }
+html.light .bg-card { background-color:#fff !important; }
+html.light .bg-secondary { background-color:#e8e3db !important; }
+html.light .bg-muted { background-color:#e9e5de !important; }
+html.light .text-primary, html.light svg.text-primary, html.light [class*="text-primary"] svg, html.light .skol-service-icon, html.light .skol-category-index, html.light .skol-principle-card svg { color:#702d3b !important; }
+html.light .skol-page-kicker, html.light .skol-section-label { color:#5c5852; }
+html.light .skol-page-subtitle { color:#55514b; }
+html.light .skol-service-index, html.light .skol-service-index-number { color:#625f5a !important; }
+html.light .skol-stories-bar { color:#242629; background:#f1efea !important; border-color:#d4cec5; }
+html.light .skol-stories-bar button { color:#343230; }
+html.light .skol-stories-bar button:hover { background:rgba(112,45,59,.06); }
+html.light .skol-project-image { background:#e5e0d8 !important; }
+html.light footer, html.light .skol-site-footer { color:#242629; background:#e8e4dd !important; border-color:#d1cbc2 !important; }
+html.light footer .text-muted-foreground, html.light .skol-site-footer .text-muted-foreground { color:#5e5a54 !important; }
+html.light .skol-page-intro { border-bottom-color:#d4cec5; }
+html.light .skol-editorial-rule { background:linear-gradient(90deg,#702d3b,#d4cec5 42%,transparent); }
+html.light .skol-brand-mark { border-color:#702d3b !important; }
+html.light .skol-brand-mark::after { border-color:rgba(112,45,59,.35) !important; }
+html.light .skol-monogram { color:#242629 !important; }
+html.light .skol-nav-link { color:#464440; }
+html.light .skol-nav-link:hover, html.light .skol-nav-link.is-active { color:#702d3b !important; }
+html.light .skol-nav-link::after { background:#702d3b; }
+html.light .skol-theme-toggle { color:#242629; border-color:#d4cec5; background:#fff; }
+html.light .skol-theme-toggle:hover { background:#e9e4dc; border-color:#b8afa4; }
+html.light .skol-mobile-menu { color:#242629; background:#f1efea; }
+html.light .skol-mobile-menu a, html.light .skol-mobile-menu button { color:#242629; }
+html.light .skol-mobile-menu a:hover, html.light .skol-mobile-menu button:hover { background:#e7e1d9; }
+html.light .skol-search-overlay, html.light .skol-search-panel { color:#242629; background:#f1efea; }
+html.light .skol-search-overlay input, html.light .skol-search-panel input { background:#fff !important; color:#242629 !important; }
+html.light .skol-site-header button { color:#464440; }
+html.light .skol-site-header .skol-header-cta { color:#fff !important; }
+html.light .skol-theme-toggle .theme-toggle-label { color:#464440; }
+@media (max-width:639px) { html.light .skol-hero-panel { background:transparent !important; } }
