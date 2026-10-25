@@ -53,7 +53,7 @@ const ProjectsPage = () => {
 
   return (
     <>
-      <SEOHead title="Проекты — STRUKTURA" description="Портфолио выполненных проектов STRUKTURA: демонтаж, строительство, реновация." canonical="/projects" />
+      <SEOHead title="Портфолио — СКОЛ" description="Примеры демонтажных, монтажных и комплексных строительных работ компании СКОЛ." canonical="/projects" />
       <main className="mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-14 lg:px-8">
         <AnimatedSection>
           <header className="skol-page-intro">
