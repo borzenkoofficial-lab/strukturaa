@@ -26,9 +26,6 @@ const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const MarketplacePage = lazy(() => import("./pages/MarketplacePage"));
-const ShopPage = lazy(() => import("./pages/ShopPage"));
-const InstallPage = lazy(() => import("./pages/InstallPage"));
-const EquipmentPage = lazy(() => import("./pages/EquipmentPage"));
 const GigsPage = lazy(() => import("./pages/GigsPage"));
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -85,9 +82,9 @@ const App = () => (
                   <Route path="/reset-password" element={<Suspense fallback={<PageLoading />}><ResetPasswordPage /></Suspense>} />
                   <Route path="/dashboard" element={<ProtectedRoute><Suspense fallback={<PageLoading />}><DashboardPage /></Suspense></ProtectedRoute>} />
                   <Route path="/marketplace" element={<Navigate to="/" replace />} />
-                  <Route path="/shop" element={<Suspense fallback={<PageLoading />}><ShopPage /></Suspense>} />
-                  <Route path="/install" element={<Suspense fallback={<PageLoading />}><InstallPage /></Suspense>} />
-                  <Route path="/equipment" element={<PageLayout><EquipmentPage /></PageLayout>} />
+                  <Route path="/shop" element={<Navigate to="/services" replace />} />
+                  <Route path="/install" element={<Navigate to="/" replace />} />
+                  <Route path="/equipment" element={<Navigate to="/services" replace />} />
                   <Route path="/gigs" element={<Navigate to="/" replace />} />
                   <Route path="/admin" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminDashboard /></AdminLayout></Suspense></AdminRoute>} />
                   <Route path="/admin/articles" element={<AdminRoute><Suspense fallback={<PageLoading />}><AdminLayout><AdminArticles /></AdminLayout></Suspense></AdminRoute>} />
