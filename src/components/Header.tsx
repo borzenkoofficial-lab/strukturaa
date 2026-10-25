@@ -21,7 +21,7 @@ const Header = () => {
   const navItems: { label: string; path: string }[] = [
     { label: t("nav.services"), path: "/services" },
     { label: t("nav.projects"), path: "/projects" },
-    { label: t("nav.blog"), path: "/blog" },
+    { label: t("nav.news"), path: "/news" },
     { label: t("nav.about"), path: "/about" },
     { label: t("nav.contacts"), path: "/contacts" },
   ];
