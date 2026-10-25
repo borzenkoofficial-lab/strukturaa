@@ -24,7 +24,7 @@ const StatsSection = () => {
           <div className="relative grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
             <div className="flex flex-col items-start justify-between gap-6">
               <div>
-                <p className="skol-section-label mb-4 text-primary">Направления работ</p>
+                <p className="skol-section-label mb-4 text-primary">Формат сотрудничества</p>
                 <h2 className="max-w-lg font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
                   От отдельных задач
                   <span className="block text-white/55">до комплексного объекта</span>
