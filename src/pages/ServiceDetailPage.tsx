@@ -427,7 +427,7 @@ const ServiceDetailPage = () => {
       price={submittedPrice}
     />
     <SEOHead title={seoTitle} description={seoDesc} canonical={`/services/${service.slug}`} />
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="skol-service-detail relative mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
       {/* Back */}
       <AnimatedSection>
         <Button variant="ghost" onClick={() => navigate("/services")} className="mb-6 text-muted-foreground hover:text-foreground">
@@ -438,7 +438,12 @@ const ServiceDetailPage = () => {
 
       {/* Hero */}
       <AnimatedSection>
-        <div className="glass-card p-8 md:p-12 mb-8">
+        <div className="skol-detail-hero glass-card relative isolate overflow-hidden p-6 sm:p-8 md:p-12 mb-8">
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] overflow-hidden opacity-25 lg:block" aria-hidden="true">
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=85)" }} />
+            <div className="absolute inset-0 bg-gradient-to-r from-card via-card/35 to-transparent" />
+            <div className="absolute inset-0 opacity-40" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.16) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.16) 1px, transparent 1px)", backgroundSize: "42px 42px" }} />
+          </div>
           <h1 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-4">
             {t(service.titleKey)}
           </h1>
@@ -467,7 +472,7 @@ const ServiceDetailPage = () => {
         <div className="lg:col-span-2 space-y-8">
           {/* Description */}
           <AnimatedSection delay={0.1}>
-            <div className="glass-card p-8">
+            <div className="skol-editorial-panel glass-card p-5 sm:p-7 lg:p-8">
               <h2 className="text-xl font-display font-bold text-foreground mb-4">
                 {lang === "ru" ? "Описание услуги" : "Service Description"}
               </h2>
@@ -479,11 +484,11 @@ const ServiceDetailPage = () => {
 
           {/* Features */}
           <AnimatedSection delay={0.15}>
-            <div className="glass-card p-8">
+            <div className="skol-editorial-panel glass-card p-5 sm:p-7 lg:p-8">
               <h2 className="text-xl font-display font-bold text-foreground mb-4">
                 {lang === "ru" ? "Преимущества" : "Features"}
               </h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
                 {service.features.map((f, i) => (
                   <motion.div
                     key={i}
@@ -503,7 +508,7 @@ const ServiceDetailPage = () => {
 
           {/* What's included */}
           <AnimatedSection delay={0.2}>
-            <div className="glass-card p-8">
+            <div className="skol-editorial-panel glass-card p-5 sm:p-7 lg:p-8">
               <h2 className="text-xl font-display font-bold text-foreground mb-4">
                 {lang === "ru" ? "Возможный состав работ" : "Potential scope of work"}
               </h2>
@@ -529,7 +534,7 @@ const ServiceDetailPage = () => {
 
           {/* Process / How we work */}
           <AnimatedSection delay={0.25}>
-            <div className="glass-card p-8">
+            <div className="skol-editorial-panel glass-card p-5 sm:p-7 lg:p-8">
               <h2 className="text-xl font-display font-bold text-foreground mb-6 flex items-center gap-2">
                 <Layers className="w-5 h-5 text-primary" />
                 {lang === "ru" ? "Как мы работаем" : "How We Work"}
@@ -561,7 +566,7 @@ const ServiceDetailPage = () => {
 
           {/* FAQ */}
           <AnimatedSection delay={0.3}>
-            <div className="glass-card p-8">
+            <div className="skol-editorial-panel glass-card p-5 sm:p-7 lg:p-8">
               <h2 className="text-xl font-display font-bold text-foreground mb-6 flex items-center gap-2">
                 <HelpCircle className="w-5 h-5 text-primary" />
                 {lang === "ru" ? "Частые вопросы" : "FAQ"}
@@ -622,7 +627,7 @@ const ServiceDetailPage = () => {
           {/* Related services */}
           {relatedServices.length > 0 && (
             <AnimatedSection delay={0.4}>
-              <div className="glass-card p-8">
+              <div className="skol-editorial-panel glass-card p-5 sm:p-7 lg:p-8">
                 <h2 className="text-xl font-display font-bold text-foreground mb-6">
                   {lang === "ru" ? "Похожие услуги" : "Related Services"}
                 </h2>
@@ -650,7 +655,7 @@ const ServiceDetailPage = () => {
         {/* Right: Calculator + Order */}
         <div className="space-y-6">
           <AnimatedSection delay={0.1}>
-            <div className="glass-card p-6 sticky top-24">
+            <div className="skol-editorial-panel glass-card p-5 sm:p-6 sticky top-24">
               <div className="flex items-center gap-2 mb-6">
                 <Calculator className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-display font-bold text-foreground">
