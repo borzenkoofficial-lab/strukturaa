@@ -128,10 +128,10 @@ const BentoGrid = () => {
               { slug: "diamond-cutting", label: "Алмазная резка", price: "от 1500₽/м.п.", icon: Gem, gradient: "from-primary/14 to-secondary", image: projectIndustrial },
               { slug: "renovation", label: "Ремонт под ключ", price: "от 800₽/м²", icon: Wrench, gradient: "from-secondary to-card", image: serviceRenovation },
               { slug: "construction", label: "Монтаж конструкций", price: "от 1200₽/м²", icon: HardHat, gradient: "from-primary/12 to-secondary", image: serviceConstruction },
-              { slug: "apartment-demolition", label: "Демонтаж квартир", price: "от 400₽/м²", icon: Building2, gradient: "from-primary/16 to-card" },
-              { slug: "building-demolition", label: "Снос зданий", price: "от 350₽/м²", icon: TrashIcon, gradient: "from-secondary to-primary/10" },
+              { slug: "apartment-demolition", label: "Демонтаж квартир", price: "от 400₽/м²", icon: Building2, gradient: "from-primary/16 to-card", image: heroDemolition },
+              { slug: "building-demolition", label: "Снос зданий", price: "от 350₽/м²", icon: TrashIcon, gradient: "from-secondary to-primary/10", image: projectIndustrial },
               { slug: "waste-removal", label: "Вывоз мусора", price: "от 8000₽", icon: Truck, gradient: "from-primary/10 to-secondary", image: projectWaste },
-              { slug: "dismantling", label: "Демонтаж коммуникаций", price: "от 600₽/м²", icon: Cable, gradient: "from-secondary to-primary/10" },
+              { slug: "dismantling", label: "Демонтаж коммуникаций", price: "от 600₽/м²", icon: Cable, gradient: "from-secondary to-primary/10", image: serviceConstruction },
             ].map((svc, i) => (
               <motion.div
                 key={svc.slug}
@@ -179,7 +179,8 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* ═══════ 4. АЛМАЗНАЯ РЕЗКА ═══════ */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/diamond-cutting")}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3}
+          style={{ backgroundImage: `linear-gradient(to top, hsl(var(--card) / 0.98), hsl(var(--card) / 0.78) 58%, hsl(var(--card) / 0.42)), url(${projectIndustrial})`, backgroundSize: "cover", backgroundPosition: "center" }} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/diamond-cutting")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-primary/15 text-[10px] sm:text-xs font-medium text-primary uppercase tracking-wider w-fit">{t("bento.exclusive")}</span>
             <FavButton id="exclusive" />
@@ -225,7 +226,8 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* ═══════ 7. ПАРК ТЕХНИКИ ═══════ */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={6} whileHover={{ scale: 1.03 }} onClick={() => navigate("/equipment")}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={6}
+          style={{ backgroundImage: `linear-gradient(to top, hsl(var(--card) / 0.98), hsl(var(--card) / 0.8) 58%, hsl(var(--card) / 0.42)), url(${serviceConstruction})`, backgroundSize: "cover", backgroundPosition: "center" }} whileHover={{ scale: 1.03 }} onClick={() => navigate("/equipment")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.equipment")}</span>
             <Wrench className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -239,6 +241,7 @@ const BentoGrid = () => {
         {/* ═══════ 8. НОВОСТИ — видное место ═══════ */}
         <motion.div
           className="col-span-2 lg:col-span-2 glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer group"
+          style={{ backgroundImage: `linear-gradient(100deg, hsl(var(--card) / 0.96), hsl(var(--card) / 0.78) 65%, hsl(var(--card) / 0.45)), url(${projectWaste})`, backgroundSize: "cover", backgroundPosition: "center" }}
           variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={7}
           whileHover={{ scale: 1.01 }}
           onClick={() => navigate("/news")}
@@ -277,7 +280,8 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* ═══════ 10. СКОРОСТЬ ОТВЕТА ═══════ */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={9} whileHover={{ scale: 1.03 }} onClick={() => navigate("/contacts")}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={9}
+          style={{ backgroundImage: `linear-gradient(to top, hsl(var(--card) / 0.98), hsl(var(--card) / 0.8) 60%, hsl(var(--card) / 0.42)), url(${teamWorker})`, backgroundSize: "cover", backgroundPosition: "center" }} whileHover={{ scale: 1.03 }} onClick={() => navigate("/contacts")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.speed")}</span>
             <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -289,7 +293,8 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* ═══════ 11. ГАРАНТИЯ ═══════ */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={10} whileHover={{ scale: 1.03 }} onClick={() => navigate("/projects")}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={10}
+          style={{ backgroundImage: `linear-gradient(to top, hsl(var(--card) / 0.98), hsl(var(--card) / 0.8) 60%, hsl(var(--card) / 0.42)), url(${projectIndustrial})`, backgroundSize: "cover", backgroundPosition: "center" }} whileHover={{ scale: 1.03 }} onClick={() => navigate("/projects")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-primary/15 text-[10px] sm:text-xs font-medium text-primary uppercase tracking-wider">{t("bento.guarantee")}</span>
             <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
@@ -301,7 +306,8 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* ═══════ 12. КОМАНДА ═══════ */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={11} whileHover={{ scale: 1.03 }} onClick={() => navigate("/about")}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={11}
+          style={{ backgroundImage: `linear-gradient(to top, hsl(var(--card) / 0.97), hsl(var(--card) / 0.78) 60%, hsl(var(--card) / 0.4)), url(${teamWorker})`, backgroundSize: "cover", backgroundPosition: "center" }} whileHover={{ scale: 1.03 }} onClick={() => navigate("/about")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.team")}</span>
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center">
@@ -321,7 +327,8 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* ═══════ 13. ЭКОЛОГИЯ ═══════ */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={12} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/waste-removal")}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={12}
+          style={{ backgroundImage: `linear-gradient(to top, hsl(var(--card) / 0.98), hsl(var(--card) / 0.78) 60%, hsl(var(--card) / 0.4)), url(${projectWaste})`, backgroundSize: "cover", backgroundPosition: "center" }} whileHover={{ scale: 1.03 }} onClick={() => navigate("/services/waste-removal")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-accent/15 text-[10px] sm:text-xs font-medium text-accent uppercase tracking-wider">{t("bento.eco")}</span>
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
@@ -333,7 +340,8 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* ═══════ 14. ОФИС ═══════ */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={13} whileHover={{ scale: 1.03 }} onClick={() => navigate("/contacts")}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between cursor-pointer" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={13}
+          style={{ backgroundImage: `linear-gradient(to top, hsl(var(--card) / 0.98), hsl(var(--card) / 0.78) 60%, hsl(var(--card) / 0.4)), url(${serviceConstruction})`, backgroundSize: "cover", backgroundPosition: "center" }} whileHover={{ scale: 1.03 }} onClick={() => navigate("/contacts")}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.office")}</span>
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center">
@@ -347,7 +355,8 @@ const BentoGrid = () => {
         </motion.div>
 
         {/* ═══════ 15. ПОДПИСКА ═══════ */}
-        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={14} whileHover={{ scale: 1.03 }}>
+        <motion.div className="glass-card-hover p-4 sm:p-5 flex flex-col justify-between" variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={14}
+          style={{ backgroundImage: `linear-gradient(to top, hsl(var(--card) / 0.98), hsl(var(--card) / 0.8) 60%, hsl(var(--card) / 0.42)), url(${heroDemolition})`, backgroundSize: "cover", backgroundPosition: "center" }} whileHover={{ scale: 1.03 }}>
           <div className="flex items-center justify-between">
             <span className="px-2 sm:px-3 py-1 rounded-lg bg-secondary text-[10px] sm:text-xs font-medium text-secondary-foreground uppercase tracking-wider">{t("bento.subscribe")}</span>
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center">
@@ -363,6 +372,7 @@ const BentoGrid = () => {
         {/* ═══════ 16. УСТАНОВИТЬ ПРИЛОЖЕНИЕ ═══════ */}
         <motion.div
           className="col-span-2 glass-card-hover p-4 sm:p-5 flex flex-col gap-3 cursor-pointer overflow-hidden relative"
+          style={{ backgroundImage: `linear-gradient(100deg, hsl(var(--card) / 0.96), hsl(var(--card) / 0.8) 65%, hsl(var(--card) / 0.45)), url(${teamWorker})`, backgroundSize: "cover", backgroundPosition: "center" }}
           variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={15}
           whileHover={{ scale: 1.01 }}
           onClick={() => navigate("/install")}
