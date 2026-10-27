@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, MapPin, Clock, Ruler, ArrowLeft, ArrowRight } from "lucide-react";
+import { X, Clock, Ruler, ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 interface ProjectDetailProps {
