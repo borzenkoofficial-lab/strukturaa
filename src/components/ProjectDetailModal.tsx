@@ -11,6 +11,7 @@ interface ProjectDetailProps {
     duration: string;
     category: string;
     gallery?: string[];
+    visualReference?: boolean;
   };
   onClose: () => void;
 }
@@ -22,14 +23,14 @@ const ProjectDetailModal = ({ project, onClose }: ProjectDetailProps) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+        className="fixed inset-0 z-[80] flex items-center justify-center overflow-y-auto bg-black/75 p-3 backdrop-blur-md sm:p-5"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
       >
         <motion.div
-          className="bg-card rounded-2xl overflow-hidden max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-border/30"
+          className="relative my-auto max-h-[94vh] w-full max-w-5xl overflow-y-auto rounded-[1.5rem] border border-border/50 bg-card shadow-2xl sm:rounded-[2rem]"
           initial={{ scale: 0.9, opacity: 0, y: 30 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 30 }}
@@ -37,13 +38,13 @@ const ProjectDetailModal = ({ project, onClose }: ProjectDetailProps) => {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Image gallery */}
-          <div className="relative aspect-[16/9] bg-muted">
+          <div className="relative aspect-[16/9] overflow-hidden bg-muted sm:aspect-[2/1]">
             {allImages[currentImg] ? (
               <motion.img
                 key={currentImg}
                 src={allImages[currentImg]}
                 alt={project.title}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
@@ -90,6 +91,8 @@ const ProjectDetailModal = ({ project, onClose }: ProjectDetailProps) => {
               </>
             )}
 
+            {project.visualReference && <div className="absolute right-16 top-3 rounded-full border border-white/20 bg-black/45 px-3 py-2 text-[9px] uppercase tracking-[0.14em] text-white/90 backdrop-blur-md sm:right-20 sm:top-4">Визуальный референс · не фото объекта</div>}
+
             {/* Category badge */}
             <div className="absolute bottom-3 left-3">
               <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground text-xs font-semibold uppercase tracking-wider backdrop-blur-sm">
@@ -111,32 +114,25 @@ const ProjectDetailModal = ({ project, onClose }: ProjectDetailProps) => {
             )}
           </div>
 
-          {/* Content */}
-          <div className="p-6 space-y-4">
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground">
-              {project.title}
-            </h2>
-
-            {(project.area || project.duration) && (
-              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                {project.area && (
-                  <div className="flex items-center gap-1.5">
-                    <Ruler className="w-4 h-4 text-primary" />
-                    <span>Площадь: <strong className="text-foreground">{project.area}</strong></span>
-                  </div>
-                )}
-                {project.duration && (
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-primary" />
-                    <span>Срок: <strong className="text-foreground">{project.duration}</strong></span>
-                  </div>
-                )}
+          {/* Case story */}
+          <div className="relative grid gap-6 overflow-hidden p-5 sm:p-8 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-10 lg:p-10">
+            <div aria-hidden="true" className="pointer-events-none absolute -right-8 bottom-0 h-44 w-44 rounded-full border border-rose-200/15" />
+            <div className="relative">
+              <p className="mb-3 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary"><span className="h-px w-6 bg-primary" />История объекта / кейс</p>
+              <h2 className="font-display text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl lg:text-4xl">{project.title}</h2>
+              <p className="mt-5 text-sm leading-7 text-muted-foreground sm:text-base">{project.description}</p>
+              <div className="mt-6 border-l-2 border-primary/50 pl-4">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Контекст работы</p>
+                <p className="mt-2 text-sm leading-6 text-foreground/85">Состав работ и последовательность действий зависят от состояния объекта, доступа к рабочей зоне и требований к следующему этапу.</p>
               </div>
-            )}
-
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {project.description}
-            </p>
+            </div>
+            <aside className="relative space-y-3">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Параметры объекта</p>
+              {project.category && <div className="rounded-xl border border-border/60 bg-background/50 p-4"><span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Направление</span><p className="mt-1 text-sm font-semibold text-foreground">{project.category}</p></div>}
+              {project.area && <div className="rounded-xl border border-border/60 bg-background/50 p-4"><div className="flex items-center gap-2 text-muted-foreground"><Ruler className="h-4 w-4 text-primary" /><span className="text-[10px] uppercase tracking-[0.12em]">Площадь</span></div><p className="mt-1 text-lg font-semibold text-foreground">{project.area}</p></div>}
+              {project.duration && <div className="rounded-xl border border-border/60 bg-background/50 p-4"><div className="flex items-center gap-2 text-muted-foreground"><Clock className="h-4 w-4 text-primary" /><span className="text-[10px] uppercase tracking-[0.12em]">Срок</span></div><p className="mt-1 text-lg font-semibold text-foreground">{project.duration}</p></div>}
+              <p className="pt-2 text-xs leading-5 text-muted-foreground">Дополнительные фото и документы показываются, если они добавлены в архив проекта.</p>
+            </aside>
           </div>
         </motion.div>
       </motion.div>
