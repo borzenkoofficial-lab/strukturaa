@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Building2, Hammer, Wrench } from "lucide-react";
+import { ArrowUpRight, Building2, Hammer, Wrench, Youtube } from "lucide-react";
 import Header from "@/components/Header";
 import BentoGrid from "@/components/BentoGrid";
 import FeaturesCarousel from "@/components/FeaturesCarousel";
@@ -89,6 +89,33 @@ const Index = () => {
                       {item}
                     </span>
                   ))}
+                </div>
+
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                  <a
+                    href="https://www.youtube.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Открыть YouTube"
+                    className="group inline-flex w-fit min-h-11 items-center gap-3 border border-primary/35 bg-background/55 px-3 py-2.5 transition-colors duration-300 hover:border-primary/70 hover:bg-primary/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                  >
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-primary/12 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                      <Youtube className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                    </span>
+                    <span className="flex flex-col text-left">
+                      <span className="text-[9px] font-semibold uppercase tracking-[.17em] text-muted-foreground">Смотрите нас</span>
+                      <span className="text-sm font-semibold text-foreground">YouTube</span>
+                    </span>
+                    <ArrowUpRight className="ml-2 h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+                  </a>
+
+                  <div className="flex min-w-0 items-center gap-3 sm:border-l sm:border-border/60 sm:pl-4">
+                    <span className="hidden h-8 w-px bg-primary/35 sm:block" aria-hidden="true" />
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-semibold uppercase tracking-[.18em] text-primary">Мы блогеры</p>
+                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Наша история — за кадром и на объектах.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
