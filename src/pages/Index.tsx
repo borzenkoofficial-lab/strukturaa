@@ -30,6 +30,9 @@ const Index = () => {
     <div className="min-h-screen bg-background gradient-dark">
       <SEOHead canonical="/" />
       <Header />
+      <div className="mx-auto max-w-7xl px-4 pt-3 sm:px-6 sm:pt-4">
+        <StoriesBar />
+      </div>
 
       <main>
         <section className="mx-auto max-w-7xl px-4 pt-5 pb-8 sm:px-6 sm:pt-8 sm:pb-12">
@@ -139,7 +142,6 @@ const Index = () => {
         <BentoGrid />
       </main>
 
-      <StoriesBar />
       <FeaturesCarousel />
       <StatsSection />
       <ProcessSection />
