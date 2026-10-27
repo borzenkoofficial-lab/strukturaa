@@ -1562,3 +1562,17 @@ html.light .skol-hero-panel {
     border-radius: 0.6rem !important;
   }
 }
+
+/* Subtle cursor-follow light for interactive surfaces across the site */
+.cursor-follow-glow {
+  position: fixed; z-index: 9998; width: 210px; height: 210px; border-radius: 50%;
+  pointer-events: none; opacity: 0; transform: translate(-50%, -50%);
+  background: radial-gradient(circle, hsl(var(--primary) / 0.19) 0%, hsl(var(--primary) / 0.09) 28%, transparent 70%);
+  mix-blend-mode: screen; transition: opacity 180ms ease; will-change: left, top, opacity;
+}
+.cursor-follow-glow.is-visible { opacity: 1; }
+html.light .cursor-follow-glow {
+  background: radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, hsl(var(--primary) / 0.06) 30%, transparent 72%);
+  mix-blend-mode: multiply;
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) { .cursor-follow-glow { display: none !important; } }
