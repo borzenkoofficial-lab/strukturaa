@@ -33,7 +33,7 @@ const Index = () => {
 
       <main>
         <section className="mx-auto max-w-7xl px-4 pt-5 pb-8 sm:px-6 sm:pt-8 sm:pb-12">
-          <div className="relative isolate overflow-hidden rounded-2xl border border-border/60 bg-card/45 px-5 py-5 shadow-[0_18px_60px_-38px_hsl(var(--primary)/0.28)] sm:px-7 sm:py-6 lg:px-9">
+          <div className="relative isolate overflow-hidden rounded-2xl border border-border/60 bg-card/45 px-5 py-7 shadow-[0_18px_60px_-38px_hsl(var(--primary)/0.28)] sm:px-8 sm:py-9 lg:px-10 lg:py-11">
             <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_42%,hsl(var(--primary)/0.09),transparent_42%),linear-gradient(115deg,hsl(var(--background)/0.08),transparent_55%)]" />
             <div className="pointer-events-none absolute -right-10 -top-20 -z-10 h-56 w-56 rounded-full border border-primary/10 sm:-right-4 sm:h-72 sm:w-72" />
             <div className="pointer-events-none absolute -right-1 top-0 -z-10 h-full w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
@@ -65,35 +65,73 @@ const Index = () => {
               ))}
             </div>
 
-            <div className="relative z-10 grid items-center gap-5 md:grid-cols-[minmax(0,1fr)_auto] md:gap-8">
+            <div className="relative z-10 grid items-start gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(260px,0.85fr)] lg:gap-10">
               <div className="max-w-3xl">
-                <div className="mb-3 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">
-                  <span className="h-px w-6 bg-primary" />
+                <div className="mb-4 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">
+                  <span className="h-px w-7 bg-primary" />
                   Строительная платформа
+                  <span className="ml-1 rounded-full border border-primary/25 px-2 py-1 text-[9px] tracking-[0.12em] text-primary/90">STRUKTURA</span>
                 </div>
-                <h1 className="max-w-2xl font-display text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl lg:text-4xl">
-                  Строительные задачи — <span className="text-primary">в одном месте</span>
+                <h1 className="max-w-3xl font-display text-3xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+                  Строительные задачи —
+                  <span className="block mt-1 text-primary">в одном месте</span>
                 </h1>
-                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  Услуги, инструмент, оборудование и проекты — начните с нужного раздела и найдите решение для своего объекта.
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base sm:leading-7">
+                  Пространство для тех, кто строит, ремонтирует и выбирает оборудование. Изучайте направления, находите нужные решения и переходите к подходящим разделам без лишнего поиска.
                 </p>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {["Для объекта и ремонта", "Инструмент и оборудование", "Проекты и техника"].map((item) => (
+                    <span key={item} className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/55 px-3 py-2 text-[10px] font-medium text-foreground/90 sm:text-xs">
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary)/0.45)]" />
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div className="grid grid-cols-3 gap-2 md:w-[245px] md:grid-cols-1 md:gap-2.5">
-                {[
-                  { icon: Hammer, label: "Услуги" },
-                  { icon: Wrench, label: "Инструмент" },
-                  { icon: Building2, label: "Проекты и техника" },
-                ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex min-w-0 flex-col items-center justify-center gap-2 rounded-xl border border-border/50 bg-background/65 px-2 py-3 text-center backdrop-blur-sm md:flex-row md:justify-start md:px-3 md:py-2.5 md:text-left">
-                    <Icon className="h-4 w-4 shrink-0 text-primary sm:h-[18px] sm:w-[18px]" />
-                    <span className="text-[10px] font-medium leading-tight text-foreground sm:text-xs">{label}</span>
-                  </div>
-                ))}
+
+              <div className="relative min-w-0 rounded-xl border border-border/50 bg-background/45 p-4 sm:p-5">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-xs">Навигация по платформе</span>
+                  <span className="font-mono text-[10px] text-primary/80">01 — 03</span>
+                </div>
+                <div className="space-y-2.5">
+                  {[
+                    { icon: Hammer, number: "01", label: "Услуги", description: "Направления работ и решения для объекта" },
+                    { icon: Wrench, number: "02", label: "Инструмент", description: "Оснащение для строительных задач" },
+                    { icon: Building2, number: "03", label: "Проекты и техника", description: "Примеры, техника и практические идеи" },
+                  ].map(({ icon: Icon, number, label, description }) => (
+                    <div key={label} className="group flex items-start gap-3 rounded-lg border border-border/45 bg-card/65 px-3 py-3 transition-colors duration-300 hover:border-primary/35 hover:bg-card/90 sm:px-4">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary">
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[9px] font-mono text-primary/70">{number}</span>
+                          <span className="text-sm font-semibold text-foreground">{label}</span>
+                        </div>
+                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{description}</p>
+                      </div>
+                      <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground/60 transition-colors group-hover:text-primary" aria-hidden="true" />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="relative z-10 mt-5 flex items-center justify-between border-t border-border/50 pt-3">
-              <span className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground sm:text-[10px]">Выберите направление ниже</span>
-              <ArrowUpRight className="h-4 w-4 text-primary/80" aria-hidden="true" />
+
+            <div className="relative z-10 mt-7 grid gap-3 border-t border-border/50 pt-5 sm:grid-cols-3 sm:gap-4">
+              {[
+                { number: "01", title: "Определите задачу", description: "Начните с нужного направления." },
+                { number: "02", title: "Изучите варианты", description: "Сравните подходы и доступную информацию." },
+                { number: "03", title: "Переходите к делу", description: "Откройте подходящий раздел ниже." },
+              ].map((item) => (
+                <div key={item.number} className="flex gap-3 sm:flex-col sm:gap-2">
+                  <span className="pt-0.5 font-mono text-xs text-primary/80">{item.number}</span>
+                  <div>
+                    <p className="text-xs font-semibold text-foreground sm:text-sm">{item.title}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
