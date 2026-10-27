@@ -13,6 +13,7 @@ import { ProtectedRoute, AdminRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import SakuraAtmosphere from "@/components/SakuraAtmosphere";
 
 // Lazy load non-critical routes
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
@@ -50,10 +51,13 @@ const PageLoading = () => (
 );
 
 const PageLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="min-h-screen bg-background gradient-dark">
-    <Header />
-    <Suspense fallback={<PageLoading />}>{children}</Suspense>
-    <Footer />
+  <div className="relative isolate min-h-screen bg-background gradient-dark">
+    <SakuraAtmosphere />
+    <div className="relative z-10">
+      <Header />
+      <Suspense fallback={<PageLoading />}>{children}</Suspense>
+      <Footer />
+    </div>
   </div>
 );
 
