@@ -1576,3 +1576,53 @@ html.light .cursor-follow-glow {
   mix-blend-mode: multiply;
 }
 @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) { .cursor-follow-glow { display: none !important; } }
+
+
+/* Editorial construction surfaces used by the interior page system */
+.skol-editorial-panel {
+  position: relative;
+  border-color: hsl(var(--border) / 0.78) !important;
+  background: linear-gradient(135deg, hsl(var(--card) / 0.96), hsl(var(--background) / 0.58)) !important;
+  box-shadow: 0 20px 70px -56px hsl(var(--foreground) / 0.42);
+}
+.skol-editorial-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  width: 34%;
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.72), transparent);
+  pointer-events: none;
+}
+.skol-detail-hero {
+  background-color: hsl(var(--card));
+  background-image:
+    radial-gradient(ellipse at 86% 16%, hsl(var(--primary) / 0.15), transparent 44%),
+    linear-gradient(115deg, hsl(var(--card) / 0.98), hsl(var(--background) / 0.82)) !important;
+  border-color: hsl(var(--border) / 0.82) !important;
+  box-shadow: 0 28px 90px -62px hsl(var(--primary) / 0.42);
+}
+.skol-service-detail .skol-editorial-panel h2,
+.skol-service-detail .skol-editorial-panel h3 {
+  text-wrap: balance;
+}
+html.light .skol-editorial-panel {
+  background: linear-gradient(135deg, #f7f4ee, #f1ede6) !important;
+  border-color: #d5cec4 !important;
+  box-shadow: 0 18px 54px -46px rgba(50, 43, 36, 0.24);
+}
+html.light .skol-editorial-panel::before {
+  background: linear-gradient(90deg, rgba(112, 45, 59, 0.66), transparent);
+}
+html.light .skol-detail-hero {
+  background-color: #f4f0e9;
+  background-image:
+    radial-gradient(ellipse at 86% 16%, rgba(112, 45, 59, 0.08), transparent 46%),
+    linear-gradient(115deg, #f7f4ee, #eee9e1) !important;
+  border-color: #d5cec4 !important;
+}
+@media (max-width: 639px) {
+  .skol-editorial-panel::before { left: 1.1rem; width: 42%; }
+  .skol-service-detail .skol-editorial-panel { scroll-margin-top: 5rem; }
+}
