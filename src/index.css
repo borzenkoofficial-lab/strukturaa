@@ -1626,3 +1626,300 @@ html.light .skol-detail-hero {
   .skol-editorial-panel::before { left: 1.1rem; width: 42%; }
   .skol-service-detail .skol-editorial-panel { scroll-margin-top: 5rem; }
 }
+
+
+/* === Mobile adaptation pass: touch spacing, safe areas, responsive content === */
+:root {
+  --mobile-page-gutter: clamp(0.75rem, 4vw, 1.25rem);
+  --mobile-tap-size: 2.5rem;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 5.25rem;
+}
+body, #root {
+  width: 100%;
+  min-width: 0;
+}
+@supports (overflow-x: clip) {
+  html, body, #root { overflow-x: clip; }
+}
+@supports not (overflow-x: clip) {
+  body, #root { overflow-x: hidden; }
+}
+img, video, canvas, iframe { max-width: 100%; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+.skol-home-section,
+.skol-service-detail,
+.skol-services-page,
+.skol-projects-page {
+  min-width: 0;
+  width: 100%;
+}
+.skol-home-intro,
+.skol-home-intro > *,
+.skol-home-nav-panel,
+.skol-home-quick-points > *,
+.skol-bento-grid > *,
+.skol-project-card,
+.skol-project-card-content,
+.skol-editorial-panel {
+  min-width: 0;
+}
+.skol-home-intro h1,
+.skol-page-title,
+.skol-project-card-content h2,
+.skol-service-detail h1,
+.skol-service-detail h2 {
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+@media (max-width: 767px) {
+  html { scroll-padding-top: 4.75rem; }
+  .skol-site-header {
+    min-height: 3.7rem !important;
+    padding-left: max(0.65rem, env(safe-area-inset-left)) !important;
+    padding-right: max(0.65rem, env(safe-area-inset-right)) !important;
+    padding-bottom: 0.45rem !important;
+  }
+  .skol-site-header > .max-w-7xl {
+    width: 100%;
+    gap: 0.2rem !important;
+  }
+  .skol-site-header > .max-w-7xl > div:first-child {
+    min-width: 0;
+    gap: 0.2rem !important;
+  }
+  .skol-site-header > .max-w-7xl > div:last-child {
+    flex-shrink: 0;
+    gap: 0.12rem !important;
+  }
+  .skol-site-header > .max-w-7xl > div:last-child > button {
+    min-width: var(--mobile-tap-size);
+    min-height: var(--mobile-tap-size);
+    flex-shrink: 0;
+    justify-content: center;
+    padding-left: 0.45rem !important;
+    padding-right: 0.45rem !important;
+  }
+  .skol-site-header .skol-brand-mark {
+    width: 2rem !important;
+    height: 2rem !important;
+    flex-shrink: 0;
+  }
+  .skol-site-header .skol-theme-toggle {
+    width: var(--mobile-tap-size);
+    min-width: var(--mobile-tap-size);
+    padding: 0 !important;
+  }
+  .skol-site-header .theme-toggle-label { display: none !important; }
+
+  /* On phones the story strip scrolls with the page instead of competing with the sticky header. */
+  .skol-stories-bar {
+    position: relative !important;
+    top: auto !important;
+    z-index: 10 !important;
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+    box-shadow: none !important;
+  }
+  .skol-stories-bar .max-w-7xl {
+    width: 100%;
+    max-width: 100%;
+  }
+  .skol-stories-bar .relative.flex.items-center {
+    padding: 0.35rem 0.45rem !important;
+    gap: 0.35rem !important;
+  }
+  .skol-stories-bar button {
+    min-height: 3.75rem;
+    flex: 0 0 auto;
+  }
+
+  .skol-home-section {
+    padding-top: 0.75rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+  .skol-home-intro {
+    border-radius: 0.8rem !important;
+    padding: 1.15rem !important;
+    box-shadow: 0 14px 40px -32px hsl(var(--primary) / 0.28) !important;
+  }
+  .skol-home-intro .skol-home-title {
+    max-width: 100%;
+    font-size: clamp(2rem, 8.8vw, 2.85rem) !important;
+    line-height: 1.04 !important;
+    letter-spacing: -0.055em !important;
+  }
+  .skol-home-intro .skol-home-nav-panel {
+    padding: 0.75rem !important;
+    border-radius: 0.65rem !important;
+  }
+  .skol-home-nav-panel .group {
+    gap: 0.55rem !important;
+    padding: 0.65rem !important;
+  }
+  .skol-home-nav-panel .group > span:first-child {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .skol-home-nav-panel .group p {
+    overflow-wrap: anywhere;
+  }
+  .skol-home-youtube-row {
+    align-items: stretch;
+    gap: 0.75rem !important;
+  }
+  .skol-home-youtube-row > a {
+    min-height: 2.9rem;
+    max-width: 100%;
+  }
+  .skol-home-quick-points {
+    margin-top: 1.1rem !important;
+    padding-top: 1rem !important;
+    gap: 0.8rem !important;
+  }
+  /* Keep the background alive, but reduce simultaneous motion on handheld devices. */
+  .skol-home-particles > span:nth-of-type(n+7),
+  .skol-projects-particles > span:nth-of-type(n+8) {
+    display: none !important;
+  }
+
+  .skol-page-intro {
+    padding-bottom: 1.1rem !important;
+    margin-bottom: 1.2rem !important;
+  }
+  .skol-page-kicker {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.13em !important;
+    line-height: 1.5;
+    flex-wrap: wrap;
+  }
+  .skol-page-kicker::before { flex: 0 0 1.15rem; }
+  .skol-page-title {
+    max-width: 100% !important;
+    font-size: clamp(1.9rem, 8.5vw, 3.1rem) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.045em !important;
+  }
+  .skol-page-subtitle {
+    margin-top: 0.8rem !important;
+    font-size: 0.94rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .skol-project-card-featured .skol-project-card-content {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1rem !important;
+  }
+  .skol-project-card-featured .skol-project-card-content > div:last-child {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .skol-project-card-featured .skol-project-card-content h2 {
+    font-size: clamp(1.55rem, 6vw, 2.25rem);
+    line-height: 1.08;
+  }
+  .skol-project-card-content { overflow-wrap: anywhere; }
+  .skol-project-open-label { white-space: normal; }
+  .skol-projects-particles { contain: paint; }
+
+  .skol-service-detail {
+    padding-left: var(--mobile-page-gutter) !important;
+    padding-right: var(--mobile-page-gutter) !important;
+    padding-top: 1.1rem !important;
+  }
+  .skol-service-detail .skol-detail-hero {
+    padding: 1.15rem !important;
+    margin-bottom: 1.1rem !important;
+  }
+  .skol-service-detail .skol-editorial-panel {
+    padding: 1rem !important;
+  }
+  .skol-service-detail .grid {
+    min-width: 0;
+  }
+  .skol-service-detail .skol-editorial-panel h2,
+  .skol-service-detail .skol-editorial-panel h3 {
+    font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+    line-height: 1.25;
+  }
+  .skol-service-detail input,
+  .skol-service-detail textarea,
+  .skol-service-detail select {
+    max-width: 100%;
+  }
+  .skol-service-detail input[type="number"] {
+    width: min(7rem, 42vw) !important;
+  }
+
+  /* Comfortable reading and touch targets for forms without increasing visual clutter. */
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    min-height: 2.9rem;
+    font-size: 16px !important;
+    line-height: 1.4;
+  }
+  textarea { min-height: 7rem; }
+  form button[type="submit"] { min-height: 3rem; }
+  .skol-cta-panel {
+    padding: 1.15rem !important;
+  }
+  .skol-cta-panel h2 {
+    font-size: clamp(1.6rem, 7vw, 2.3rem) !important;
+    line-height: 1.08 !important;
+  }
+  .skol-cta-actions { width: 100%; }
+  .skol-cta-actions a,
+  .skol-cta-actions button { width: 100%; justify-content: center; }
+
+  .skol-format-panel {
+    padding: 1.15rem !important;
+  }
+  .skol-principles-section { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+  .skol-site-footer .grid { min-width: 0; }
+  .skol-site-footer a,
+  .skol-site-footer button { overflow-wrap: anywhere; }
+  #skol-mobile-menu {
+    max-height: 100dvh;
+    padding-top: max(1.1rem, env(safe-area-inset-top)) !important;
+    padding-bottom: calc(1.1rem + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .skol-site-header { padding-left: 0.45rem !important; padding-right: 0.45rem !important; }
+  .skol-site-header > .max-w-7xl > div:last-child { gap: 0 !important; }
+  .skol-site-header > .max-w-7xl > div:last-child > button {
+    min-width: 2.25rem;
+    width: 2.25rem;
+  }
+  .skol-site-header > .max-w-7xl > div:first-child > button {
+    display: none;
+  }
+  .skol-home-intro { padding: 0.9rem !important; }
+  .skol-home-intro .skol-home-title { font-size: clamp(1.85rem, 8.5vw, 2.35rem) !important; }
+  .skol-home-youtube-row > a { padding-left: 0.65rem; padding-right: 0.65rem; }
+  .skol-bento-grid { gap: 0.5rem !important; }
+  .skol-bento-grid .glass-card,
+  .skol-bento-grid .glass-card-hover { border-radius: 0.65rem !important; }
+  .skol-bento-grid .glass-card,
+  .skol-bento-grid .glass-card-hover { min-width: 0; }
+  .skol-bento-grid .col-span-2 { min-width: 0; }
+  .skol-project-card-content { padding: 0.9rem !important; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .skol-home-intro { padding: clamp(1.25rem, 3vw, 2rem) !important; }
+  .skol-project-card-featured .skol-project-card-content {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skol-home-particles,
+  .skol-projects-particles { display: none !important; }
+}
