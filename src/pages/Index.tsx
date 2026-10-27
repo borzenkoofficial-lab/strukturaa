@@ -35,13 +35,13 @@ const Index = () => {
       </div>
 
       <main>
-        <section className="mx-auto max-w-7xl px-4 pt-5 pb-8 sm:px-6 sm:pt-8 sm:pb-12">
-          <div className="relative isolate overflow-hidden rounded-2xl border border-border/60 bg-card/45 px-5 py-7 shadow-[0_18px_60px_-38px_hsl(var(--primary)/0.28)] sm:px-8 sm:py-9 lg:px-10 lg:py-11">
+        <section className="skol-home-section mx-auto max-w-7xl px-4 pt-5 pb-8 sm:px-6 sm:pt-8 sm:pb-12">
+          <div className="skol-home-intro relative isolate overflow-hidden rounded-2xl border border-border/60 bg-card/45 px-5 py-7 shadow-[0_18px_60px_-38px_hsl(var(--primary)/0.28)] sm:px-8 sm:py-9 lg:px-10 lg:py-11">
             <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_42%,hsl(var(--primary)/0.09),transparent_42%),linear-gradient(115deg,hsl(var(--background)/0.08),transparent_55%)]" />
             <div className="pointer-events-none absolute -right-10 -top-20 -z-10 h-56 w-56 rounded-full border border-primary/10 sm:-right-4 sm:h-72 sm:w-72" />
             <div className="pointer-events-none absolute -right-1 top-0 -z-10 h-full w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
 
-            <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+            <div className="skol-home-particles pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
               {particles.map((particle, index) => (
                 <motion.span
                   key={index}
@@ -75,7 +75,7 @@ const Index = () => {
                   Строительная платформа
                   <span className="ml-1 rounded-full border border-primary/25 px-2 py-1 text-[9px] tracking-[0.12em] text-primary/90">STRUKTURA</span>
                 </div>
-                <h1 className="max-w-3xl font-display text-3xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+                <h1 className="skol-home-title max-w-3xl font-display text-3xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                   Строительные задачи —
                   <span className="block mt-1 text-primary">в одном месте</span>
                 </h1>
@@ -91,7 +91,7 @@ const Index = () => {
                   ))}
                 </div>
 
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                <div className="skol-home-youtube-row mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                   <a
                     href="https://www.youtube.com/"
                     target="_blank"
@@ -119,7 +119,7 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="relative min-w-0 rounded-xl border border-border/50 bg-background/45 p-4 sm:p-5">
+              <div className="skol-home-nav-panel relative min-w-0 rounded-xl border border-border/50 bg-background/45 p-4 sm:p-5">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-xs">Навигация по платформе</span>
                   <span className="font-mono text-[10px] text-primary/80">01 — 03</span>
@@ -148,7 +148,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="relative z-10 mt-7 grid gap-3 border-t border-border/50 pt-5 sm:grid-cols-3 sm:gap-4">
+            <div className="skol-home-quick-points relative z-10 mt-7 grid gap-3 border-t border-border/50 pt-5 sm:grid-cols-3 sm:gap-4">
               {[
                 { number: "01", title: "Определите задачу", description: "Начните с нужного направления." },
                 { number: "02", title: "Изучите варианты", description: "Сравните подходы и доступную информацию." },
