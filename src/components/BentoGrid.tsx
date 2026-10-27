@@ -124,25 +124,27 @@ const BentoGrid = () => {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
             {[
-              { slug: "demolition", label: "Демонтаж", price: "от 500₽/м²", icon: Hammer, gradient: "from-primary/20 to-primary/5" },
-              { slug: "diamond-cutting", label: "Алмазная резка", price: "от 1500₽/м.п.", icon: Gem, gradient: "from-primary/14 to-secondary" },
-              { slug: "renovation", label: "Ремонт под ключ", price: "от 800₽/м²", icon: Wrench, gradient: "from-secondary to-card" },
-              { slug: "construction", label: "Монтаж конструкций", price: "от 1200₽/м²", icon: HardHat, gradient: "from-primary/12 to-secondary" },
+              { slug: "demolition", label: "Демонтаж", price: "от 500₽/м²", icon: Hammer, gradient: "from-primary/20 to-primary/5", image: heroDemolition },
+              { slug: "diamond-cutting", label: "Алмазная резка", price: "от 1500₽/м.п.", icon: Gem, gradient: "from-primary/14 to-secondary", image: projectIndustrial },
+              { slug: "renovation", label: "Ремонт под ключ", price: "от 800₽/м²", icon: Wrench, gradient: "from-secondary to-card", image: serviceRenovation },
+              { slug: "construction", label: "Монтаж конструкций", price: "от 1200₽/м²", icon: HardHat, gradient: "from-primary/12 to-secondary", image: serviceConstruction },
               { slug: "apartment-demolition", label: "Демонтаж квартир", price: "от 400₽/м²", icon: Building2, gradient: "from-primary/16 to-card" },
               { slug: "building-demolition", label: "Снос зданий", price: "от 350₽/м²", icon: TrashIcon, gradient: "from-secondary to-primary/10" },
-              { slug: "waste-removal", label: "Вывоз мусора", price: "от 8000₽", icon: Truck, gradient: "from-primary/10 to-secondary" },
+              { slug: "waste-removal", label: "Вывоз мусора", price: "от 8000₽", icon: Truck, gradient: "from-primary/10 to-secondary", image: projectWaste },
               { slug: "dismantling", label: "Демонтаж коммуникаций", price: "от 600₽/м²", icon: Cable, gradient: "from-secondary to-primary/10" },
             ].map((svc, i) => (
               <motion.div
                 key={svc.slug}
-                className="glass-card p-3 sm:p-4 flex flex-col justify-between cursor-pointer group hover:border-primary/30 transition-colors"
-                whileHover={{ scale: 1.03 }}
+                className="glass-card relative min-h-[148px] overflow-hidden p-3 sm:min-h-[190px] sm:p-4 flex flex-col justify-between cursor-pointer group hover:border-primary/30 transition-colors"
+                whileHover={{ scale: 1.02 }}
                 onClick={() => navigate(`/services/${svc.slug}`)}
               >
-                <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${svc.gradient} flex items-center justify-center mb-2 sm:mb-3`}>
+                {svc.image && <img src={svc.image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" loading="lazy" />}
+                {svc.image && <div className="absolute inset-0 bg-gradient-to-t from-background via-background/85 to-background/45" aria-hidden="true" />}
+                <div className={`relative z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${svc.gradient} flex items-center justify-center mb-2 sm:mb-3 backdrop-blur-sm`}>
                   <svc.icon className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
                 </div>
-                <div>
+                <div className="relative z-10">
                   <p className="text-xs sm:text-sm font-display font-semibold text-foreground leading-tight">{svc.label}</p>
                   <p className="text-[10px] sm:text-xs text-primary font-medium mt-1">{svc.price}</p>
                 </div>
