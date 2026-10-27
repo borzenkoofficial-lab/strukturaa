@@ -50,9 +50,9 @@ const PageLoading = () => (
   </div>
 );
 
-const PageLayout = ({ children }: { children: React.ReactNode }) => (
+const PageLayout = ({ children, atmosphere = true }: { children: React.ReactNode; atmosphere?: boolean }) => (
   <div className="relative isolate min-h-screen bg-background gradient-dark">
-    <SakuraAtmosphere />
+    {atmosphere && <SakuraAtmosphere />}
     <div className="relative z-10">
       <Header />
       <Suspense fallback={<PageLoading />}>{children}</Suspense>
@@ -76,7 +76,7 @@ const App = () => (
                   <Route path="/" element={<Index />} />
                   <Route path="/services" element={<PageLayout><ServicesPage /></PageLayout>} />
                   <Route path="/services/:slug" element={<PageLayout><ServiceDetailPage /></PageLayout>} />
-                  <Route path="/projects" element={<PageLayout><ProjectsPage /></PageLayout>} />
+                  <Route path="/projects" element={<PageLayout atmosphere={false}><ProjectsPage /></PageLayout>} />
                   <Route path="/about" element={<PageLayout><AboutPage /></PageLayout>} />
                   <Route path="/contacts" element={<PageLayout><ContactsPage /></PageLayout>} />
                   <Route path="/news" element={<PageLayout><NewsPage /></PageLayout>} />
