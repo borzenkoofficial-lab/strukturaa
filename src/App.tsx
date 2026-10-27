@@ -1,4 +1,5 @@
 import { Suspense, lazy, useCallback, useState } from "react";
+import CursorGlow from "@/components/CursorGlow";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -66,6 +67,7 @@ const App = () => (
               <Toaster />
               <Sonner />
               <BrowserRouter>
+                <CursorGlow />
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/services" element={<PageLayout><ServicesPage /></PageLayout>} />
