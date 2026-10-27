@@ -1462,3 +1462,103 @@ html.light .skol-mobile-backdrop { background: rgba(36,38,41,.32) !important; }
 html.light .skol-mobile-menu { background: #f1efea !important; color: #242629 !important; }
 html.light .skol-mobile-menu .text-primary { color: #702d3b !important; }
 html.light .skol-mobile-menu button:focus-visible { outline: 2px solid #702d3b; outline-offset: -2px; }
+
+
+/* Global radius pass — consistent softened corners across every route */
+:root {
+  --radius: 0.9rem;
+  --surface-radius: 1rem;
+  --control-radius: 0.65rem;
+}
+.glass-card,
+.glass-card-hover,
+.skol-service-card,
+.skol-project-card,
+.skol-project-card-content,
+.skol-format-panel,
+.skol-cta-panel,
+.skol-hero-panel,
+.skol-portfolio-panel,
+.skol-principle-card,
+.skol-category-card,
+.skol-feature-card,
+.skol-content-panel,
+[role="dialog"],
+[role="menu"],
+[role="listbox"],
+.popover-content,
+.dropdown-menu-content {
+  border-radius: var(--surface-radius) !important;
+  overflow: hidden;
+}
+.skol-bento-grid .glass-card,
+.skol-bento-grid .glass-card-hover {
+  border-radius: var(--surface-radius) !important;
+}
+.skol-service-card,
+.skol-project-card,
+.skol-format-panel,
+.skol-cta-panel,
+.skol-hero-panel {
+  border-radius: var(--surface-radius) !important;
+}
+button,
+[role="button"],
+a.skol-hero-cta,
+a.skol-header-cta,
+.skol-hero-cta,
+.skol-header-cta,
+.skol-theme-toggle,
+input,
+textarea,
+select {
+  border-radius: var(--control-radius) !important;
+}
+button.rounded-full,
+a.rounded-full,
+.rounded-full {
+  border-radius: 9999px !important;
+}
+.skol-brand-mark {
+  border-radius: 0.45rem !important;
+}
+.skol-brand-mark::after {
+  border-radius: 0.25rem !important;
+}
+.skol-nav-link {
+  border-radius: 0.4rem !important;
+}
+.skol-project-image,
+.skol-project-image img,
+.skol-project-card img {
+  border-radius: 0.85rem 0.85rem 0 0;
+}
+html.light .glass-card,
+html.light .glass-card-hover,
+html.light .skol-service-card,
+html.light .skol-project-card,
+html.light .skol-project-card-content,
+html.light .skol-format-panel,
+html.light .skol-cta-panel,
+html.light .skol-hero-panel {
+  border-radius: var(--surface-radius) !important;
+}
+@media (max-width: 639px) {
+  .glass-card,
+  .glass-card-hover,
+  .skol-service-card,
+  .skol-project-card,
+  .skol-project-card-content,
+  .skol-format-panel,
+  .skol-cta-panel,
+  .skol-hero-panel {
+    border-radius: 0.85rem !important;
+  }
+  button,
+  [role="button"],
+  input,
+  textarea,
+  select {
+    border-radius: 0.6rem !important;
+  }
+}
