@@ -655,7 +655,7 @@ const ServiceDetailPage = () => {
         {/* Right: Calculator + Order */}
         <div className="space-y-6">
           <AnimatedSection delay={0.1}>
-            <div className="skol-editorial-panel glass-card p-5 sm:p-6 sticky top-24">
+            <div className="skol-editorial-panel glass-card p-5 sm:p-6 lg:sticky lg:top-24">
               <div className="flex items-center gap-2 mb-6">
                 <Calculator className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-display font-bold text-foreground">
