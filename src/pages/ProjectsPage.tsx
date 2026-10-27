@@ -129,7 +129,7 @@ const ProjectsPage = () => {
     <>
       <SEOHead title="Проекты и портфолио — Структура" description="Портфолио строительных объектов: демонтаж, фасадные работы и подготовка помещений. Истории объектов, фотографии и детали выполненных работ." canonical="/projects" />
       <main className="relative isolate min-h-screen overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div aria-hidden="true" className="skol-projects-particles pointer-events-none absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_12%,hsl(var(--primary)/0.10),transparent_34%),radial-gradient(ellipse_at_90%_42%,rgba(190,130,151,0.09),transparent_30%)]" />
           <div className="absolute inset-0 opacity-[0.16]" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/0.06) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/0.06) 1px, transparent 1px)", backgroundSize: "72px 72px", maskImage: "linear-gradient(to bottom, black, transparent 75%)" }} />
           {petals.map((petal, i) => (
