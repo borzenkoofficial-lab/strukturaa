@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight, ArrowRight, Building2, Layers3, Ruler, Sparkles, Flower2 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
-import { useLanguage } from "@/contexts/LanguageContext";
 import SEOHead from "@/components/SEOHead";
 import ProjectDetailModal from "@/components/ProjectDetailModal";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +26,7 @@ interface SelectedProject {
   duration: string;
   category: string;
   gallery?: string[];
+  visualReference?: boolean;
 }
 
 const visualReferences = [
@@ -81,7 +81,6 @@ const petals = Array.from({ length: 24 }, (_, i) => ({
 }));
 
 const ProjectsPage = () => {
-  const { t } = useLanguage();
   const [selected, setSelected] = useState<SelectedProject | null>(null);
   const [projects, setProjects] = useState<DbProject[]>([]);
   const [activeFilter, setActiveFilter] = useState("all");
@@ -122,6 +121,7 @@ const ProjectsPage = () => {
       duration: p.duration,
       category: p.category,
       gallery: p.gallery?.length ? p.gallery : [],
+      visualReference: !p.featured_image,
     });
   };
 
