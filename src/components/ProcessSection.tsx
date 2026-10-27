@@ -14,7 +14,7 @@ const ProcessSection = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
       <AnimatedSection>
         <h2 className="text-2xl font-display font-bold text-foreground mb-2">{t("process.title")}</h2>
         <p className="text-muted-foreground mb-10">{t("process.subtitle")}</p>
