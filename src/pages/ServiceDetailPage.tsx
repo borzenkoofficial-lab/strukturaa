@@ -2372,6 +2372,117 @@ const ServiceDetailPage = () => {
         </AnimatedSection>
       )}
 
+      <AnimatedSection delay={0.1}>
+        <section id="preliminary-estimate" className="mb-8 overflow-hidden border border-border/60 bg-card/45">
+          <div className="border-b border-border/50 p-5 sm:p-7">
+            <p className="mb-2 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.18em] text-primary">
+              <span className="h-px w-6 bg-primary" /> 04 / RATE-BASED ESTIMATE
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">{lang === "ru" ? "Предварительный расчёт" : "Preliminary estimate"}</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">{lang === "ru" ? "Введите фактический объём каждой выбранной операции. Итог считается только по расценкам, которые администратор подтвердил в справочнике." : "Enter the actual quantity for each selected operation. A total is calculated only from rates confirmed by an administrator."}</p>
+              </div>
+              <div className="shrink-0 border border-border/60 px-4 py-3">
+                <p className="text-[10px] uppercase tracking-[.16em] text-muted-foreground">{lang === "ru" ? "Итог по выбранным работам" : "Selected scope total"}</p>
+                <p className="mt-1 font-display text-xl font-semibold text-primary">{quoteTotal !== null ? formatQuoteCurrency(quoteTotal, lang) : (lang === "ru" ? "Расчёт не завершён" : "Incomplete")}</p>
+              </div>
+            </div>
+          </div>
+
+          {quoteLines.length === 0 ? (
+            <div className="p-5 sm:p-7">
+              <div className="border border-dashed border-border/70 p-5">
+                <p className="text-sm font-medium text-foreground">{lang === "ru" ? "Сначала выберите состав работ" : "Select work items first"}</p>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">{lang === "ru" ? "После выбора операций здесь появятся отдельные объёмы, единичные расценки и расчёт по строкам." : "Once work is selected, individual quantities, unit rates and line totals will appear here."}</p>
+                {Object.values(serviceRateBook).every((rate) => rate.price === null || rate.price === undefined) && (
+                  <p className="mt-3 text-xs leading-5 text-muted-foreground">{lang === "ru" ? "Справочник расценок пока не заполнен. Администратор может внести подтверждённые цены в Настройки → Расценки." : "The rate book is empty. An administrator can add verified prices under Settings → Rates."}</p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 sm:p-6">
+              <div className="mb-3 hidden grid-cols-[minmax(0,1fr)_120px_160px] gap-4 px-3 text-[10px] uppercase tracking-[.14em] text-muted-foreground md:grid">
+                <span>{lang === "ru" ? "Работа / ставка" : "Work / unit rate"}</span>
+                <span>{lang === "ru" ? "Объём" : "Quantity"}</span>
+                <span>{lang === "ru" ? "Сумма" : "Line total"}</span>
+              </div>
+              <div className="space-y-2">
+                {quoteLines.map((line) => {
+                  const quantity = Number(line.quantityText);
+                  const validQuantity = line.quantityText.trim() !== "" && Number.isFinite(quantity) && quantity > 0;
+                  const lineTotal = line.price !== null && validQuantity ? line.price * quantity : null;
+                  return (
+                    <div key={line.id} className="grid gap-3 border border-border/45 bg-background/35 p-3 md:grid-cols-[minmax(0,1fr)_120px_160px] md:items-center md:gap-4">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">{line.title}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {line.price !== null
+                            ? (lang === "ru" ? formatQuoteCurrency(line.price, lang) + " / " + line.unit : formatQuoteCurrency(line.price, lang) + " per " + line.unit)
+                            : (lang === "ru" ? "Расценка не задана" : "Rate not configured")}
+                        </p>
+                      </div>
+                      <label className="grid grid-cols-[70px_minmax(0,1fr)] items-center gap-2 md:block">
+                        <span className="mb-1 block text-xs text-muted-foreground md:hidden">{lang === "ru" ? "Объём" : "Quantity"}</span>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            type="number"
+                            min="0.01"
+                            step="any"
+                            inputMode="decimal"
+                            value={line.quantityText}
+                            onChange={(event) => setWorkQuantities((current) => ({ ...current, [line.quantityKey]: event.target.value }))}
+                            placeholder="0"
+                            className="h-10 min-w-0 bg-secondary"
+                            aria-label={(lang === "ru" ? "Объём: " : "Quantity: ") + line.title}
+                          />
+                          <span className="shrink-0 text-xs text-muted-foreground">{line.unit}</span>
+                        </div>
+                      </label>
+                      <div className="flex items-center justify-between border-t border-border/40 pt-2 md:block md:border-0 md:pt-0">
+                        <span className="text-xs text-muted-foreground md:hidden">{lang === "ru" ? "Сумма" : "Line total"}</span>
+                        <span className={"font-display text-base font-semibold " + (lineTotal !== null ? "text-foreground" : "text-muted-foreground")}>
+                          {lineTotal !== null ? formatQuoteCurrency(lineTotal, lang) : "—"}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {quoteIsComplete ? (
+                <div className="mt-4 border border-primary/35 bg-primary/[.06] p-4 sm:flex sm:items-center sm:justify-between sm:gap-6">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{lang === "ru" ? "Все выбранные позиции рассчитаны по справочнику" : "All selected items use configured rates"}</p>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">{lang === "ru" ? "Предварительная сумма не является офертой; её нужно подтвердить после обследования объекта." : "This preliminary total is not an offer and must be confirmed after the site assessment."}</p>
+                  </div>
+                  <p className="mt-3 shrink-0 font-display text-2xl font-bold text-primary sm:mt-0">{formatQuoteCurrency(quoteTotal ?? 0, lang)}</p>
+                </div>
+              ) : (
+                <div className="mt-4 border border-border/60 bg-secondary/25 p-4">
+                  <p className="text-sm font-semibold text-foreground">{lang === "ru" ? "Для полного расчёта не хватает данных" : "More data is required for a complete estimate"}</p>
+                  <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
+                    <span>{lang === "ru" ? "Без расценки: " : "Rates missing: "}{missingRateCount}</span>
+                    <span>{lang === "ru" ? "Без объёма: " : "Quantities missing: "}{missingQuantityCount}</span>
+                  </div>
+                  <p className="mt-2 text-xs leading-5 text-muted-foreground">{lang === "ru" ? "Неполный подытог не выдаётся за стоимость всего объекта. Введите объёмы и настройте подтверждённые единичные цены в административном справочнике." : "A partial subtotal is not presented as the whole-project cost. Enter quantities and configure verified unit rates in the admin rate book."}</p>
+                </div>
+              )}
+
+              {estimateContextFlags.length > 0 && (
+                <div className="mt-4 border-l-2 border-primary/70 pl-4">
+                  <p className="text-xs font-semibold text-foreground">{lang === "ru" ? "Факторы для проверки перед фиксацией цены" : "Conditions to verify before confirming price"}</p>
+                  <ul className="mt-2 space-y-1.5">
+                    {estimateContextFlags.map((flag) => <li key={flag} className="text-xs leading-5 text-muted-foreground">• {flag}</li>)}
+                  </ul>
+                </div>
+              )}
+              <p className="mt-4 text-[11px] leading-5 text-muted-foreground">{lang === "ru" ? "Материал, толщина, высота и сложный доступ не превращаются в случайные коэффициенты. Если они меняют норму, для такого условия нужно указать отдельную согласованную расценку. Выбранные объёмы будут переданы в заявку." : "Material, thickness, height and difficult access are not converted into arbitrary multipliers. If they change the work norm, configure a separate agreed rate. Entered quantities are attached to the request."}</p>
+            </div>
+          )}
+        </section>
+      </AnimatedSection>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Details */}
         <div className="lg:col-span-2 space-y-8">
@@ -2664,14 +2775,15 @@ const ServiceDetailPage = () => {
                     animate={{ scale: 1 }}
                     className="text-2xl font-display font-bold text-primary"
                   >
-                    {lang === "ru" ? "После оценки" : "After assessment"}
+                    {quoteTotal !== null ? formatQuoteCurrency(quoteTotal, lang) : (lang === "ru" ? "Нужны данные" : "More data needed")}
                   </motion.span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {lang === "ru"
-                    ? "Стоимость определяется после уточнения состава работ, материалов и условий площадки"
-                    : "Cost is confirmed after clarifying scope, materials and site conditions"}
+                    ? quoteTotal !== null ? "Предварительно по выбранным работам. Проверьте строки расчёта и подтвердите объём на объекте." : "Выберите работы и заполните объёмы; итог появится только при наличии всех расценок."
+                    : quoteTotal !== null ? "Preliminary total for selected work. Verify line items and confirm quantities on site." : "Select work and enter quantities; a total appears only when every rate is available."}
                 </p>
+                <a href="#preliminary-estimate" className="mt-2 inline-flex text-xs font-semibold text-primary underline underline-offset-4">{lang === "ru" ? "Перейти к расчёту" : "Go to estimate"}</a>
               </div>
 
               <form id="service-request-form" onSubmit={handleSubmit} className="space-y-4">
