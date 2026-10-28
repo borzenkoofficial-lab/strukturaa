@@ -459,7 +459,7 @@ function resolveApartmentSelectionRoom(roomId: ApartmentRoomId, workId: string):
   return roomId;
 }
 
-function getApartmentScopeSummary(selections: ApartmentScopeSelection[], lang: "ru" | "en") {
+function getApartmentScopeSummary(selections: ApartmentScopeSelection[], lang: "ru" | "en", quantity?: number, quantityLabel?: string) {
   if (!selections.length) return "";
   const prefix = lang === "ru" ? "Состав работ по зонам:" : "Selected work by room:";
   const lines = selections.map(({ roomId, workId }) => {
@@ -467,7 +467,60 @@ function getApartmentScopeSummary(selections: ApartmentScopeSelection[], lang: "
     const work = apartmentWorkOptions.find((item) => item.id === workId);
     return "• " + (room ? room.label[lang] : roomId) + " — " + (work ? work.title[lang] : workId);
   });
-  return prefix + "\n" + lines.join("\n");
+  const quantityLine = typeof quantity === "number" && quantity > 0
+    ? (lang === "ru" ? "Площадь: " : "Area: ") + quantity + (quantityLabel ? " " + quantityLabel : "")
+    : "";
+  return [prefix, quantityLine, ...lines].filter(Boolean).join("\n");
+}
+
+
+const apartmentRecommendationRules: Record<string, string[]> = {
+  partitions: ["waste", "wall-finish"],
+  flooring: ["waste"],
+  screed: ["flooring", "waste"],
+  ceilings: ["electrics", "waste"],
+  "wall-finish": ["waste"],
+  tiles: ["plumbing", "waste"],
+  bathroom: ["tiles", "plumbing", "waste"],
+  plumbing: ["waste"],
+  electrics: ["waste"],
+  doors: ["baseboards", "waste"],
+  kitchen: ["built-ins", "waste"],
+  "built-ins": ["waste"],
+  windows: ["waste"],
+  balcony: ["waste"],
+  baseboards: ["waste"],
+};
+
+function getApartmentRecommendations(selections: ApartmentScopeSelection[]) {
+  const chosen = new Set(selections.map((item) => item.workId));
+  const suggested = new Set<string>();
+  selections.forEach((item) => (apartmentRecommendationRules[item.workId] ?? []).forEach((id) => suggested.add(id)));
+  return apartmentWorkOptions.filter((item) => suggested.has(item.id) && !chosen.has(item.id));
+}
+
+function getApartmentRecommendationReason(workId: string, lang: "ru" | "en") {
+  const ru: Record<string, string> = {
+    waste: "Упаковку, вынос и вывоз лучше согласовать вместе с объёмом демонтажа.",
+    plumbing: "Проверьте сантехнические подключения и безопасное отключение до разборки санузла или плитки.",
+    tiles: "При комплексном демонтаже санузла плитка и облицовка обычно требуют отдельного пункта в составе.",
+    electrics: "Светильники и электроподключения нужно проверить до разборки потолка.",
+    "wall-finish": "После снятия перегородок может потребоваться удалить старые отделочные слои.",
+    "built-ins": "Уточните, нужно ли разбирать встроенные шкафы вместе с кухонным гарнитуром.",
+    baseboards: "Плинтусы и наличники часто остаются после снятия покрытия и дверей.",
+    flooring: "После снятия стяжки может потребоваться отдельно удалить оставшееся напольное покрытие.",
+  };
+  const en: Record<string, string> = {
+    waste: "Agree packing, carry-out and disposal alongside the demolition volume.",
+    plumbing: "Check plumbing connections and safe isolation before removing bathroom fixtures or tiles.",
+    tiles: "Bathroom strip-out commonly needs a separate tile and cladding item.",
+    electrics: "Check lighting and electrical connections before dismantling a ceiling.",
+    "wall-finish": "Removing partitions may leave existing finish layers that need separate removal.",
+    "built-ins": "Confirm whether fitted cabinets should be dismantled with the kitchen.",
+    baseboards: "Skirting and architraves may remain after flooring and door removal.",
+    flooring: "Removing screed may also require a separate floor-finish removal item.",
+  };
+  return (lang === "ru" ? ru : en)[workId] ?? (lang === "ru" ? "Уточните эту работу при осмотре." : "Confirm this item during the site inspection.");
 }
 
 function ApartmentDemolitionStudio({
@@ -476,6 +529,7 @@ function ApartmentDemolitionStudio({
   onToggle,
   onClear,
   onSelectAll,
+  onAddRecommendations,
   onApply,
 }: {
   lang: "ru" | "en";
@@ -483,6 +537,7 @@ function ApartmentDemolitionStudio({
   onToggle: (roomId: ApartmentRoomId, workId: string) => void;
   onClear: () => void;
   onSelectAll: (roomId: ApartmentRoomId, workIds: string[]) => void;
+  onAddRecommendations: (workIds: string[]) => void;
   onApply: () => void;
 }) {
   const [activeRoom, setActiveRoom] = useState<ApartmentRoomId>("all");
@@ -492,6 +547,8 @@ function ApartmentDemolitionStudio({
   const visibleWorkOptions = apartmentWorkOptions.filter((work) =>
     activeRoom === "all" || work.rooms.includes("all") || work.rooms.includes(activeRoom)
   );
+  const recommendations = getApartmentRecommendations(selected);
+  const hasSelectedStructuralScope = selected.some((item) => item.workId === "partitions");
   const isSelected = (roomId: ApartmentRoomId, workId: string) => {
     const effectiveRoomId = resolveApartmentSelectionRoom(roomId, workId);
     return selected.some((item) => item.roomId === effectiveRoomId && item.workId === workId);
@@ -713,6 +770,37 @@ function ApartmentDemolitionStudio({
             </button>
           </div>
 
+          {hasSelectedStructuralScope && (
+            <div className="mt-4 border border-primary/40 bg-primary/[.06] p-4">
+              <p className="text-sm font-semibold text-foreground">{isRu ? "Проверьте тип перегородок" : "Verify partition type"}</p>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                {isRu ? "Перед демонтажом нужно убедиться, что перегородка не является несущей и не содержит скрытых коммуникаций. Схема не заменяет обследование." : "Before removal, verify that the partition is non-load-bearing and contains no hidden utilities. This diagram is not a site survey."}
+              </p>
+            </div>
+          )}
+          {recommendations.length > 0 && (
+            <div className="mt-4 border border-border/60 bg-secondary/25 p-4">
+              <p className="font-mono text-[9px] uppercase tracking-[.16em] text-primary">{isRu ? "СКОЛ / РЕКОМЕНДАЦИИ" : "SKOL / SUGGESTIONS"}</p>
+              <div className="mt-1 flex items-center justify-between gap-3">
+                <h3 className="text-sm font-semibold text-foreground">{isRu ? "Что ещё стоит учесть" : "What else to consider"}</h3>
+                <span className="font-mono text-xs text-primary">{String(recommendations.length).padStart(2, "0")}</span>
+              </div>
+              <div className="mt-3 space-y-3">
+                {recommendations.slice(0, 4).map((item) => (
+                  <div key={item.id} className="border-t border-border/40 pt-3 first:border-t-0 first:pt-0">
+                    <p className="text-sm font-medium text-foreground">{item.title[lang]}</p>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">{getApartmentRecommendationReason(item.id, lang)}</p>
+                  </div>
+                ))}
+              </div>
+              <button type="button" onClick={() => onAddRecommendations(recommendations.map((item) => item.id))}
+                className="mt-4 inline-flex min-h-10 w-full items-center justify-center gap-2 border border-primary/60 px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-primary/10">
+                {isRu ? "Добавить рекомендации в состав" : "Add suggestions to scope"} <ArrowUpRight className="h-4 w-4" />
+              </button>
+              <p className="mt-2 text-[11px] leading-4 text-muted-foreground">{isRu ? "Работы добавятся в общий состав по квартире. Ничего не добавляется автоматически." : "Suggestions are added to the overall apartment scope only after you confirm."}</p>
+            </div>
+          )}
+
           {selected.length > 0 && (
             <div className="mt-4 border border-primary/30 bg-primary/[.06] p-4">
               <div className="flex items-center justify-between gap-3">
@@ -768,7 +856,7 @@ const buildingWorkOptions = [
   { id: "waste", ru: "Погрузка, вывоз и уборка", en: "Loading, waste removal and cleanup", noteRu: "Объём отходов, техника и логистика уточняются для площадки.", noteEn: "Waste volume, equipment and logistics are confirmed for the site." },
 ];
 
-function getBuildingDemolitionSummary(config: BuildingDemolitionConfig, lang: "ru" | "en") {
+function getBuildingDemolitionSummary(config: BuildingDemolitionConfig, lang: "ru" | "en", quantity?: number, quantityLabel?: string) {
   if (!config.selected.length) return "";
   const isRu = lang === "ru";
   const objectType = buildingObjectTypes.find((item) => item.id === config.objectType);
@@ -782,20 +870,35 @@ function getBuildingDemolitionSummary(config: BuildingDemolitionConfig, lang: "r
     title,
     objectLabel + ": " + (objectType ? objectType[lang] : config.objectType),
     materialLabel + ": " + (structureType ? structureType[lang] : config.structureType),
+    ...(typeof quantity === "number" && quantity > 0
+      ? [(isRu ? "Площадь / объём: " : "Area / scope: ") + quantity + (quantityLabel ? " " + quantityLabel : "")]
+      : []),
     workLabel + ":",
     ...selectedWorks.map((item) => "• " + item[lang]),
   ].join("\n");
+}
+
+
+function getBuildingDemolitionRecommendations(config: BuildingDemolitionConfig) {
+  const chosen = new Set(config.selected);
+  const suggested = new Set<string>();
+  if (chosen.has("full")) ["roof", "facade", "frame", "interior", "foundation", "utilities", "waste"].forEach((id) => suggested.add(id));
+  if (["roof", "facade", "frame", "interior", "foundation", "utilities"].some((id) => chosen.has(id))) suggested.add("waste");
+  if (chosen.has("full") || chosen.has("frame") || chosen.has("foundation")) suggested.add("utilities");
+  return buildingWorkOptions.filter((item) => suggested.has(item.id) && !chosen.has(item.id));
 }
 
 function BuildingDemolitionStudio({
   lang,
   config,
   onChange,
+  onAddRecommendations,
   onApply,
 }: {
   lang: "ru" | "en";
   config: BuildingDemolitionConfig;
   onChange: (next: BuildingDemolitionConfig) => void;
+  onAddRecommendations: (workIds: string[]) => void;
   onApply: () => void;
 }) {
   const [viewMode, setViewMode] = useState<"3d" | "elevation">("3d");
@@ -809,6 +912,8 @@ function BuildingDemolitionStudio({
     });
   };
   const isSelected = (id: string) => config.selected.includes(id);
+  const recommendations = getBuildingDemolitionRecommendations(config);
+  const hasStructuralRisk = config.selected.some((id) => ["full", "frame", "foundation"].includes(id));
   const selectable = (id: string) => ({
     role: "button" as const,
     tabIndex: 0,
@@ -986,6 +1091,36 @@ function BuildingDemolitionStudio({
               ))}
             </div>
           </div>
+
+          {hasStructuralRisk && (
+            <div className="mt-5 border border-primary/45 bg-primary/[.07] p-4">
+              <p className="text-sm font-semibold text-foreground">{isRu ? "Обследование до начала работ" : "Survey before work starts"}</p>
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                {isRu ? "При полном сносе и работах с каркасом или фундаментом нужно проверить конструктивную схему, устойчивость, соседние здания, временное раскрепление и необходимые согласования." : "For full demolition or work on the frame/foundation, verify structural stability, neighbouring buildings, temporary bracing and required approvals."}
+              </p>
+            </div>
+          )}
+          {recommendations.length > 0 && (
+            <div className="mt-5 border border-border/60 bg-secondary/25 p-4">
+              <p className="font-mono text-[9px] uppercase tracking-[.16em] text-primary">{isRu ? "СКОЛ / РЕКОМЕНДАЦИИ" : "SKOL / SUGGESTIONS"}</p>
+              <div className="mt-1 flex items-center justify-between gap-3">
+                <h4 className="text-sm font-semibold text-foreground">{isRu ? "Дополнительно к выбранному" : "Suggested additions"}</h4>
+                <span className="font-mono text-xs text-primary">{String(recommendations.length).padStart(2, "0")}</span>
+              </div>
+              <div className="mt-3 space-y-3">
+                {recommendations.slice(0, 4).map((item) => (
+                  <div key={item.id} className="border-t border-border/40 pt-3 first:border-t-0 first:pt-0">
+                    <p className="text-sm font-medium text-foreground">{item[lang]}</p>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">{isRu ? item.noteRu : item.noteEn}</p>
+                  </div>
+                ))}
+              </div>
+              <button type="button" onClick={() => onAddRecommendations(recommendations.map((item) => item.id))}
+                className="mt-4 inline-flex min-h-10 w-full items-center justify-center gap-2 border border-primary/60 px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-primary/10">
+                {isRu ? "Добавить рекомендации в состав" : "Add suggestions to scope"} <ArrowUpRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
 
           {config.selected.length > 0 && (
             <div className="mt-5 border border-primary/30 bg-primary/[.06] p-4">
@@ -1811,8 +1946,18 @@ const ServiceDetailPage = () => {
     });
   };
 
+  const addApartmentScopeRecommendations = (workIds: string[]) => {
+    setSelectedApartmentTasks((current) => {
+      const existingIds = new Set(current.map((item) => item.workId));
+      const additions = workIds
+        .filter((workId) => !existingIds.has(workId))
+        .map((workId) => ({ roomId: "all" as ApartmentRoomId, workId }));
+      return [...current, ...additions];
+    });
+  };
+
   const applyApartmentScopeToRequest = () => {
-    const scopeText = getApartmentScopeSummary(selectedApartmentTasks, lang);
+    const scopeText = getApartmentScopeSummary(selectedApartmentTasks, lang, area[0], unitLabel);
     if (!scopeText) return;
     setMessage((current) => {
       const cleanMessage = current.split("Состав работ по зонам:")[0].split("Selected work by room:")[0].trim();
@@ -1821,8 +1966,15 @@ const ServiceDetailPage = () => {
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
+  const addBuildingDemolitionRecommendations = (workIds: string[]) => {
+    setBuildingDemolitionConfig((current) => ({
+      ...current,
+      selected: Array.from(new Set([...current.selected, ...workIds])),
+    }));
+  };
+
   const applyBuildingDemolitionScopeToRequest = () => {
-    const scopeText = getBuildingDemolitionSummary(buildingDemolitionConfig, lang);
+    const scopeText = getBuildingDemolitionSummary(buildingDemolitionConfig, lang, area[0], unitLabel);
     if (!scopeText) return;
     setMessage((current) => {
       const cleanMessage = current
@@ -1853,9 +2005,9 @@ const ServiceDetailPage = () => {
 
     try {
       const scopeSummary = service?.slug === "apartment-demolition"
-        ? getApartmentScopeSummary(selectedApartmentTasks, lang)
+        ? getApartmentScopeSummary(selectedApartmentTasks, lang, area[0], unitLabel)
         : service?.slug === "building-demolition"
-          ? getBuildingDemolitionSummary(buildingDemolitionConfig, lang)
+          ? getBuildingDemolitionSummary(buildingDemolitionConfig, lang, area[0], unitLabel)
           : service && serviceScopeDefinitions[service.slug]
             ? getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey), area[0], unitLabel)
             : "";
@@ -1976,6 +2128,7 @@ const ServiceDetailPage = () => {
             onToggle={toggleApartmentTask}
             onClear={() => setSelectedApartmentTasks([])}
             onSelectAll={selectAllApartmentTasks}
+            onAddRecommendations={addApartmentScopeRecommendations}
             onApply={applyApartmentScopeToRequest}
           />
         </AnimatedSection>
@@ -1987,6 +2140,7 @@ const ServiceDetailPage = () => {
             lang={lang}
             config={buildingDemolitionConfig}
             onChange={setBuildingDemolitionConfig}
+            onAddRecommendations={addBuildingDemolitionRecommendations}
             onApply={applyBuildingDemolitionScopeToRequest}
           />
         </AnimatedSection>
