@@ -871,7 +871,7 @@ function getBuildingDemolitionSummary(config: BuildingDemolitionConfig, lang: "r
     objectLabel + ": " + (objectType ? objectType[lang] : config.objectType),
     materialLabel + ": " + (structureType ? structureType[lang] : config.structureType),
     ...(typeof quantity === "number" && quantity > 0
-      ? [(isRu ? "Площадь / объём: " : "Area / scope: ") + quantity + (quantityLabel ? " " + quantityLabel : "")]
+      ? [getQuantitySummaryLabel(quantityLabel, lang) + ": " + quantity + (quantityLabel ? " " + quantityLabel : "")]
       : []),
     workLabel + ":",
     ...selectedWorks.map((item) => "• " + item[lang]),
@@ -1410,6 +1410,16 @@ function cleanServiceScopeMessage(message: string) {
     .trim();
 }
 
+
+function getQuantitySummaryLabel(quantityLabel: string | undefined, lang: "ru" | "en") {
+  const unit = (quantityLabel ?? "").toLowerCase();
+  if (unit.includes("м²") || unit.includes("m²") || unit.includes("sqm")) return lang === "ru" ? "Площадь" : "Area";
+  if (unit.includes("м³") || unit.includes("m³") || unit.includes("m3") || unit.includes("куб")) return lang === "ru" ? "Объём" : "Volume";
+  if (unit.includes("м.п.") || unit.includes("linear") || unit.includes("погон")) return lang === "ru" ? "Длина" : "Length";
+  if (unit.includes("контейнер") || unit.includes("container")) return lang === "ru" ? "Количество контейнеров" : "Number of containers";
+  return lang === "ru" ? "Количество" : "Quantity";
+}
+
 function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lang: "ru" | "en", serviceTitle?: string, quantity?: number, quantityLabel?: string) {
   const definition = serviceScopeDefinitions[slug];
   if (!definition || config.selected.length === 0) return "";
@@ -1423,7 +1433,7 @@ function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lan
     (isRu ? "Тип / формат: " : "Project type: ") + profile[lang],
     (isRu ? "Материал / условия: " : "Material / conditions: ") + material[lang],
     ...(typeof quantity === "number" && quantity > 0
-      ? [(isRu ? "Объём / метраж: " : "Quantity: ") + quantity + (quantityLabel ? " " + quantityLabel : "")]
+      ? [getQuantitySummaryLabel(quantityLabel, lang) + ": " + quantity + (quantityLabel ? " " + quantityLabel : "")]
       : []),
     (isRu ? "Выбранные работы:" : "Selected work:"),
     ...selectedWorks.map((item) => "• " + item[lang]),
