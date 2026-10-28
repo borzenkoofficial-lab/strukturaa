@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { ArrowUpRight, Building2, Hammer, Wrench, Youtube } from "lucide-react";
 import Header from "@/components/Header";
 import BentoGrid from "@/components/BentoGrid";
@@ -9,25 +8,13 @@ import ProcessSection from "@/components/ProcessSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
-
-const particles = [
-  { left: "7%", top: "24%", delay: 0, duration: 9 },
-  { left: "19%", top: "72%", delay: 1.4, duration: 11 },
-  { left: "31%", top: "18%", delay: 2.2, duration: 10 },
-  { left: "43%", top: "81%", delay: 0.8, duration: 12 },
-  { left: "54%", top: "32%", delay: 3.1, duration: 9.5 },
-  { left: "63%", top: "68%", delay: 1.9, duration: 11.5 },
-  { left: "72%", top: "17%", delay: 2.7, duration: 10.5 },
-  { left: "81%", top: "54%", delay: 0.4, duration: 12.5 },
-  { left: "91%", top: "28%", delay: 3.6, duration: 9 },
-  { left: "37%", top: "51%", delay: 4.1, duration: 13 },
-  { left: "68%", top: "84%", delay: 1.1, duration: 10 },
-  { left: "12%", top: "46%", delay: 2.9, duration: 11 },
-];
+import SakuraAtmosphere from "@/components/SakuraAtmosphere";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background gradient-dark">
+    <div className="relative isolate min-h-screen bg-background gradient-dark">
+      <SakuraAtmosphere />
+      <div className="relative z-10">
       <SEOHead canonical="/" />
       <Header />
       <div className="mx-auto max-w-7xl px-4 pt-3 sm:px-6 sm:pt-4">
@@ -40,33 +27,6 @@ const Index = () => {
             <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_42%,hsl(var(--primary)/0.09),transparent_42%),linear-gradient(115deg,hsl(var(--background)/0.08),transparent_55%)]" />
             <div className="pointer-events-none absolute -right-10 -top-20 -z-10 h-56 w-56 rounded-full border border-primary/10 sm:-right-4 sm:h-72 sm:w-72" />
             <div className="pointer-events-none absolute -right-1 top-0 -z-10 h-full w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
-
-            <div className="skol-home-particles pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-              {particles.map((particle, index) => (
-                <motion.span
-                  key={index}
-                  className="absolute block h-2.5 w-3.5"
-                  style={{ left: particle.left, top: particle.top }}
-                  animate={{
-                    x: [0, 13, -10, 7, 0],
-                    y: [0, -17, 8, -11, 0],
-                    rotate: [-18, 24, -9, 17, -18],
-                    opacity: [0.12, 0.75, 0.3, 0.85, 0.12],
-                    scale: [0.75, 1.1, 0.85, 1.2, 0.75],
-                  }}
-                  transition={{
-                    duration: particle.duration,
-                    delay: particle.delay,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <span className="absolute left-0 top-[2px] h-1.5 w-1.5 rounded-full bg-primary/70 shadow-[0_0_9px_2px_hsl(var(--primary)/0.42)]" />
-                  <span className="absolute right-0 top-0 h-2 w-1.5 rotate-[-24deg] rounded-full bg-primary/35 shadow-[0_0_7px_1px_hsl(var(--primary)/0.24)]" />
-                  <span className="absolute right-0 bottom-0 h-2 w-1.5 rotate-[24deg] rounded-full bg-primary/45 shadow-[0_0_7px_1px_hsl(var(--primary)/0.28)]" />
-                </motion.span>
-              ))}
-            </div>
 
             <div className="relative z-10 grid items-start gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(260px,0.85fr)] lg:gap-10">
               <div className="max-w-3xl">
@@ -174,6 +134,7 @@ const Index = () => {
       <ProcessSection />
       <CTASection />
       <Footer />
+      </div>
     </div>
   );
 };
