@@ -9,12 +9,15 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Save, Palette, Globe, Search, Bell, Link2, Terminal, Shield,
+  Save, Palette, Globe, Search, Bell, Link2, Terminal, Shield, Calculator,
 } from "lucide-react";
+import { SERVICE_RATE_CATALOG, SERVICE_RATE_SERVICES, SERVICE_RATE_UNITS, ServiceRateBook, getServiceRate, serviceRateKey } from "@/lib/servicePricing";
 
 const AdminSettings = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [serviceRates, setServiceRates] = useState<ServiceRateBook>({});
+  const [activeRateService, setActiveRateService] = useState("apartment-demolition");
 
   // Theme
   const [themeSettings, setThemeSettings] = useState({
@@ -56,6 +59,7 @@ const AdminSettings = () => {
           if (s.key === "seo") setSeoSettings(prev => ({ ...prev, ...val }));
           if (s.key === "notifications") setNotifSettings(prev => ({ ...prev, ...val }));
           if (s.key === "integrations") setIntSettings(prev => ({ ...prev, ...val }));
+          if (s.key === "service_rates" && val && typeof val === "object") setServiceRates(val as ServiceRateBook);
         });
       }
     };
@@ -63,26 +67,48 @@ const AdminSettings = () => {
   }, []);
 
   const upsertSetting = async (key: string, value: any) => {
-    const { data } = await supabase.from("site_settings").select("id").eq("key", key).maybeSingle();
+    const { data, error: selectError } = await supabase.from("site_settings").select("id").eq("key", key).maybeSingle();
+    if (selectError) throw selectError;
     if (data) {
-      await supabase.from("site_settings").update({ value: value as any }).eq("key", key);
+      const { error } = await supabase.from("site_settings").update({ value: value as any }).eq("key", key);
+      if (error) throw error;
     } else {
-      await supabase.from("site_settings").insert({ key, value: value as any });
+      const { error } = await supabase.from("site_settings").insert({ key, value: value as any });
+      if (error) throw error;
     }
   };
 
   const saveAll = async () => {
     setLoading(true);
-    await Promise.all([
-      upsertSetting("theme", themeSettings),
-      upsertSetting("header", headerSettings),
-      upsertSetting("footer", footerSettings),
-      upsertSetting("seo", seoSettings),
-      upsertSetting("notifications", notifSettings),
-      upsertSetting("integrations", intSettings),
-    ]);
-    setLoading(false);
-    toast({ title: "Все настройки сохранены!" });
+    try {
+      await Promise.all([
+        upsertSetting("theme", themeSettings),
+        upsertSetting("header", headerSettings),
+        upsertSetting("footer", footerSettings),
+        upsertSetting("seo", seoSettings),
+        upsertSetting("notifications", notifSettings),
+        upsertSetting("integrations", intSettings),
+        upsertSetting("service_rates", serviceRates),
+      ]);
+      toast({ title: "Все настройки сохранены!" });
+    } catch (error) {
+      console.error("Unable to save site settings", error);
+      toast({ title: "Не удалось сохранить настройки", description: "Проверьте подключение и права администратора.", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateServiceRate = (slug: string, workId: string, field: "price" | "unit", value: string) => {
+    const key = serviceRateKey(slug, workId);
+    setServiceRates((current) => {
+      const previous = getServiceRate(current, slug, workId);
+      if (field === "price") {
+        const parsed = value.trim() === "" ? null : Number(value);
+        return { ...current, [key]: { ...previous, price: parsed !== null && Number.isFinite(parsed) && parsed > 0 ? parsed : null } };
+      }
+      return { ...current, [key]: { ...previous, unit: value } };
+    });
   };
 
   const Section = ({ children, title, icon: Icon, delay = 0 }: any) => (
@@ -120,6 +146,7 @@ const AdminSettings = () => {
           <TabsTrigger value="seo" className="text-xs gap-1.5"><Search className="w-3.5 h-3.5" />SEO</TabsTrigger>
           <TabsTrigger value="notifications" className="text-xs gap-1.5"><Bell className="w-3.5 h-3.5" />Уведомления</TabsTrigger>
           <TabsTrigger value="integrations" className="text-xs gap-1.5"><Link2 className="w-3.5 h-3.5" />Интеграции</TabsTrigger>
+          <TabsTrigger value="rates" className="text-xs gap-1.5"><Calculator className="w-3.5 h-3.5" />Расценки</TabsTrigger>
           <TabsTrigger value="security" className="text-xs gap-1.5"><Shield className="w-3.5 h-3.5" />Безопасность</TabsTrigger>
         </TabsList>
 
@@ -300,6 +327,82 @@ const AdminSettings = () => {
               </div>
               <Switch checked={intSettings.telegramBotEnabled} onCheckedChange={v => setIntSettings({ ...intSettings, telegramBotEnabled: v })} />
             </div>
+          </Section>
+        </TabsContent>
+
+        {/* Service rate book */}
+        <TabsContent value="rates" className="space-y-4">
+          <Section title="Справочник расценок" icon={Calculator}>
+            <div className="space-y-3 rounded-lg border border-border/40 bg-secondary/20 p-4">
+              <p className="text-sm text-foreground">
+                Заполняйте только ваши подтверждённые расценки. Пустая цена означает, что система не будет рассчитывать эту позицию.
+              </p>
+              <p className="text-xs leading-5 text-muted-foreground">
+                Цена задаётся за указанную единицу. На странице услуги заказчик укажет фактический объём каждой выбранной работы. Если цена зависит от материала, толщины, высоты или специальных условий, сначала зафиксируйте отдельную расценку/состав — коэффициенты автоматически не выдумываются.
+              </p>
+              <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                <Label htmlFor="rate-service">Услуга</Label>
+                <select
+                  id="rate-service"
+                  value={activeRateService}
+                  onChange={(event) => setActiveRateService(event.target.value)}
+                  className="min-h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground sm:min-w-72"
+                >
+                  {SERVICE_RATE_SERVICES.map((service) => (
+                    <option key={service.slug} value={service.slug}>{service.title.ru}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+                <span>{SERVICE_RATE_CATALOG.filter((item) => item.slug === activeRateService).length} позиций в справочнике</span>
+                <span>{SERVICE_RATE_CATALOG.filter((item) => item.slug === activeRateService && getServiceRate(serviceRates, item.slug, item.workId).price !== null).length} расценок заполнено</span>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-lg border border-border/50">
+              <div className="hidden grid-cols-[minmax(0,1fr)_130px_150px] gap-3 border-b border-border/50 bg-secondary/40 px-4 py-3 text-xs font-medium text-muted-foreground md:grid">
+                <span>Работа</span><span>Единица</span><span>Цена, ₽</span>
+              </div>
+              <div className="divide-y divide-border/40">
+                {SERVICE_RATE_CATALOG.filter((item) => item.slug === activeRateService).map((item) => {
+                  const rate = getServiceRate(serviceRates, item.slug, item.workId);
+                  return (
+                    <div key={serviceRateKey(item.slug, item.workId)} className="grid gap-2 px-4 py-3 md:grid-cols-[minmax(0,1fr)_130px_150px] md:items-center md:gap-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">{item.title.ru}</p>
+                        <p className="mt-0.5 font-mono text-[10px] text-muted-foreground">{item.workId}</p>
+                      </div>
+                      <label className="grid grid-cols-[64px_minmax(0,1fr)] items-center gap-2 md:block">
+                        <span className="text-xs text-muted-foreground md:hidden">Ед. изм.</span>
+                        <select
+                          value={rate.unit}
+                          onChange={(event) => updateServiceRate(item.slug, item.workId, "unit", event.target.value)}
+                          className="min-h-9 w-full rounded-md border border-input bg-background px-2 text-sm text-foreground"
+                        >
+                          {SERVICE_RATE_UNITS.map((unit) => <option key={unit} value={unit}>{unit}</option>)}
+                        </select>
+                      </label>
+                      <label className="grid grid-cols-[64px_minmax(0,1fr)] items-center gap-2 md:block">
+                        <span className="text-xs text-muted-foreground md:hidden">Цена, ₽</span>
+                        <Input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          inputMode="decimal"
+                          value={rate.price ?? ""}
+                          onChange={(event) => updateServiceRate(item.slug, item.workId, "price", event.target.value)}
+                          placeholder="Не задана"
+                          className="h-9 bg-background"
+                        />
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <p className="text-xs leading-5 text-muted-foreground">
+              После заполнения нажмите «Сохранить всё» вверху. Расценки сохраняются в общей базе настроек и становятся доступны публичному калькулятору. Пока для выбранной работы не заполнены цена и объём, полный итог не показывается.
+            </p>
           </Section>
         </TabsContent>
 
