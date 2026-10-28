@@ -735,6 +735,281 @@ function ApartmentDemolitionStudio({
 }
 
 
+
+type BuildingDemolitionConfig = {
+  objectType: string;
+  structureType: string;
+  selected: string[];
+};
+
+const buildingObjectTypes = [
+  { id: "industrial", ru: "Промышленное здание", en: "Industrial building" },
+  { id: "warehouse", ru: "Склад / ангар", en: "Warehouse / hangar" },
+  { id: "garage", ru: "Гараж / небольшая постройка", en: "Garage / small structure" },
+  { id: "commercial", ru: "Коммерческое здание", en: "Commercial building" },
+  { id: "other", ru: "Другой тип объекта", en: "Other structure" },
+];
+
+const buildingStructureTypes = [
+  { id: "brick", ru: "Кирпич", en: "Brick" },
+  { id: "concrete", ru: "Железобетон", en: "Reinforced concrete" },
+  { id: "steel", ru: "Металлокаркас", en: "Steel frame" },
+  { id: "mixed", ru: "Смешанная конструкция / не знаю", en: "Mixed structure / unknown" },
+];
+
+const buildingWorkOptions = [
+  { id: "full", ru: "Полный снос здания", en: "Full building demolition", noteRu: "Полный разбор строения в согласованных границах.", noteEn: "Complete removal within the agreed work limits." },
+  { id: "roof", ru: "Кровля и верхние конструкции", en: "Roof and upper structures", noteRu: "Кровельный пирог, фермы и другие верхние элементы по проекту работ.", noteEn: "Roof layers, trusses and other upper elements within the work plan." },
+  { id: "facade", ru: "Фасад и наружные стены", en: "Facade and external walls", noteRu: "Разборка с учётом соседних зданий, проходов и ограждений.", noteEn: "Removal planned around neighbouring buildings, access and barriers." },
+  { id: "frame", ru: "Каркас и несущие элементы", en: "Frame and structural elements", noteRu: "Требует обследования и согласованной последовательности демонтажа.", noteEn: "Requires assessment and an agreed demolition sequence." },
+  { id: "interior", ru: "Внутренние конструкции и отделка", en: "Interior structures and finishes", noteRu: "Перегородки, внутренние системы и отделка по перечню.", noteEn: "Partitions, internal systems and finishes according to a scope list." },
+  { id: "foundation", ru: "Фундамент и плита", en: "Foundation and slab", noteRu: "Способ разборки определяется после оценки глубины и материала.", noteEn: "The method depends on assessed depth and material." },
+  { id: "utilities", ru: "Инженерные сети", en: "Utilities", noteRu: "До работ требуется определить границы и безопасно отключить сети.", noteEn: "Limits must be identified and utilities safely isolated before work." },
+  { id: "waste", ru: "Погрузка, вывоз и уборка", en: "Loading, waste removal and cleanup", noteRu: "Объём отходов, техника и логистика уточняются для площадки.", noteEn: "Waste volume, equipment and logistics are confirmed for the site." },
+];
+
+function getBuildingDemolitionSummary(config: BuildingDemolitionConfig, lang: "ru" | "en") {
+  if (!config.selected.length) return "";
+  const isRu = lang === "ru";
+  const objectType = buildingObjectTypes.find((item) => item.id === config.objectType);
+  const structureType = buildingStructureTypes.find((item) => item.id === config.structureType);
+  const selectedWorks = buildingWorkOptions.filter((item) => config.selected.includes(item.id));
+  const title = isRu ? "Состав демонтажа здания:" : "Building demolition scope:";
+  const objectLabel = isRu ? "Тип объекта" : "Structure type";
+  const materialLabel = isRu ? "Конструкция" : "Construction";
+  const workLabel = isRu ? "Выбранные работы" : "Selected work";
+  return [
+    title,
+    objectLabel + ": " + (objectType ? objectType[lang] : config.objectType),
+    materialLabel + ": " + (structureType ? structureType[lang] : config.structureType),
+    workLabel + ":",
+    ...selectedWorks.map((item) => "• " + item[lang]),
+  ].join("\n");
+}
+
+function BuildingDemolitionStudio({
+  lang,
+  config,
+  onChange,
+  onApply,
+}: {
+  lang: "ru" | "en";
+  config: BuildingDemolitionConfig;
+  onChange: (next: BuildingDemolitionConfig) => void;
+  onApply: () => void;
+}) {
+  const [viewMode, setViewMode] = useState<"3d" | "elevation">("3d");
+  const isRu = lang === "ru";
+  const toggleWork = (id: string) => {
+    onChange({
+      ...config,
+      selected: config.selected.includes(id)
+        ? config.selected.filter((item) => item !== id)
+        : [...config.selected, id],
+    });
+  };
+  const isSelected = (id: string) => config.selected.includes(id);
+  const selectable = (id: string) => ({
+    role: "button" as const,
+    tabIndex: 0,
+    "aria-pressed": isSelected(id),
+    onClick: () => toggleWork(id),
+    onKeyDown: (event: React.KeyboardEvent<SVGGElement>) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleWork(id);
+      }
+    },
+    style: { cursor: "pointer", outline: "none" },
+  });
+
+  return (
+    <section className="skol-building-studio mb-8 overflow-hidden border border-border/60 bg-card/35">
+      <div className="border-b border-border/55 p-5 sm:p-7 lg:p-8">
+        <div className="grid gap-4 sm:grid-cols-[.95fr_1.05fr] sm:items-end">
+          <div>
+            <p className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.2em] text-primary">
+              <span className="h-px w-6 bg-primary" /> 02 / BUILDING DEMOLITION
+            </p>
+            <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+              {isRu ? "Настройте состав демонтажа здания" : "Configure building demolition"}
+            </h2>
+          </div>
+          <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
+            {isRu
+              ? "Выберите тип объекта и конструкцию, затем нажимайте на элементы объёмной схемы или отмечайте работы в списке. Это предварительное описание задачи, не проект производства работ."
+              : "Choose the structure type, then select elements on the 3D diagram or use the work list. This is a preliminary brief, not a demolition method statement."}
+          </p>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-[1.02fr_.98fr]">
+        <div className="min-w-0 border-b border-border/55 p-3 sm:p-5 lg:border-b-0 lg:border-r lg:p-6">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+              {viewMode === "3d" ? (isRu ? "Объёмная схема / выберите элемент" : "3D scheme / select an element") : (isRu ? "Фасадная схема / выберите элемент" : "Elevation / select an element")}
+            </span>
+            <div className="flex items-center gap-1 border border-border/60 bg-background/45 p-1">
+              <button type="button" onClick={() => setViewMode("3d")} aria-pressed={viewMode === "3d"}
+                className={"min-h-8 px-3 text-[10px] font-semibold transition-colors " + (viewMode === "3d" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>
+                3D / {isRu ? "Объём" : "Volume"}
+              </button>
+              <button type="button" onClick={() => setViewMode("elevation")} aria-pressed={viewMode === "elevation"}
+                className={"min-h-8 px-3 text-[10px] font-semibold transition-colors " + (viewMode === "elevation" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>
+                2D / {isRu ? "Фасад" : "Elevation"}
+              </button>
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden border border-border/55 bg-background/50 p-1.5 sm:p-3">
+            <div className="pointer-events-none absolute inset-0 opacity-55" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.055) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.055) 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+            {viewMode === "3d" ? (
+              <svg viewBox="0 0 620 390" className="relative z-10 block h-auto w-full" role="img" aria-label={isRu ? "Интерактивная изометрическая схема здания для демонтажа" : "Interactive isometric building demolition model"}>
+                <defs>
+                  <linearGradient id="building-roof" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--foreground) / .14)" />
+                    <stop offset="100%" stopColor="hsl(var(--foreground) / .035)" />
+                  </linearGradient>
+                  <linearGradient id="building-active" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary) / .52)" />
+                    <stop offset="100%" stopColor="hsl(var(--primary) / .12)" />
+                  </linearGradient>
+                </defs>
+                <g fill="none" stroke="hsl(var(--foreground) / .075)" strokeWidth="1">
+                  <path d="M24 310H596M50 330H570M90 350H530M130 370H490" />
+                  <path d="M90 55V360M140 35V355M190 20V350M240 18V350M290 18V350M340 18V350M390 18V350M440 35V355M490 55V360M540 85V350" opacity=".45" />
+                </g>
+                <path d="M62 290 304 156 562 288 319 382Z" fill="hsl(var(--foreground) / .035)" stroke="hsl(var(--foreground) / .2)" strokeWidth="1.2" />
+                <path d="M112 145 313 32 506 137 306 253Z" fill={isSelected("roof") ? "url(#building-active)" : "url(#building-roof)"} stroke={isSelected("roof") ? "hsl(var(--primary))" : "hsl(var(--border) / .9)"} strokeWidth={isSelected("roof") ? 3 : 1.5} {...selectable("roof")} />
+                <path d="M112 145 306 253 306 348 112 238Z" fill={isSelected("frame") ? "url(#building-active)" : "hsl(var(--foreground) / .055)"} stroke={isSelected("frame") ? "hsl(var(--primary))" : "hsl(var(--border) / .9)"} strokeWidth={isSelected("frame") ? 3 : 1.2} {...selectable("frame")} />
+                <path d="M306 253 506 137 506 230 306 348Z" fill={isSelected("facade") ? "url(#building-active)" : "hsl(var(--foreground) / .085)"} stroke={isSelected("facade") ? "hsl(var(--primary))" : "hsl(var(--border) / .9)"} strokeWidth={isSelected("facade") ? 3 : 1.2} {...selectable("facade")} />
+                <g fill="none" stroke={isSelected("frame") ? "hsl(var(--primary) / .95)" : "hsl(var(--foreground) / .24)"} strokeWidth={isSelected("frame") ? 4 : 2} {...selectable("frame")}>
+                  <path d="M148 165V258M198 193V286M247 220V313M112 145 112 238M306 253V348" />
+                  <path d="M337 235 337 330M386 207 386 301M436 178 436 272M486 149 486 243" />
+                  <path d="M112 190 306 300M112 218 306 328M306 300 506 183M306 327 506 211" opacity=".7" />
+                </g>
+                <g fill="none" stroke="hsl(var(--foreground) / .3)" strokeWidth="1.2" strokeDasharray="5 5">
+                  <path d="M112 145 112 107M313 32V15M506 137V100M306 253V223" />
+                </g>
+                <g transform="translate(0 5)" pointerEvents="none" fill="hsl(var(--foreground) / .9)" fontSize="10" fontFamily="ui-monospace, monospace" letterSpacing="1.2">
+                  <text x="309" y="18" textAnchor="middle">{isRu ? "КРОВЛЯ" : "ROOF"}</text>
+                  <text x="78" y="204" transform="rotate(29 78 204)" textAnchor="middle">{isRu ? "КАРКАС" : "FRAME"}</text>
+                  <text x="474" y="265" transform="rotate(-30 474 265)" textAnchor="middle">{isRu ? "ФАСАД" : "FACADE"}</text>
+                </g>
+                <path d="M74 80H96M74 80V102M544 325H566V303" fill="none" stroke="hsl(var(--primary) / .7)" strokeWidth="1.5" />
+                <text x="32" y="30" fill="hsl(var(--muted-foreground))" fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="1.2">SKOL / DEMOLITION MODEL</text>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 620 390" className="relative z-10 block h-auto w-full" role="img" aria-label={isRu ? "Фасадная схема здания для демонтажа" : "Building elevation demolition scheme"}>
+                <g fill="none" stroke="hsl(var(--foreground) / .075)" strokeWidth="1">
+                  <path d="M25 340H595M25 360H595" />
+                  <path d="M60 50V350M110 50V350M160 50V350M210 50V350M260 50V350M310 50V350M360 50V350M410 50V350M460 50V350M510 50V350M560 50V350" />
+                </g>
+                <path d="M92 110 310 45 528 110Z" fill={isSelected("roof") ? "hsl(var(--primary) / .35)" : "hsl(var(--foreground) / .09)"} stroke={isSelected("roof") ? "hsl(var(--primary))" : "hsl(var(--border) / .9)"} strokeWidth="1.5" {...selectable("roof")} />
+                <rect x="92" y="110" width="436" height="226" fill={isSelected("facade") ? "hsl(var(--primary) / .22)" : "hsl(var(--foreground) / .055)"} stroke={isSelected("facade") ? "hsl(var(--primary))" : "hsl(var(--border) / .9)"} strokeWidth={isSelected("facade") ? 3 : 1.5} {...selectable("facade")} />
+                <g fill="none" stroke={isSelected("frame") ? "hsl(var(--primary))" : "hsl(var(--foreground) / .28)"} strokeWidth={isSelected("frame") ? 4 : 2} {...selectable("frame")}>
+                  <path d="M92 110V336M165 110V336M238 110V336M310 110V336M382 110V336M455 110V336M528 110V336" />
+                  <path d="M92 185H528M92 260H528" />
+                </g>
+                <g fill="hsl(var(--foreground) / .75)" fontSize="9" fontFamily="ui-monospace, monospace" letterSpacing="1">
+                  <text x="310" y="375" textAnchor="middle">{isRu ? "СХЕМА УСЛОВНАЯ • НЕ В МАСШТАБЕ" : "SCHEMATIC • NOT TO SCALE"}</text>
+                  <text x="310" y="82" textAnchor="middle">{isRu ? "КРОВЛЯ" : "ROOF"}</text>
+                </g>
+              </svg>
+            )}
+          </div>
+
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {[
+              { id: "full", ru: "Всё здание", en: "Whole building" },
+              { id: "roof", ru: "Кровля", en: "Roof" },
+              { id: "facade", ru: "Фасад", en: "Facade" },
+              { id: "frame", ru: "Каркас", en: "Frame" },
+            ].map((item) => (
+              <button key={item.id} type="button" onClick={() => toggleWork(item.id)} aria-pressed={isSelected(item.id)}
+                className={"min-h-10 border px-3 py-2 text-left text-xs font-semibold transition-colors " + (isSelected(item.id) ? "border-primary bg-primary/10 text-foreground" : "border-border/55 bg-background/40 text-muted-foreground hover:text-foreground")}>
+                {item[lang]}
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-3 text-xs leading-5 text-muted-foreground">
+            {isRu
+              ? "Модель условная и не предназначена для определения несущей схемы. Тип конструкций, устойчивость, порядок демонтажа и необходимые согласования устанавливаются после обследования."
+              : "The model is schematic and cannot identify the actual load-bearing system. Structure type, stability, sequence and required approvals must be established after a survey."}
+          </p>
+        </div>
+
+        <div className="min-w-0 p-4 sm:p-6 lg:p-7">
+          <div className="mb-6">
+            <p className="mb-2 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">{isRu ? "01 / Тип объекта" : "01 / Structure type"}</p>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {buildingObjectTypes.map((item) => (
+                <button key={item.id} type="button" onClick={() => onChange({ ...config, objectType: item.id })} aria-pressed={config.objectType === item.id}
+                  className={"min-h-11 border px-3 py-2 text-left text-xs font-semibold transition-colors " + (config.objectType === item.id ? "border-primary bg-primary/10 text-foreground" : "border-border/50 bg-background/35 text-muted-foreground hover:text-foreground")}>
+                  {item[lang]}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <p className="mb-2 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">{isRu ? "02 / Материал и конструкция" : "02 / Material and structure"}</p>
+            <div className="grid grid-cols-2 gap-2">
+              {buildingStructureTypes.map((item) => (
+                <button key={item.id} type="button" onClick={() => onChange({ ...config, structureType: item.id })} aria-pressed={config.structureType === item.id}
+                  className={"min-h-10 border px-3 py-2 text-left text-xs transition-colors " + (config.structureType === item.id ? "border-primary bg-primary/10 text-foreground" : "border-border/50 bg-background/35 text-muted-foreground hover:text-foreground")}>
+                  {item[lang]}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="mb-3 flex items-end justify-between gap-3">
+              <div>
+                <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">{isRu ? "03 / Состав работ" : "03 / Work scope"}</p>
+                <h3 className="mt-1 text-lg font-semibold text-foreground">{isRu ? "Что необходимо демонтировать" : "What needs to be demolished"}</h3>
+              </div>
+              <span className="font-mono text-xs text-primary">{String(config.selected.length).padStart(2, "0")} / 08</span>
+            </div>
+            <div className="space-y-2">
+              {buildingWorkOptions.map((item) => (
+                <button key={item.id} type="button" onClick={() => toggleWork(item.id)} aria-pressed={isSelected(item.id)}
+                  className={"flex w-full items-start gap-3 border p-3 text-left transition-colors " + (isSelected(item.id) ? "border-primary/70 bg-primary/[.08]" : "border-border/50 bg-background/30 hover:border-border")}>
+                  <span className={"mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border text-[10px] " + (isSelected(item.id) ? "border-primary bg-primary text-primary-foreground" : "border-border text-transparent")}>✓</span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-medium text-foreground">{item[lang]}</span>
+                    <span className="mt-1 block text-xs leading-5 text-muted-foreground">{isRu ? item.noteRu : item.noteEn}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {config.selected.length > 0 && (
+            <div className="mt-5 border border-primary/30 bg-primary/[.06] p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-foreground">{isRu ? "Состав готов к передаче" : "Scope ready to transfer"}</p>
+                <button type="button" onClick={() => onChange({ ...config, selected: [] })} className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground">
+                  {isRu ? "Очистить" : "Clear"}
+                </button>
+              </div>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                {isRu ? "Выбранные параметры попадут в описание заявки. Объём, техника, сроки и стоимость подтверждаются после оценки площадки." : "The selected parameters will be added to the request. Scope, equipment, schedule and cost are confirmed after site assessment."}
+              </p>
+              <button type="button" onClick={onApply}
+                className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
+                {isRu ? "Передать состав в заявку" : "Add scope to request"} <ArrowUpRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -753,6 +1028,11 @@ const ServiceDetailPage = () => {
   const [submittedPrice, setSubmittedPrice] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedApartmentTasks, setSelectedApartmentTasks] = useState<ApartmentScopeSelection[]>([]);
+  const [buildingDemolitionConfig, setBuildingDemolitionConfig] = useState<BuildingDemolitionConfig>({
+    objectType: "industrial",
+    structureType: "mixed",
+    selected: [],
+  });
 
   const toggleApartmentTask = (roomId: ApartmentRoomId, workId: string) => {
     const effectiveRoomId = resolveApartmentSelectionRoom(roomId, workId);
@@ -782,6 +1062,21 @@ const ServiceDetailPage = () => {
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
+  const applyBuildingDemolitionScopeToRequest = () => {
+    const scopeText = getBuildingDemolitionSummary(buildingDemolitionConfig, lang);
+    if (!scopeText) return;
+    setMessage((current) => {
+      const cleanMessage = current
+        .split("Состав работ по зонам:")[0]
+        .split("Selected work by room:")[0]
+        .split("Состав демонтажа здания:")[0]
+        .split("Building demolition scope:")[0]
+        .trim();
+      return [cleanMessage, scopeText].filter(Boolean).join("\\n\\n");
+    });
+    document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   const isWaste = service?.slug === "waste-removal";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -792,8 +1087,15 @@ const ServiceDetailPage = () => {
     try {
       const scopeSummary = service?.slug === "apartment-demolition"
         ? getApartmentScopeSummary(selectedApartmentTasks, lang)
-        : "";
-      const cleanMessage = message.split("Состав работ по зонам:")[0].split("Selected work by room:")[0].trim();
+        : service?.slug === "building-demolition"
+          ? getBuildingDemolitionSummary(buildingDemolitionConfig, lang)
+          : "";
+      const cleanMessage = message
+        .split("Состав работ по зонам:")[0]
+        .split("Selected work by room:")[0]
+        .split("Состав демонтажа здания:")[0]
+        .split("Building demolition scope:")[0]
+        .trim();
       const finalMessage = [cleanMessage, scopeSummary].filter(Boolean).join("\n\n");
 
       const { error } = await supabase.functions.invoke("notify-request", {
@@ -911,6 +1213,17 @@ const ServiceDetailPage = () => {
             onClear={() => setSelectedApartmentTasks([])}
             onSelectAll={selectAllApartmentTasks}
             onApply={applyApartmentScopeToRequest}
+          />
+        </AnimatedSection>
+      )}
+
+      {service.slug === "building-demolition" && (
+        <AnimatedSection delay={0.08}>
+          <BuildingDemolitionStudio
+            lang={lang}
+            config={buildingDemolitionConfig}
+            onChange={setBuildingDemolitionConfig}
+            onApply={applyBuildingDemolitionScopeToRequest}
           />
         </AnimatedSection>
       )}
