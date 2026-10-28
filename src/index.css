@@ -1923,3 +1923,90 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
   .skol-home-particles,
   .skol-projects-particles { display: none !important; }
 }
+
+/* Site-wide card geometry: rounded square tiles on every page */
+:root {
+  --skol-tile-radius: 1rem;
+  --skol-tile-radius-mobile: 0.85rem;
+  --skol-control-radius: 0.65rem;
+}
+
+/* Page heroes, editorial panels, forms and tile-like content blocks */
+main :is(header, section, article, form, [role="dialog"])[class*="border"][class*="bg-"],
+main [class*="group"][class*="border"][class*="bg-card"],
+main [class*="group"][class*="border"][class*="bg-background"],
+main [class*="border"][class*="bg-card"][class*="p-"],
+main [class*="border"][class*="bg-background"][class*="p-"],
+main [class*="border"][class*="bg-secondary"][class*="p-"],
+.glass-card,
+.glass-card-hover,
+.skol-home-intro,
+.skol-home-nav-panel,
+.skol-service-card,
+.skol-project-card,
+.skol-project-card-content,
+.skol-principle-card,
+.skol-category-card,
+.skol-feature-card,
+.skol-content-panel,
+.skol-format-panel,
+.skol-cta-panel,
+.skol-hero-panel,
+.skol-portfolio-panel,
+.skol-editorial-panel,
+.skol-detail-hero {
+  border-radius: var(--skol-tile-radius) !important;
+}
+
+/* Clip images and hover backgrounds to the card silhouette, not the whole page */
+main article[class*="overflow-hidden"][class*="border"],
+main [class*="group"][class*="overflow-hidden"][class*="border"][class*="bg-card"],
+.skol-project-card,
+.skol-service-card {
+  overflow: hidden;
+}
+
+/* Keep controls rounded but visually subordinate to the larger tiles */
+button,
+[role="button"],
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  border-radius: var(--skol-control-radius) !important;
+}
+
+@media (max-width: 639px) {
+  main :is(header, section, article, form, [role="dialog"])[class*="border"][class*="bg-"],
+  main [class*="group"][class*="border"][class*="bg-card"],
+  main [class*="group"][class*="border"][class*="bg-background"],
+  main [class*="border"][class*="bg-card"][class*="p-"],
+  main [class*="border"][class*="bg-background"][class*="p-"],
+  main [class*="border"][class*="bg-secondary"][class*="p-"],
+  .glass-card,
+  .glass-card-hover,
+  .skol-home-intro,
+  .skol-home-nav-panel,
+  .skol-service-card,
+  .skol-project-card,
+  .skol-project-card-content,
+  .skol-principle-card,
+  .skol-category-card,
+  .skol-feature-card,
+  .skol-content-panel,
+  .skol-format-panel,
+  .skol-cta-panel,
+  .skol-hero-panel,
+  .skol-portfolio-panel,
+  .skol-editorial-panel,
+  .skol-detail-hero {
+    border-radius: var(--skol-tile-radius-mobile) !important;
+  }
+  button,
+  [role="button"],
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    border-radius: 0.6rem !important;
+  }
+}
+
