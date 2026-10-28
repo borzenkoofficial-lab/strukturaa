@@ -1781,12 +1781,6 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
     padding-top: 1rem !important;
     gap: 0.8rem !important;
   }
-  /* Keep the background alive, but reduce simultaneous motion on handheld devices. */
-  .skol-home-particles > span:nth-of-type(n+7),
-  .skol-projects-particles > span:nth-of-type(n+8) {
-    display: none !important;
-  }
-
   .skol-page-intro {
     padding-bottom: 1.1rem !important;
     margin-bottom: 1.2rem !important;
@@ -1824,7 +1818,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
   }
   .skol-project-card-content { overflow-wrap: anywhere; }
   .skol-project-open-label { white-space: normal; }
-  .skol-projects-particles { contain: paint; }
+  .skol-projects-backdrop { contain: paint; }
 
   .skol-service-detail {
     padding-left: var(--mobile-page-gutter) !important;
@@ -1920,8 +1914,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .skol-home-particles,
-  .skol-projects-particles { display: none !important; }
+  .skol-projects-backdrop { display: none !important; }
 }
 
 /* Site-wide card geometry: rounded square tiles on every page */
