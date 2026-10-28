@@ -1275,7 +1275,7 @@ function cleanServiceScopeMessage(message: string) {
     .trim();
 }
 
-function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lang: "ru" | "en") {
+function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lang: "ru" | "en", serviceTitle?: string) {
   const definition = serviceScopeDefinitions[slug];
   if (!definition || config.selected.length === 0) return "";
   const profile = definition.profiles.find((item) => item.id === config.profile) ?? definition.profiles[0];
@@ -1284,7 +1284,7 @@ function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lan
   const isRu = lang === "ru";
   return [
     isRu ? "Состав работ по услуге:" : "Service work scope:",
-    (isRu ? "Услуга: " : "Service: ") + definition.title[lang],
+    (isRu ? "Услуга: " : "Service: ") + (serviceTitle || definition.title[lang]),
     (isRu ? "Тип / формат: " : "Project type: ") + profile[lang],
     (isRu ? "Материал / условия: " : "Material / conditions: ") + material[lang],
     (isRu ? "Выбранные работы:" : "Selected work:"),
@@ -1579,7 +1579,7 @@ const ServiceDetailPage = () => {
 
   const applyServiceScopeToRequest = () => {
     if (!service) return;
-    const scopeText = getServiceScopeSummary(serviceScopeSelection, service.slug, lang);
+    const scopeText = getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey));
     if (!scopeText) return;
     setMessage((current) => [cleanServiceScopeMessage(current), scopeText].filter(Boolean).join("\\n\\n"));
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1598,7 +1598,7 @@ const ServiceDetailPage = () => {
         : service?.slug === "building-demolition"
           ? getBuildingDemolitionSummary(buildingDemolitionConfig, lang)
           : service && serviceScopeDefinitions[service.slug]
-            ? getServiceScopeSummary(serviceScopeSelection, service.slug, lang)
+            ? getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey))
             : "";
       const cleanMessage = cleanServiceScopeMessage(message);
       const finalMessage = [cleanMessage, scopeSummary].filter(Boolean).join("\n\n");
