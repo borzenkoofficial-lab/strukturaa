@@ -334,6 +334,212 @@ function AboutMockupCard({ item, index }: { item: (typeof aboutMockups)[number];
 }
 
 
+
+type AboutInspectionZone = "structure" | "engineering" | "access" | "surfaces";
+
+const aboutInspectionZones: {
+  id: AboutInspectionZone;
+  label: string;
+  icon: typeof Box;
+  code: string;
+  title: string;
+  text: string;
+  checks: string[];
+}[] = [
+  {
+    id: "structure",
+    label: "Конструкции",
+    icon: Layers3,
+    code: "01 / STRUCTURE",
+    title: "Что разбираем, а что сохраняем",
+    text: "До демонтажа отделяем рабочую зону от элементов, которые должны остаться нетронутыми. Границы фиксируем до начала работ.",
+    checks: ["Границы и состав демонтажа", "Сохраняемые конструкции и отделка", "Последовательность разборки"],
+  },
+  {
+    id: "engineering",
+    label: "Инженерия",
+    icon: ScanLine,
+    code: "02 / ENGINEERING",
+    title: "Коммуникации требуют отдельного внимания",
+    text: "Уточняем расположение инженерных систем и согласуем необходимые отключения, защиту и доступ к ним с ответственными на объекте.",
+    checks: ["Расположение коммуникаций", "Порядок отключений и допусков", "Защита действующих систем"],
+  },
+  {
+    id: "access",
+    label: "Доступ и вывоз",
+    icon: ClipboardList,
+    code: "03 / LOGISTICS",
+    title: "Работы должны вписываться в режим объекта",
+    text: "Продумываем маршруты перемещения материалов, доступ бригады, зоны погрузки и вывоз отходов с учётом ограничений площадки.",
+    checks: ["Доступ и маршруты перемещения", "Временные окна и ограничения", "Место погрузки и вывоз отходов"],
+  },
+  {
+    id: "surfaces",
+    label: "Основания",
+    icon: Ruler,
+    code: "04 / SURFACES",
+    title: "Состояние основания влияет на следующий этап",
+    text: "Уточняем требуемый результат после демонтажа: что нужно оставить, очистить, подготовить или передать следующему исполнителю.",
+    checks: ["Состояние стен, пола и потолка", "Требования к подготовке", "Критерии передачи следующему этапу"],
+  },
+];
+
+function AboutObjectInspector() {
+  const [activeZone, setActiveZone] = useState<AboutInspectionZone>("structure");
+  const active = aboutInspectionZones.find((zone) => zone.id === activeZone) ?? aboutInspectionZones[0];
+  const ActiveIcon = active.icon;
+
+  return (
+    <section className="skol-about-inspector mb-11 overflow-hidden border border-border/60 bg-card/35">
+      <div className="relative border-b border-border/55 p-5 sm:p-7 lg:p-9">
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 bg-gradient-to-l from-primary/[.045] to-transparent" />
+        <div className="relative grid gap-4 sm:grid-cols-[.9fr_1.1fr] sm:items-end">
+          <div>
+            <p className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.2em] text-primary">
+              <span className="h-px w-6 bg-primary" /> 04 / FIELD INSPECTION
+            </p>
+            <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+              Объект — это не только стены. Важны все условия.
+            </h2>
+          </div>
+          <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
+            Переключайте зоны на схеме. Для каждой показали отдельный набор вопросов, которые стоит прояснить до согласования объёма и последовательности работ.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-[1.08fr_.92fr]">
+        <div className="min-w-0 border-b border-border/55 p-3 sm:p-5 lg:border-b-0 lg:border-r lg:p-6">
+          <div className="relative flex min-h-[255px] items-center justify-center overflow-hidden border border-border/50 bg-background/35 sm:min-h-[335px]">
+            <div className="pointer-events-none absolute inset-0 opacity-70" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.045) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.045) 1px, transparent 1px)", backgroundSize: "26px 26px" }} />
+            <motion.svg
+              key={activeZone}
+              viewBox="0 0 540 360"
+              className="relative z-10 block h-auto w-full max-w-[580px] overflow-visible p-1 sm:p-3"
+              role="img"
+              aria-label={"Изометрическая схема объекта. Активная зона: " + active.label}
+              initial={{ opacity: 0, y: 5, scale: .985 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: .24 }}
+            >
+              <defs>
+                <linearGradient id="inspector-wall" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="hsl(var(--foreground) / .09)" />
+                  <stop offset="100%" stopColor="hsl(var(--foreground) / .025)" />
+                </linearGradient>
+                <linearGradient id="inspector-highlight" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="hsl(var(--primary) / .30)" />
+                  <stop offset="100%" stopColor="hsl(var(--primary) / .07)" />
+                </linearGradient>
+              </defs>
+              <g fill="none" stroke="hsl(var(--foreground) / .08)" strokeWidth="1">
+                <path d="M38 280H502M54 297H486M80 314H460" />
+                <path d="M80 45V314M130 45V314M180 45V314M230 45V314M280 45V314M330 45V314M380 45V314M430 45V314M480 45V314" opacity=".45" />
+              </g>
+              <g strokeLinejoin="round" strokeLinecap="round">
+                <path d="M75 239 259 137 469 238 286 340Z" fill="hsl(var(--foreground) / .035)" stroke="hsl(var(--foreground) / .32)" strokeWidth="1.5" />
+                <path d="M107 145 260 60 421 142 268 230Z" fill="url(#inspector-wall)" stroke="hsl(var(--foreground) / .36)" strokeWidth="1.5" />
+                <path d="M107 145 268 230 268 311 107 227Z" fill={activeZone === "structure" ? "url(#inspector-highlight)" : "hsl(var(--foreground) / .035)"} stroke={activeZone === "structure" ? "hsl(var(--primary) / .95)" : "hsl(var(--foreground) / .32)"} strokeWidth={activeZone === "structure" ? 2.4 : 1.3} />
+                <path d="M268 230 421 142 421 223 268 311Z" fill={activeZone === "structure" ? "hsl(var(--primary) / .16)" : "hsl(var(--foreground) / .025)"} stroke={activeZone === "structure" ? "hsl(var(--primary) / .8)" : "hsl(var(--foreground) / .32)"} strokeWidth={activeZone === "structure" ? 2.1 : 1.3} />
+                <path d="M145 166 241 113 241 185 145 239Z" fill="hsl(var(--background) / .32)" stroke="hsl(var(--foreground) / .25)" strokeWidth="1.2" />
+                <path d="M301 213 374 171 374 224 301 266Z" fill="hsl(var(--background) / .65)" stroke="hsl(var(--foreground) / .3)" strokeWidth="1.2" />
+                <path d="M301 213 337 234 337 286 301 266Z" fill="hsl(var(--foreground) / .045)" stroke="hsl(var(--foreground) / .22)" strokeWidth="1" />
+                <path d="M337 234 374 213" stroke="hsl(var(--foreground) / .25)" strokeWidth="1" />
+                <path d="M259 137 259 60" stroke="hsl(var(--foreground) / .25)" strokeWidth="1.2" />
+              </g>
+              <g opacity={activeZone === "engineering" ? 1 : .28} fill="none" stroke="hsl(var(--primary))" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M194 105 194 73 273 30 273 83 331 113 331 143" strokeWidth="3" />
+                <path d="M194 73 218 86M273 30 298 44M331 113 354 101" strokeWidth="1.3" strokeDasharray="4 5" />
+                <circle cx="194" cy="105" r="4" fill="hsl(var(--primary))" />
+                <circle cx="331" cy="143" r="4" fill="hsl(var(--primary))" />
+              </g>
+              <g opacity={activeZone === "access" ? 1 : .26} fill="none" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M75 239 121 263 168 237 192 250" strokeDasharray="6 5" />
+                <path d="M183 239 192 250 178 252" />
+                <circle cx="121" cy="263" r="5" fill="hsl(var(--background))" />
+              </g>
+              <g opacity={activeZone === "surfaces" ? 1 : .25} fill="none" stroke="hsl(var(--primary))" strokeWidth="1.1">
+                <path d="M98 248 281 348M125 233 308 333M152 218 335 318M179 203 362 303M206 188 389 288M233 173 416 273" />
+                <path d="M130 269 313 168M172 291 355 190M214 312 397 211M256 330 439 229" strokeDasharray="3 5" />
+              </g>
+              <g>
+                <circle cx="212" cy="191" r={activeZone === "structure" ? 13 : 9} fill="hsl(var(--background))" stroke="hsl(var(--primary))" strokeWidth="1.6" />
+                <text x="212" y="195" textAnchor="middle" fill="hsl(var(--foreground))" fontSize="10" fontFamily="monospace">01</text>
+                <circle cx="331" cy="143" r={activeZone === "engineering" ? 13 : 9} fill="hsl(var(--background))" stroke="hsl(var(--primary))" strokeWidth="1.6" />
+                <text x="331" y="147" textAnchor="middle" fill="hsl(var(--foreground))" fontSize="10" fontFamily="monospace">02</text>
+                <circle cx="121" cy="263" r={activeZone === "access" ? 13 : 9} fill="hsl(var(--background))" stroke="hsl(var(--primary))" strokeWidth="1.6" />
+                <text x="121" y="267" textAnchor="middle" fill="hsl(var(--foreground))" fontSize="10" fontFamily="monospace">03</text>
+                <circle cx="288" cy="294" r={activeZone === "surfaces" ? 13 : 9} fill="hsl(var(--background))" stroke="hsl(var(--primary))" strokeWidth="1.6" />
+                <text x="288" y="298" textAnchor="middle" fill="hsl(var(--foreground))" fontSize="10" fontFamily="monospace">04</text>
+              </g>
+              <g fill="hsl(var(--muted-foreground))" fontSize="9" fontFamily="ui-monospace, monospace" letterSpacing="1.25">
+                <text x="24" y="22">SKOL / OBJECT REVIEW</text>
+                <text x="366" y="334">SCHEMATIC / 01:04</text>
+              </g>
+              <path d="M24 34H84M24 34V53M516 296V316H496" fill="none" stroke="hsl(var(--primary) / .65)" strokeWidth="1" />
+            </motion.svg>
+            <span className="absolute bottom-3 left-3 border border-border/60 bg-background/90 px-2.5 py-1.5 font-mono text-[9px] tracking-[.12em] text-muted-foreground">
+              ZONE {active.code.slice(0, 2)} / 04
+            </span>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {aboutInspectionZones.map((zone) => {
+              const Icon = zone.icon;
+              const selected = activeZone === zone.id;
+              return (
+                <button key={zone.id} type="button" aria-pressed={selected} onClick={() => setActiveZone(zone.id)}
+                  className={"skol-about-zone-tab flex min-h-[58px] items-center gap-2 border px-3 py-2.5 text-left transition-colors " + (selected ? "border-primary/65 bg-primary/10 text-foreground" : "border-border/55 bg-background/45 text-muted-foreground hover:border-primary/40 hover:text-foreground")}>
+                  <span className={"flex h-8 w-8 shrink-0 items-center justify-center border " + (selected ? "border-primary/40 text-primary" : "border-border/70")}><Icon className="h-4 w-4" strokeWidth={1.6} /></span>
+                  <span className="min-w-0">
+                    <span className={"block font-mono text-[8px] " + (selected ? "text-primary" : "text-muted-foreground")}>{zone.code}</span>
+                    <span className="mt-0.5 block text-xs font-semibold leading-tight">{zone.label}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex min-w-0 flex-col p-5 sm:p-7 lg:p-8">
+          <AnimatePresence mode="wait">
+            <motion.div key={activeZone} className="flex h-full flex-col" initial={{ opacity: 0, y: 7 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: .2 }}>
+              <div className="flex items-start justify-between gap-3 border-b border-border/55 pb-5">
+                <div>
+                  <p className="font-mono text-[9px] uppercase tracking-[.19em] text-primary">{active.code}</p>
+                  <h3 className="mt-3 max-w-md font-display text-xl font-semibold leading-tight tracking-tight text-foreground sm:text-2xl">{active.title}</h3>
+                </div>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-primary/30 bg-primary/10 text-primary"><ActiveIcon className="h-5 w-5" strokeWidth={1.6} /></span>
+              </div>
+              <p className="mt-5 text-sm leading-7 text-muted-foreground">{active.text}</p>
+              <div className="mt-6">
+                <p className="mb-3 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">Что уточняем до старта</p>
+                <ul className="space-y-3">
+                  {active.checks.map((check, index) => (
+                    <li key={check} className="flex items-start gap-3 text-sm leading-6 text-foreground">
+                      <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center border border-primary/45 text-primary"><CheckCircle2 className="h-3 w-3" /></span>
+                      <span>{check}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-auto pt-7">
+                <div className="border-t border-border/55 pt-4">
+                  <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">Следующий шаг</p>
+                  <p className="mt-2 text-sm leading-6 text-foreground">Согласовать состав работ и условия площадки — затем переходить к смете и срокам.</p>
+                </div>
+                <Link to="/contacts" className="mt-5 inline-flex min-h-11 items-center gap-2 border border-primary/50 px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:bg-primary/10">
+                  Обсудить свой объект <ArrowUpRight className="h-4 w-4 text-primary" />
+                </Link>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
 function AboutProcessExplorer() {
   const [activeStep, setActiveStep] = useState(0);
   const active = principles[activeStep];
@@ -491,6 +697,10 @@ const AboutPage = () => {
             ))}
           </div>
         </section>
+
+        <AnimatedSection delay={0.055}>
+          <AboutObjectInspector />
+        </AnimatedSection>
 
         <AnimatedSection delay={0.06}>
           <AboutProcessExplorer />
