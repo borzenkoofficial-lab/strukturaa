@@ -2062,3 +2062,39 @@ select {
   }
 }
 
+
+
+/* About page — interactive object inspection board */
+.skol-about-inspector {
+  isolation: isolate;
+  border-radius: var(--skol-tile-radius, 1rem);
+}
+.skol-about-inspector svg {
+  max-width: 100%;
+}
+.skol-about-zone-tab {
+  min-width: 0;
+  border-radius: 0.55rem;
+}
+.skol-about-zone-tab:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 3px;
+}
+.skol-about-zone-tab > span:last-child {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 639px) {
+  .skol-about-inspector .skol-about-zone-tab {
+    padding: 0.55rem;
+    min-height: 3.4rem;
+  }
+  .skol-about-inspector .skol-about-zone-tab > span:first-child {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-about-zone-tab {
+    transition: none !important;
+  }
+}
