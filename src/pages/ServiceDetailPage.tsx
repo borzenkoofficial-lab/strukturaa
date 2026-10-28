@@ -486,6 +486,7 @@ function ApartmentDemolitionStudio({
   onApply: () => void;
 }) {
   const [activeRoom, setActiveRoom] = useState<ApartmentRoomId>("all");
+  const [viewMode, setViewMode] = useState<"3d" | "plan">("3d");
   const isRu = lang === "ru";
   const activeRoomData = apartmentRooms.find((item) => item.id === activeRoom) ?? apartmentRooms[0];
   const visibleWorkOptions = apartmentWorkOptions.filter((work) =>
@@ -546,30 +547,98 @@ function ApartmentDemolitionStudio({
 
       <div className="grid lg:grid-cols-[.92fr_1.08fr]">
         <div className="min-w-0 border-b border-border/55 p-3 sm:p-5 lg:border-b-0 lg:border-r lg:p-6">
-          <div className="mb-3 flex items-center justify-between gap-3">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
             <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
-              {isRu ? "План / выберите зону" : "Plan / select a zone"}
+              {viewMode === "3d" ? (isRu ? "Объёмная модель / выберите зону" : "3D model / select a zone") : (isRu ? "План / выберите зону" : "Plan / select a zone")}
             </span>
-            <span className="border border-border/60 px-2 py-1 font-mono text-[8px] tracking-[.12em] text-primary">
-              {activeRoomData.code} / 07
-            </span>
+            <div className="flex items-center gap-1 border border-border/60 bg-background/45 p-1">
+              <button type="button" onClick={() => setViewMode("3d")} aria-pressed={viewMode === "3d"}
+                className={"min-h-8 px-3 text-[10px] font-semibold transition-colors " + (viewMode === "3d" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>
+                3D / {isRu ? "Объём" : "Volume"}
+              </button>
+              <button type="button" onClick={() => setViewMode("plan")} aria-pressed={viewMode === "plan"}
+                className={"min-h-8 px-3 text-[10px] font-semibold transition-colors " + (viewMode === "plan" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>
+                2D / {isRu ? "План" : "Plan"}
+              </button>
+            </div>
           </div>
           <div className="relative overflow-hidden border border-border/55 bg-background/50 p-1.5 sm:p-3">
             <div className="pointer-events-none absolute inset-0 opacity-55" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.055) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.055) 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
-            <svg viewBox="0 0 620 360" className="relative z-10 block h-auto w-full" role="img" aria-label={isRu ? "Интерактивный план квартиры" : "Interactive apartment plan"}>
-              <path d="M32 32H588V328H32Z" fill="none" stroke="hsl(var(--foreground) / .2)" strokeWidth="1.5" strokeDasharray="5 5" />
-              {roomShape("living", 42, 42, 198, 132, isRu ? "Гостиная" : "Living")}
-              {roomShape("bedroom", 248, 42, 165, 132, isRu ? "Спальня" : "Bedroom")}
-              {roomShape("kitchen", 421, 42, 157, 98, isRu ? "Кухня" : "Kitchen")}
-              {roomShape("bathroom", 421, 148, 157, 83, isRu ? "Санузел" : "Bathroom")}
-              {roomShape("hall", 248, 182, 165, 136, isRu ? "Коридор" : "Hallway")}
-              {roomShape("balcony", 42, 182, 198, 136, isRu ? "Балкон" : "Balcony")}
-              <g fill="hsl(var(--muted-foreground))" fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="1.2">
-                <text x="42" y="20">SKOL / SPATIAL PLAN</text>
-                <text x="444" y="348">SCHEMATIC / 01:07</text>
-              </g>
-              <path d="M20 42H34M20 42V56M600 304V328H576" fill="none" stroke="hsl(var(--primary) / .6)" strokeWidth="1" />
-            </svg>
+            {viewMode === "plan" ? (
+              <svg viewBox="0 0 620 360" className="relative z-10 block h-auto w-full" role="img" aria-label={isRu ? "Интерактивный план квартиры" : "Interactive apartment plan"}>
+                <path d="M32 32H588V328H32Z" fill="none" stroke="hsl(var(--foreground) / .2)" strokeWidth="1.5" strokeDasharray="5 5" />
+                {roomShape("living", 42, 42, 198, 132, isRu ? "Гостиная" : "Living")}
+                {roomShape("bedroom", 248, 42, 165, 132, isRu ? "Спальня" : "Bedroom")}
+                {roomShape("kitchen", 421, 42, 157, 98, isRu ? "Кухня" : "Kitchen")}
+                {roomShape("bathroom", 421, 148, 157, 83, isRu ? "Санузел" : "Bathroom")}
+                {roomShape("hall", 248, 182, 165, 136, isRu ? "Коридор" : "Hallway")}
+                {roomShape("balcony", 42, 182, 198, 136, isRu ? "Балкон" : "Balcony")}
+                <g fill="hsl(var(--muted-foreground))" fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="1.2">
+                  <text x="42" y="20">SKOL / SPATIAL PLAN</text>
+                  <text x="444" y="348">SCHEMATIC / 01:07</text>
+                </g>
+                <path d="M20 42H34M20 42V56M600 304V328H576" fill="none" stroke="hsl(var(--primary) / .6)" strokeWidth="1" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 620 360" className="relative z-10 block h-auto w-full" role="img" aria-label={isRu ? "Интерактивная изометрическая 3D-модель квартиры" : "Interactive isometric 3D apartment model"}>
+                <defs>
+                  <linearGradient id="apt-floor" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--foreground) / .08)" />
+                    <stop offset="100%" stopColor="hsl(var(--foreground) / .025)" />
+                  </linearGradient>
+                  <linearGradient id="apt-active" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary) / .42)" />
+                    <stop offset="100%" stopColor="hsl(var(--primary) / .12)" />
+                  </linearGradient>
+                </defs>
+                <g fill="none" stroke="hsl(var(--foreground) / .07)" strokeWidth="1">
+                  <path d="M28 284H592M48 302H572M74 320H546" />
+                  <path d="M75 42V321M125 42V321M175 42V321M225 42V321M275 42V321M325 42V321M375 42V321M425 42V321M475 42V321M525 42V321" opacity=".4" />
+                </g>
+                <path d="M42 230 310 82 578 228 309 347Z" fill="hsl(var(--foreground) / .025)" stroke="hsl(var(--foreground) / .22)" strokeWidth="1.2" />
+                <g fill="none" stroke="hsl(var(--foreground) / .18)" strokeWidth="1" strokeDasharray="4 5">
+                  <path d="M96 224 96 242M224 154 224 172M360 228 360 246M468 169 468 187" />
+                </g>
+                <g role="button" tabIndex={0} aria-label={isRu ? "Гостиная" : "Living room"} aria-pressed={activeRoom === "living"} onClick={() => setActiveRoom("living")} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActiveRoom("living"); } }} style={{ cursor: "pointer", outline: "none" }}>
+                  <path d="M65 172 166 116 166 160 65 216Z" fill={activeRoom === "living" ? "hsl(var(--primary) / .28)" : "hsl(var(--foreground) / .07)"} stroke={activeRoom === "living" ? "hsl(var(--primary))" : "hsl(var(--border) / .8)"} strokeWidth={activeRoom === "living" ? 2 : 1} />
+                  <path d="M65 172 166 228 166 160 65 216Z" fill={activeRoom === "living" ? "hsl(var(--primary) / .12)" : "hsl(var(--foreground) / .035)"} stroke={activeRoom === "living" ? "hsl(var(--primary) / .8)" : "hsl(var(--foreground) / .22)"} strokeWidth="1" />
+                  <path d="M65 172 166 116 270 170 166 228Z" fill={activeRoom === "living" ? "url(#apt-active)" : "url(#apt-floor)"} stroke={activeRoom === "living" ? "hsl(var(--primary))" : "hsl(var(--foreground) / .35)"} strokeWidth={activeRoom === "living" ? 2.5 : 1.2} />
+                  <text x="166" y="171" textAnchor="middle" fontSize="11" fontWeight="600" fill="hsl(var(--foreground))" style={{ pointerEvents: "none" }}>{isRu ? "ГОСТИНАЯ" : "LIVING"}</text>
+                </g>
+                <g role="button" tabIndex={0} aria-label={isRu ? "Спальня" : "Bedroom"} aria-pressed={activeRoom === "bedroom"} onClick={() => setActiveRoom("bedroom")} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActiveRoom("bedroom"); } }} style={{ cursor: "pointer", outline: "none" }}>
+                  <path d="M166 116 257 66 257 108 166 160Z" fill={activeRoom === "bedroom" ? "hsl(var(--primary) / .28)" : "hsl(var(--foreground) / .07)"} stroke={activeRoom === "bedroom" ? "hsl(var(--primary))" : "hsl(var(--border) / .8)"} strokeWidth={activeRoom === "bedroom" ? 2 : 1} />
+                  <path d="M166 116 270 170 270 124 166 160Z" fill="hsl(var(--foreground) / .04)" stroke="hsl(var(--foreground) / .22)" strokeWidth="1" />
+                  <path d="M166 116 257 66 362 118 270 170Z" fill={activeRoom === "bedroom" ? "url(#apt-active)" : "url(#apt-floor)"} stroke={activeRoom === "bedroom" ? "hsl(var(--primary))" : "hsl(var(--foreground) / .35)"} strokeWidth={activeRoom === "bedroom" ? 2.5 : 1.2} />
+                  <text x="264" y="122" textAnchor="middle" fontSize="10" fontWeight="600" fill="hsl(var(--foreground))" style={{ pointerEvents: "none" }}>{isRu ? "СПАЛЬНЯ" : "BEDROOM"}</text>
+                </g>
+                <g role="button" tabIndex={0} aria-label={isRu ? "Кухня" : "Kitchen"} aria-pressed={activeRoom === "kitchen"} onClick={() => setActiveRoom("kitchen")} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActiveRoom("kitchen"); } }} style={{ cursor: "pointer", outline: "none" }}>
+                  <path d="M362 118 447 164 447 206 362 160Z" fill={activeRoom === "kitchen" ? "hsl(var(--primary) / .26)" : "hsl(var(--foreground) / .06)"} stroke={activeRoom === "kitchen" ? "hsl(var(--primary))" : "hsl(var(--border) / .8)"} strokeWidth={activeRoom === "kitchen" ? 2 : 1} />
+                  <path d="M270 170 362 118 447 164 354 215Z" fill={activeRoom === "kitchen" ? "url(#apt-active)" : "url(#apt-floor)"} stroke={activeRoom === "kitchen" ? "hsl(var(--primary))" : "hsl(var(--foreground) / .35)"} strokeWidth={activeRoom === "kitchen" ? 2.5 : 1.2} />
+                  <text x="358" y="170" textAnchor="middle" fontSize="10" fontWeight="600" fill="hsl(var(--foreground))" style={{ pointerEvents: "none" }}>{isRu ? "КУХНЯ" : "KITCHEN"}</text>
+                </g>
+                <g role="button" tabIndex={0} aria-label={isRu ? "Санузел" : "Bathroom"} aria-pressed={activeRoom === "bathroom"} onClick={() => setActiveRoom("bathroom")} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActiveRoom("bathroom"); } }} style={{ cursor: "pointer", outline: "none" }}>
+                  <path d="M354 215 447 164 447 207 354 259Z" fill={activeRoom === "bathroom" ? "hsl(var(--primary) / .28)" : "hsl(var(--foreground) / .07)"} stroke={activeRoom === "bathroom" ? "hsl(var(--primary))" : "hsl(var(--border) / .8)"} strokeWidth={activeRoom === "bathroom" ? 2 : 1} />
+                  <path d="M354 215 447 207 447 250 354 259Z" fill="hsl(var(--foreground) / .035)" stroke="hsl(var(--foreground) / .22)" strokeWidth="1" />
+                  <path d="M270 170 354 215 447 164 362 118Z" fill={activeRoom === "bathroom" ? "url(#apt-active)" : "url(#apt-floor)"} stroke={activeRoom === "bathroom" ? "hsl(var(--primary))" : "hsl(var(--foreground) / .35)"} strokeWidth={activeRoom === "bathroom" ? 2.5 : 1.2} />
+                  <text x="355" y="177" textAnchor="middle" fontSize="9.5" fontWeight="600" fill="hsl(var(--foreground))" style={{ pointerEvents: "none" }}>{isRu ? "САНУЗЕЛ" : "BATHROOM"}</text>
+                </g>
+                <g role="button" tabIndex={0} aria-label={isRu ? "Коридор" : "Hallway"} aria-pressed={activeRoom === "hall"} onClick={() => setActiveRoom("hall")} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActiveRoom("hall"); } }} style={{ cursor: "pointer", outline: "none" }}>
+                  <path d="M166 228 270 170 354 215 249 274Z" fill={activeRoom === "hall" ? "url(#apt-active)" : "url(#apt-floor)"} stroke={activeRoom === "hall" ? "hsl(var(--primary))" : "hsl(var(--foreground) / .35)"} strokeWidth={activeRoom === "hall" ? 2.5 : 1.2} />
+                  <path d="M166 228 249 274 249 309 166 263Z" fill={activeRoom === "hall" ? "hsl(var(--primary) / .12)" : "hsl(var(--foreground) / .04)"} stroke={activeRoom === "hall" ? "hsl(var(--primary) / .8)" : "hsl(var(--foreground) / .22)"} strokeWidth="1" />
+                  <text x="258" y="224" textAnchor="middle" fontSize="10" fontWeight="600" fill="hsl(var(--foreground))" style={{ pointerEvents: "none" }}>{isRu ? "КОРИДОР" : "HALL"}</text>
+                </g>
+                <g role="button" tabIndex={0} aria-label={isRu ? "Балкон" : "Balcony"} aria-pressed={activeRoom === "balcony"} onClick={() => setActiveRoom("balcony")} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActiveRoom("balcony"); } }} style={{ cursor: "pointer", outline: "none" }}>
+                  <path d="M38 188 65 172 166 228 139 244Z" fill={activeRoom === "balcony" ? "url(#apt-active)" : "url(#apt-floor)"} stroke={activeRoom === "balcony" ? "hsl(var(--primary))" : "hsl(var(--foreground) / .35)"} strokeWidth={activeRoom === "balcony" ? 2.5 : 1.2} />
+                  <path d="M38 188 139 244 139 268 38 212Z" fill={activeRoom === "balcony" ? "hsl(var(--primary) / .16)" : "hsl(var(--foreground) / .04)"} stroke={activeRoom === "balcony" ? "hsl(var(--primary) / .8)" : "hsl(var(--foreground) / .22)"} strokeWidth="1" />
+                  <text x="96" y="211" textAnchor="middle" fontSize="9" fontWeight="600" fill="hsl(var(--foreground))" style={{ pointerEvents: "none" }}>{isRu ? "БАЛКОН" : "BALCONY"}</text>
+                </g>
+                <g fill="hsl(var(--muted-foreground))" fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="1.2">
+                  <text x="30" y="20">SKOL / APARTMENT VOLUME</text>
+                  <text x="408" y="338">AXONOMETRIC / SCHEMATIC</text>
+                </g>
+                <path d="M20 32H78M20 32V48M600 298V320H580" fill="none" stroke="hsl(var(--primary) / .7)" strokeWidth="1" />
+              </svg>
+            )}
           </div>
           <button type="button" onClick={() => setActiveRoom("all")} aria-pressed={activeRoom === "all"}
             className={"mt-3 flex min-h-11 w-full items-center justify-between border px-3 py-2 text-sm transition-colors " + (activeRoom === "all" ? "border-primary/60 bg-primary/10 text-foreground" : "border-border/55 bg-background/45 text-muted-foreground hover:border-primary/40 hover:text-foreground")}>
