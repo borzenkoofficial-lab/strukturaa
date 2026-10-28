@@ -2043,3 +2043,29 @@ select {
   .skol-about-model-object,
   .skol-about-step-button { will-change: auto; transition: none !important; }
 }
+
+/* Floating particles: subtle depth, no interference with page content */
+.skol-site-atmosphere {
+  isolation: isolate;
+  contain: paint;
+}
+.skol-floating-particle {
+  pointer-events: none;
+  will-change: transform, opacity;
+  transform-origin: center;
+}
+@media (max-width: 639px) {
+  .skol-floating-particle:nth-of-type(n+17) {
+    display: none !important;
+  }
+  .skol-floating-particle {
+    box-shadow: none !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-floating-particle {
+    animation: none !important;
+    will-change: auto;
+  }
+}
+
