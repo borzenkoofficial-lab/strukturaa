@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calculator, Phone, Mail, CheckCircle2, Ruler, Clock, Shield, Loader2, ArrowUpRight, ChevronDown, HelpCircle, Layers, FolderOpen } from "lucide-react";
+import { ArrowLeft, Calculator, Phone, Mail, CheckCircle2, Ruler, Clock, Shield, Loader2, ArrowUpRight, ChevronDown, HelpCircle, Layers, FolderOpen, Home, Bath, Paintbrush, DoorOpen, Zap, Trash2, Sofa, Grid2X2, Hammer, Package } from "lucide-react";
 import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
@@ -158,32 +158,41 @@ const servicesData: ServiceData[] = [
     maxArea: 500,
     duration: { ru: "После оценки объекта", en: "After site assessment" },
     features: [
-      { ru: "Снос перегородок", en: "Wall removal" },
-      { ru: "Демонтаж полов", en: "Floor demolition" },
-      { ru: "Снятие штукатурки", en: "Plaster removal" },
-      { ru: "Подготовка к ремонту", en: "Renovation preparation" },
+      { ru: "Демонтаж ненесущих перегородок после проверки", en: "Non-load-bearing partition removal after verification" },
+      { ru: "Снятие покрытий, плинтусов и стяжки", en: "Removal of floor finishes, skirting and screed" },
+      { ru: "Снятие штукатурки, обоев и плитки", en: "Removal of plaster, wallpaper and tiles" },
+      { ru: "Демонтаж подвесных потолков и облицовки", en: "Suspended ceiling and cladding removal" },
+      { ru: "Разборка сантехники и кухонных элементов", en: "Removal of sanitaryware and kitchen elements" },
+      { ru: "Двери, коробки, встроенная мебель и детали", en: "Doors, frames, fitted furniture and details" },
+      { ru: "Отдельно согласуем электрику и сантехнику", en: "Electrical and plumbing work scoped separately" },
+      { ru: "Упаковка, вынос и вывоз по согласованию", en: "Packing, carry-out and disposal by arrangement" },
     ],
     details: {
-      ru: "Демонтаж квартир — это первый этап подготовки к капитальному ремонту. Мы аккуратно разбираем перегородки, снимаем старые полы, стяжку, штукатурку. Работаем в жилых домах, соблюдая тишину в установленные часы. Весь мусор упаковываем и вывозим.",
-      en: "Apartment demolition is the first stage of preparation for major renovation.",
+      ru: "Комплексный демонтаж квартиры перед ремонтом: снимаем напольные покрытия и плинтусы, разбираем согласованные ненесущие перегородки, удаляем старую штукатурку, обои, плитку, подвесные потолки, дверные блоки и встроенные элементы. В санузле можно отдельно включить плитку, ванну или душевую, сантехнику, экраны и ненесущие короба. Кухню, мебель, электрику, сантехнику, окна, балкон и вынос/вывоз отходов включаем в состав по отдельному перечню. Несущие конструкции, проёмы, общедомовые системы и инженерные отключения требуют отдельной проверки и согласования — работы с ними не начинаются только на основании визуальной схемы.",
+      en: "Apartment strip-out before renovation can include agreed non-load-bearing partitions, floor finishes and screed, plaster, wallpaper, tiles, suspended ceilings, door sets and fitted elements. Bathroom works may include tiles, sanitaryware, bath or shower, screens and non-structural boxing. Kitchen, furniture, electrical and plumbing work, windows, balcony finishes and waste removal are listed separately. Structural elements, openings, common-building systems and utility isolation require specific assessment and approval; a visual plan alone is not enough to authorize such work.",
     },
     includes: [
-      { ru: "Осмотр квартиры", en: "Apartment inspection" },
-      { ru: "Демонтажные работы", en: "Demolition work" },
-      { ru: "Упаковка мусора", en: "Debris packaging" },
-      { ru: "Вынос мусора", en: "Debris removal" },
-      { ru: "Уборка помещения", en: "Room cleanup" },
+      { ru: "Осмотр квартиры и уточнение границ демонтажа", en: "Apartment inspection and confirmation of demolition limits" },
+      { ru: "Согласование сохраняемых элементов и защиты проходов", en: "Agreement on retained elements and route protection" },
+      { ru: "Снятие покрытий пола, плинтусов и отдельных слоёв стяжки", en: "Removal of floor finishes, skirting and agreed screed layers" },
+      { ru: "Демонтаж отделки стен, плитки и потолочных систем по перечню", en: "Removal of listed wall finishes, tiles and ceiling systems" },
+      { ru: "Разборка ненесущих перегородок после проверки типа конструкции", en: "Removal of non-load-bearing partitions after checking the construction type" },
+      { ru: "Санузел, кухонные элементы и двери — по составу заявки", en: "Bathroom, kitchen elements and doors as specified in the request" },
+      { ru: "Упаковка, вынос, погрузка и вывоз — если включены в смету", en: "Packing, carry-out, loading and removal if included in the estimate" },
+      { ru: "Сбор остаточного мусора и подготовка помещения к следующему этапу", en: "Collection of remaining debris and preparation for the next stage" },
     ],
     process: [
-      { ru: "Осмотр квартиры и оценка", en: "Apartment inspection and assessment" },
-      { ru: "Согласование объёма работ", en: "Work scope agreement" },
-      { ru: "Подготовка и защита поверхностей", en: "Surface preparation and protection" },
-      { ru: "Демонтажные работы", en: "Demolition work" },
-      { ru: "Вывоз мусора и уборка", en: "Waste removal and cleanup" },
+      { ru: "Выбор зон и предварительного состава работ", en: "Select areas and preliminary scope" },
+      { ru: "Уточнение материалов, доступа и сохраняемых элементов", en: "Confirm materials, access and elements to retain" },
+      { ru: "Проверка конструкций и инженерных систем при необходимости", en: "Check structural elements and utilities where required" },
+      { ru: "Смета, последовательность, сроки и логистика", en: "Estimate, sequence, schedule and logistics" },
+      { ru: "Защита проходов и выполнение согласованного демонтажа", en: "Protect routes and perform the agreed strip-out" },
+      { ru: "Уборка и передача помещения по согласованному результату", en: "Clean up and hand over the agreed result" },
     ],
     faq: [
-      { q: { ru: "Работаете ли вы в выходные?", en: "Do you work on weekends?" }, a: { ru: "Да, но в жилых домах соблюдаем режим тишины: с 9:00 до 19:00 в будни, с 10:00 до 18:00 в выходные.", en: "Yes, but we observe quiet hours in residential buildings." } },
-      { q: { ru: "Нужно ли согласование с УК?", en: "Is management company approval needed?" }, a: { ru: "Для перепланировки — да. Мы поможем с оформлением документов.", en: "For replanning — yes. We'll help with documentation." } },
+      { q: { ru: "Можно ли демонтировать несущую стену или сделать проём?", en: "Can a load-bearing wall be removed or opened?" }, a: { ru: "Это нельзя определять по фото или плану в конфигураторе. Требуются проверка типа конструкции, проектное решение и необходимые согласования. Работы с несущими элементами в обычный состав демонтажа не включаем без отдельной подготовки.", en: "This cannot be determined from a photo or this configurator plan. The structure must be checked and the required design and approvals obtained. Structural work is not included in ordinary strip-out without separate preparation." } },
+      { q: { ru: "Можно заказать только демонтаж пола или санузла?", en: "Can I order only floor or bathroom demolition?" }, a: { ru: "Да. Отметьте конкретные зоны и виды работ в интерактивном блоке выше; предварительный состав можно передать в заявку.", en: "Yes. Select specific areas and work types in the configurator above and transfer the preliminary scope to your request." } },
+      { q: { ru: "Вы выносите и вывозите строительный мусор?", en: "Do you carry out and remove construction waste?" }, a: { ru: "Упаковку, вынос, погрузку и вывоз можно включить в состав работ. Объём, маршрут, работа лифта, парковка и контейнер согласуются отдельно.", en: "Packing, carry-out, loading and removal can be included. Volume, route, lift access, parking and container are agreed separately." } },
     ],
     relatedSlugs: ["renovation", "waste-removal", "dismantling"],
   },
@@ -339,6 +348,314 @@ const servicesData: ServiceData[] = [
   },
 ];
 
+
+type ApartmentRoomId = "all" | "living" | "bedroom" | "kitchen" | "bathroom" | "hall" | "balcony";
+type ApartmentScopeSelection = { roomId: ApartmentRoomId; workId: string };
+
+const apartmentRooms: { id: ApartmentRoomId; label: { ru: string; en: string }; code: string }[] = [
+  { id: "all", label: { ru: "Вся квартира", en: "Whole apartment" }, code: "ALL" },
+  { id: "living", label: { ru: "Гостиная", en: "Living room" }, code: "LIVING" },
+  { id: "bedroom", label: { ru: "Спальня", en: "Bedroom" }, code: "BEDROOM" },
+  { id: "kitchen", label: { ru: "Кухня", en: "Kitchen" }, code: "KITCHEN" },
+  { id: "bathroom", label: { ru: "Санузел", en: "Bathroom" }, code: "BATH" },
+  { id: "hall", label: { ru: "Коридор", en: "Hallway" }, code: "HALL" },
+  { id: "balcony", label: { ru: "Балкон / лоджия", en: "Balcony / loggia" }, code: "BALCONY" },
+];
+
+const apartmentWorkOptions: {
+  id: string;
+  title: { ru: string; en: string };
+  description: { ru: string; en: string };
+  group: { ru: string; en: string };
+  rooms: ApartmentRoomId[];
+  icon: typeof Layers;
+}[] = [
+  {
+    id: "partitions", title: { ru: "Перегородки и ненесущие стены", en: "Partitions and non-load-bearing walls" },
+    description: { ru: "Разборка перегородок после проверки их типа и границ работ.", en: "Removal of partitions after their type and work limits are checked." },
+    group: { ru: "Стены", en: "Walls" }, rooms: ["living", "bedroom", "kitchen", "bathroom", "hall"], icon: Home,
+  },
+  {
+    id: "flooring", title: { ru: "Напольные покрытия", en: "Floor coverings" },
+    description: { ru: "Ламинат, паркет, линолеум, ковровые покрытия и плинтусы.", en: "Laminate, parquet, linoleum, carpet and skirting boards." },
+    group: { ru: "Полы", en: "Floors" }, rooms: ["all"], icon: Grid2X2,
+  },
+  {
+    id: "screed", title: { ru: "Стяжка и наливной пол", en: "Screed and self-levelling floor" },
+    description: { ru: "Удаление слоёв пола с оценкой основания и способа разборки.", en: "Removal of floor layers after checking the substrate and method." },
+    group: { ru: "Полы", en: "Floors" }, rooms: ["living", "bedroom", "kitchen", "bathroom", "hall", "balcony"], icon: Hammer,
+  },
+  {
+    id: "ceilings", title: { ru: "Потолки и подвесные системы", en: "Ceilings and suspended systems" },
+    description: { ru: "Гипсокартон, подвесные конструкции, рейки и облицовка.", en: "Drywall, suspended structures, slats and cladding." },
+    group: { ru: "Потолки", en: "Ceilings" }, rooms: ["all"], icon: Layers,
+  },
+  {
+    id: "wall-finish", title: { ru: "Старая отделка стен", en: "Existing wall finishes" },
+    description: { ru: "Обои, штукатурка, шпаклёвка и непрочные отделочные слои.", en: "Wallpaper, plaster, putty and loose finish layers." },
+    group: { ru: "Отделка", en: "Finishes" }, rooms: ["all"], icon: Paintbrush,
+  },
+  {
+    id: "tiles", title: { ru: "Плитка и облицовка", en: "Tiles and cladding" },
+    description: { ru: "Керамическая плитка, клеевые слои и облицовка стен.", en: "Ceramic tiles, adhesive layers and wall cladding." },
+    group: { ru: "Отделка", en: "Finishes" }, rooms: ["kitchen", "bathroom", "hall", "balcony"], icon: Grid2X2,
+  },
+  {
+    id: "bathroom", title: { ru: "Комплексный демонтаж санузла", en: "Bathroom strip-out" },
+    description: { ru: "Сантехника, ванна или душевая, экраны, плитка и ненесущие короба — по согласованному составу.", en: "Sanitaryware, bath or shower, screens, tiles and non-structural boxing by agreed scope." },
+    group: { ru: "Санузел", en: "Bathroom" }, rooms: ["bathroom"], icon: Bath,
+  },
+  {
+    id: "plumbing", title: { ru: "Сантехника и трубы", en: "Plumbing and pipework" },
+    description: { ru: "Демонтаж оборудования и участков трубопроводов после согласованного отключения.", en: "Removal of fixtures and pipe sections after an agreed safe isolation." },
+    group: { ru: "Инженерия", en: "Utilities" }, rooms: ["kitchen", "bathroom"], icon: Zap,
+  },
+  {
+    id: "electrics", title: { ru: "Электрика и освещение", en: "Electrical and lighting" },
+    description: { ru: "Светильники, выключатели и участки проводки — после обесточивания и согласования.", en: "Lights, switches and wiring sections after power isolation and approval." },
+    group: { ru: "Инженерия", en: "Utilities" }, rooms: ["all"], icon: Zap,
+  },
+  {
+    id: "doors", title: { ru: "Двери, коробки и наличники", en: "Doors, frames and architraves" },
+    description: { ru: "Межкомнатные полотна, коробки, наличники и согласованные элементы проёмов.", en: "Interior door leaves, frames, architraves and agreed opening elements." },
+    group: { ru: "Проёмы", en: "Openings" }, rooms: ["living", "bedroom", "kitchen", "bathroom", "hall"], icon: DoorOpen,
+  },
+  {
+    id: "kitchen", title: { ru: "Кухня и встроенные элементы", en: "Kitchen and fitted elements" },
+    description: { ru: "Фартук, гарнитур и встроенные элементы по перечню; технику и сохраняемые предметы отделяем заранее.", en: "Backsplash, cabinets and fitted elements by list; appliances and items to keep are identified beforehand." },
+    group: { ru: "Кухня", en: "Kitchen" }, rooms: ["kitchen"], icon: Sofa,
+  },
+  {
+    id: "built-ins", title: { ru: "Шкафы и встроенная мебель", en: "Wardrobes and fitted furniture" },
+    description: { ru: "Разборка шкафов, ниш, стеллажей и другой мебели по согласованному перечню.", en: "Dismantling of wardrobes, niches, shelving and other listed furniture." },
+    group: { ru: "Мебель", en: "Furniture" }, rooms: ["all"], icon: Sofa,
+  },
+  {
+    id: "windows", title: { ru: "Подоконники, откосы и оконные блоки", en: "Sills, reveals and window units" },
+    description: { ru: "Демонтаж только согласованных элементов с учётом фасада и требований безопасности.", en: "Removal of agreed elements subject to facade and safety constraints." },
+    group: { ru: "Окна", en: "Windows" }, rooms: ["living", "bedroom", "kitchen", "balcony"], icon: Home,
+  },
+  {
+    id: "balcony", title: { ru: "Отделка балкона / лоджии", en: "Balcony / loggia finishes" },
+    description: { ru: "Внутренняя облицовка, покрытия и встроенные элементы; без вмешательства в несущие части.", en: "Internal cladding, finishes and fitted elements; no structural alterations." },
+    group: { ru: "Балкон", en: "Balcony" }, rooms: ["balcony"], icon: Layers,
+  },
+  {
+    id: "baseboards", title: { ru: "Плинтусы и мелкие элементы", en: "Skirting and small fixtures" },
+    description: { ru: "Плинтусы, пороги, наличники и прочие элементы по согласованному списку.", en: "Skirting, thresholds, architraves and other listed details." },
+    group: { ru: "Отделка", en: "Finishes" }, rooms: ["all"], icon: Ruler,
+  },
+  {
+    id: "waste", title: { ru: "Упаковка, вынос и вывоз", en: "Packing, carry-out and removal" },
+    description: { ru: "Объём, маршрут, лифт, парковка и формат вывоза согласуются отдельно.", en: "Volume, route, lift access, parking and disposal format are agreed separately." },
+    group: { ru: "Логистика", en: "Logistics" }, rooms: ["all"], icon: Package,
+  },
+];
+
+function getApartmentScopeSummary(selections: ApartmentScopeSelection[], lang: "ru" | "en") {
+  if (!selections.length) return "";
+  const prefix = lang === "ru" ? "Состав работ по зонам:" : "Selected work by room:";
+  const lines = selections.map(({ roomId, workId }) => {
+    const room = apartmentRooms.find((item) => item.id === roomId);
+    const work = apartmentWorkOptions.find((item) => item.id === workId);
+    return "• " + (room ? room.label[lang] : roomId) + " — " + (work ? work.title[lang] : workId);
+  });
+  return prefix + "\n" + lines.join("\n");
+}
+
+function ApartmentDemolitionStudio({
+  lang,
+  selected,
+  onToggle,
+  onClear,
+  onSelectAll,
+  onApply,
+}: {
+  lang: "ru" | "en";
+  selected: ApartmentScopeSelection[];
+  onToggle: (roomId: ApartmentRoomId, workId: string) => void;
+  onClear: () => void;
+  onSelectAll: (roomId: ApartmentRoomId, workIds: string[]) => void;
+  onApply: () => void;
+}) {
+  const [activeRoom, setActiveRoom] = useState<ApartmentRoomId>("all");
+  const isRu = lang === "ru";
+  const activeRoomData = apartmentRooms.find((item) => item.id === activeRoom) ?? apartmentRooms[0];
+  const visibleWorkOptions = apartmentWorkOptions.filter((work) =>
+    activeRoom === "all" || work.rooms.includes("all") || work.rooms.includes(activeRoom)
+  );
+  const isSelected = (roomId: ApartmentRoomId, workId: string) =>
+    selected.some((item) => item.roomId === roomId && item.workId === workId);
+  const roomShape = (roomId: ApartmentRoomId, x: number, y: number, width: number, height: number, label: string) => {
+    const active = activeRoom === roomId;
+    return (
+      <g key={roomId} role="button" tabIndex={0} aria-label={label} aria-pressed={active}
+        onClick={() => setActiveRoom(roomId)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            setActiveRoom(roomId);
+          }
+        }}
+        style={{ cursor: "pointer", outline: "none" }}>
+        <rect x={x} y={y} width={width} height={height}
+          fill={active ? "hsl(var(--primary) / .22)" : "hsl(var(--card) / .58)"}
+          stroke={active ? "hsl(var(--primary))" : "hsl(var(--border) / .9)"}
+          strokeWidth={active ? 3 : 1.5} />
+        <rect x={x + 5} y={y + 5} width={width - 10} height={height - 10}
+          fill="none" stroke={active ? "hsl(var(--primary) / .4)" : "hsl(var(--foreground) / .055)"}
+          strokeWidth="1" strokeDasharray={active ? "0" : "3 6"} />
+        <text x={x + width / 2} y={y + height / 2 - 2} textAnchor="middle" dominantBaseline="middle"
+          fontSize={width < 135 ? 10 : 12} fontWeight={active ? 700 : 500}
+          letterSpacing=".8" fill="hsl(var(--foreground) / .92)" style={{ pointerEvents: "none" }}>{label.toUpperCase()}</text>
+        <text x={x + width / 2} y={y + height / 2 + 16} textAnchor="middle" fontSize="8.5"
+          letterSpacing="1.2" fill={active ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))"}
+          style={{ pointerEvents: "none" }}>{apartmentRooms.find((room) => room.id === roomId)?.code}</text>
+      </g>
+    );
+  };
+
+  return (
+    <section className="skol-apartment-studio mb-8 overflow-hidden border border-border/60 bg-card/35">
+      <div className="border-b border-border/55 p-5 sm:p-7 lg:p-8">
+        <div className="grid gap-4 sm:grid-cols-[.95fr_1.05fr] sm:items-end">
+          <div>
+            <p className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.2em] text-primary">
+              <span className="h-px w-6 bg-primary" /> 01 / APARTMENT STRIP-OUT
+            </p>
+            <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+              {isRu ? "Соберите состав демонтажа по своей квартире" : "Configure demolition for your apartment"}
+            </h2>
+          </div>
+          <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
+            {isRu
+              ? "Выберите помещение на схеме, затем отметьте нужные работы. Список подстраивается под выбранную зону, а готовый состав можно передать в заявку."
+              : "Choose a room on the plan and select the work you need. The list adapts to the selected area, and your scope can be transferred to the request form."}
+          </p>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-[.92fr_1.08fr]">
+        <div className="min-w-0 border-b border-border/55 p-3 sm:p-5 lg:border-b-0 lg:border-r lg:p-6">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+              {isRu ? "План / выберите зону" : "Plan / select a zone"}
+            </span>
+            <span className="border border-border/60 px-2 py-1 font-mono text-[8px] tracking-[.12em] text-primary">
+              {activeRoomData.code} / 07
+            </span>
+          </div>
+          <div className="relative overflow-hidden border border-border/55 bg-background/50 p-1.5 sm:p-3">
+            <div className="pointer-events-none absolute inset-0 opacity-55" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.055) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.055) 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+            <svg viewBox="0 0 620 360" className="relative z-10 block h-auto w-full" role="img" aria-label={isRu ? "Интерактивный план квартиры" : "Interactive apartment plan"}>
+              <path d="M32 32H588V328H32Z" fill="none" stroke="hsl(var(--foreground) / .2)" strokeWidth="1.5" strokeDasharray="5 5" />
+              {roomShape("living", 42, 42, 198, 132, isRu ? "Гостиная" : "Living")}
+              {roomShape("bedroom", 248, 42, 165, 132, isRu ? "Спальня" : "Bedroom")}
+              {roomShape("kitchen", 421, 42, 157, 98, isRu ? "Кухня" : "Kitchen")}
+              {roomShape("bathroom", 421, 148, 157, 83, isRu ? "Санузел" : "Bathroom")}
+              {roomShape("hall", 248, 182, 165, 136, isRu ? "Коридор" : "Hallway")}
+              {roomShape("balcony", 42, 182, 198, 136, isRu ? "Балкон" : "Balcony")}
+              <g fill="hsl(var(--muted-foreground))" fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="1.2">
+                <text x="42" y="20">SKOL / SPATIAL PLAN</text>
+                <text x="444" y="348">SCHEMATIC / 01:07</text>
+              </g>
+              <path d="M20 42H34M20 42V56M600 304V328H576" fill="none" stroke="hsl(var(--primary) / .6)" strokeWidth="1" />
+            </svg>
+          </div>
+          <button type="button" onClick={() => setActiveRoom("all")} aria-pressed={activeRoom === "all"}
+            className={"mt-3 flex min-h-11 w-full items-center justify-between border px-3 py-2 text-sm transition-colors " + (activeRoom === "all" ? "border-primary/60 bg-primary/10 text-foreground" : "border-border/55 bg-background/45 text-muted-foreground hover:border-primary/40 hover:text-foreground")}>
+            <span className="flex items-center gap-2"><Home className="h-4 w-4 text-primary" />{isRu ? "Вся квартира" : "Whole apartment"}</span>
+            <span className="font-mono text-[9px] text-muted-foreground">ALL AREAS</span>
+          </button>
+          <p className="mt-3 text-xs leading-5 text-muted-foreground">
+            {isRu
+              ? "Схема условная и нужна для выбора зоны. Реальный состав определяется после осмотра, особенно если затрагиваются несущие конструкции или инженерные системы."
+              : "The plan is schematic and used to select an area. Actual scope is confirmed after inspection, especially where structural elements or utilities are involved."}
+          </p>
+        </div>
+
+        <div className="min-w-0 p-4 sm:p-5 lg:p-6">
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="font-mono text-[9px] uppercase tracking-[.16em] text-primary">
+                {isRu ? "Выбранная зона" : "Selected area"} / {activeRoomData.code}
+              </p>
+              <h3 className="mt-1 font-display text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+                {isRu ? "Какие работы нужны?" : "Which work do you need?"}
+              </h3>
+            </div>
+            <span className="border border-primary/35 bg-primary/10 px-3 py-2 text-xs font-semibold text-foreground">
+              {selected.length} {isRu ? "поз." : "items"}
+            </span>
+          </div>
+          <div className="mb-4 grid grid-cols-2 gap-2">
+            {apartmentRooms.filter((room) => room.id !== "all").map((room) => {
+              const active = activeRoom === room.id;
+              return (
+                <button key={room.id} type="button" aria-pressed={active} onClick={() => setActiveRoom(room.id)}
+                  className={"min-h-10 border px-3 py-2 text-left text-xs font-medium transition-colors " + (active ? "border-primary/60 bg-primary/10 text-foreground" : "border-border/55 bg-background/40 text-muted-foreground hover:border-primary/35 hover:text-foreground")}>
+                  {room.label[lang]}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            {visibleWorkOptions.map((work) => {
+              const Icon = work.icon;
+              const chosen = isSelected(activeRoom, work.id);
+              return (
+                <button key={work.id} type="button" aria-pressed={chosen} onClick={() => onToggle(activeRoom, work.id)}
+                  className={"skol-apartment-work-card group relative flex min-h-[136px] min-w-0 flex-col border p-3 text-left transition-colors sm:p-4 " + (chosen ? "border-primary/65 bg-primary/[.09]" : "border-border/55 bg-background/45 hover:border-primary/40 hover:bg-card/70")}>
+                  <div className="flex items-start justify-between gap-2">
+                    <span className={"flex h-9 w-9 shrink-0 items-center justify-center border " + (chosen ? "border-primary/45 bg-primary/10 text-primary" : "border-border/65 text-muted-foreground group-hover:text-primary")}>
+                      <Icon className="h-4 w-4" strokeWidth={1.6} />
+                    </span>
+                    <span className={"flex h-5 w-5 shrink-0 items-center justify-center border " + (chosen ? "border-primary bg-primary text-primary-foreground" : "border-border/70 text-transparent")}>
+                      {chosen ? <CheckCircle2 className="h-3.5 w-3.5" /> : <span className="h-2 w-2" />}
+                    </span>
+                  </div>
+                  <span className="mt-3 block text-sm font-semibold leading-snug text-foreground">{work.title[lang]}</span>
+                  <span className="mt-1 block text-xs leading-5 text-muted-foreground">{work.description[lang]}</span>
+                  <span className="mt-auto pt-3 font-mono text-[8px] uppercase tracking-[.15em] text-primary">{work.group[lang]}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button type="button" onClick={() => onSelectAll(activeRoom, visibleWorkOptions.map((work) => work.id))}
+              className="min-h-10 border border-border/70 px-3 py-2 text-xs font-semibold text-foreground transition hover:border-primary/50">
+              {isRu ? "Выбрать весь список" : "Select all shown"}
+            </button>
+            <button type="button" onClick={onClear}
+              className="min-h-10 border border-border/70 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground">
+              {isRu ? "Очистить выбор" : "Clear selection"}
+            </button>
+          </div>
+
+          {selected.length > 0 && (
+            <div className="mt-4 border border-primary/30 bg-primary/[.06] p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-foreground">{isRu ? "Состав готов к передаче" : "Scope ready to transfer"}</p>
+                <span className="font-mono text-[9px] text-primary">{String(selected.length).padStart(2, "0")} / SCOPE</span>
+              </div>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                {isRu ? "Выбранные зоны и работы попадут в описание заявки. Стоимость не рассчитывается автоматически: её уточним по фактическому объёму и условиям." : "Selected rooms and work will be added to the request. Price is not auto-calculated; it is confirmed after checking actual scope and conditions."}
+              </p>
+              <button type="button" onClick={onApply}
+                className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
+                {isRu ? "Передать состав в заявку" : "Add scope to request"} <ArrowUpRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
 const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -356,6 +673,34 @@ const ServiceDetailPage = () => {
   const [submittedService, setSubmittedService] = useState<string | null>(null);
   const [submittedPrice, setSubmittedPrice] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [selectedApartmentTasks, setSelectedApartmentTasks] = useState<ApartmentScopeSelection[]>([]);
+
+  const toggleApartmentTask = (roomId: ApartmentRoomId, workId: string) => {
+    setSelectedApartmentTasks((current) =>
+      current.some((item) => item.roomId === roomId && item.workId === workId)
+        ? current.filter((item) => !(item.roomId === roomId && item.workId === workId))
+        : [...current, { roomId, workId }]
+    );
+  };
+
+  const selectAllApartmentTasks = (roomId: ApartmentRoomId, workIds: string[]) => {
+    setSelectedApartmentTasks((current) => {
+      const additions = workIds
+        .filter((workId) => !current.some((item) => item.roomId === roomId && item.workId === workId))
+        .map((workId) => ({ roomId, workId }));
+      return [...current, ...additions];
+    });
+  };
+
+  const applyApartmentScopeToRequest = () => {
+    const scopeText = getApartmentScopeSummary(selectedApartmentTasks, lang);
+    if (!scopeText) return;
+    setMessage((current) => {
+      const cleanMessage = current.split("Состав работ по зонам:")[0].split("Selected work by room:")[0].trim();
+      return [cleanMessage, scopeText].filter(Boolean).join("\n\n");
+    });
+    document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   const isWaste = service?.slug === "waste-removal";
 
@@ -363,13 +708,19 @@ const ServiceDetailPage = () => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) return;
     setSubmitting(true);
-    
+
     try {
+      const scopeSummary = service?.slug === "apartment-demolition"
+        ? getApartmentScopeSummary(selectedApartmentTasks, lang)
+        : "";
+      const messageAlreadyContainsScope = message.includes("Состав работ по зонам:") || message.includes("Selected work by room:");
+      const finalMessage = [message.trim(), scopeSummary && !messageAlreadyContainsScope ? scopeSummary : ""].filter(Boolean).join("\n\n");
+
       const { error } = await supabase.functions.invoke("notify-request", {
         body: {
           name: name.trim(),
           phone: phone.trim(),
-          message: message.trim() || null,
+          message: finalMessage || null,
           service: service ? t(service.titleKey) : null,
           calculated_price: null,
           source: "service_page",
@@ -416,7 +767,11 @@ const ServiceDetailPage = () => {
     .filter(Boolean) as ServiceData[];
 
   const seoTitle = t(service.titleKey);
-  const seoDesc = `${t(service.descKey)} Состав и стоимость работ уточняются после оценки условий объекта.`;
+  const seoDesc = service.slug === "apartment-demolition"
+    ? (lang === "ru"
+      ? "Комплексный демонтаж квартир в Москве и Московской области: перегородки, полы, стяжка, отделка, санузел, кухня, двери, инженерные элементы, упаковка и вывоз по согласованию."
+      : "Apartment strip-out in Moscow and the Moscow region: partitions, floors, screed, finishes, bathroom, kitchen, doors, utilities and agreed waste removal.")
+    : t(service.descKey) + " Состав и стоимость работ уточняются после оценки условий объекта.";
 
   return (
     <>
@@ -466,6 +821,19 @@ const ServiceDetailPage = () => {
           </div>
         </div>
       </AnimatedSection>
+
+      {service.slug === "apartment-demolition" && (
+        <AnimatedSection delay={0.08}>
+          <ApartmentDemolitionStudio
+            lang={lang}
+            selected={selectedApartmentTasks}
+            onToggle={toggleApartmentTask}
+            onClear={() => setSelectedApartmentTasks([])}
+            onSelectAll={selectAllApartmentTasks}
+            onApply={applyApartmentScopeToRequest}
+          />
+        </AnimatedSection>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Details */}
@@ -722,10 +1090,20 @@ const ServiceDetailPage = () => {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form id="service-request-form" onSubmit={handleSubmit} className="space-y-4">
                 <h4 className="font-display font-semibold text-foreground">
                   {lang === "ru" ? "Оставить заявку" : "Submit Request"}
                 </h4>
+                {service.slug === "apartment-demolition" && selectedApartmentTasks.length > 0 && (
+                  <div className="border border-primary/30 bg-primary/[.06] p-3">
+                    <p className="text-xs font-semibold text-foreground">
+                      {lang === "ru" ? "К заявке будет приложен состав работ" : "The selected scope will be attached to the request"}
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                      {selectedApartmentTasks.length} {lang === "ru" ? "позиций выбрано" : "items selected"}
+                    </p>
+                  </div>
+                )}
                 <Input
                   placeholder={lang === "ru" ? "Ваше имя" : "Your name"}
                   value={name}
