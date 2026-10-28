@@ -76,7 +76,7 @@ const App = () => (
                   <Route path="/" element={<Index />} />
                   <Route path="/services" element={<PageLayout><ServicesPage /></PageLayout>} />
                   <Route path="/services/:slug" element={<PageLayout><ServiceDetailPage /></PageLayout>} />
-                  <Route path="/projects" element={<PageLayout atmosphere={false}><ProjectsPage /></PageLayout>} />
+                  <Route path="/projects" element={<PageLayout><ProjectsPage /></PageLayout>} />
                   <Route path="/about" element={<PageLayout><AboutPage /></PageLayout>} />
                   <Route path="/contacts" element={<PageLayout><ContactsPage /></PageLayout>} />
                   <Route path="/news" element={<PageLayout><NewsPage /></PageLayout>} />
