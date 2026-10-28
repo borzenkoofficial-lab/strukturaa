@@ -71,15 +71,6 @@ const portfolioExamples: DbProject[] = [
   },
 ];
 
-const petals = Array.from({ length: 24 }, (_, i) => ({
-  left: (i * 37 + 9) % 100,
-  delay: (i % 8) * -1.7,
-  duration: 13 + (i % 7) * 2.1,
-  size: 4 + (i % 4) * 2,
-  drift: (i % 2 === 0 ? 1 : -1) * (24 + (i % 5) * 12),
-  rotation: (i * 53) % 260,
-}));
-
 const ProjectsPage = () => {
   const [selected, setSelected] = useState<SelectedProject | null>(null);
   const [projects, setProjects] = useState<DbProject[]>([]);
@@ -129,19 +120,10 @@ const ProjectsPage = () => {
     <>
       <SEOHead title="Проекты и портфолио — Структура" description="Портфолио строительных объектов: демонтаж, фасадные работы и подготовка помещений. Истории объектов, фотографии и детали выполненных работ." canonical="/projects" />
       <main className="relative isolate min-h-screen overflow-hidden">
-        <div aria-hidden="true" className="skol-projects-particles pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div aria-hidden="true" className="skol-projects-backdrop pointer-events-none absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_12%,hsl(var(--primary)/0.10),transparent_34%),radial-gradient(ellipse_at_90%_42%,rgba(190,130,151,0.09),transparent_30%)]" />
           <div className="absolute inset-0 opacity-[0.16]" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/0.06) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/0.06) 1px, transparent 1px)", backgroundSize: "72px 72px", maskImage: "linear-gradient(to bottom, black, transparent 75%)" }} />
-          {petals.map((petal, i) => (
-            <motion.span
-              key={i}
-              className="absolute top-[-5%] rounded-[80%_15%_75%_20%] bg-rose-200/70 shadow-[0_0_14px_rgba(236,164,190,0.45)]"
-              style={{ left: `${petal.left}%`, width: petal.size, height: petal.size * 1.45, filter: "blur(0.2px)" }}
-              animate={{ y: ["0vh", "112vh"], x: [0, petal.drift, petal.drift * -0.45, 0], rotate: [petal.rotation, petal.rotation + 210], opacity: [0, 0.75, 0.65, 0] }}
-              transition={{ duration: petal.duration, delay: petal.delay, repeat: Infinity, ease: "linear" }}
-            />
-          ))}
-          <motion.div className="absolute -right-28 top-52 h-80 w-80 rounded-full border border-rose-200/15" animate={{ rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
+          <motion.div className="absolute -right-28 top-52 h-80 w-80 rounded-full border border-primary/10" animate={{ rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
           <motion.div className="absolute -right-12 top-64 h-48 w-48 rounded-full border border-primary/10" animate={{ rotate: -360 }} transition={{ duration: 70, repeat: Infinity, ease: "linear" }} />
         </div>
 
