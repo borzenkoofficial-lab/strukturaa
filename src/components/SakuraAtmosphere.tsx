@@ -15,32 +15,32 @@ type FloatingParticle = {
 };
 
 const particles: FloatingParticle[] = [
-  { left: "4%", top: "12%", delay: 0, duration: 21, size: 3, driftX: 30, driftY: 34, shape: "dot", opacity: .28 },
-  { left: "9%", top: "35%", delay: 2.4, duration: 27, size: 2, driftX: -26, driftY: 45, shape: "ring", opacity: .3 },
-  { left: "13%", top: "68%", delay: 4.2, duration: 23, size: 4, driftX: 32, driftY: 28, shape: "dot", opacity: .22 },
-  { left: "18%", top: "18%", delay: 1.3, duration: 30, size: 2, driftX: 18, driftY: 58, shape: "square", opacity: .26 },
-  { left: "22%", top: "48%", delay: 6.1, duration: 24, size: 3, driftX: -34, driftY: 32, shape: "dot", opacity: .25 },
-  { left: "27%", top: "84%", delay: 3.1, duration: 29, size: 2, driftX: 25, driftY: 42, shape: "ring", opacity: .3 },
-  { left: "31%", top: "27%", delay: 5.3, duration: 22, size: 4, driftX: -22, driftY: 36, shape: "dot", opacity: .18 },
-  { left: "36%", top: "61%", delay: .7, duration: 31, size: 2, driftX: 38, driftY: 52, shape: "square", opacity: .27 },
-  { left: "40%", top: "9%", delay: 7.1, duration: 25, size: 3, driftX: -28, driftY: 40, shape: "dot", opacity: .24 },
-  { left: "45%", top: "41%", delay: 2.7, duration: 28, size: 2, driftX: 23, driftY: 46, shape: "ring", opacity: .28 },
-  { left: "49%", top: "76%", delay: 5.9, duration: 22, size: 3, driftX: -32, driftY: 36, shape: "dot", opacity: .2 },
-  { left: "54%", top: "20%", delay: 3.6, duration: 32, size: 2, driftX: 31, driftY: 48, shape: "square", opacity: .25 },
-  { left: "58%", top: "54%", delay: 1.8, duration: 26, size: 4, driftX: -20, driftY: 32, shape: "dot", opacity: .22 },
-  { left: "62%", top: "89%", delay: 8.3, duration: 30, size: 2, driftX: 36, driftY: 54, shape: "ring", opacity: .26 },
-  { left: "67%", top: "32%", delay: .4, duration: 23, size: 3, driftX: -30, driftY: 40, shape: "dot", opacity: .28 },
-  { left: "71%", top: "66%", delay: 4.9, duration: 27, size: 2, driftX: 22, driftY: 48, shape: "square", opacity: .24 },
-  { left: "75%", top: "13%", delay: 6.8, duration: 24, size: 4, driftX: -35, driftY: 35, shape: "dot", opacity: .2 },
-  { left: "80%", top: "46%", delay: 2.1, duration: 31, size: 2, driftX: 28, driftY: 52, shape: "ring", opacity: .29 },
-  { left: "84%", top: "80%", delay: 7.6, duration: 25, size: 3, driftX: -24, driftY: 38, shape: "dot", opacity: .23 },
-  { left: "89%", top: "25%", delay: 3.9, duration: 29, size: 2, driftX: 34, driftY: 47, shape: "square", opacity: .26 },
-  { left: "94%", top: "59%", delay: 5.1, duration: 22, size: 3, driftX: -27, driftY: 32, shape: "dot", opacity: .2 },
-  { left: "7%", top: "91%", delay: 9.1, duration: 32, size: 2, driftX: 18, driftY: 44, shape: "ring", opacity: .22 },
-  { left: "33%", top: "4%", delay: 8.6, duration: 27, size: 3, driftX: -21, driftY: 39, shape: "dot", opacity: .2 },
-  { left: "57%", top: "39%", delay: 10.2, duration: 25, size: 2, driftX: 30, driftY: 42, shape: "square", opacity: .25 },
-  { left: "73%", top: "93%", delay: 6.5, duration: 28, size: 3, driftX: -19, driftY: 50, shape: "dot", opacity: .18 },
-  { left: "97%", top: "8%", delay: 1.1, duration: 33, size: 2, driftX: -31, driftY: 45, shape: "ring", opacity: .25 },
+  { left: "4%", top: "12%", delay: 0, duration: 21, size: 4, driftX: 30, driftY: 34, shape: "dot", opacity: 0.44 },
+  { left: "9%", top: "35%", delay: 2.4, duration: 27, size: 3, driftX: -26, driftY: 45, shape: "ring", opacity: 0.46 },
+  { left: "13%", top: "68%", delay: 4.2, duration: 23, size: 5, driftX: 32, driftY: 28, shape: "dot", opacity: 0.38 },
+  { left: "18%", top: "18%", delay: 1.3, duration: 30, size: 3, driftX: 18, driftY: 58, shape: "square", opacity: 0.42 },
+  { left: "22%", top: "48%", delay: 6.1, duration: 24, size: 4, driftX: -34, driftY: 32, shape: "dot", opacity: 0.41 },
+  { left: "27%", top: "84%", delay: 3.1, duration: 29, size: 3, driftX: 25, driftY: 42, shape: "ring", opacity: 0.46 },
+  { left: "31%", top: "27%", delay: 5.3, duration: 22, size: 5, driftX: -22, driftY: 36, shape: "dot", opacity: 0.34 },
+  { left: "36%", top: "61%", delay: .7, duration: 31, size: 3, driftX: 38, driftY: 52, shape: "square", opacity: 0.43 },
+  { left: "40%", top: "9%", delay: 7.1, duration: 25, size: 4, driftX: -28, driftY: 40, shape: "dot", opacity: 0.4 },
+  { left: "45%", top: "41%", delay: 2.7, duration: 28, size: 3, driftX: 23, driftY: 46, shape: "ring", opacity: 0.44 },
+  { left: "49%", top: "76%", delay: 5.9, duration: 22, size: 4, driftX: -32, driftY: 36, shape: "dot", opacity: 0.36 },
+  { left: "54%", top: "20%", delay: 3.6, duration: 32, size: 3, driftX: 31, driftY: 48, shape: "square", opacity: 0.41 },
+  { left: "58%", top: "54%", delay: 1.8, duration: 26, size: 5, driftX: -20, driftY: 32, shape: "dot", opacity: 0.38 },
+  { left: "62%", top: "89%", delay: 8.3, duration: 30, size: 3, driftX: 36, driftY: 54, shape: "ring", opacity: 0.42 },
+  { left: "67%", top: "32%", delay: .4, duration: 23, size: 4, driftX: -30, driftY: 40, shape: "dot", opacity: 0.44 },
+  { left: "71%", top: "66%", delay: 4.9, duration: 27, size: 3, driftX: 22, driftY: 48, shape: "square", opacity: 0.4 },
+  { left: "75%", top: "13%", delay: 6.8, duration: 24, size: 5, driftX: -35, driftY: 35, shape: "dot", opacity: 0.36 },
+  { left: "80%", top: "46%", delay: 2.1, duration: 31, size: 3, driftX: 28, driftY: 52, shape: "ring", opacity: 0.45 },
+  { left: "84%", top: "80%", delay: 7.6, duration: 25, size: 4, driftX: -24, driftY: 38, shape: "dot", opacity: 0.39 },
+  { left: "89%", top: "25%", delay: 3.9, duration: 29, size: 3, driftX: 34, driftY: 47, shape: "square", opacity: 0.42 },
+  { left: "94%", top: "59%", delay: 5.1, duration: 22, size: 4, driftX: -27, driftY: 32, shape: "dot", opacity: 0.36 },
+  { left: "7%", top: "91%", delay: 9.1, duration: 32, size: 3, driftX: 18, driftY: 44, shape: "ring", opacity: 0.38 },
+  { left: "33%", top: "4%", delay: 8.6, duration: 27, size: 4, driftX: -21, driftY: 39, shape: "dot", opacity: 0.36 },
+  { left: "57%", top: "39%", delay: 10.2, duration: 25, size: 3, driftX: 30, driftY: 42, shape: "square", opacity: 0.41 },
+  { left: "73%", top: "93%", delay: 6.5, duration: 28, size: 4, driftX: -19, driftY: 50, shape: "dot", opacity: 0.34 },
+  { left: "97%", top: "8%", delay: 1.1, duration: 33, size: 3, driftX: -31, driftY: 45, shape: "ring", opacity: 0.41 },
 ];
 
 const SakuraAtmosphere = () => {
@@ -65,10 +65,10 @@ const SakuraAtmosphere = () => {
       {particles.map((particle, index) => {
         const shapeClass =
           particle.shape === "ring"
-            ? "border border-primary/45 bg-transparent"
+            ? "border border-primary/70 bg-transparent"
             : particle.shape === "square"
-              ? "rounded-[1px] bg-foreground/35"
-              : "rounded-full bg-primary/45 shadow-[0_0_10px_1px_hsl(var(--primary)/0.13)]";
+              ? "rounded-[1px] bg-foreground/55"
+              : "rounded-full bg-primary/75 shadow-[0_0_12px_2px_hsl(var(--primary)/0.22)]";
 
         return (
           <motion.span
