@@ -152,6 +152,188 @@ function AboutModelStudio() {
   );
 }
 
+
+type AboutMockupKind = "demolition" | "preparation" | "assembly";
+
+const aboutMockups: { kind: AboutMockupKind; number: string; eyebrow: string; title: string; description: string }[] = [
+  {
+    kind: "demolition",
+    number: "01",
+    eyebrow: "DEMOLITION / ZONING",
+    title: "Демонтаж и разборка",
+    description: "Границы работ, сохраняемые элементы и зоны разборки в одной объёмной схеме.",
+  },
+  {
+    kind: "preparation",
+    number: "02",
+    eyebrow: "SPACE / LAYERS",
+    title: "Подготовка пространства",
+    description: "Основания, перегородки и уровни помещения — отдельными читаемыми слоями.",
+  },
+  {
+    kind: "assembly",
+    number: "03",
+    eyebrow: "ASSEMBLY / DETAILS",
+    title: "Сборка и монтаж",
+    description: "Конструктивные элементы и узлы собраны в единую изометрическую модель.",
+  },
+];
+
+function AboutMockupDrawing({ kind }: { kind: AboutMockupKind }) {
+  return (
+    <svg viewBox="0 0 520 340" className="block h-auto w-full overflow-visible" role="img"
+      aria-label={kind === "demolition" ? "Изометрический макет помещения и зон демонтажа" : kind === "preparation" ? "Объёмная схема слоёв помещения" : "Изометрическая схема монтажа конструктивных элементов"}>
+      <g fill="none" stroke="hsl(var(--foreground) / .07)" strokeWidth="1">
+        <path d="M24 286H496M48 302H472M70 318H450M48 72H472M32 94H488" />
+        <path d="M70 45V300M120 45V300M170 45V300M220 45V300M270 45V300M320 45V300M370 45V300M420 45V300M470 45V300" opacity=".45" />
+      </g>
+      {kind === "demolition" && (
+        <g strokeLinejoin="round" strokeLinecap="round">
+          <path d="M78 226 250 130 449 229 275 326Z" fill="hsl(var(--foreground) / .035)" stroke="hsl(var(--foreground) / .25)" strokeWidth="1.3" />
+          <path d="M128 137 259 65 390 137 259 211Z" fill="hsl(var(--primary) / .13)" stroke="hsl(var(--primary) / .75)" strokeWidth="1.5" />
+          <path d="M128 137 259 211 259 287 128 212Z" fill="hsl(var(--foreground) / .055)" stroke="hsl(var(--foreground) / .3)" strokeWidth="1.2" />
+          <path d="M259 211 390 137 390 213 259 287Z" fill="hsl(var(--primary) / .12)" stroke="hsl(var(--primary) / .8)" strokeWidth="1.4" />
+          <path d="M289 194 348 160 348 205 289 239Z" fill="hsl(var(--background) / .85)" stroke="hsl(var(--foreground) / .42)" strokeWidth="1.2" />
+          <path d="M142 148 244 206 244 257 142 199Z" fill="none" stroke="hsl(var(--foreground) / .24)" strokeWidth="1" />
+          <path d="M269 218 379 156" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeDasharray="7 5" />
+          <path d="M265 239 282 230M265 251 282 242M265 263 282 254M265 275 282 266" stroke="hsl(var(--primary))" strokeWidth="2" />
+          <path d="M355 112 417 79 449 97" fill="none" stroke="hsl(var(--primary) / .9)" strokeWidth="1.3" strokeDasharray="3 5" />
+          <circle cx="355" cy="112" r="4" fill="hsl(var(--primary))" />
+          <path d="M407 74h64v29h-64z" fill="hsl(var(--card))" stroke="hsl(var(--primary) / .55)" strokeWidth="1" />
+          <text x="439" y="86" textAnchor="middle" fill="hsl(var(--primary))" fontSize="7.5" letterSpacing="1">ZONE A</text>
+          <text x="439" y="96" textAnchor="middle" fill="hsl(var(--foreground))" fontSize="8.5">REMOVE</text>
+          <path d="M93 244V273M86 251l7-7 7 7M86 266l7 7 7-7" fill="none" stroke="hsl(var(--foreground) / .45)" strokeWidth="1.1" />
+          <text x="103" y="263" fill="hsl(var(--muted-foreground))" fontSize="8" letterSpacing="1">LEVEL 00</text>
+        </g>
+      )}
+      {kind === "preparation" && (
+        <g strokeLinejoin="round" strokeLinecap="round">
+          <path d="M74 240 251 143 447 237 268 332Z" fill="hsl(var(--foreground) / .035)" stroke="hsl(var(--foreground) / .28)" strokeWidth="1.2" />
+          <path d="M96 209 251 124 423 207 267 294Z" fill="hsl(var(--primary) / .05)" stroke="hsl(var(--primary) / .55)" strokeWidth="1.3" />
+          <path d="M96 209 267 294 267 307 96 223Z" fill="hsl(var(--foreground) / .08)" stroke="hsl(var(--foreground) / .3)" strokeWidth="1" />
+          <path d="M267 294 423 207 423 220 267 307Z" fill="hsl(var(--primary) / .12)" stroke="hsl(var(--primary) / .5)" strokeWidth="1" />
+          <path d="M124 172 251 103 390 171 262 242Z" fill="hsl(var(--primary) / .12)" stroke="hsl(var(--primary) / .75)" strokeWidth="1.3" />
+          <path d="M124 172 262 242 262 268 124 198Z" fill="hsl(var(--foreground) / .06)" stroke="hsl(var(--foreground) / .3)" strokeWidth="1.1" />
+          <path d="M262 242 390 171 390 197 262 268Z" fill="hsl(var(--primary) / .13)" stroke="hsl(var(--primary) / .6)" strokeWidth="1.1" />
+          <path d="M160 152 205 128 250 150 205 175Z" fill="hsl(var(--background) / .75)" stroke="hsl(var(--foreground) / .38)" strokeWidth="1.2" />
+          <path d="M205 175V210M250 150V184" stroke="hsl(var(--foreground) / .3)" strokeWidth="1" />
+          <path d="M143 113 143 84 206 52 206 80M143 84 206 114" fill="none" stroke="hsl(var(--primary) / .55)" strokeWidth="1.2" strokeDasharray="3 4" />
+          <path d="M311 99 378 64 412 80" fill="none" stroke="hsl(var(--primary) / .8)" strokeWidth="1.3" />
+          <circle cx="311" cy="99" r="3.5" fill="hsl(var(--primary))" />
+          <path d="M381 52h81v28h-81z" fill="hsl(var(--card))" stroke="hsl(var(--primary) / .55)" strokeWidth="1" />
+          <text x="421" y="64" textAnchor="middle" fill="hsl(var(--primary))" fontSize="7.5" letterSpacing="1">LAYER 02</text>
+          <text x="421" y="74" textAnchor="middle" fill="hsl(var(--foreground))" fontSize="8.5">BASE / LEVEL</text>
+          <path d="M110 250 157 275M110 250l1 10m-1-10 10 1" fill="none" stroke="hsl(var(--foreground) / .4)" strokeWidth="1.1" />
+          <text x="83" y="244" fill="hsl(var(--muted-foreground))" fontSize="8" letterSpacing="1">SUBSTRATE</text>
+        </g>
+      )}
+      {kind === "assembly" && (
+        <g strokeLinejoin="round" strokeLinecap="round">
+          <path d="M73 263 258 162 449 258 264 334Z" fill="hsl(var(--foreground) / .03)" stroke="hsl(var(--foreground) / .28)" strokeWidth="1.2" />
+          <path d="M122 211 258 136 397 206 261 282Z" fill="hsl(var(--primary) / .08)" stroke="hsl(var(--primary) / .65)" strokeWidth="1.2" />
+          <path d="M122 145 188 109 254 143 188 180Z" fill="hsl(var(--primary) / .22)" stroke="hsl(var(--primary) / .8)" strokeWidth="1.2" />
+          <path d="M188 180 254 143 254 191 188 228Z" fill="hsl(var(--foreground) / .075)" stroke="hsl(var(--foreground) / .36)" strokeWidth="1.2" />
+          <path d="M122 145 188 180 188 228 122 193Z" fill="hsl(var(--foreground) / .04)" stroke="hsl(var(--foreground) / .3)" strokeWidth="1.2" />
+          <path d="M257 111 323 75 389 108 323 146Z" fill="hsl(var(--primary) / .22)" stroke="hsl(var(--primary) / .8)" strokeWidth="1.2" />
+          <path d="M323 146 389 108 389 157 323 194Z" fill="hsl(var(--primary) / .12)" stroke="hsl(var(--primary) / .6)" strokeWidth="1.2" />
+          <path d="M257 111 323 146 323 194 257 159Z" fill="hsl(var(--foreground) / .055)" stroke="hsl(var(--foreground) / .3)" strokeWidth="1.2" />
+          <path d="M255 201 321 165 387 199 321 236Z" fill="hsl(var(--foreground) / .09)" stroke="hsl(var(--foreground) / .45)" strokeWidth="1.2" />
+          <path d="M321 236 387 199 387 222 321 259Z" fill="hsl(var(--primary) / .16)" stroke="hsl(var(--primary) / .6)" strokeWidth="1.1" />
+          <path d="M255 201 321 236 321 259 255 224Z" fill="hsl(var(--foreground) / .05)" stroke="hsl(var(--foreground) / .3)" strokeWidth="1.1" />
+          <path d="M203 94 227 81 248 92M227 81V65M219 72l8-7 8 7" fill="none" stroke="hsl(var(--primary))" strokeWidth="1.2" />
+          <path d="M397 121 436 100M429 100h7v7" fill="none" stroke="hsl(var(--primary) / .8)" strokeWidth="1.2" />
+          <path d="M408 86h72v27h-72z" fill="hsl(var(--card))" stroke="hsl(var(--primary) / .55)" strokeWidth="1" />
+          <text x="444" y="98" textAnchor="middle" fill="hsl(var(--primary))" fontSize="7.5" letterSpacing="1">NODE 03</text>
+          <text x="444" y="108" textAnchor="middle" fill="hsl(var(--foreground))" fontSize="8.5">ASSEMBLY</text>
+          <path d="M100 275 127 290M100 275v9m0-9 9 1" fill="none" stroke="hsl(var(--foreground) / .4)" strokeWidth="1.1" />
+          <text x="82" y="269" fill="hsl(var(--muted-foreground))" fontSize="8" letterSpacing="1">MODULES</text>
+        </g>
+      )}
+      <g fill="hsl(var(--muted-foreground))" fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="1.4">
+        <text x="24" y="24">SKOL / SPATIAL STUDY</text>
+        <text x="392" y="325">AXONOMETRY</text>
+      </g>
+      <path d="M24 36H76M24 36V54M496 286V304H478" fill="none" stroke="hsl(var(--primary) / .55)" strokeWidth="1" />
+    </svg>
+  );
+}
+
+function AboutMockupGallery() {
+  return (
+    <section className="skol-about-mockup-gallery mb-11">
+      <div className="mb-5 grid gap-4 border-b border-border/60 pb-5 sm:grid-cols-[.8fr_1.2fr] sm:items-end">
+        <div>
+          <p className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.2em] text-primary">
+            <span className="h-px w-6 bg-primary" /> 03 / SPATIAL STUDIES
+          </p>
+          <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">Один объект — несколько точек зрения.</h2>
+        </div>
+        <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
+          Три дополнительных объёмных макета показывают, как можно разложить пространство на понятные части: что убрать, что подготовить и как связать элементы между собой.
+        </p>
+      </div>
+      <div className="grid gap-3 md:grid-cols-3">
+        {aboutMockups.map((item, index) => (
+          <AboutMockupCard key={item.kind} item={item} index={index} />
+        ))}
+      </div>
+      <p className="mt-3 text-[10px] leading-5 text-muted-foreground/80">
+        Схемы концептуальные: это визуализация подхода, а не рабочие чертежи конкретного объекта.
+      </p>
+    </section>
+  );
+}
+
+function AboutMockupCard({ item, index }: { item: (typeof aboutMockups)[number]; index: number }) {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== "mouse") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    setTilt({
+      x: ((event.clientX - rect.left) / rect.width - 0.5) * 4,
+      y: ((event.clientY - rect.top) / rect.height - 0.5) * -4,
+    });
+  };
+
+  return (
+    <motion.article
+      className="group relative min-w-0 overflow-hidden border border-border/65 bg-card/35 transition-colors hover:border-primary/45"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={() => setTilt({ x: 0, y: 0 })}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.22 }}
+    >
+      <div className="flex items-center justify-between border-b border-border/55 px-4 py-3">
+        <span className="font-mono text-[9px] tracking-[.15em] text-muted-foreground">{item.eyebrow}</span>
+        <span className="font-mono text-xs text-primary">{item.number}</span>
+      </div>
+      <div className="relative flex min-h-[230px] items-center justify-center overflow-hidden px-2 py-3 sm:min-h-[255px]">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[.035] via-transparent to-transparent" />
+        <motion.div
+          className="relative z-10 w-full max-w-[450px]"
+          style={{ rotateX: tilt.y, rotateY: tilt.x, transformStyle: "preserve-3d" }}
+          transition={{ type: "spring", stiffness: 125, damping: 20, mass: 0.8 }}
+        >
+          <motion.div
+            animate={{ y: [0, index % 2 === 0 ? -3 : 3, 0] }}
+            transition={{ duration: 5 + index * 0.8, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <AboutMockupDrawing kind={item.kind} />
+          </motion.div>
+        </motion.div>
+        <span className="absolute bottom-3 right-3 border border-border/60 bg-background/80 px-2 py-1 font-mono text-[8px] tracking-[.12em] text-muted-foreground">
+          INTERACTIVE / 3D
+        </span>
+      </div>
+      <div className="border-t border-border/55 p-4 sm:p-5">
+        <h3 className="text-base font-semibold tracking-tight text-foreground sm:text-lg">{item.title}</h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p>
+      </div>
+    </motion.article>
+  );
+}
+
+
 function AboutProcessExplorer() {
   const [activeStep, setActiveStep] = useState(0);
   const active = principles[activeStep];
@@ -254,6 +436,10 @@ const AboutPage = () => {
 
         <AnimatedSection delay={0.045}>
           <AboutModelStudio />
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.055}>
+          <AboutMockupGallery />
         </AnimatedSection>
 
         <AnimatedSection delay={0.06}>
