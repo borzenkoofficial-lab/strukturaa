@@ -468,7 +468,7 @@ function getApartmentScopeSummary(selections: ApartmentScopeSelection[], lang: "
     return "• " + (room ? room.label[lang] : roomId) + " — " + (work ? work.title[lang] : workId);
   });
   const quantityLine = typeof quantity === "number" && quantity > 0
-    ? (lang === "ru" ? "Площадь: " : "Area: ") + quantity + (quantityLabel ? " " + quantityLabel : "")
+    ? getQuantitySummaryLabel(quantityLabel, lang) + ": " + formatQuantitySummaryValue(quantity, quantityLabel)
     : "";
   return [prefix, quantityLine, ...lines].filter(Boolean).join("\n");
 }
@@ -871,7 +871,7 @@ function getBuildingDemolitionSummary(config: BuildingDemolitionConfig, lang: "r
     objectLabel + ": " + (objectType ? objectType[lang] : config.objectType),
     materialLabel + ": " + (structureType ? structureType[lang] : config.structureType),
     ...(typeof quantity === "number" && quantity > 0
-      ? [getQuantitySummaryLabel(quantityLabel, lang) + ": " + quantity + (quantityLabel ? " " + quantityLabel : "")]
+      ? [getQuantitySummaryLabel(quantityLabel, lang) + ": " + formatQuantitySummaryValue(quantity, quantityLabel)]
       : []),
     workLabel + ":",
     ...selectedWorks.map((item) => "• " + item[lang]),
@@ -1399,6 +1399,92 @@ const serviceScopeDefinitions: Record<string, ServiceScopeDefinition> = {
   },
 };
 
+type SiteConditions = {
+  access: string;
+  schedule: string;
+  logistics: string;
+};
+
+const emptySiteConditions: SiteConditions = {
+  access: "unknown",
+  schedule: "unknown",
+  logistics: "unknown",
+};
+
+const residentialAccessOptions = [
+  { id: "unknown", ru: "Не уточнено", en: "Not specified" },
+  { id: "ground", ru: "Первый этаж / без лестниц", en: "Ground floor / no stairs" },
+  { id: "elevator", ru: "Есть лифт", en: "Elevator available" },
+  { id: "stairs", ru: "Только лестница / ручной перенос", en: "Stairs only / manual carry" },
+  { id: "restricted", ru: "Ограничен подъезд или проход", en: "Restricted vehicle or pedestrian access" },
+];
+
+const siteAccessOptions = [
+  { id: "unknown", ru: "Не уточнено", en: "Not specified" },
+  { id: "clear", ru: "Свободный подъезд и проход", en: "Clear vehicle and pedestrian access" },
+  { id: "restricted", ru: "Ограничен подъезд или проход", en: "Restricted access" },
+  { id: "lifting", ru: "Нужна подъёмная или спецтехника", en: "Lifting or specialist equipment needed" },
+];
+
+const siteScheduleOptions = [
+  { id: "unknown", ru: "Не уточнено", en: "Not specified" },
+  { id: "day", ru: "Работы в дневное время", en: "Daytime work" },
+  { id: "restricted", ru: "Есть ограничения по времени", en: "Restricted working hours" },
+  { id: "noise", ru: "Ограничения по шуму", en: "Noise restrictions" },
+  { id: "offhours", ru: "Работы вне обычного графика", en: "Out-of-hours work" },
+];
+
+const siteLogisticsOptions = [
+  { id: "unknown", ru: "Не уточнено", en: "Not specified" },
+  { id: "remove", ru: "Вывоз отходов нужен", en: "Waste removal required" },
+  { id: "stage", ru: "Нужно временное складирование", en: "Temporary on-site storage needed" },
+  { id: "none", ru: "Вывоз не требуется", en: "Waste removal not required" },
+];
+
+const wasteLogisticsOptions = [
+  { id: "unknown", ru: "Не уточнено", en: "Not specified" },
+  { id: "truck", ru: "Машина / контейнер подъезжает к месту погрузки", en: "Truck / container can reach loading point" },
+  { id: "carry", ru: "Нужен вынос с расстояния", en: "Waste must be carried from a distance" },
+  { id: "loading", ru: "Материал подготовлен к погрузке", en: "Material is ready for loading" },
+];
+
+function getSiteConditionsSummary(conditions: SiteConditions, lang: "ru" | "en", slug: string) {
+  const isRu = lang === "ru";
+  const residential = slug === "apartment-demolition" || slug === "renovation";
+  const accessOptions = residential ? residentialAccessOptions : siteAccessOptions;
+  const logisticsOptions = slug === "waste-removal" ? wasteLogisticsOptions : siteLogisticsOptions;
+  const entries = [
+    {
+      id: conditions.access,
+      options: accessOptions,
+      label: isRu ? (residential ? "Этаж / лифт / перенос" : "Доступ к объекту") : (residential ? "Floor / elevator / carry" : "Site access"),
+    },
+    {
+      id: conditions.schedule,
+      options: siteScheduleOptions,
+      label: isRu ? "Время и ограничения работ" : "Working hours / restrictions",
+    },
+    {
+      id: conditions.logistics,
+      options: logisticsOptions,
+      label: isRu ? (slug === "waste-removal" ? "Условия погрузки" : "Вывоз и логистика отходов") : (slug === "waste-removal" ? "Loading conditions" : "Waste removal and logistics"),
+    },
+  ];
+  const lines = entries.flatMap(({ id, options, label }) => {
+    if (!id || id === "unknown") return [];
+    const option = options.find((item) => item.id === id);
+    return option ? [label + ": " + option[lang]] : [];
+  });
+  if (!lines.length) return "";
+  return [isRu ? "Условия объекта:" : "Site conditions:", ...lines].join("\n");
+}
+
+function formatQuantitySummaryValue(quantity: number, quantityLabel?: string) {
+  const unit = (quantityLabel ?? "").toLowerCase();
+  if (unit.includes("контейнер") || unit.includes("container")) return String(quantity);
+  return String(quantity) + (quantityLabel ? " " + quantityLabel : "");
+}
+
 function cleanServiceScopeMessage(message: string) {
   return message
     .split("Состав работ по зонам:")[0]
@@ -1407,6 +1493,8 @@ function cleanServiceScopeMessage(message: string) {
     .split("Building demolition scope:")[0]
     .split("Состав работ по услуге:")[0]
     .split("Service work scope:")[0]
+    .split("Условия объекта:")[0]
+    .split("Site conditions:")[0]
     .trim();
 }
 
@@ -1433,7 +1521,7 @@ function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lan
     (isRu ? "Тип / формат: " : "Project type: ") + profile[lang],
     (isRu ? "Материал / условия: " : "Material / conditions: ") + material[lang],
     ...(typeof quantity === "number" && quantity > 0
-      ? [getQuantitySummaryLabel(quantityLabel, lang) + ": " + quantity + (quantityLabel ? " " + quantityLabel : "")]
+      ? [getQuantitySummaryLabel(quantityLabel, lang) + ": " + formatQuantitySummaryValue(quantity, quantityLabel)]
       : []),
     (isRu ? "Выбранные работы:" : "Selected work:"),
     ...selectedWorks.map((item) => "• " + item[lang]),
@@ -1913,6 +2001,7 @@ const ServiceDetailPage = () => {
   const service = servicesData.find((s) => s.slug === slug);
 
   const [area, setArea] = useState<number[]>([100]);
+  const [siteConditions, setSiteConditions] = useState<SiteConditions>(emptySiteConditions);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -1930,6 +2019,7 @@ const ServiceDetailPage = () => {
 
   useEffect(() => {
     setServiceScopeSelection({ profile: "", material: "", selected: [] });
+    setSiteConditions(emptySiteConditions);
   }, [slug]);
 
   const [buildingDemolitionConfig, setBuildingDemolitionConfig] = useState<BuildingDemolitionConfig>({
@@ -1970,8 +2060,9 @@ const ServiceDetailPage = () => {
     const scopeText = getApartmentScopeSummary(selectedApartmentTasks, lang, area[0], unitLabel);
     if (!scopeText) return;
     setMessage((current) => {
-      const cleanMessage = current.split("Состав работ по зонам:")[0].split("Selected work by room:")[0].trim();
-      return [cleanMessage, scopeText].filter(Boolean).join("\n\n");
+      const cleanMessage = cleanServiceScopeMessage(current);
+      const conditionsText = service ? getSiteConditionsSummary(siteConditions, lang, service.slug) : "";
+      return [cleanMessage, scopeText, conditionsText].filter(Boolean).join("\n\n");
     });
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
@@ -1987,13 +2078,9 @@ const ServiceDetailPage = () => {
     const scopeText = getBuildingDemolitionSummary(buildingDemolitionConfig, lang, area[0], unitLabel);
     if (!scopeText) return;
     setMessage((current) => {
-      const cleanMessage = current
-        .split("Состав работ по зонам:")[0]
-        .split("Selected work by room:")[0]
-        .split("Состав демонтажа здания:")[0]
-        .split("Building demolition scope:")[0]
-        .trim();
-      return [cleanMessage, scopeText].filter(Boolean).join("\n\n");
+      const cleanMessage = cleanServiceScopeMessage(current);
+      const conditionsText = service ? getSiteConditionsSummary(siteConditions, lang, service.slug) : "";
+      return [cleanMessage, scopeText, conditionsText].filter(Boolean).join("\n\n");
     });
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
@@ -2002,7 +2089,8 @@ const ServiceDetailPage = () => {
     if (!service) return;
     const scopeText = getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey), area[0], unitLabel);
     if (!scopeText) return;
-    setMessage((current) => [cleanServiceScopeMessage(current), scopeText].filter(Boolean).join("\\n\\n"));
+    const conditionsText = getSiteConditionsSummary(siteConditions, lang, service.slug);
+    setMessage((current) => [cleanServiceScopeMessage(current), scopeText, conditionsText].filter(Boolean).join("\n\n"));
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
@@ -2022,7 +2110,8 @@ const ServiceDetailPage = () => {
             ? getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey), area[0], unitLabel)
             : "";
       const cleanMessage = cleanServiceScopeMessage(message);
-      const finalMessage = [cleanMessage, scopeSummary].filter(Boolean).join("\n\n");
+      const conditionsSummary = service ? getSiteConditionsSummary(siteConditions, lang, service.slug) : "";
+      const finalMessage = [cleanMessage, scopeSummary, conditionsSummary].filter(Boolean).join("\n\n");
 
       const { error } = await supabase.functions.invoke("notify-request", {
         body: {
@@ -2401,9 +2490,56 @@ const ServiceDetailPage = () => {
 
               <p className="mb-4 border-l border-primary/60 pl-3 text-xs leading-5 text-muted-foreground">
                 {lang === "ru"
-                  ? "Площадь — только один из факторов. Итог зависит от материалов, доступа, ограничений и состава работ."
-                  : "Area is only one factor. Final cost depends on materials, access, constraints and scope."}
+                  ? `${getQuantitySummaryLabel(unitLabel, lang)} — только один из факторов. Итог зависит от материалов, доступа, ограничений и состава работ.`
+                  : `${getQuantitySummaryLabel(unitLabel, lang)} is only one factor. Final cost depends on materials, access, constraints and scope.`}
               </p>
+
+              <div className="mb-6 border-t border-border/30 pt-5">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div>
+                    <h4 className="text-sm font-semibold text-foreground">{lang === "ru" ? "Условия объекта" : "Site conditions"}</h4>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">{lang === "ru" ? "Уточните факторы, которые влияют на организацию работ. Необязательные поля." : "Clarify factors that affect planning. All fields are optional."}</p>
+                  </div>
+                  <span className="font-mono text-[9px] text-primary">{lang === "ru" ? "ДАННЫЕ" : "INPUT"}</span>
+                </div>
+                <div className="space-y-3">
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs text-muted-foreground">{lang === "ru" ? (service.slug === "apartment-demolition" || service.slug === "renovation" ? "Этаж / лифт / перенос" : "Доступ к объекту") : (service.slug === "apartment-demolition" || service.slug === "renovation" ? "Floor / elevator / carry" : "Site access")}</span>
+                    <select
+                      value={siteConditions.access}
+                      onChange={(event) => setSiteConditions((current) => ({ ...current, access: event.target.value }))}
+                      className="min-h-10 w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary"
+                    >
+                      {(service.slug === "apartment-demolition" || service.slug === "renovation" ? residentialAccessOptions : siteAccessOptions).map((option) => (
+                        <option key={option.id} value={option.id}>{option[lang]}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs text-muted-foreground">{lang === "ru" ? "Время и ограничения работ" : "Working hours / restrictions"}</span>
+                    <select
+                      value={siteConditions.schedule}
+                      onChange={(event) => setSiteConditions((current) => ({ ...current, schedule: event.target.value }))}
+                      className="min-h-10 w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary"
+                    >
+                      {siteScheduleOptions.map((option) => <option key={option.id} value={option.id}>{option[lang]}</option>)}
+                    </select>
+                  </label>
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs text-muted-foreground">{lang === "ru" ? (service.slug === "waste-removal" ? "Условия погрузки" : "Вывоз и логистика отходов") : (service.slug === "waste-removal" ? "Loading conditions" : "Waste removal and logistics")}</span>
+                    <select
+                      value={siteConditions.logistics}
+                      onChange={(event) => setSiteConditions((current) => ({ ...current, logistics: event.target.value }))}
+                      className="min-h-10 w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary"
+                    >
+                      {(service.slug === "waste-removal" ? wasteLogisticsOptions : siteLogisticsOptions).map((option) => (
+                        <option key={option.id} value={option.id}>{option[lang]}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+                <p className="mt-3 text-[11px] leading-4 text-muted-foreground">{lang === "ru" ? "Выбранные условия будут добавлены в текст заявки. Неуточнённые поля не попадут в итог." : "Selected conditions will be attached to the request. Unspecified fields are omitted."}</p>
+              </div>
 
               <div className="border-t border-border/30 pt-4 mb-6">
                 <div className="flex justify-between items-center">
