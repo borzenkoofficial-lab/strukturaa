@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calculator, Phone, Mail, CheckCircle2, Ruler, Clock, Shield, Loader2, ArrowUpRight, ChevronDown, HelpCircle, Layers, FolderOpen, Home, Bath, Paintbrush, DoorOpen, Zap, Trash2, Sofa, Grid2X2, Hammer, Package } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -1010,6 +1010,496 @@ function BuildingDemolitionStudio({
   );
 }
 
+
+type ServiceScopeSelection = { profile: string; material: string; selected: string[] };
+type ServiceScopeChoice = { id: string; ru: string; en: string };
+type ServiceScopeWork = { id: string; ru: string; en: string; noteRu: string; noteEn: string };
+type ServiceScopeZone = { id: string; ru: string; en: string; d3: string; d2: string; x: number; y: number };
+type ServiceScopeDefinition = {
+  code: string;
+  kind: "demolition" | "construction" | "renovation" | "waste" | "systems" | "cutting";
+  title: { ru: string; en: string };
+  intro: { ru: string; en: string };
+  profileLabel: { ru: string; en: string };
+  profiles: ServiceScopeChoice[];
+  materialLabel: { ru: string; en: string };
+  materials: ServiceScopeChoice[];
+  works: ServiceScopeWork[];
+  zones: ServiceScopeZone[];
+  note: { ru: string; en: string };
+};
+
+const serviceScopeDefinitions: Record<string, ServiceScopeDefinition> = {
+  demolition: {
+    code: "01 / SELECTIVE DEMOLITION",
+    kind: "demolition",
+    title: { ru: "Соберите состав демонтажа", en: "Configure demolition scope" },
+    intro: { ru: "Отметьте элементы здания на схеме и уточните объём задачи. Выбранные позиции можно передать прямо в заявку.", en: "Select building elements in the diagram and define the scope. Selected items can be transferred directly to the request." },
+    profileLabel: { ru: "Тип задачи", en: "Project type" },
+    profiles: [
+      { id: "partial", ru: "Частичный демонтаж", en: "Selective demolition" },
+      { id: "full", ru: "Полный демонтаж", en: "Full demolition" },
+      { id: "interior", ru: "Демонтаж внутри здания", en: "Interior strip-out" },
+      { id: "site", ru: "Расчистка площадки", en: "Site clearance" },
+    ],
+    materialLabel: { ru: "Материал конструкций", en: "Structure material" },
+    materials: [
+      { id: "brick", ru: "Кирпич / блок", en: "Brick / block" },
+      { id: "concrete", ru: "Бетон / железобетон", en: "Concrete / reinforced concrete" },
+      { id: "steel", ru: "Металлокаркас", en: "Steel frame" },
+      { id: "mixed", ru: "Смешанный / уточнить", en: "Mixed / to be assessed" },
+    ],
+    works: [
+      { id: "roof", ru: "Кровля и верхние конструкции", en: "Roof and upper structures", noteRu: "Кровельные слои и согласованные верхние элементы.", noteEn: "Roof layers and agreed upper elements." },
+      { id: "facade", ru: "Фасад и наружные стены", en: "Facade and external walls", noteRu: "С учётом границ участка и соседних строений.", noteEn: "Considering site boundaries and adjacent structures." },
+      { id: "structure", ru: "Каркас и несущие элементы", en: "Frame and structural elements", noteRu: "Только после обследования и утверждения последовательности.", noteEn: "Only after survey and an approved sequence." },
+      { id: "interior", ru: "Внутренние конструкции", en: "Internal structures", noteRu: "Перегородки и элементы внутри объекта по перечню.", noteEn: "Partitions and listed internal elements." },
+      { id: "foundation", ru: "Фундамент и основание", en: "Foundation and base", noteRu: "Метод зависит от глубины и материала основания.", noteEn: "Method depends on foundation depth and material." },
+      { id: "utilities", ru: "Инженерные коммуникации", en: "Utilities", noteRu: "После определения границ и безопасного отключения.", noteEn: "After defining limits and safe isolation." },
+      { id: "waste", ru: "Погрузка и вывоз отходов", en: "Debris loading and removal", noteRu: "Объём и логистика согласуются отдельно.", noteEn: "Volume and logistics are agreed separately." },
+      { id: "cleanup", ru: "Уборка и подготовка территории", en: "Cleanup and site preparation", noteRu: "Согласованный уровень очистки площадки.", noteEn: "Agreed level of site clearance." },
+    ],
+    zones: [
+      { id: "roof", ru: "Кровля", en: "Roof", d3: "M145 130 L310 43 L478 132 L310 224 Z", d2: "M146 95 L310 36 L474 95 L474 121 L310 62 L146 121 Z", x: 310, y: 131 },
+      { id: "facade", ru: "Фасад", en: "Facade", d3: "M145 130 L310 224 L310 322 L145 230 Z", d2: "M146 121 L310 62 L310 318 L146 260 Z", x: 219, y: 232 },
+      { id: "structure", ru: "Каркас", en: "Frame", d3: "M310 224 L478 132 L478 232 L310 322 Z", d2: "M310 62 L474 121 L474 260 L310 318 Z", x: 397, y: 233 },
+      { id: "interior", ru: "Внутри", en: "Interior", d3: "M211 166 L310 112 L414 168 L310 223 Z", d2: "M203 145 L310 105 L416 145 L416 224 L310 265 L203 224 Z", x: 310, y: 188 },
+      { id: "foundation", ru: "Основание", en: "Foundation", d3: "M145 230 L310 322 L478 232 L478 259 L310 350 L145 257 Z", d2: "M146 260 L310 318 L474 260 L474 283 L310 340 L146 283 Z", x: 310, y: 296 },
+      { id: "utilities", ru: "Сети", en: "Utilities", d3: "M92 286 L132 264 L167 284 L127 307 Z", d2: "M72 294 L120 294 L120 315 L72 315 Z", x: 117, y: 292 },
+    ],
+    note: { ru: "Схема условная. Несущая схема, устойчивость, очередность работ и необходимые согласования устанавливаются по результатам обследования.", en: "Schematic only. Structural system, stability, work sequence and required approvals must be determined by a site assessment." },
+  },
+  construction: {
+    code: "02 / STRUCTURAL WORKS",
+    kind: "construction",
+    title: { ru: "Сконфигурируйте монтаж конструкций", en: "Configure structural works" },
+    intro: { ru: "Выберите тип проекта, материал и элементы монтажа. Состав помогает сформировать исходную заявку на оценку объекта.", en: "Choose the project type, material and assembly elements. The scope helps prepare an initial site-assessment request." },
+    profileLabel: { ru: "Тип проекта", en: "Project type" },
+    profiles: [
+      { id: "new", ru: "Новое строительство", en: "New construction" },
+      { id: "rebuild", ru: "Реконструкция", en: "Reconstruction" },
+      { id: "extension", ru: "Пристройка / надстройка", en: "Extension / additional storey" },
+      { id: "assembly", ru: "Сборка отдельной конструкции", en: "Standalone structure assembly" },
+    ],
+    materialLabel: { ru: "Тип конструкции", en: "Structure type" },
+    materials: [
+      { id: "steel", ru: "Металлокаркас", en: "Steel frame" },
+      { id: "concrete", ru: "Железобетон", en: "Reinforced concrete" },
+      { id: "prefab", ru: "Сборные элементы", en: "Prefabricated elements" },
+      { id: "mixed", ru: "Комбинированная", en: "Combined structure" },
+    ],
+    works: [
+      { id: "foundation", ru: "Основание и опорные узлы", en: "Foundation and support nodes", noteRu: "Подготовка основания и проверка опорных точек.", noteEn: "Base preparation and support-point verification." },
+      { id: "columns", ru: "Колонны и стойки", en: "Columns and posts", noteRu: "Монтаж вертикальных несущих элементов.", noteEn: "Assembly of vertical structural members." },
+      { id: "beams", ru: "Балки и фермы", en: "Beams and trusses", noteRu: "Подъём и соединение горизонтальных элементов.", noteEn: "Lifting and joining horizontal members." },
+      { id: "slabs", ru: "Перекрытия и настилы", en: "Floor slabs and decking", noteRu: "Тип, вес и способ подачи уточняются по проекту.", noteEn: "Type, weight and lifting method are confirmed from the design." },
+      { id: "roof", ru: "Кровельный каркас", en: "Roof frame", noteRu: "Фермы, прогоны и несущие элементы покрытия.", noteEn: "Trusses, purlins and roof-supporting elements." },
+      { id: "stairs", ru: "Лестницы и площадки", en: "Stairs and platforms", noteRu: "Марши, площадки, ограждения и узлы крепления.", noteEn: "Flights, landings, railings and fixing nodes." },
+      { id: "welding", ru: "Сварные и болтовые соединения", en: "Welded and bolted connections", noteRu: "Состав и контроль соединений определяются проектом.", noteEn: "Connection scope and inspection are defined by the design." },
+      { id: "lifting", ru: "Подъёмная техника и логистика", en: "Lifting equipment and logistics", noteRu: "Подъезд, грузоподъёмность и зона работы согласуются заранее.", noteEn: "Access, lifting capacity and operating zone are agreed beforehand." },
+    ],
+    zones: [
+      { id: "roof", ru: "Фермы", en: "Trusses", d3: "M145 126 L310 35 L472 126 L310 218 Z", d2: "M145 116 L310 40 L472 116 L472 135 L310 59 L145 135 Z", x: 310, y: 123 },
+      { id: "columns", ru: "Колонны", en: "Columns", d3: "M145 126 L310 218 L310 329 L145 237 Z", d2: "M145 135 L163 141 L163 322 L145 316 Z M292 188 L310 194 L310 328 L292 322 Z", x: 222, y: 262 },
+      { id: "beams", ru: "Балки", en: "Beams", d3: "M310 218 L472 126 L472 237 L310 329 Z", d2: "M310 59 L328 67 L328 309 L310 318 Z M454 126 L472 135 L472 316 L454 307 Z", x: 390, y: 260 },
+      { id: "slabs", ru: "Перекрытия", en: "Slabs", d3: "M174 175 L310 99 L443 175 L310 250 Z", d2: "M145 190 L310 114 L472 190 L472 210 L310 135 L145 210 Z", x: 310, y: 177 },
+      { id: "foundation", ru: "Опоры", en: "Supports", d3: "M125 257 L310 361 L492 257 L492 276 L310 382 L125 276 Z", d2: "M125 318 L492 318 L492 346 L125 346 Z", x: 310, y: 337 },
+      { id: "stairs", ru: "Лестницы", en: "Stairs", d3: "M382 280 L436 250 L460 264 L406 295 Z", d2: "M388 263 L449 263 L449 281 L388 281 Z", x: 421, y: 274 },
+    ],
+    note: { ru: "Схема не заменяет проект и расчёт несущей способности. Способ монтажа, временное раскрепление и грузоподъёмность техники проверяются для конкретного объекта.", en: "This schematic does not replace engineering design or load calculations. Assembly method, temporary bracing and equipment capacity must be verified for the site." },
+  },
+  renovation: {
+    code: "03 / INTERIOR RENOVATION",
+    kind: "renovation",
+    title: { ru: "Соберите состав ремонтных работ", en: "Configure renovation scope" },
+    intro: { ru: "Выберите тип помещения и формат ремонта, затем отметьте нужные зоны и системы. Список попадёт в заявку для уточнения сметы.", en: "Choose the space type and renovation format, then select the required areas and systems. Your selections will be attached to the request for estimating." },
+    profileLabel: { ru: "Тип помещения", en: "Space type" },
+    profiles: [
+      { id: "apartment", ru: "Квартира", en: "Apartment" },
+      { id: "office", ru: "Офис", en: "Office" },
+      { id: "commercial", ru: "Коммерческое помещение", en: "Commercial space" },
+      { id: "house", ru: "Дом / коттедж", en: "House / cottage" },
+    ],
+    materialLabel: { ru: "Формат ремонта", en: "Renovation format" },
+    materials: [
+      { id: "rough", ru: "Черновой этап", en: "Rough-in stage" },
+      { id: "finish", ru: "Чистовая отделка", en: "Finish work" },
+      { id: "complex", ru: "Комплексно под ключ", en: "Full turnkey" },
+      { id: "partial", ru: "Отдельные работы", en: "Selected tasks only" },
+    ],
+    works: [
+      { id: "walls", ru: "Стены и перегородки", en: "Walls and partitions", noteRu: "Возведение, выравнивание и подготовка поверхностей.", noteEn: "Construction, levelling and surface preparation." },
+      { id: "floor", ru: "Полы и основание", en: "Floors and substrate", noteRu: "Стяжка, выравнивание, покрытия и плинтусы.", noteEn: "Screed, levelling, floor finishes and skirting." },
+      { id: "ceiling", ru: "Потолки", en: "Ceilings", noteRu: "Подготовка, покраска или потолочные системы.", noteEn: "Preparation, painting or ceiling systems." },
+      { id: "wet", ru: "Санузел и мокрые зоны", en: "Bathrooms and wet areas", noteRu: "Гидроизоляция, плитка и сопряжения систем.", noteEn: "Waterproofing, tiles and service interfaces." },
+      { id: "utilities", ru: "Электрика и освещение", en: "Electrical and lighting", noteRu: "Перечень точек и схема разводки уточняются отдельно.", noteEn: "Point schedule and wiring layout are confirmed separately." },
+      { id: "plumbing", ru: "Сантехника и отопление", en: "Plumbing and heating", noteRu: "Оборудование и подключение по согласованному перечню.", noteEn: "Fixtures and connections according to the agreed list." },
+      { id: "doors", ru: "Двери и встроенные элементы", en: "Doors and built-in elements", noteRu: "Полотна, коробки, шкафы и сопряжения отделки.", noteEn: "Door sets, fitted storage and finish interfaces." },
+      { id: "finish", ru: "Покраска и финишная отделка", en: "Painting and final finishes", noteRu: "Цвета, материалы и качество основания утверждаются до работ.", noteEn: "Colours, materials and substrate condition are agreed before work." },
+    ],
+    zones: [
+      { id: "walls", ru: "Стены", en: "Walls", d3: "M145 130 L310 221 L310 327 L145 235 Z", d2: "M150 90 L310 35 L470 90 L470 302 L310 350 L150 302 Z", x: 220, y: 230 },
+      { id: "floor", ru: "Пол", en: "Floor", d3: "M145 235 L310 327 L478 235 L310 333 Z", d2: "M150 302 L310 350 L470 302 L310 255 Z", x: 310, y: 303 },
+      { id: "ceiling", ru: "Потолок", en: "Ceiling", d3: "M145 130 L310 43 L478 132 L310 221 Z", d2: "M150 90 L310 35 L470 90 L310 139 Z", x: 310, y: 129 },
+      { id: "wet", ru: "Мокрая зона", en: "Wet area", d3: "M337 205 L417 160 L461 185 L381 230 Z", d2: "M335 175 L435 145 L435 222 L335 250 Z", x: 390, y: 199 },
+      { id: "utilities", ru: "Инженерия", en: "Utilities", d3: "M195 158 L245 130 L285 152 L235 180 Z", d2: "M175 150 L270 150 L270 188 L175 188 Z", x: 229, y: 160 },
+      { id: "plumbing", ru: "Сантехника", en: "Plumbing", d3: "M360 247 L397 226 L420 240 L383 261 Z", d2: "M350 231 L425 231 L425 250 L350 250 Z", x: 387, y: 241 },
+    ],
+    note: { ru: "Схема помогает описать желаемый объём, но не заменяет замеры, проверку оснований и согласование инженерных решений. Финальная смета формируется после уточнения материалов и условий.", en: "The scheme describes the desired scope but does not replace measurements, substrate checks or utility planning. The final estimate follows confirmation of materials and conditions." },
+  },
+  "waste-removal": {
+    code: "04 / WASTE LOGISTICS",
+    kind: "waste",
+    title: { ru: "Настройте вывоз строительных отходов", en: "Configure construction waste removal" },
+    intro: { ru: "Выберите контейнер и тип отходов, отметьте нужные операции. Итоговый объём, подъезд и график подтвердим до подачи техники.", en: "Choose a container and waste type, then select the required services. Volume, access and schedule are confirmed before dispatch." },
+    profileLabel: { ru: "Объём контейнера", en: "Container capacity" },
+    profiles: [
+      { id: "8", ru: "8 м³ — небольшой объём", en: "8 m³ — small volume" },
+      { id: "12", ru: "12 м³ — средний объём", en: "12 m³ — medium volume" },
+      { id: "20", ru: "20 м³ — большой объём", en: "20 m³ — large volume" },
+      { id: "27", ru: "27 м³ — крупный объём", en: "27 m³ — extra-large volume" },
+    ],
+    materialLabel: { ru: "Тип отходов", en: "Waste type" },
+    materials: [
+      { id: "mixed", ru: "Смешанный строительный мусор", en: "Mixed construction waste" },
+      { id: "concrete", ru: "Бетон / кирпич", en: "Concrete / brick" },
+      { id: "soil", ru: "Грунт и инертные материалы", en: "Soil and inert material" },
+      { id: "clean", ru: "Раздельно собранные отходы", en: "Sorted waste" },
+    ],
+    works: [
+      { id: "delivery", ru: "Подача и установка контейнера", en: "Container delivery and placement", noteRu: "Проверяем подъезд, место установки и ограничения площадки.", noteEn: "Access, placement area and site restrictions must be checked." },
+      { id: "loading", ru: "Погрузка отходов", en: "Waste loading", noteRu: "Погрузка включается в состав только по согласованию.", noteEn: "Loading is included only when agreed." },
+      { id: "carryout", ru: "Вынос из здания", en: "Carry-out from building", noteRu: "Уточняются этаж, лифт, расстояние и режим доступа.", noteEn: "Floor, lift, distance and access hours must be confirmed." },
+      { id: "transport", ru: "Транспортировка", en: "Transportation", noteRu: "Маршрут и формат техники зависят от площадки.", noteEn: "Route and vehicle type depend on the site." },
+      { id: "swap", ru: "Замена / повторная подача", en: "Container exchange / repeat delivery", noteRu: "Количество рейсов согласуется после оценки объёма.", noteEn: "Number of trips is agreed after volume assessment." },
+      { id: "sorting", ru: "Сортировка отходов", en: "Waste sorting", noteRu: "Возможность разделения зависит от состава и упаковки.", noteEn: "Sorting depends on material mix and packaging." },
+      { id: "documents", ru: "Документы по вывозу", en: "Waste transport documents", noteRu: "Набор документов уточняется по виду отходов и договору.", noteEn: "Documentation depends on waste type and contract." },
+      { id: "cleanup", ru: "Уборка точки погрузки", en: "Loading area cleanup", noteRu: "Границы уборки фиксируются до начала работ.", noteEn: "Cleanup boundaries are agreed before work starts." },
+    ],
+    zones: [
+      { id: "delivery", ru: "Контейнер", en: "Container", d3: "M200 190 L405 190 L455 160 L250 160 Z M200 190 L200 265 L405 265 L405 190 Z M405 190 L455 160 L455 235 L405 265 Z", d2: "M170 145 L430 145 L430 275 L170 275 Z", x: 322, y: 216 },
+      { id: "loading", ru: "Погрузка", en: "Loading", d3: "M91 122 L140 96 L180 119 L130 147 Z", d2: "M75 115 L155 115 L155 145 L75 145 Z", x: 130, y: 122 },
+      { id: "transport", ru: "Вывоз", en: "Transport", d3: "M415 276 L463 249 L510 275 L462 303 Z", d2: "M410 286 L500 286 L500 310 L410 310 Z", x: 460, y: 291 },
+      { id: "sorting", ru: "Сортировка", en: "Sorting", d3: "M115 270 L157 247 L198 270 L156 294 Z", d2: "M82 243 L160 243 L160 270 L82 270 Z", x: 140, y: 261 },
+      { id: "cleanup", ru: "Уборка", en: "Cleanup", d3: "M220 293 L307 276 L350 298 L265 317 Z", d2: "M205 317 L360 317 L360 335 L205 335 Z", x: 279, y: 308 },
+    ],
+    note: { ru: "Контейнер выбирается предварительно. Допустимость размещения, масса и состав отходов, правила площадки и документы проверяются при оформлении заказа.", en: "Container size is a preliminary choice. Placement, waste weight and composition, site rules and documentation are verified when arranging the service." },
+  },
+  dismantling: {
+    code: "05 / UTILITIES DISMANTLING",
+    kind: "systems",
+    title: { ru: "Соберите состав демонтажа инженерных систем", en: "Configure utility dismantling" },
+    intro: { ru: "Отметьте сети и оборудование, которые требуется демонтировать. Перед началом определяем границы работ и безопасное отключение систем.", en: "Select the systems and equipment to dismantle. Work boundaries and safe isolation are established before starting." },
+    profileLabel: { ru: "Тип объекта", en: "Site type" },
+    profiles: [
+      { id: "residential", ru: "Жилое помещение", en: "Residential" },
+      { id: "office", ru: "Офис / коммерческий объект", en: "Office / commercial" },
+      { id: "industrial", ru: "Промышленный объект", en: "Industrial facility" },
+      { id: "partial", ru: "Локальный участок", en: "Local section" },
+    ],
+    materialLabel: { ru: "Статус отключения", en: "Isolation status" },
+    materials: [
+      { id: "isolated", ru: "Системы отключены", en: "Systems isolated" },
+      { id: "need", ru: "Нужно организовать отключение", en: "Isolation to be arranged" },
+      { id: "unknown", ru: "Статус неизвестен", en: "Status unknown" },
+      { id: "live", ru: "Объект действующий", en: "Live / operating site" },
+    ],
+    works: [
+      { id: "electrics", ru: "Кабели, проводка и щиты", en: "Cables, wiring and panels", noteRu: "Работы с электрическими частями — после подтверждённого обесточивания.", noteEn: "Electrical work proceeds only after verified isolation." },
+      { id: "plumbing", ru: "Трубопроводы и сантехника", en: "Pipes and plumbing", noteRu: "Среда, давление и границы отключения уточняются заранее.", noteEn: "Fluid, pressure and isolation limits are confirmed in advance." },
+      { id: "ventilation", ru: "Воздуховоды и вентиляция", en: "Ductwork and ventilation", noteRu: "Проверяем подвесы, габариты, доступ и способ разделения.", noteEn: "Supports, dimensions, access and segmentation method are checked." },
+      { id: "heating", ru: "Отопление и радиаторы", en: "Heating and radiators", noteRu: "Учитываются теплоноситель, температура и состояние стояков.", noteEn: "Heating medium, temperature and riser status are considered." },
+      { id: "equipment", ru: "Инженерное оборудование", en: "Mechanical equipment", noteRu: "Вес, крепления, подъём и пути удаления определяются до демонтажа.", noteEn: "Weight, fixings, lifting and removal routes are established before dismantling." },
+      { id: "cables", ru: "Кабельные лотки и опоры", en: "Cable trays and supports", noteRu: "Согласуется участок демонтажа и сохраняемые коммуникации.", noteEn: "The removal limits and retained utilities are agreed." },
+      { id: "fire", ru: "Противопожарные системы", en: "Fire protection systems", noteRu: "Демонтаж согласуется с ответственными за безопасность объекта.", noteEn: "Removal is coordinated with the site's safety lead." },
+      { id: "waste", ru: "Погрузка и вывоз", en: "Loading and disposal", noteRu: "Состав и обращение с отходами уточняются по материалам.", noteEn: "Waste types and handling are confirmed based on materials." },
+    ],
+    zones: [
+      { id: "electrics", ru: "Электрика", en: "Electrical", d3: "M65 100 L240 100 L240 153 L65 153 Z", d2: "M65 85 L255 85 L255 135 L65 135 Z", x: 153, y: 127 },
+      { id: "plumbing", ru: "Трубы", en: "Pipes", d3: "M280 100 L450 100 L450 153 L280 153 Z", d2: "M300 85 L500 85 L500 135 L300 135 Z", x: 365, y: 127 },
+      { id: "ventilation", ru: "Воздуховоды", en: "Ductwork", d3: "M65 205 L240 205 L240 258 L65 258 Z", d2: "M65 180 L255 180 L255 230 L65 230 Z", x: 153, y: 232 },
+      { id: "heating", ru: "Отопление", en: "Heating", d3: "M280 205 L450 205 L450 258 L280 258 Z", d2: "M300 180 L500 180 L500 230 L300 230 Z", x: 365, y: 232 },
+      { id: "equipment", ru: "Оборудование", en: "Equipment", d3: "M210 280 L310 225 L410 280 L310 335 Z", d2: "M210 265 L410 265 L410 328 L210 328 Z", x: 310, y: 290 },
+    ],
+    note: { ru: "Не демонтируйте и не разрезайте действующие сети без подтверждённого отключения и разрешения ответственного лица. Схема служит только для описания состава работ.", en: "Do not dismantle or cut live utilities without verified isolation and authorization. This diagram only describes the requested scope." },
+  },
+  "diamond-cutting": {
+    code: "06 / DIAMOND CUTTING",
+    kind: "cutting",
+    title: { ru: "Настройте алмазную резку и бурение", en: "Configure diamond cutting and drilling" },
+    intro: { ru: "Выберите материал и тип операции, отметьте элементы на схеме. Размеры, армирование, доступ и допустимость вмешательства проверяются отдельно.", en: "Choose the material and operation, then select elements in the diagram. Dimensions, reinforcement, access and permission to alter the structure are checked separately." },
+    profileLabel: { ru: "Операция", en: "Operation" },
+    profiles: [
+      { id: "opening", ru: "Резка проёма", en: "Opening cut" },
+      { id: "slab", ru: "Резка перекрытия", en: "Slab cutting" },
+      { id: "drilling", ru: "Алмазное бурение", en: "Diamond drilling" },
+      { id: "chase", ru: "Штробы и технологические резы", en: "Chases and service cuts" },
+    ],
+    materialLabel: { ru: "Материал", en: "Material" },
+    materials: [
+      { id: "concrete", ru: "Бетон", en: "Concrete" },
+      { id: "reinforced", ru: "Железобетон", en: "Reinforced concrete" },
+      { id: "brick", ru: "Кирпич / блок", en: "Brick / block" },
+      { id: "stone", ru: "Камень / другой материал", en: "Stone / other material" },
+    ],
+    works: [
+      { id: "opening", ru: "Дверные и технологические проёмы", en: "Door and service openings", noteRu: "Границы реза и усиление определяются по проектному решению.", noteEn: "Cut limits and reinforcement depend on the engineering design." },
+      { id: "slab", ru: "Проёмы в перекрытии", en: "Slab openings", noteRu: "Нужны проверка армирования, нагрузок и допустимости выреза.", noteEn: "Reinforcement, loads and cut feasibility must be checked." },
+      { id: "drilling", ru: "Отверстия и проходки", en: "Holes and penetrations", noteRu: "Диаметр, глубина и расположение уточняются до бурения.", noteEn: "Diameter, depth and position are confirmed before drilling." },
+      { id: "chases", ru: "Штробы и каналы", en: "Chases and channels", noteRu: "В несущих конструкциях выполняются только по согласованному решению.", noteEn: "In structural elements, work requires an approved solution." },
+      { id: "wall", ru: "Резка стен и плит", en: "Wall and slab cuts", noteRu: "Способ и последовательность зависят от толщины и армирования.", noteEn: "Method and sequence depend on thickness and reinforcement." },
+      { id: "reinforcement", ru: "Работа с армированием", en: "Reinforcement handling", noteRu: "Арматуру нельзя перерезать без проверки конструктивного решения.", noteEn: "Rebar must not be cut without checking the structural design." },
+      { id: "water", ru: "Водоподача и сбор шлама", en: "Water supply and slurry collection", noteRu: "Заранее согласуются защита отделки и безопасный отвод воды.", noteEn: "Protection and safe water/slurry collection must be arranged." },
+      { id: "cleanup", ru: "Уборка рабочей зоны", en: "Work-area cleanup", noteRu: "Уровень уборки и обращение с отходами фиксируются в смете.", noteEn: "Cleanup level and waste handling are listed in the estimate." },
+    ],
+    zones: [
+      { id: "wall", ru: "Стена", en: "Wall", d3: "M130 78 L430 78 L430 308 L130 308 Z", d2: "M100 60 L470 60 L470 320 L100 320 Z", x: 280, y: 170 },
+      { id: "opening", ru: "Проём", en: "Opening", d3: "M215 175 L330 175 L330 308 L215 308 Z", d2: "M205 175 L345 175 L345 320 L205 320 Z", x: 275, y: 238 },
+      { id: "slab", ru: "Плита", en: "Slab", d3: "M95 300 L280 330 L475 300 L280 270 Z", d2: "M115 315 L455 315 L455 350 L115 350 Z", x: 280, y: 323 },
+      { id: "drilling", ru: "Бурение", en: "Drilling", d3: "M360 120 A30 30 0 1 0 420 120 A30 30 0 1 0 360 120 Z", d2: "M365 105 A32 32 0 1 0 429 105 A32 32 0 1 0 365 105 Z", x: 395, y: 120 },
+      { id: "chases", ru: "Штробы", en: "Chases", d3: "M160 105 L178 105 L178 260 L160 260 Z", d2: "M150 95 L174 95 L174 282 L150 282 Z", x: 162, y: 195 },
+      { id: "water", ru: "Сбор шлама", en: "Slurry collection", d3: "M450 280 L500 252 L535 272 L485 302 Z", d2: "M450 285 L520 285 L520 315 L450 315 Z", x: 484, y: 294 },
+    ],
+    note: { ru: "Схема условная и не подтверждает допустимость резки. Проёмы и резы в несущих элементах выполняются только после проверки конструкции и требуемых проектных согласований.", en: "Schematic only; it does not confirm that cutting is permitted. Cuts in structural elements require structural assessment and any necessary design approvals." },
+  },
+};
+
+function cleanServiceScopeMessage(message: string) {
+  return message
+    .split("Состав работ по зонам:")[0]
+    .split("Selected work by room:")[0]
+    .split("Состав демонтажа здания:")[0]
+    .split("Building demolition scope:")[0]
+    .split("Состав работ по услуге:")[0]
+    .split("Service work scope:")[0]
+    .trim();
+}
+
+function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lang: "ru" | "en") {
+  const definition = serviceScopeDefinitions[slug];
+  if (!definition || config.selected.length === 0) return "";
+  const profile = definition.profiles.find((item) => item.id === config.profile) ?? definition.profiles[0];
+  const material = definition.materials.find((item) => item.id === config.material) ?? definition.materials[0];
+  const selectedWorks = definition.works.filter((item) => config.selected.includes(item.id));
+  const isRu = lang === "ru";
+  return [
+    isRu ? "Состав работ по услуге:" : "Service work scope:",
+    (isRu ? "Услуга: " : "Service: ") + definition.title[lang],
+    (isRu ? "Тип / формат: " : "Project type: ") + profile[lang],
+    (isRu ? "Материал / условия: " : "Material / conditions: ") + material[lang],
+    (isRu ? "Выбранные работы:" : "Selected work:"),
+    ...selectedWorks.map((item) => "• " + item[lang]),
+  ].join("\n");
+}
+
+function ServiceScopeConfigurator({
+  slug,
+  lang,
+  value,
+  onChange,
+  onApply,
+}: {
+  slug: string;
+  lang: "ru" | "en";
+  value: ServiceScopeSelection;
+  onChange: (next: ServiceScopeSelection) => void;
+  onApply: () => void;
+}) {
+  const definition = serviceScopeDefinitions[slug];
+  const [viewMode, setViewMode] = useState<"3d" | "2d">("3d");
+  if (!definition) return null;
+  const isRu = lang === "ru";
+  const profileId = definition.profiles.some((item) => item.id === value.profile) ? value.profile : definition.profiles[0].id;
+  const materialId = definition.materials.some((item) => item.id === value.material) ? value.material : definition.materials[0].id;
+  const selected = (id: string) => value.selected.includes(id);
+  const toggle = (id: string) => onChange({
+    profile: profileId,
+    material: materialId,
+    selected: value.selected.includes(id) ? value.selected.filter((item) => item !== id) : [...value.selected, id],
+  });
+  const chooseProfile = (id: string) => onChange({ ...value, profile: id });
+  const chooseMaterial = (id: string) => onChange({ ...value, material: id });
+  const zonePath = (zone: ServiceScopeZone) => viewMode === "3d" ? zone.d3 : zone.d2;
+
+  return (
+    <section className="skol-service-scope mb-8 overflow-hidden border border-border/60 bg-card/35">
+      <div className="border-b border-border/55 p-5 sm:p-7 lg:p-8">
+        <div className="grid gap-4 sm:grid-cols-[.95fr_1.05fr] sm:items-end">
+          <div>
+            <p className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.2em] text-primary">
+              <span className="h-px w-6 bg-primary" /> {definition.code}
+            </p>
+            <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl lg:text-4xl">{definition.title[lang]}</h2>
+          </div>
+          <p className="max-w-2xl text-sm leading-7 text-muted-foreground">{definition.intro[lang]}</p>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-[.98fr_1.02fr]">
+        <div className="min-w-0 border-b border-border/55 p-3 sm:p-5 lg:border-b-0 lg:border-r lg:p-6">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+              {viewMode === "3d" ? (isRu ? "Объёмная схема / выберите элемент" : "3D schematic / select an element") : (isRu ? "План / выберите элемент" : "Plan / select an element")}
+            </span>
+            <div className="flex items-center gap-1 border border-border/60 bg-background/45 p-1">
+              <button type="button" onClick={() => setViewMode("3d")} aria-pressed={viewMode === "3d"}
+                className={"min-h-8 px-3 text-[10px] font-semibold transition-colors " + (viewMode === "3d" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>3D / {isRu ? "Объём" : "Volume"}</button>
+              <button type="button" onClick={() => setViewMode("2d")} aria-pressed={viewMode === "2d"}
+                className={"min-h-8 px-3 text-[10px] font-semibold transition-colors " + (viewMode === "2d" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>2D / {isRu ? "План" : "Plan"}</button>
+            </div>
+          </div>
+          <div className="relative overflow-hidden border border-border/55 bg-background/50 p-1.5 sm:p-3">
+            <div className="pointer-events-none absolute inset-0 opacity-55" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.055) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.055) 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+            <svg viewBox="0 0 620 390" className="relative z-10 block h-auto w-full" role="group" aria-label={definition.title[lang]}>
+              <defs>
+                <linearGradient id={"scope-active-" + slug} x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="hsl(var(--primary) / .46)" />
+                  <stop offset="100%" stopColor="hsl(var(--primary) / .12)" />
+                </linearGradient>
+              </defs>
+              {definition.kind === "demolition" && (
+                <g fill="none" stroke="hsl(var(--foreground) / .22)" strokeWidth="1.2">
+                  <path d={viewMode === "3d" ? "M145 130 L310 43 L478 132 L310 224 Z M145 130 L145 230 L310 322 L310 224 M310 224 L478 132 L478 232 L310 322 M145 257 L310 350 L478 259" : "M146 95 L310 36 L474 95 L474 283 L310 340 L146 283 Z M146 121 L474 121 M310 62 V318 M146 190 H474 M146 260 H474"} />
+                  <path d="M160 145L296 220M182 124L317 201M333 207L454 141M333 232L454 166" strokeDasharray="4 5" />
+                </g>
+              )}
+              {definition.kind === "construction" && (
+                <g fill="none" stroke="hsl(var(--foreground) / .28)" strokeWidth="2">
+                  <path d={viewMode === "3d" ? "M145 126L310 35L472 126L310 218Z M145 126V237L310 329V218 M310 218V329L472 237V126 M145 182L310 274L472 182 M145 237L310 145L472 237" : "M145 116L310 40L472 116V316L310 382L145 316Z M145 135H472 M145 205H472 M145 275H472 M200 90V340 M255 65V360 M365 65V360 M420 90V340"} />
+                  <path d="M145 126L472 237M472 126L145 237" strokeDasharray="5 5" opacity=".5" />
+                </g>
+              )}
+              {definition.kind === "renovation" && (
+                <g fill="none" stroke="hsl(var(--foreground) / .22)" strokeWidth="1.3">
+                  <path d={viewMode === "3d" ? "M145 130L310 43L478 132L310 224Z M145 130V235L310 327V224 M310 224L478 132V235L310 327 M200 158L310 98L422 157L310 218Z" : "M150 90L310 35L470 90V302L310 350L150 302Z M150 195H470 M310 35V350 M150 90L310 145L470 90 M150 302L310 245L470 302"} />
+                </g>
+              )}
+              {definition.kind === "waste" && (
+                <g fill="none" stroke="hsl(var(--foreground) / .28)" strokeWidth="1.5">
+                  <path d={viewMode === "3d" ? "M200 190L250 160H455L405 190Z M200 190V265H405V190 M405 190L455 160V235L405 265 M225 207V251M260 207V251M295 207V251M330 207V251M365 207V251" : "M170 145H430V275H170Z M198 166V255M236 166V255M274 166V255M312 166V255M350 166V255M388 166V255 M70 290H540"} />
+                  <path d="M82 150L123 128L165 151L124 175Z" />
+                  <circle cx="445" cy="298" r="16" /><circle cx="492" cy="298" r="16" />
+                </g>
+              )}
+              {definition.kind === "systems" && (
+                <g fill="none" stroke="hsl(var(--foreground) / .28)" strokeWidth="2">
+                  <path d={viewMode === "3d" ? "M65 100H240V153H65Z M280 100H450V153H280Z M65 205H240V258H65Z M280 205H450V258H280Z M210 280L310 225L410 280L310 335Z" : "M65 85H255V135H65Z M300 85H500V135H300Z M65 180H255V230H65Z M300 180H500V230H300Z M210 265H410V328H210Z"} />
+                  <path d="M82 126H220M295 126H435M82 231H220M295 231H435" strokeDasharray="5 5" />
+                  <circle cx="94" cy="90" r="8" /><circle cx="470" cy="170" r="8" />
+                </g>
+              )}
+              {definition.kind === "cutting" && (
+                <g fill="none" stroke="hsl(var(--foreground) / .28)" strokeWidth="1.5">
+                  <path d={viewMode === "3d" ? "M130 78H430V308H130Z M130 78L170 58H470L430 78 M430 78L470 58V288L430 308" : "M100 60H470V320H100Z M120 80H450V300H120Z"} />
+                  <path d="M145 95H414M145 121H414M145 147H414M145 173H414M145 199H414M145 225H414M145 251H414M145 277H414M170 82V304M210 82V304M250 82V304M290 82V304M330 82V304M370 82V304M410 82V304" strokeDasharray="3 5" opacity=".7" />
+                  <path d="M205 175H345V308H205Z" strokeDasharray="6 5" />
+                  <circle cx="395" cy="120" r="30" />
+                  <circle cx="395" cy="120" r="17" />
+                </g>
+              )}
+              {definition.zones.map((zone) => (
+                <g key={zone.id} role="button" tabIndex={0} aria-label={zone[lang]} aria-pressed={selected(zone.id)}
+                  onClick={() => toggle(zone.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      toggle(zone.id);
+                    }
+                  }}
+                  style={{ cursor: "pointer", outline: "none" }}>
+                  <path d={zonePath(zone)}
+                    fill={selected(zone.id) ? "url(#scope-active-" + slug + ")" : "hsl(var(--card) / .22)"}
+                    stroke={selected(zone.id) ? "hsl(var(--primary))" : "hsl(var(--foreground) / .28)"}
+                    strokeWidth={selected(zone.id) ? 3 : 1.25} />
+                  <text x={zone.x} y={zone.y} textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight={selected(zone.id) ? 700 : 500}
+                    fill="hsl(var(--foreground) / .95)" style={{ pointerEvents: "none" }}>{isRu ? zone.ru.toUpperCase() : zone.en.toUpperCase()}</text>
+                  {selected(zone.id) && <circle cx={zone.x} cy={zone.y + 15} r="3.5" fill="hsl(var(--primary))" pointerEvents="none" />}
+                </g>
+              ))}
+              <g fill="hsl(var(--muted-foreground))" fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="1.2">
+                <text x="28" y="28">SKOL / {definition.code.split("/")[1].trim()}</text>
+                <text x="440" y="374" textAnchor="end">{isRu ? "СХЕМА УСЛОВНАЯ" : "SCHEMATIC ONLY"}</text>
+              </g>
+            </svg>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {definition.zones.map((zone) => (
+              <button key={zone.id} type="button" onClick={() => toggle(zone.id)} aria-pressed={selected(zone.id)}
+                className={"min-h-9 border px-3 py-2 text-xs font-medium transition-colors " + (selected(zone.id) ? "border-primary bg-primary/10 text-foreground" : "border-border/55 bg-background/40 text-muted-foreground hover:text-foreground")}>
+                {zone[lang]}
+              </button>
+            ))}
+          </div>
+          <p className="mt-3 text-xs leading-5 text-muted-foreground">{definition.note[lang]}</p>
+        </div>
+
+        <div className="min-w-0 p-4 sm:p-6 lg:p-7">
+          <div className="mb-6">
+            <p className="mb-2 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">{isRu ? "01 / Параметры задачи" : "01 / Project parameters"}</p>
+            <p className="mb-2 text-sm font-semibold text-foreground">{definition.profileLabel[lang]}</p>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {definition.profiles.map((item) => (
+                <button key={item.id} type="button" onClick={() => chooseProfile(item.id)} aria-pressed={profileId === item.id}
+                  className={"min-h-10 border px-3 py-2 text-left text-xs font-semibold transition-colors " + (profileId === item.id ? "border-primary bg-primary/10 text-foreground" : "border-border/50 bg-background/35 text-muted-foreground hover:text-foreground")}>
+                  {item[lang]}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mb-6">
+            <p className="mb-2 text-sm font-semibold text-foreground">{definition.materialLabel[lang]}</p>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {definition.materials.map((item) => (
+                <button key={item.id} type="button" onClick={() => chooseMaterial(item.id)} aria-pressed={materialId === item.id}
+                  className={"min-h-10 border px-3 py-2 text-left text-xs transition-colors " + (materialId === item.id ? "border-primary bg-primary/10 text-foreground" : "border-border/50 bg-background/35 text-muted-foreground hover:text-foreground")}>
+                  {item[lang]}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="mb-3 flex items-end justify-between gap-3">
+              <div>
+                <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">{isRu ? "02 / Состав работ" : "02 / Work scope"}</p>
+                <h3 className="mt-1 text-lg font-semibold text-foreground">{isRu ? "Что включить в заявку" : "What to include"}</h3>
+              </div>
+              <span className="font-mono text-xs text-primary">{String(value.selected.length).padStart(2, "0")} / {String(definition.works.length).padStart(2, "0")}</span>
+            </div>
+            <div className="space-y-2">
+              {definition.works.map((item) => (
+                <button key={item.id} type="button" onClick={() => toggle(item.id)} aria-pressed={selected(item.id)}
+                  className={"flex w-full items-start gap-3 border p-3 text-left transition-colors " + (selected(item.id) ? "border-primary/70 bg-primary/[.08]" : "border-border/50 bg-background/30 hover:border-border")}>
+                  <span className={"mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border text-[10px] " + (selected(item.id) ? "border-primary bg-primary text-primary-foreground" : "border-border text-transparent")}>✓</span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-medium text-foreground">{item[lang]}</span>
+                    <span className="mt-1 block text-xs leading-5 text-muted-foreground">{isRu ? item.noteRu : item.noteEn}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+          {value.selected.length > 0 && (
+            <div className="mt-5 border border-primary/30 bg-primary/[.06] p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-foreground">{isRu ? "Состав готов к передаче" : "Scope ready to transfer"}</p>
+                <button type="button" onClick={() => onChange({ ...value, selected: [] })} className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground">{isRu ? "Очистить" : "Clear"}</button>
+              </div>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                {isRu ? "Выбранные работы и параметры попадут в описание заявки. Цена не рассчитывается по схеме и уточняется после оценки объекта." : "Selected work and parameters will be added to the request. The diagram does not calculate price; it is confirmed after site assessment."}
+              </p>
+              <button type="button" onClick={onApply}
+                className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
+                {isRu ? "Передать состав в заявку" : "Add scope to request"} <ArrowUpRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
 const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -1028,6 +1518,16 @@ const ServiceDetailPage = () => {
   const [submittedPrice, setSubmittedPrice] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedApartmentTasks, setSelectedApartmentTasks] = useState<ApartmentScopeSelection[]>([]);
+  const [serviceScopeSelection, setServiceScopeSelection] = useState<ServiceScopeSelection>({
+    profile: "",
+    material: "",
+    selected: [],
+  });
+
+  useEffect(() => {
+    setServiceScopeSelection({ profile: "", material: "", selected: [] });
+  }, [slug]);
+
   const [buildingDemolitionConfig, setBuildingDemolitionConfig] = useState<BuildingDemolitionConfig>({
     objectType: "industrial",
     structureType: "mixed",
@@ -1077,6 +1577,14 @@ const ServiceDetailPage = () => {
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
+  const applyServiceScopeToRequest = () => {
+    if (!service) return;
+    const scopeText = getServiceScopeSummary(serviceScopeSelection, service.slug, lang);
+    if (!scopeText) return;
+    setMessage((current) => [cleanServiceScopeMessage(current), scopeText].filter(Boolean).join("\\n\\n"));
+    document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   const isWaste = service?.slug === "waste-removal";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -1089,13 +1597,10 @@ const ServiceDetailPage = () => {
         ? getApartmentScopeSummary(selectedApartmentTasks, lang)
         : service?.slug === "building-demolition"
           ? getBuildingDemolitionSummary(buildingDemolitionConfig, lang)
-          : "";
-      const cleanMessage = message
-        .split("Состав работ по зонам:")[0]
-        .split("Selected work by room:")[0]
-        .split("Состав демонтажа здания:")[0]
-        .split("Building demolition scope:")[0]
-        .trim();
+          : service && serviceScopeDefinitions[service.slug]
+            ? getServiceScopeSummary(serviceScopeSelection, service.slug, lang)
+            : "";
+      const cleanMessage = cleanServiceScopeMessage(message);
       const finalMessage = [cleanMessage, scopeSummary].filter(Boolean).join("\n\n");
 
       const { error } = await supabase.functions.invoke("notify-request", {
@@ -1224,6 +1729,19 @@ const ServiceDetailPage = () => {
             config={buildingDemolitionConfig}
             onChange={setBuildingDemolitionConfig}
             onApply={applyBuildingDemolitionScopeToRequest}
+          />
+        </AnimatedSection>
+      )}
+
+      {serviceScopeDefinitions[service.slug] && (
+        <AnimatedSection delay={0.08}>
+          <ServiceScopeConfigurator
+            key={service.slug}
+            slug={service.slug}
+            lang={lang}
+            value={serviceScopeSelection}
+            onChange={setServiceScopeSelection}
+            onApply={applyServiceScopeToRequest}
           />
         </AnimatedSection>
       )}
