@@ -1737,8 +1737,8 @@ function ServiceScopeConfigurator({
   slug: string;
   lang: "ru" | "en";
   value: ServiceScopeSelection;
-  onChange: (next: ServiceScopeSelection) => void;
-  onApply: () => void;
+  onChange: React.Dispatch<React.SetStateAction<ServiceScopeSelection>>;
+  onApply: (selection: ServiceScopeSelection) => void;
   quantity: number;
   quantityLabel: string;
 }) {
@@ -1751,21 +1751,35 @@ function ServiceScopeConfigurator({
     ? value.material
     : definition.materials.find((item) => item.id === "unknown")?.id ?? definition.materials[0].id;
   const selected = (id: string) => value.selected.includes(id);
-  const toggle = (id: string) => onChange({
-    profile: profileId,
-    material: materialId,
-    selected: value.selected.includes(id) ? value.selected.filter((item) => item !== id) : [...value.selected, id],
+  const normalizeSelection = (current: ServiceScopeSelection): ServiceScopeSelection => ({
+    profile: definition.profiles.some((item) => item.id === current.profile) ? current.profile : definition.profiles[0].id,
+    material: definition.materials.some((item) => item.id === current.material)
+      ? current.material
+      : definition.materials.find((item) => item.id === "unknown")?.id ?? definition.materials[0].id,
+    selected: current.selected,
   });
-  const chooseProfile = (id: string) => onChange({ ...value, profile: id });
-  const chooseMaterial = (id: string) => onChange({ ...value, material: id });
+  const toggle = (id: string) => onChange((current) => {
+    const normalized = normalizeSelection(current);
+    return {
+      ...normalized,
+      selected: current.selected.includes(id)
+        ? current.selected.filter((item) => item !== id)
+        : [...current.selected, id],
+    };
+  });
+  const chooseProfile = (id: string) => onChange((current) => ({ ...current, profile: id }));
+  const chooseMaterial = (id: string) => onChange((current) => ({ ...current, material: id }));
   const zonePath = (zone: ServiceScopeZone) => viewMode === "3d" ? zone.d3 : zone.d2;
   const recommendations = getServiceScopeRecommendations({ ...value, profile: profileId, material: materialId }, slug);
   const insight = getServiceScopeInsight(slug, profileId, materialId, value.selected, lang);
   const selectionProgress = Math.min(100, Math.round((value.selected.length / definition.works.length) * 100));
-  const addRecommendations = () => onChange({
-    profile: profileId,
-    material: materialId,
-    selected: Array.from(new Set([...value.selected, ...recommendations.map((item) => item.id)])),
+  const addRecommendations = () => onChange((current) => {
+    const normalized = normalizeSelection(current);
+    const currentRecommendations = getServiceScopeRecommendations(normalized, slug);
+    return {
+      ...normalized,
+      selected: Array.from(new Set([...current.selected, ...currentRecommendations.map((item) => item.id)])),
+    };
   });
 
   return (
@@ -1979,7 +1993,7 @@ function ServiceScopeConfigurator({
               <p className="mt-1 text-xs leading-5 text-muted-foreground">
                 {isRu ? "Выбранные работы и параметры попадут в описание заявки. Цена не рассчитывается по схеме и уточняется после оценки объекта." : "Selected work and parameters will be added to the request. The diagram does not calculate price; it is confirmed after site assessment."}
               </p>
-              <button type="button" onClick={onApply}
+              <button type="button" onClick={() => onApply({ profile: profileId, material: materialId, selected: [...value.selected] })}
                 className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-110">
                 {isRu ? "Передать состав в заявку" : "Add scope to request"} <ArrowUpRight className="h-4 w-4" />
               </button>
@@ -2085,9 +2099,9 @@ const ServiceDetailPage = () => {
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
-  const applyServiceScopeToRequest = () => {
+  const applyServiceScopeToRequest = (selection: ServiceScopeSelection = serviceScopeSelection) => {
     if (!service) return;
-    const scopeText = getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey), area[0], unitLabel);
+    const scopeText = getServiceScopeSummary(selection, service.slug, lang, t(service.titleKey), area[0], unitLabel);
     if (!scopeText) return;
     const conditionsText = getSiteConditionsSummary(siteConditions, lang, service.slug);
     setMessage((current) => [cleanServiceScopeMessage(current), scopeText, conditionsText].filter(Boolean).join("\n\n"));
