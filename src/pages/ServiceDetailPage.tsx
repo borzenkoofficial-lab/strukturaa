@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEOHead from "@/components/SEOHead";
 import SuccessOverlay from "@/components/SuccessOverlay";
+import { ServiceRateBook, getServiceRate } from "@/lib/servicePricing";
 
 interface ServiceData {
   slug: string;
@@ -1493,6 +1494,8 @@ function cleanServiceScopeMessage(message: string) {
     .split("Building demolition scope:")[0]
     .split("Состав работ по услуге:")[0]
     .split("Service work scope:")[0]
+    .split("Объёмы по отдельным работам:")[0]
+    .split("Quantities by work item:")[0]
     .split("Условия объекта:")[0]
     .split("Site conditions:")[0]
     .trim();
@@ -2006,6 +2009,34 @@ function ServiceScopeConfigurator({
 }
 
 
+type ServiceQuoteLine = {
+  id: string;
+  slug: string;
+  workId: string;
+  title: string;
+  quantityKey: string;
+  quantityText: string;
+  unit: string;
+  price: number | null;
+};
+
+function getQuoteQuantitySummary(lines: ServiceQuoteLine[], lang: "ru" | "en") {
+  const quantified = lines.filter((line) => line.quantityText.trim() !== "" && Number.isFinite(Number(line.quantityText)) && Number(line.quantityText) > 0);
+  if (quantified.length === 0) return "";
+  return [
+    lang === "ru" ? "Объёмы по отдельным работам:" : "Quantities by work item:",
+    ...quantified.map((line) => "• " + line.title + ": " + line.quantityText + " " + line.unit),
+  ].join("\n");
+}
+
+function formatQuoteCurrency(value: number, lang: "ru" | "en") {
+  return new Intl.NumberFormat(lang === "ru" ? "ru-RU" : "en-US", {
+    style: "currency",
+    currency: "RUB",
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
 const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -2016,6 +2047,8 @@ const ServiceDetailPage = () => {
 
   const [area, setArea] = useState<number[]>([100]);
   const [siteConditions, setSiteConditions] = useState<SiteConditions>(emptySiteConditions);
+  const [serviceRateBook, setServiceRateBook] = useState<ServiceRateBook>({});
+  const [workQuantities, setWorkQuantities] = useState<Record<string, string>>({});
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -2034,13 +2067,60 @@ const ServiceDetailPage = () => {
   useEffect(() => {
     setServiceScopeSelection({ profile: "", material: "", selected: [] });
     setSiteConditions(emptySiteConditions);
+    setWorkQuantities({});
+    setSelectedApartmentTasks([]);
   }, [slug]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadServiceRateBook = async () => {
+      const { data, error } = await supabase.from("site_settings").select("value").eq("key", "service_rates").maybeSingle();
+      if (!cancelled && !error && data?.value && typeof data.value === "object" && !Array.isArray(data.value)) {
+        setServiceRateBook(data.value as ServiceRateBook);
+      }
+    };
+    void loadServiceRateBook().catch(() => undefined);
+    return () => { cancelled = true; };
+  }, []);
 
   const [buildingDemolitionConfig, setBuildingDemolitionConfig] = useState<BuildingDemolitionConfig>({
     objectType: "industrial",
     structureType: "mixed",
     selected: [],
   });
+
+  useEffect(() => {
+    setBuildingDemolitionConfig({ objectType: "industrial", structureType: "mixed", selected: [] });
+  }, [slug]);
+
+  const buildQuoteLines = (
+    genericSelection: ServiceScopeSelection = serviceScopeSelection,
+    apartmentSelections: ApartmentScopeSelection[] = selectedApartmentTasks,
+    buildingSelections: string[] = buildingDemolitionConfig.selected,
+  ): ServiceQuoteLine[] => {
+    if (!service) return [];
+    const makeLine = (workSlug: string, workId: string, title: string, quantityKey: string): ServiceQuoteLine => {
+      const rate = getServiceRate(serviceRateBook, workSlug, workId);
+      return { id: quantityKey, slug: workSlug, workId, title, quantityKey, quantityText: workQuantities[quantityKey] ?? "", unit: rate.unit, price: rate.price };
+    };
+    if (service.slug === "apartment-demolition") {
+      return apartmentSelections.flatMap((selection) => {
+        const work = apartmentWorkOptions.find((item) => item.id === selection.workId);
+        if (!work) return [];
+        const room = apartmentRooms.find((item) => item.id === selection.roomId);
+        const quantityKey = `apartment-demolition:${selection.roomId}:${selection.workId}`;
+        return [makeLine(service.slug, selection.workId, (room?.label[lang] ?? selection.roomId) + " — " + work.title[lang], quantityKey)];
+      });
+    }
+    if (service.slug === "building-demolition") {
+      return buildingWorkOptions.filter((item) => buildingSelections.includes(item.id))
+        .map((item) => makeLine(service.slug, item.id, item[lang], `building-demolition:${item.id}`));
+    }
+    const definition = serviceScopeDefinitions[service.slug];
+    if (!definition) return [];
+    return definition.works.filter((item) => genericSelection.selected.includes(item.id))
+      .map((item) => makeLine(service.slug, item.id, item[lang], `${service.slug}:${item.id}`));
+  };
 
   const toggleApartmentTask = (roomId: ApartmentRoomId, workId: string) => {
     const effectiveRoomId = resolveApartmentSelectionRoom(roomId, workId);
@@ -2073,10 +2153,11 @@ const ServiceDetailPage = () => {
   const applyApartmentScopeToRequest = () => {
     const scopeText = getApartmentScopeSummary(selectedApartmentTasks, lang, area[0], unitLabel);
     if (!scopeText) return;
+    const quantitySummary = getQuoteQuantitySummary(buildQuoteLines(), lang);
     setMessage((current) => {
       const cleanMessage = cleanServiceScopeMessage(current);
       const conditionsText = service ? getSiteConditionsSummary(siteConditions, lang, service.slug) : "";
-      return [cleanMessage, scopeText, conditionsText].filter(Boolean).join("\n\n");
+      return [cleanMessage, scopeText, quantitySummary, conditionsText].filter(Boolean).join("\n\n");
     });
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
@@ -2091,10 +2172,11 @@ const ServiceDetailPage = () => {
   const applyBuildingDemolitionScopeToRequest = () => {
     const scopeText = getBuildingDemolitionSummary(buildingDemolitionConfig, lang, area[0], unitLabel);
     if (!scopeText) return;
+    const quantitySummary = getQuoteQuantitySummary(buildQuoteLines(), lang);
     setMessage((current) => {
       const cleanMessage = cleanServiceScopeMessage(current);
       const conditionsText = service ? getSiteConditionsSummary(siteConditions, lang, service.slug) : "";
-      return [cleanMessage, scopeText, conditionsText].filter(Boolean).join("\n\n");
+      return [cleanMessage, scopeText, quantitySummary, conditionsText].filter(Boolean).join("\n\n");
     });
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
@@ -2103,8 +2185,9 @@ const ServiceDetailPage = () => {
     if (!service) return;
     const scopeText = getServiceScopeSummary(selection, service.slug, lang, t(service.titleKey), area[0], unitLabel);
     if (!scopeText) return;
+    const quantitySummary = getQuoteQuantitySummary(buildQuoteLines(selection), lang);
     const conditionsText = getSiteConditionsSummary(siteConditions, lang, service.slug);
-    setMessage((current) => [cleanServiceScopeMessage(current), scopeText, conditionsText].filter(Boolean).join("\n\n"));
+    setMessage((current) => [cleanServiceScopeMessage(current), scopeText, quantitySummary, conditionsText].filter(Boolean).join("\n\n"));
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
@@ -2124,8 +2207,9 @@ const ServiceDetailPage = () => {
             ? getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey), area[0], unitLabel)
             : "";
       const cleanMessage = cleanServiceScopeMessage(message);
+      const quantitySummary = getQuoteQuantitySummary(buildQuoteLines(), lang);
       const conditionsSummary = service ? getSiteConditionsSummary(siteConditions, lang, service.slug) : "";
-      const finalMessage = [cleanMessage, scopeSummary, conditionsSummary].filter(Boolean).join("\n\n");
+      const finalMessage = [cleanMessage, scopeSummary, quantitySummary, conditionsSummary].filter(Boolean).join("\n\n");
 
       const { error } = await supabase.functions.invoke("notify-request", {
         body: {
@@ -2172,6 +2256,20 @@ const ServiceDetailPage = () => {
   const unitLabel = isWaste
     ? lang === "ru" ? "контейнеров" : "containers"
     : service.priceUnit;
+
+  const quoteLines = buildQuoteLines();
+  const missingRateCount = quoteLines.filter((line) => line.price === null).length;
+  const missingQuantityCount = quoteLines.filter((line) => {
+    const quantity = Number(line.quantityText);
+    return line.quantityText.trim() === "" || !Number.isFinite(quantity) || quantity <= 0;
+  }).length;
+  const quoteIsComplete = quoteLines.length > 0 && missingRateCount === 0 && missingQuantityCount === 0;
+  const quoteTotal = quoteIsComplete ? quoteLines.reduce((sum, line) => sum + (line.price ?? 0) * Number(line.quantityText), 0) : null;
+  const estimateContextFlags = [
+    ...(["stairs", "restricted", "lifting"].includes(siteConditions.access) ? [lang === "ru" ? "Доступ, ручной перенос или спецтехника требуют отдельной проверки." : "Access, manual carry or specialist equipment need review."] : []),
+    ...(["restricted", "noise", "offhours"].includes(siteConditions.schedule) ? [lang === "ru" ? "Ограничения по графику могут изменить организацию и стоимость работ." : "Schedule restrictions may affect planning and cost."] : []),
+    ...(["carry", "stage", "remove"].includes(siteConditions.logistics) ? [lang === "ru" ? "Логистику отходов нужно подтвердить по фактическому маршруту и объёму." : "Waste logistics must be confirmed against the actual route and volume."] : []),
+  ];
 
   const relatedServices = service.relatedSlugs
     .map(s => servicesData.find(sd => sd.slug === s))
