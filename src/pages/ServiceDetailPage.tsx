@@ -452,6 +452,13 @@ const apartmentWorkOptions: {
   },
 ];
 
+function resolveApartmentSelectionRoom(roomId: ApartmentRoomId, workId: string): ApartmentRoomId {
+  if (roomId !== "all") return roomId;
+  const work = apartmentWorkOptions.find((item) => item.id === workId);
+  if (work && work.rooms.length === 1 && work.rooms[0] !== "all") return work.rooms[0];
+  return roomId;
+}
+
 function getApartmentScopeSummary(selections: ApartmentScopeSelection[], lang: "ru" | "en") {
   if (!selections.length) return "";
   const prefix = lang === "ru" ? "Состав работ по зонам:" : "Selected work by room:";
@@ -484,8 +491,10 @@ function ApartmentDemolitionStudio({
   const visibleWorkOptions = apartmentWorkOptions.filter((work) =>
     activeRoom === "all" || work.rooms.includes("all") || work.rooms.includes(activeRoom)
   );
-  const isSelected = (roomId: ApartmentRoomId, workId: string) =>
-    selected.some((item) => item.roomId === roomId && item.workId === workId);
+  const isSelected = (roomId: ApartmentRoomId, workId: string) => {
+    const effectiveRoomId = resolveApartmentSelectionRoom(roomId, workId);
+    return selected.some((item) => item.roomId === effectiveRoomId && item.workId === workId);
+  };
   const roomShape = (roomId: ApartmentRoomId, x: number, y: number, width: number, height: number, label: string) => {
     const active = activeRoom === roomId;
     return (
@@ -676,18 +685,19 @@ const ServiceDetailPage = () => {
   const [selectedApartmentTasks, setSelectedApartmentTasks] = useState<ApartmentScopeSelection[]>([]);
 
   const toggleApartmentTask = (roomId: ApartmentRoomId, workId: string) => {
+    const effectiveRoomId = resolveApartmentSelectionRoom(roomId, workId);
     setSelectedApartmentTasks((current) =>
-      current.some((item) => item.roomId === roomId && item.workId === workId)
-        ? current.filter((item) => !(item.roomId === roomId && item.workId === workId))
-        : [...current, { roomId, workId }]
+      current.some((item) => item.roomId === effectiveRoomId && item.workId === workId)
+        ? current.filter((item) => !(item.roomId === effectiveRoomId && item.workId === workId))
+        : [...current, { roomId: effectiveRoomId, workId }]
     );
   };
 
   const selectAllApartmentTasks = (roomId: ApartmentRoomId, workIds: string[]) => {
     setSelectedApartmentTasks((current) => {
       const additions = workIds
-        .filter((workId) => !current.some((item) => item.roomId === roomId && item.workId === workId))
-        .map((workId) => ({ roomId, workId }));
+        .map((workId) => ({ roomId: resolveApartmentSelectionRoom(roomId, workId), workId }))
+        .filter((item) => !current.some((existing) => existing.roomId === item.roomId && existing.workId === item.workId));
       return [...current, ...additions];
     });
   };
@@ -713,8 +723,8 @@ const ServiceDetailPage = () => {
       const scopeSummary = service?.slug === "apartment-demolition"
         ? getApartmentScopeSummary(selectedApartmentTasks, lang)
         : "";
-      const messageAlreadyContainsScope = message.includes("Состав работ по зонам:") || message.includes("Selected work by room:");
-      const finalMessage = [message.trim(), scopeSummary && !messageAlreadyContainsScope ? scopeSummary : ""].filter(Boolean).join("\n\n");
+      const cleanMessage = message.split("Состав работ по зонам:")[0].split("Selected work by room:")[0].trim();
+      const finalMessage = [cleanMessage, scopeSummary].filter(Boolean).join("\n\n");
 
       const { error } = await supabase.functions.invoke("notify-request", {
         body: {
