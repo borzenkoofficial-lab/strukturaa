@@ -1275,7 +1275,7 @@ function cleanServiceScopeMessage(message: string) {
     .trim();
 }
 
-function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lang: "ru" | "en", serviceTitle?: string) {
+function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lang: "ru" | "en", serviceTitle?: string, quantity?: number, quantityLabel?: string) {
   const definition = serviceScopeDefinitions[slug];
   if (!definition || config.selected.length === 0) return "";
   const profile = definition.profiles.find((item) => item.id === config.profile) ?? definition.profiles[0];
@@ -1287,9 +1287,209 @@ function getServiceScopeSummary(config: ServiceScopeSelection, slug: string, lan
     (isRu ? "Услуга: " : "Service: ") + (serviceTitle || definition.title[lang]),
     (isRu ? "Тип / формат: " : "Project type: ") + profile[lang],
     (isRu ? "Материал / условия: " : "Material / conditions: ") + material[lang],
+    ...(typeof quantity === "number" && quantity > 0
+      ? [(isRu ? "Объём / метраж: " : "Quantity: ") + quantity + (quantityLabel ? " " + quantityLabel : "")]
+      : []),
     (isRu ? "Выбранные работы:" : "Selected work:"),
     ...selectedWorks.map((item) => "• " + item[lang]),
   ].join("\n");
+}
+
+
+const serviceScopeRecommendationRules: Record<string, Record<string, string[]>> = {
+  demolition: {
+    full: ["roof", "facade", "structure", "interior", "foundation", "utilities", "waste", "cleanup"],
+    roof: ["waste", "cleanup"],
+    facade: ["waste", "cleanup"],
+    structure: ["waste", "cleanup"],
+    interior: ["waste", "cleanup"],
+    foundation: ["waste", "cleanup"],
+  },
+  construction: {
+    columns: ["beams", "lifting"],
+    beams: ["columns", "lifting"],
+    slabs: ["lifting"],
+    roof: ["lifting", "columns"],
+    stairs: ["lifting"],
+  },
+  renovation: {
+    walls: ["floor", "finish"],
+    floor: ["walls", "finish"],
+    ceiling: ["utilities", "finish"],
+    wet: ["plumbing"],
+    plumbing: ["wet"],
+    utilities: ["finish"],
+    doors: ["finish"],
+  },
+  "waste-removal": {
+    delivery: ["transport", "documents"],
+    loading: ["delivery", "transport"],
+    carryout: ["loading", "transport"],
+    swap: ["delivery", "transport"],
+    sorting: ["documents"],
+  },
+  dismantling: {
+    electrics: ["waste"],
+    plumbing: ["waste"],
+    ventilation: ["equipment", "waste"],
+    heating: ["plumbing", "waste"],
+    equipment: ["waste"],
+    cables: ["waste"],
+    fire: ["waste"],
+  },
+  "diamond-cutting": {
+    opening: ["water", "cleanup", "reinforcement"],
+    slab: ["water", "cleanup", "reinforcement"],
+    drilling: ["water", "cleanup"],
+    chases: ["cleanup"],
+    wall: ["water", "cleanup", "reinforcement"],
+  },
+};
+
+function getServiceScopeRecommendations(config: ServiceScopeSelection, slug: string) {
+  const definition = serviceScopeDefinitions[slug];
+  if (!definition || config.selected.length === 0) return [];
+  const rules = serviceScopeRecommendationRules[slug] ?? {};
+  const suggestedIds = new Set<string>();
+  if (slug === "demolition" && config.profile === "full") {
+    definition.works.forEach((item) => suggestedIds.add(item.id));
+  }
+  config.selected.forEach((id) => {
+    (rules[id] ?? []).forEach((suggestion) => suggestedIds.add(suggestion));
+  });
+  return definition.works.filter((item) => suggestedIds.has(item.id) && !config.selected.includes(item.id));
+}
+
+function getServiceScopeRecommendationReason(slug: string, itemId: string, lang: "ru" | "en") {
+  const ruReasons: Record<string, Record<string, string>> = {
+    demolition: {
+      waste: "Логистику отходов лучше согласовать до начала демонтажа.",
+      cleanup: "Заранее зафиксируйте, в каком состоянии передаётся площадка.",
+      structure: "Для полного сноса уточните обследование и последовательность разборки.",
+    },
+    construction: {
+      lifting: "Подъём и доступ техники влияют на последовательность и стоимость монтажа.",
+      columns: "Балки и фермы требуют согласованных опор и несущего каркаса.",
+    },
+    renovation: {
+      plumbing: "Инженерные выводы стоит согласовать до закрытия мокрой зоны.",
+      wet: "Отделка санузла обычно требует согласования сантехники и гидроизоляции.",
+      finish: "Финишный этап зависит от готовности основания и завершения инженерных работ.",
+      floor: "Уровни пола лучше увязать с дверями и другими помещениями.",
+      utilities: "Проверьте расположение точек до чистовой отделки.",
+    },
+    "waste-removal": {
+      delivery: "Для вывоза потребуется подходящий контейнер и согласованное место установки.",
+      transport: "Заранее согласуйте маршрут, подъезд и формат машины.",
+      loading: "Погрузка часто требует отдельного расчёта по трудозатратам.",
+      documents: "Уточните документы и способ обращения с выбранным видом отходов.",
+    },
+    dismantling: {
+      waste: "После демонтажа нужно определить погрузку и обращение с отходами.",
+      equipment: "До разборки оборудования нужно проверить вес, крепления и путь выноса.",
+      plumbing: "Проверьте границы отключения, если работы затрагивают трубопроводы.",
+    },
+    "diamond-cutting": {
+      reinforcement: "Перед резкой нужно проверить армирование и допустимость вмешательства.",
+      water: "Уточните подачу воды, защиту отделки и сбор шлама.",
+      cleanup: "Согласуйте уборку и вывоз остатков после резки.",
+    },
+  };
+  const enReasons: Record<string, Record<string, string>> = {
+    demolition: {
+      waste: "Agree on debris logistics before demolition starts.",
+      cleanup: "Define the condition in which the site will be handed over.",
+      structure: "For full demolition, confirm the survey and dismantling sequence.",
+    },
+    construction: {
+      lifting: "Lifting and equipment access affect installation sequence and cost.",
+      columns: "Beams and trusses depend on coordinated supports and framing.",
+    },
+    renovation: {
+      plumbing: "Coordinate utility outlets before closing the wet area.",
+      wet: "Bathroom finishes need coordination with plumbing and waterproofing.",
+      finish: "Finishes depend on substrate readiness and completed utilities.",
+      floor: "Floor levels should be coordinated with doors and adjacent rooms.",
+      utilities: "Confirm utility points before applying final finishes.",
+    },
+    "waste-removal": {
+      delivery: "Waste removal requires a suitable container and a confirmed placement area.",
+      transport: "Confirm vehicle access, route and vehicle type in advance.",
+      loading: "Loading may require a separate labour estimate.",
+      documents: "Confirm the documents required for the selected waste type.",
+    },
+    dismantling: {
+      waste: "Plan loading and waste handling after dismantling.",
+      equipment: "Check equipment weight, fixings and removal route before dismantling.",
+      plumbing: "Confirm isolation limits when pipework is involved.",
+    },
+    "diamond-cutting": {
+      reinforcement: "Check reinforcement and cutting feasibility before work.",
+      water: "Confirm water supply, surface protection and slurry collection.",
+      cleanup: "Agree on cleanup and removal of residues after cutting.",
+    },
+  };
+  return (lang === "ru" ? ruReasons : enReasons)[slug]?.[itemId]
+    ?? (lang === "ru" ? "Уточните эту позицию на этапе обследования объекта." : "Confirm this item during site assessment.");
+}
+
+function getServiceScopeInsight(slug: string, profileId: string, materialId: string, selected: string[], lang: "ru" | "en") {
+  const isRu = lang === "ru";
+  if (slug === "dismantling" && materialId !== "isolated") {
+    return {
+      title: isRu ? "Сначала проверьте отключение систем" : "Verify utility isolation first",
+      body: isRu
+        ? "В заявке будет отмечено, что отключение не подтверждено. Работы с действующими электросетями, трубопроводами и оборудованием нельзя начинать без разрешения ответственного лица и безопасной изоляции."
+        : "The request will indicate that isolation is not confirmed. Work on live electrical systems, pipework and equipment must not begin without authorization and safe isolation.",
+      warning: true,
+    };
+  }
+  if (slug === "diamond-cutting" && selected.some((id) => ["opening", "slab", "chases", "wall"].includes(id))) {
+    return {
+      title: isRu ? "Проверьте конструкцию перед резкой" : "Check the structure before cutting",
+      body: isRu
+        ? "Проёмы, штробы и резка стен/перекрытий могут затрагивать несущие элементы. Допустимость резки и необходимость проекта подтверждаются до начала работ."
+        : "Openings, chases and wall/slab cuts may affect structural elements. Feasibility and any design approvals must be confirmed before work.",
+      warning: true,
+    };
+  }
+  if (slug === "demolition" && (profileId === "full" || selected.includes("structure") || selected.includes("foundation"))) {
+    return {
+      title: isRu ? "Нужна проверка объекта до демонтажа" : "Assess the site before demolition",
+      body: isRu
+        ? "Для полного сноса или работ с каркасом и фундаментом до начала уточняются конструктивная схема, соседние здания, ограждение, техника и необходимые согласования."
+        : "For full demolition or work on the frame/foundation, verify the structural system, neighbouring buildings, barriers, equipment and required approvals first.",
+      warning: true,
+    };
+  }
+  if (slug === "construction" && selected.some((id) => ["columns", "beams", "slabs", "roof"].includes(id))) {
+    return {
+      title: isRu ? "Сверьте монтаж с проектом" : "Verify installation against the design",
+      body: isRu
+        ? "Перед монтажом несущих элементов нужно проверить проектные узлы, временное раскрепление, грузоподъёмность техники и последовательность подъёма."
+        : "Before installing structural members, verify connection details, temporary bracing, equipment capacity and lifting sequence.",
+      warning: true,
+    };
+  }
+  if (slug === "waste-removal" && ["concrete", "soil"].includes(materialId)) {
+    return {
+      title: isRu ? "Проверьте массу и состав отходов" : "Check waste weight and composition",
+      body: isRu
+        ? "Для грунта, бетона и кирпича важно учитывать не только объём, но и массу, ограничения контейнера и допустимую нагрузку автомобиля."
+        : "For soil, concrete and brick, consider not only volume but also weight, container limits and vehicle payload.",
+      warning: true,
+    };
+  }
+  if (slug === "renovation" && selected.includes("wet") && !selected.includes("plumbing")) {
+    return {
+      title: isRu ? "Не забудьте увязать мокрую зону с сантехникой" : "Coordinate the wet area with plumbing",
+      body: isRu
+        ? "Перед отделкой санузла нужно определить сантехнические выводы и проверить гидроизоляцию. Сантехнические работы можно добавить в рекомендации ниже."
+        : "Before finishing a bathroom, confirm plumbing outlets and waterproofing. Plumbing can be added from the recommendations below.",
+      warning: false,
+    };
+  }
+  return null;
 }
 
 function ServiceScopeConfigurator({
@@ -1298,19 +1498,25 @@ function ServiceScopeConfigurator({
   value,
   onChange,
   onApply,
+  quantity,
+  quantityLabel,
 }: {
   slug: string;
   lang: "ru" | "en";
   value: ServiceScopeSelection;
   onChange: (next: ServiceScopeSelection) => void;
   onApply: () => void;
+  quantity: number;
+  quantityLabel: string;
 }) {
   const definition = serviceScopeDefinitions[slug];
   const [viewMode, setViewMode] = useState<"3d" | "2d">("3d");
   if (!definition) return null;
   const isRu = lang === "ru";
   const profileId = definition.profiles.some((item) => item.id === value.profile) ? value.profile : definition.profiles[0].id;
-  const materialId = definition.materials.some((item) => item.id === value.material) ? value.material : definition.materials[0].id;
+  const materialId = definition.materials.some((item) => item.id === value.material)
+    ? value.material
+    : definition.materials.find((item) => item.id === "unknown")?.id ?? definition.materials[0].id;
   const selected = (id: string) => value.selected.includes(id);
   const toggle = (id: string) => onChange({
     profile: profileId,
@@ -1320,6 +1526,14 @@ function ServiceScopeConfigurator({
   const chooseProfile = (id: string) => onChange({ ...value, profile: id });
   const chooseMaterial = (id: string) => onChange({ ...value, material: id });
   const zonePath = (zone: ServiceScopeZone) => viewMode === "3d" ? zone.d3 : zone.d2;
+  const recommendations = getServiceScopeRecommendations({ ...value, profile: profileId, material: materialId }, slug);
+  const insight = getServiceScopeInsight(slug, profileId, materialId, value.selected, lang);
+  const selectionProgress = Math.min(100, Math.round((value.selected.length / definition.works.length) * 100));
+  const addRecommendations = () => onChange({
+    profile: profileId,
+    material: materialId,
+    selected: Array.from(new Set([...value.selected, ...recommendations.map((item) => item.id)])),
+  });
 
   return (
     <section className="skol-service-scope mb-8 overflow-hidden border border-border/60 bg-card/35">
@@ -1465,6 +1679,9 @@ function ServiceScopeConfigurator({
               </div>
               <span className="font-mono text-xs text-primary">{String(value.selected.length).padStart(2, "0")} / {String(definition.works.length).padStart(2, "0")}</span>
             </div>
+            <div className="mb-4 h-1.5 overflow-hidden bg-secondary" role="progressbar" aria-label={isRu ? "Выбранные позиции" : "Selected work items"} aria-valuemin={0} aria-valuemax={definition.works.length} aria-valuenow={value.selected.length}>
+              <div className="h-full bg-primary transition-all duration-300" style={{ width: selectionProgress + "%" }} />
+            </div>
             <div className="space-y-2">
               {definition.works.map((item) => (
                 <button key={item.id} type="button" onClick={() => toggle(item.id)} aria-pressed={selected(item.id)}
@@ -1478,6 +1695,48 @@ function ServiceScopeConfigurator({
               ))}
             </div>
           </div>
+          {insight && (
+            <div className={"mt-5 border p-4 " + (insight.warning ? "border-primary/45 bg-primary/[.07]" : "border-border/60 bg-secondary/35")}>
+              <p className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-primary" />
+                {insight.title}
+              </p>
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">{insight.body}</p>
+            </div>
+          )}
+
+          {recommendations.length > 0 && (
+            <div className="mt-5 border border-border/60 bg-secondary/25 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="font-mono text-[9px] uppercase tracking-[.16em] text-primary">{isRu ? "СКОЛ / РЕКОМЕНДАЦИИ" : "SKOL / SUGGESTIONS"}</p>
+                  <h4 className="mt-1 text-sm font-semibold text-foreground">{isRu ? "Что стоит учесть дополнительно" : "What to consider next"}</h4>
+                </div>
+                <span className="font-mono text-xs text-primary">{String(recommendations.length).padStart(2, "0")}</span>
+              </div>
+              <div className="mt-3 space-y-3">
+                {recommendations.slice(0, 4).map((item) => (
+                  <div key={item.id} className="border-t border-border/40 pt-3 first:border-t-0 first:pt-0">
+                    <p className="text-sm font-medium text-foreground">{item[lang]}</p>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">{getServiceScopeRecommendationReason(slug, item.id, lang)}</p>
+                  </div>
+                ))}
+              </div>
+              {recommendations.length > 4 && (
+                <p className="mt-3 text-xs text-muted-foreground">
+                  {isRu ? "И ещё " + (recommendations.length - 4) + " рекомендаций." : "Plus " + (recommendations.length - 4) + " more suggestions."}
+                </p>
+              )}
+              <button type="button" onClick={addRecommendations}
+                className="mt-4 inline-flex min-h-10 w-full items-center justify-center gap-2 border border-primary/60 px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-primary/10">
+                {isRu ? "Добавить рекомендации в состав" : "Add suggestions to scope"} <ArrowUpRight className="h-4 w-4" />
+              </button>
+              <p className="mt-2 text-[11px] leading-4 text-muted-foreground">
+                {isRu ? "Рекомендации не добавляются автоматически — вы сами подтверждаете состав." : "Suggestions are not added automatically; you choose what to include."}
+              </p>
+            </div>
+          )}
+
           {value.selected.length > 0 && (
             <div className="mt-5 border border-primary/30 bg-primary/[.06] p-4">
               <div className="flex items-center justify-between gap-3">
@@ -1572,14 +1831,14 @@ const ServiceDetailPage = () => {
         .split("Состав демонтажа здания:")[0]
         .split("Building demolition scope:")[0]
         .trim();
-      return [cleanMessage, scopeText].filter(Boolean).join("\\n\\n");
+      return [cleanMessage, scopeText].filter(Boolean).join("\n\n");
     });
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   const applyServiceScopeToRequest = () => {
     if (!service) return;
-    const scopeText = getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey));
+    const scopeText = getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey), area[0], unitLabel);
     if (!scopeText) return;
     setMessage((current) => [cleanServiceScopeMessage(current), scopeText].filter(Boolean).join("\\n\\n"));
     document.getElementById("service-request-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1598,7 +1857,7 @@ const ServiceDetailPage = () => {
         : service?.slug === "building-demolition"
           ? getBuildingDemolitionSummary(buildingDemolitionConfig, lang)
           : service && serviceScopeDefinitions[service.slug]
-            ? getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey))
+            ? getServiceScopeSummary(serviceScopeSelection, service.slug, lang, t(service.titleKey), area[0], unitLabel)
             : "";
       const cleanMessage = cleanServiceScopeMessage(message);
       const finalMessage = [cleanMessage, scopeSummary].filter(Boolean).join("\n\n");
@@ -1742,6 +2001,8 @@ const ServiceDetailPage = () => {
             value={serviceScopeSelection}
             onChange={setServiceScopeSelection}
             onApply={applyServiceScopeToRequest}
+            quantity={area[0]}
+            quantityLabel={unitLabel}
           />
         </AnimatedSection>
       )}
