@@ -60,29 +60,14 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
         transition={{ duration: 2, ease: "easeOut" }}
       />
 
-      {/* Logo block */}
+      {/* Official SKOL wordmark */}
       <motion.div
-        className="relative flex items-center gap-3"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative flex w-full items-center justify-center px-8"
+        initial={{ opacity: 0, scale: 0.94, filter: "blur(8px)" }}
+        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
       >
-        <motion.div
-          className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30"
-          initial={{ rotate: -180, scale: 0 }}
-          animate={{ rotate: 0, scale: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span className="font-display font-bold text-2xl sm:text-3xl text-primary-foreground">С</span>
-        </motion.div>
-        <motion.span
-          className="font-display font-bold text-3xl sm:text-4xl md:text-5xl text-foreground tracking-tighter"
-          initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
-          animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          СКОЛ
-        </motion.span>
+        <img src="/skol-logo.png" alt="СКОЛ" className="h-auto w-full max-w-[min(72vw,520px)] invert dark:invert-0" width="969" height="159" fetchPriority="high" />
       </motion.div>
 
       {/* Tagline */}

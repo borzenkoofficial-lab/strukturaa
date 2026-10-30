@@ -46,11 +46,7 @@ const Header = () => {
              
               onClick={() => navigate("/")}
             >
-              <div className="skol-brand-mark w-8 h-8 sm:w-9 sm:h-9 rounded-sm border border-primary/70 bg-transparent flex items-center justify-center" aria-hidden="true">
-                <span className="skol-monogram font-display font-semibold text-sm sm:text-base text-foreground">С</span>
-                <i className="skol-mark-cut" />
-              </div>
-              <span className="font-display font-semibold text-base sm:text-lg text-foreground tracking-[0.18em]">СКОЛ</span>
+              <img src="/skol-logo.png" alt="СКОЛ" className="skol-wordmark h-auto w-[108px] sm:w-[142px] invert dark:invert-0" width="969" height="159" decoding="async" />
             </div>
           </div>
 
