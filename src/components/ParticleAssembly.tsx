@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { useReducedMotion } from "framer-motion";
 
 type Particle = {
@@ -8,7 +8,7 @@ type Particle = {
 
 const easeOut = (value: number) => 1 - Math.pow(1 - value, 3);
 
-const ParticleAssembly = ({ children }: { children: React.ReactNode }) => {
+const ParticleAssembly = ({ children }: { children: ReactNode }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion();
