@@ -24,6 +24,9 @@ const CinematicHero = () => {
   const nearPlaneX = useTransform(springX, [-0.5, 0.5], [-24, 24]);
   const transitionOpacity = useTransform(scrollYProgress, [0.55, 0.9, 1], [0, 0.9, 1]);
   const transitionScale = useTransform(scrollYProgress, [0.55, 1], [0.72, 1.15]);
+  const focusPull = useTransform(scrollYProgress, [0, 0.38, 0.78, 1], ["blur(0px)", "blur(0px)", "blur(1px)", "blur(3px)"]);
+  const exposure = useTransform(scrollYProgress, [0, 0.24, 0.62, 1], [0.08, 0.2, 0.08, 0.48]);
+  const titleDrift = useTransform(scrollYProgress, [0, 1], [0, -42]);
   const imageScale = reduceMotion ? 1 : 1.075;
 
   const handlePointerMove = useCallback((event: PointerEvent<HTMLElement>) => {
@@ -52,7 +55,7 @@ const CinematicHero = () => {
             src={heroImage}
             alt=""
             className="skol-hero-image"
-            style={reduceMotion ? undefined : { x: imageX, y: imageY, scale: imageScale }}
+            style={reduceMotion ? undefined : { x: imageX, y: imageY, scale: imageScale, filter: focusPull }}
             initial={reduceMotion ? false : { scale: 1.2, opacity: 0.25, filter: "blur(8px) saturate(.4)" }}
             animate={{ scale: imageScale, opacity: 1, filter: "blur(0px) saturate(.58)" }}
             transition={{ duration: 2.4, ease }}
@@ -63,6 +66,7 @@ const CinematicHero = () => {
             <motion.img src={heroImage} alt="" aria-hidden="true" className="skol-hero-depth-layer skol-hero-depth-near" style={{ x: nearPlaneX, y: nearPlaneY, scale: 1.18 }} initial={{ opacity: 0, filter: "blur(5px)" }} animate={{ opacity: 0.22, filter: "blur(0px)" }} transition={{ duration: 2.2, delay: 1, ease }} />
           </>}
           <div className="skol-hero-atmosphere" />
+          <motion.div className="skol-hero-exposure" style={reduceMotion ? undefined : { opacity: exposure }} />
           <div className="skol-hero-image-shade" />
           <div className="skol-hero-grid" />
           <div className="skol-hero-orbit skol-hero-orbit-one" />
@@ -86,6 +90,7 @@ const CinematicHero = () => {
           <div className="skol-hero-main">
             <motion.div
               className="skol-hero-copy"
+              style={reduceMotion ? undefined : { y: titleDrift }}
               initial={reduceMotion ? false : { opacity: 0, y: 42, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 1.35, delay: 0.48, ease }}
