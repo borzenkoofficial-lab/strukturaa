@@ -253,3 +253,72 @@
   .skol-particle-canvas { display: none; }
   .skol-particle-assembly.is-assembled .skol-bento-grid > * { animation: none; }
 }
+
+/* Scene bridge: hero typography resolves into the SKOL system grid */
+.skol-hero-camera { isolation: isolate; }
+.skol-hero-media { z-index: 0; }
+.skol-hero-frame { z-index: 2; }
+.skol-hero-frame-corners { z-index: 4; }
+.skol-hero-film-grain, .skol-hero-scanline, .skol-hero-light-sweep,
+.skol-hero-grid, .skol-hero-image-shade, .skol-hero-orbit { z-index: 1; }
+.skol-hero-copy h1 { text-wrap: balance; }
+.skol-hero-title-line { max-width: 100%; }
+.skol-hero-primary:focus-visible, .skol-hero-secondary:focus-visible {
+  outline: 2px solid var(--skol-paper); outline-offset: 5px;
+}
+.skol-cinematic-home #ecosystem { position: relative; padding-top: clamp(76px, 9vw, 132px); }
+.skol-cinematic-home #ecosystem::before {
+  content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: 76px;
+  background: linear-gradient(180deg, rgba(214,107,56,0), rgba(214,107,56,.78), rgba(214,107,56,0));
+}
+.skol-ecosystem-intro {
+  width: min(100% - 32px, 1344px); margin: 0 auto 34px; padding: 0 0 18px;
+  color: var(--skol-paper);
+}
+.skol-ecosystem-intro-meta {
+  display: flex; justify-content: space-between; gap: 16px;
+  color: rgba(241,239,233,.46); font: 600 9px/1.4 "DM Sans", sans-serif; letter-spacing: .2em;
+}
+.skol-ecosystem-intro-meta span:first-child { color: var(--skol-orange); }
+.skol-ecosystem-intro-main {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 330px);
+  align-items: end; gap: 36px; margin-top: 22px;
+}
+.skol-ecosystem-intro h2 {
+  margin: 0; font: 500 clamp(32px, 5.2vw, 72px)/.92 "Space Grotesk", sans-serif;
+  letter-spacing: -.075em;
+}
+.skol-ecosystem-intro h2 em { color: transparent; font-style: normal; -webkit-text-stroke: 1px rgba(241,239,233,.62); }
+.skol-ecosystem-intro p {
+  max-width: 320px; margin: 0 0 4px; color: rgba(241,239,233,.58);
+  font: 400 13px/1.75 "DM Sans", sans-serif;
+}
+.skol-ecosystem-intro-rule {
+  position: relative; height: 1px; margin-top: 28px; overflow: hidden;
+  background: rgba(241,239,233,.12);
+}
+.skol-ecosystem-intro-rule i {
+  position: absolute; inset: 0 auto 0 0; width: 22%;
+  background: linear-gradient(90deg, transparent, var(--skol-orange), transparent);
+  animation: skol-ecosystem-signal 5.5s ease-in-out infinite;
+}
+.skol-particle-canvas { contain: strict; }
+@keyframes skol-ecosystem-signal {
+  0%, 100% { transform: translateX(-110%); opacity: 0; }
+  18% { opacity: .9; }
+  78% { transform: translateX(520%); opacity: .5; }
+}
+@media (max-width: 640px) {
+  .skol-hero-copy h1 { font-size: clamp(40px, 10.8vw, 62px); letter-spacing: -.075em; }
+  .skol-hero-title-line { gap: .1em; }
+  .skol-ecosystem-intro { width: calc(100% - 40px); margin-bottom: 24px; }
+  .skol-ecosystem-intro-meta { font-size: 8px; letter-spacing: .12em; }
+  .skol-ecosystem-intro-meta span:last-child { max-width: 44%; text-align: right; }
+  .skol-ecosystem-intro-main { grid-template-columns: 1fr; gap: 14px; margin-top: 18px; }
+  .skol-ecosystem-intro h2 { font-size: clamp(32px, 9vw, 46px); }
+  .skol-ecosystem-intro p { max-width: 340px; font-size: 12px; }
+  .skol-ecosystem-intro-rule { margin-top: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-ecosystem-intro-rule i { animation: none; }
+}
