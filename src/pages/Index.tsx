@@ -26,6 +26,14 @@ const Index = () => {
           </div>
           <div id="ecosystem">
             <ParticleAssembly>
+              <div className="skol-ecosystem-intro" aria-label="Экосистема SKOL">
+                <div className="skol-ecosystem-intro-meta"><span>02 / SKOL SYSTEM</span><span>ОБЪЕКТ · ПРОЦЕСС · РЕЗУЛЬТАТ</span></div>
+                <div className="skol-ecosystem-intro-main">
+                  <h2>ОДНА СИСТЕМА.<br /><em>ПОЛНЫЙ ЦИКЛ РАБОТ.</em></h2>
+                  <p>От инструмента и специалистов до реализации проекта — все ключевые направления в одной среде.</p>
+                </div>
+                <div className="skol-ecosystem-intro-rule"><i /></div>
+              </div>
               <BentoGrid />
             </ParticleAssembly>
           </div>
