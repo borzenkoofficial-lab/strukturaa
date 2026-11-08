@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import BentoGrid from "@/components/BentoGrid";
+import ParticleAssembly from "@/components/ParticleAssembly";
 import FeaturesCarousel from "@/components/FeaturesCarousel";
 import StoriesBar from "@/components/stories/StoriesBar";
 import StatsSection from "@/components/StatsSection";
@@ -16,23 +17,24 @@ const Index = () => {
     <div className="skol-cinematic-home relative isolate min-h-screen bg-background gradient-dark">
       <SakuraAtmosphere />
       <div className="relative z-10">
-      <SEOHead canonical="/" />
-      <Header />
-      <main>
-        <CinematicHero />
-        <div className="skol-home-stories mx-auto max-w-7xl px-4 pt-7 sm:px-6 sm:pt-9">
-          <StoriesBar />
-        </div>
-        <div id="ecosystem">
-          <BentoGrid />
-        </div>
-      </main>
-
-      <FeaturesCarousel />
-      <StatsSection />
-      <ProcessSection />
-      <CTASection />
-      <Footer />
+        <SEOHead canonical="/" />
+        <Header />
+        <main>
+          <CinematicHero />
+          <div className="skol-home-stories mx-auto max-w-7xl px-4 pt-7 sm:px-6 sm:pt-9">
+            <StoriesBar />
+          </div>
+          <div id="ecosystem">
+            <ParticleAssembly>
+              <BentoGrid />
+            </ParticleAssembly>
+          </div>
+        </main>
+        <FeaturesCarousel />
+        <StatsSection />
+        <ProcessSection />
+        <CTASection />
+        <Footer />
       </div>
     </div>
   );
