@@ -41,3 +41,9 @@ Present SKOL as a modern construction and engineering ecosystem. Borrow cinemati
 - Avoid new runtime dependencies.
 - Keep hero image local and reuse existing repository asset.
 - Test production build, lint, and tests; review desktop/mobile and reduced-motion behavior before merging.
+
+## New motion treatment — particle assembly / cinematic camera
+- The hero now behaves like a restrained film opening: a longer lens-like image settle, staggered masked headline reveals, pointer parallax, scroll-driven camera drift, a slow light pass, fine grain, and a subtle scanline. No autoplay video or external media dependency.
+- The ecosystem cards are revealed through a one-shot particle assembly on scroll. A lightweight canvas samples the outer geometry of the main bento cards; particles converge from a deep spatial field, then the real DOM cards materialize in place and remain fully interactive.
+- Particle work is bounded to the homepage section, capped device-pixel ratio, canceled on unmount, and bypassed for reduced-motion preferences. The card content remains semantic HTML; canvas is decorative only.
+- Keep the effect once per page visit, not on every scroll reversal. Do not use a permanent particle simulation or continuous GPU-heavy shader.
