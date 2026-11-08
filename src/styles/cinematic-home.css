@@ -174,7 +174,7 @@
 }
 
 /* Cinematic camera language */
-.skol-hero-camera { position:: relative; min-height: inherit; transform-origin: 50% 40%; will-change: transform, opacity; }
+.skol-hero-camera { position: relative; min-height: inherit; transform-origin: 50% 40%; will-change: transform, opacity; }
 .skol-hero-light-sweep {
   position: absolute; inset: -25% auto -25% -38%; width: 28%;
   background: linear-gradient(90deg, transparent, rgba(255,235,211,.12), rgba(214,107,56,.08), transparent);
