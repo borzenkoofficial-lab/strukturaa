@@ -24,7 +24,7 @@ const CinematicHero = () => {
   const nearPlaneX = useTransform(springX, [-0.5, 0.5], [-24, 24]);
   const transitionOpacity = useTransform(scrollYProgress, [0.55, 0.9, 1], [0, 0.9, 1]);
   const transitionScale = useTransform(scrollYProgress, [0.55, 1], [0.72, 1.15]);
-  const focusPull = useTransform(scrollYProgress, [0, 0.38, 0.78, 1], ["blur(0px)", "blur(0px)", "blur(1px)", "blur(3px)"]);
+  const focusPull = useTransform(scrollYProgress, [0, 0.38, 0.78, 1], ["blur(0px) saturate(.58) contrast(1.12) brightness(.72)", "blur(0px) saturate(.58) contrast(1.12) brightness(.72)", "blur(1px) saturate(.58) contrast(1.12) brightness(.72)", "blur(3px) saturate(.58) contrast(1.12) brightness(.72)"]);
   const exposure = useTransform(scrollYProgress, [0, 0.24, 0.62, 1], [0.08, 0.2, 0.08, 0.48]);
   const titleDrift = useTransform(scrollYProgress, [0, 1], [0, -42]);
   const imageScale = reduceMotion ? 1 : 1.075;
@@ -56,8 +56,8 @@ const CinematicHero = () => {
             alt=""
             className="skol-hero-image"
             style={reduceMotion ? undefined : { x: imageX, y: imageY, scale: imageScale, filter: focusPull }}
-            initial={reduceMotion ? false : { scale: 1.2, opacity: 0.25, filter: "blur(8px) saturate(.4)" }}
-            animate={{ scale: imageScale, opacity: 1, filter: "blur(0px) saturate(.58)" }}
+            initial={reduceMotion ? false : { scale: 1.2, opacity: 0.25 }}
+            animate={{ scale: imageScale, opacity: 1 }}
             transition={{ duration: 2.4, ease }}
             fetchPriority="high"
           />
@@ -90,17 +90,18 @@ const CinematicHero = () => {
           <div className="skol-hero-main">
             <motion.div
               className="skol-hero-copy"
-              style={reduceMotion ? undefined : { y: titleDrift }}
               initial={reduceMotion ? false : { opacity: 0, y: 42, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 1.35, delay: 0.48, ease }}
             >
               <p className="skol-hero-kicker"><span>01</span> / СТРОИТЕЛЬНАЯ ЭКОСИСТЕМА</p>
+              <motion.div className="skol-hero-title-parallax" style={reduceMotion ? undefined : { y: titleDrift }}>
               <h1 id="skol-home-title">
                 <motion.span initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.1, delay: 0.58, ease }}>СОЗДАЁМ</motion.span>
                 <motion.span className="skol-hero-title-line" initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.15, delay: 0.72, ease }}><em>ПРОСТРАНСТВО</em><b>ДЛЯ</b></motion.span>
                 <motion.span className="skol-hero-title-accent" initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.86, ease }}>НОВОГО.</motion.span>
               </h1>
+              </motion.div>
               <p className="skol-hero-description">
                 Демонтаж, строительство, ремонт и инженерные решения —
                 собранные в единую систему работы с объектом.
