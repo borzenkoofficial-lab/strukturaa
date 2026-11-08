@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Crosshair, MoveUpRight } from "lucide-react";
-import { lazy, Suspense, useCallback, useRef, type PointerEvent } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
 import heroImage from "@/assets/hero-demolition.jpg";
 const ConstructionScene = lazy(() => import("@/components/ConstructionScene"));
 
@@ -8,6 +8,14 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 const CinematicHero = () => {
   const reduceMotion = useReducedMotion();
+  const [showConstructionScene, setShowConstructionScene] = useState(false);
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 1281px)");
+    const updateSceneEligibility = () => setShowConstructionScene(desktopQuery.matches);
+    updateSceneEligibility();
+    desktopQuery.addEventListener("change", updateSceneEligibility);
+    return () => desktopQuery.removeEventListener("change", updateSceneEligibility);
+  }, []);
   const heroRef = useRef<HTMLElement>(null);
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
@@ -68,7 +76,7 @@ const CinematicHero = () => {
           <div className="skol-hero-atmosphere" />
           <motion.div className="skol-hero-exposure" style={reduceMotion ? undefined : { opacity: exposure }} />
           <div className="skol-hero-image-shade" />
-          <Suspense fallback={null}><ConstructionScene /></Suspense>
+          {showConstructionScene && <Suspense fallback={null}><ConstructionScene /></Suspense>}
           <div className="skol-hero-grid" />
           <div className="skol-hero-orbit skol-hero-orbit-one" />
           <div className="skol-hero-orbit skol-hero-orbit-two" />
