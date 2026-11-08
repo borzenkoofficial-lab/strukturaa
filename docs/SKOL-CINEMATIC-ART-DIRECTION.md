@@ -47,3 +47,10 @@ Present SKOL as a modern construction and engineering ecosystem. Borrow cinemati
 - The ecosystem cards are revealed through a one-shot particle assembly on scroll. A lightweight canvas samples the outer geometry of the main bento cards; particles converge from a deep spatial field, then the real DOM cards materialize in place and remain fully interactive.
 - Particle work is bounded to the homepage section, capped device-pixel ratio, canceled on unmount, and bypassed for reduced-motion preferences. The card content remains semantic HTML; canvas is decorative only.
 - Keep the effect once per page visit, not on every scroll reversal. Do not use a permanent particle simulation or continuous GPU-heavy shader.
+
+## Iteration 02 — scene continuity and card-plane assembly
+- Added a restrained scene bridge between the opening hero and the ecosystem grid: numbered system marker, editorial statement, supporting copy and a moving signal line. It gives the particle reveal a clear narrative destination.
+- Particle targets now populate both card edges and a sparse interior plane. Start points are distributed through the visible dark field and use particle scale/opacity to imply depth; they no longer rely primarily on off-canvas sources.
+- Reduced canvas backing resolution to a 1.25 DPR cap to lower fill cost while retaining crisp particles.
+- Corrected hero stacking context explicitly so the image, lighting, grid, film texture, overlays and typography render in a predictable compositing order.
+- Tightened mobile headline sizing and added visible keyboard focus for the hero actions.
