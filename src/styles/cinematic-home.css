@@ -587,3 +587,11 @@
   .skol-cinematic-home .skol-particle-assembly .glass-card:hover { transform: none; }
   .skol-scene-scan { animation: none; display: none; }
 }
+
+
+/* Preserve below-the-fold layout while deferred sections are waiting to mount. */
+@media (max-width: 767px) {
+  .skol-deferred-section[data-ready="false"] {
+    min-height: var(--skol-deferred-mobile-height, 480px) !important;
+  }
+}
