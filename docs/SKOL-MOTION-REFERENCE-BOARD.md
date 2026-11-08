@@ -45,3 +45,12 @@
 - No horizontal overflow, clipping, layout shift or inaccessible hover-only action.
 - WebGL failures and reduced-motion settings leave a complete, usable page.
 - Build, tests, TypeScript, changed-file lint and browser checks pass before a branch update is published.
+
+
+## Iteration 06 — page-wide motion continuity and scene timing
+
+- Added a 2px editorial progress rail fixed to the viewport edge. It maps document scroll progress to a restrained signal-orange gradient and is omitted when reduced motion is requested.
+- Extended the same light language into the principles, collaboration-format and contact panels using short, low-contrast hover sweeps and border illumination. The effect is decorative only and does not move content or change layout.
+- Corrected the WebGL scene's scroll reference: the construction state now reads the untransformed hero section bounds instead of the nested camera layer, whose scale/translation could feed back into the progress calculation.
+- Removed the immediate full-scene render from every scroll event. The active animation loop consumes the latest scroll value on its next frame; the loop still starts when the hero re-enters the viewport.
+- Browser verification of this iteration is pending. Do not treat the visual effects or scroll correction as browser-QA approved until a fresh desktop/mobile run is completed.
