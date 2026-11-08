@@ -35,7 +35,7 @@ const ConstructionScene = () => {
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
     camera.position.set(8.4, 6.1, 11.8);
     camera.lookAt(0, 2.05, 0);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
     renderer.setSize(host.clientWidth, host.clientHeight);
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -64,6 +64,7 @@ const ConstructionScene = () => {
     const orange = new THREE.MeshStandardMaterial({ color: 0xd66b38, emissive: 0xd66b38, emissiveIntensity: 1.9, metalness: 0.35, roughness: 0.28 });
     const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xe2e6e3, transparent: true, opacity: 0.42 });
     const parts: Part[] = [];
+    const edgeGeometries = new Map<string, THREE.EdgesGeometry>();
 
     const addPart = (geometry: THREE.BufferGeometry, material: THREE.Material, position: THREE.Vector3, scale: THREE.Vector3, delay: number, offset: THREE.Vector3, rotation = new THREE.Euler()) => {
       const mesh = new THREE.Mesh(geometry, material);
@@ -71,7 +72,12 @@ const ConstructionScene = () => {
       mesh.scale.copy(scale);
       mesh.rotation.copy(rotation);
       world.add(mesh);
-      const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geometry, 18), edgeMaterial);
+      let edgeGeometry = edgeGeometries.get(geometry.uuid);
+      if (!edgeGeometry) {
+        edgeGeometry = new THREE.EdgesGeometry(geometry, 18);
+        edgeGeometries.set(geometry.uuid, edgeGeometry);
+      }
+      const edges = new THREE.LineSegments(edgeGeometry, edgeMaterial);
       edges.position.copy(mesh.position);
       edges.scale.copy(scale);
       edges.rotation.copy(rotation);
@@ -123,8 +129,9 @@ const ConstructionScene = () => {
     });
     world.add(grid);
 
-    const count = 240;
+    const count = 144;
     const positions = new Float32Array(count * 3);
+    const basePositions = new Float32Array(count * 3);
     const seeds = new Float32Array(count);
     for (let i = 0; i < count; i += 1) {
       positions[i * 3] = (Math.random() - 0.5) * 11;
@@ -132,8 +139,9 @@ const ConstructionScene = () => {
       positions[i * 3 + 2] = (Math.random() - 0.5) * 8;
       seeds[i] = Math.random() * Math.PI * 2;
     }
+    basePositions.set(positions);
     const dustGeometry = new THREE.BufferGeometry();
-    dustGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    dustGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3).setUsage(THREE.DynamicDrawUsage));
     const dust = new THREE.Points(dustGeometry, new THREE.PointsMaterial({ color: 0xd68a5c, size: 0.026, transparent: true, opacity: 0.68, depthWrite: false, blending: THREE.AdditiveBlending }));
     world.add(dust);
 
@@ -201,7 +209,7 @@ const ConstructionScene = () => {
       dust.rotation.y = elapsed * 0.018;
       const attribute = dustGeometry.attributes.position as THREE.BufferAttribute;
       const array = attribute.array as Float32Array;
-      for (let i = 0; i < count; i += 1) array[i * 3 + 1] += Math.sin(elapsed * 0.28 + seeds[i]) * 0.0008;
+      for (let i = 0; i < count; i += 1) array[i * 3 + 1] = basePositions[i * 3 + 1] + Math.sin(elapsed * 0.28 + seeds[i]) * 0.022;
       attribute.needsUpdate = true;
       renderer.render(scene, camera);
     };
@@ -221,7 +229,7 @@ const ConstructionScene = () => {
     const animate = (now: number) => {
       if (document.hidden || !isHeroVisible()) { raf = 0; return; }
       if (!startedAt) startedAt = now;
-      if (!lastFrame || now - lastFrame >= 1000 / 60) {
+      if (!lastFrame || now - lastFrame >= 1000 / 30) {
         render(now);
         lastFrame = now;
       }
@@ -259,13 +267,18 @@ const ConstructionScene = () => {
       host.removeEventListener("pointermove", onPointerMove);
       host.removeEventListener("pointerleave", resetPointer);
       window.removeEventListener("scroll", onScroll);
+      const geometries = new Set<THREE.BufferGeometry>();
+      const materials = new Set<THREE.Material>();
       world.traverse((object) => {
         if (object instanceof THREE.Mesh || object instanceof THREE.LineSegments || object instanceof THREE.Points) {
-          object.geometry.dispose();
-          const materials = Array.isArray(object.material) ? object.material : [object.material];
-          materials.forEach((material) => material.dispose());
+          geometries.add(object.geometry);
+          const objectMaterials = Array.isArray(object.material) ? object.material : [object.material];
+          objectMaterials.forEach((material) => materials.add(material));
         }
       });
+      geometries.forEach((geometry) => geometry.dispose());
+      materials.forEach((material) => material.dispose());
+      edgeGeometries.clear();
       renderer.dispose();
       renderer.domElement.remove();
     };
