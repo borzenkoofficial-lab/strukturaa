@@ -158,10 +158,13 @@ const ConstructionScene = () => {
     const resetPointer = () => { pointer.targetX = 0; pointer.targetY = 0; };
     const onScroll = () => {
       if (reducedMotion) return;
-      const bounds = host.getBoundingClientRect();
+      // Read progress from the untransformed hero section, not the animated
+      // WebGL host nested inside the parallax camera layer.
+      const bounds = visibilityTarget.getBoundingClientRect();
       scrollProgress = THREE.MathUtils.clamp(-bounds.top / Math.max(bounds.height, 1), 0, 1);
       if (!startedAt) startedAt = performance.now();
-      if (!document.hidden && isHeroVisible()) render(performance.now());
+      // The visible animation loop renders the latest progress on its next
+      // frame. Avoid an additional full scene render for every scroll event.
       startLoop();
     };
     host.addEventListener("pointermove", onPointerMove, { passive: true });
