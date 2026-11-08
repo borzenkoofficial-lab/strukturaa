@@ -40,16 +40,16 @@ const Index = () => {
             </ParticleAssembly>
           </div>
         </main>
-        <DeferredSection minHeight="clamp(480px, 52vw, 680px)">
+        <DeferredSection minHeight="760px" mobileMinHeight="1140px">
           <Suspense fallback={null}><FeaturesCarousel /></Suspense>
         </DeferredSection>
-        <DeferredSection minHeight="clamp(440px, 48vw, 620px)">
+        <DeferredSection minHeight="580px" mobileMinHeight="650px">
           <Suspense fallback={null}><StatsSection /></Suspense>
         </DeferredSection>
-        <DeferredSection minHeight="clamp(390px, 42vw, 540px)">
+        <DeferredSection minHeight="440px" mobileMinHeight="980px">
           <Suspense fallback={null}><ProcessSection /></Suspense>
         </DeferredSection>
-        <DeferredSection minHeight="clamp(340px, 36vw, 460px)">
+        <DeferredSection minHeight="350px" mobileMinHeight="400px">
           <Suspense fallback={null}><CTASection /></Suspense>
         </DeferredSection>
         <Suspense fallback={null}><Footer /></Suspense>
