@@ -1,12 +1,14 @@
+import { lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import BentoGrid from "@/components/BentoGrid";
 import ParticleAssembly from "@/components/ParticleAssembly";
-import FeaturesCarousel from "@/components/FeaturesCarousel";
+const FeaturesCarousel = lazy(() => import("@/components/FeaturesCarousel"));
 import StoriesBar from "@/components/stories/StoriesBar";
-import StatsSection from "@/components/StatsSection";
-import ProcessSection from "@/components/ProcessSection";
-import CTASection from "@/components/CTASection";
-import Footer from "@/components/Footer";
+const StatsSection = lazy(() => import("@/components/StatsSection"));
+const ProcessSection = lazy(() => import("@/components/ProcessSection"));
+const CTASection = lazy(() => import("@/components/CTASection"));
+const Footer = lazy(() => import("@/components/Footer"));
+import DeferredSection from "@/components/DeferredSection";
 import SEOHead from "@/components/SEOHead";
 import SakuraAtmosphere from "@/components/SakuraAtmosphere";
 import CinematicHero from "@/components/CinematicHero";
@@ -38,11 +40,19 @@ const Index = () => {
             </ParticleAssembly>
           </div>
         </main>
-        <FeaturesCarousel />
-        <StatsSection />
-        <ProcessSection />
-        <CTASection />
-        <Footer />
+        <DeferredSection minHeight="clamp(480px, 52vw, 680px)">
+          <Suspense fallback={null}><FeaturesCarousel /></Suspense>
+        </DeferredSection>
+        <DeferredSection minHeight="clamp(440px, 48vw, 620px)">
+          <Suspense fallback={null}><StatsSection /></Suspense>
+        </DeferredSection>
+        <DeferredSection minHeight="clamp(390px, 42vw, 540px)">
+          <Suspense fallback={null}><ProcessSection /></Suspense>
+        </DeferredSection>
+        <DeferredSection minHeight="clamp(340px, 36vw, 460px)">
+          <Suspense fallback={null}><CTASection /></Suspense>
+        </DeferredSection>
+        <Suspense fallback={null}><Footer /></Suspense>
       </div>
     </div>
   );
