@@ -322,3 +322,70 @@
 @media (prefers-reduced-motion: reduce) {
   .skol-ecosystem-intro-rule i { animation: none; }
 }
+
+/* Multi-plane camera: restrained image slices create foreground / midground / far depth */
+.skol-hero-media { perspective: 1200px; transform-style: preserve-3d; }
+.skol-hero-depth-layer {
+  position: absolute; inset: -4%; width: 108%; height: 108%; object-fit: cover;
+  pointer-events: none; will-change: transform; transform-origin: 50% 50%;
+}
+.skol-hero-depth-far {
+  z-index: 1; object-position: 68% 46%;
+  clip-path: polygon(48% 0, 100% 0, 100% 76%, 78% 83%, 64% 68%, 52% 42%);
+  filter: saturate(.42) contrast(1.18); mix-blend-mode: screen;
+  mask-image: linear-gradient(135deg, transparent 24%, #000 50%, #000 82%, transparent 100%);
+}
+.skol-hero-depth-near {
+  z-index: 2; object-position: 76% 82%;
+  clip-path: polygon(35% 57%, 58% 45%, 100% 52%, 100% 100%, 20% 100%);
+  filter: saturate(.35) contrast(1.28) brightness(.8); mix-blend-mode: screen;
+  mask-image: linear-gradient(0deg, #000 0%, #000 55%, transparent 100%);
+}
+.skol-hero-atmosphere {
+  position: absolute; z-index: 2; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 74% 52%, rgba(225,133,83,.16), transparent 24%),
+    radial-gradient(ellipse at 54% 12%, rgba(194,211,219,.1), transparent 30%),
+    linear-gradient(115deg, transparent 48%, rgba(231,222,204,.045) 58%, transparent 68%);
+  mix-blend-mode: screen;
+}
+.skol-hero-transition {
+  position: absolute; z-index: 5; bottom: -1px; left: 50%; width: 180px; height: 116px;
+  transform: translateX(-50%); transform-origin: 50% 100%; pointer-events: none;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.skol-hero-transition::before {
+  content: ""; position: absolute; left: 50%; bottom: 0; width: 1px; height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(214,107,56,.08) 24%, rgba(214,107,56,.85));
+  box-shadow: 0 0 18px rgba(214,107,56,.42);
+}
+.skol-hero-transition::after {
+  content: ""; position: absolute; left: 50%; bottom: -1px; width: 220px; height: 52px;
+  transform: translateX(-50%); background: radial-gradient(ellipse, rgba(214,107,56,.22), transparent 68%);
+  filter: blur(8px);
+}
+.skol-hero-transition i {
+  position: absolute; left: 50%; bottom: calc(10px + var(--particle-y, 0px));
+  width: 3px; height: 3px; border-radius: 50%; background: #e28553;
+  box-shadow: 0 0 9px rgba(226,133,83,.9); animation: skol-transition-particle 2.8s ease-in-out infinite;
+}
+.skol-hero-transition i:nth-child(1) { --particle-y: 12px; margin-left: -38px; animation-delay: -.2s; }
+.skol-hero-transition i:nth-child(2) { --particle-y: 30px; margin-left: -18px; animation-delay: -.9s; }
+.skol-hero-transition i:nth-child(3) { --particle-y: 48px; margin-left: 12px; animation-delay: -1.6s; }
+.skol-hero-transition i:nth-child(4) { --particle-y: 22px; margin-left: 34px; animation-delay: -2.1s; }
+.skol-hero-transition i:nth-child(5) { --particle-y: 62px; margin-left: -4px; animation-delay: -1.2s; }
+.skol-hero-transition span {
+  position: absolute; bottom: 0; left: 50%; width: 7px; height: 7px; border: 1px solid rgba(226,133,83,.85);
+  border-radius: 50%; transform: translate(-50%, 50%); box-shadow: 0 0 18px rgba(214,107,56,.55);
+}
+@keyframes skol-transition-particle {
+  0%, 100% { opacity: .15; transform: translate3d(0, 10px, 0) scale(.6); }
+  45% { opacity: .95; transform: translate3d(5px, -22px, 0) scale(1.35); }
+}
+@media (max-width: 640px) {
+  .skol-hero-depth-layer { display: none; }
+  .skol-hero-transition { height: 82px; width: 120px; }
+  .skol-hero-transition::after { width: 150px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-hero-depth-layer, .skol-hero-transition { display: none; }
+}
