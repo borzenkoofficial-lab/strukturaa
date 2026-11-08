@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 type DeferredSectionProps = {
   children: ReactNode;
   minHeight: string;
+  mobileMinHeight: string;
   rootMargin?: string;
 };
 
@@ -14,6 +15,7 @@ type DeferredSectionProps = {
 const DeferredSection = ({
   children,
   minHeight,
+  mobileMinHeight,
   rootMargin = "1000px 0px",
 }: DeferredSectionProps) => {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -42,7 +44,7 @@ const DeferredSection = ({
   }, [rootMargin]);
 
   return (
-    <div ref={hostRef} style={ready ? undefined : { minHeight }} data-deferred-section>
+    <div ref={hostRef} className="skol-deferred-section" data-deferred-section data-ready={ready ? "true" : "false"} style={ready ? undefined : { minHeight, "--skol-deferred-mobile-height": mobileMinHeight } as React.CSSProperties}>
       {ready ? children : null}
     </div>
   );
