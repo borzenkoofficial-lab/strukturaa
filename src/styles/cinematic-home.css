@@ -624,3 +624,86 @@
 @media (prefers-reduced-motion: reduce) {
   .skol-cinematic-home .skol-bento-grid > *::before { transition: none; }
 }
+
+
+/* Global editorial motion layer — page progress and restrained section lighting. */
+.skol-page-progress {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform-origin: 0 50%;
+  pointer-events: none;
+  background: linear-gradient(90deg, #a94d2c 0%, var(--skol-orange) 48%, #f0c09b 100%);
+  box-shadow: 0 0 12px rgba(214,107,56,.32);
+}
+
+.skol-cinematic-home .skol-principle-card,
+.skol-cinematic-home .skol-format-panel,
+.skol-cinematic-home .skol-cta-panel {
+  isolation: isolate;
+}
+
+.skol-cinematic-home .skol-principle-card::after,
+.skol-cinematic-home .skol-format-panel::after,
+.skol-cinematic-home .skol-cta-panel::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(112deg, transparent 18%, rgba(255,255,255,.055) 43%, rgba(214,107,56,.075) 50%, transparent 72%);
+  transform: translateX(-34%);
+  transition: opacity .55s ease, transform 1.15s cubic-bezier(.16,1,.3,1);
+}
+
+.skol-cinematic-home .skol-principle-card:hover::after,
+.skol-cinematic-home .skol-format-panel:hover::after,
+.skol-cinematic-home .skol-cta-panel:hover::after {
+  opacity: 1;
+  transform: translateX(34%);
+}
+
+.skol-cinematic-home .skol-principle-card > *,
+.skol-cinematic-home .skol-format-panel > *,
+.skol-cinematic-home .skol-cta-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.skol-cinematic-home .skol-principle-card {
+  transition: border-color .4s ease, box-shadow .55s cubic-bezier(.16,1,.3,1), background-color .4s ease;
+}
+
+.skol-cinematic-home .skol-principle-card:hover {
+  border-color: rgba(214,107,56,.48);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 24px 64px rgba(0,0,0,.28), 0 0 36px rgba(214,107,56,.055);
+  background-color: rgba(255,255,255,.025);
+}
+
+.skol-cinematic-home .skol-format-panel,
+.skol-cinematic-home .skol-cta-panel {
+  transition: border-color .45s ease, box-shadow .65s cubic-bezier(.16,1,.3,1);
+}
+
+.skol-cinematic-home .skol-format-panel:hover,
+.skol-cinematic-home .skol-cta-panel:hover {
+  border-color: rgba(214,107,56,.32);
+  box-shadow: 0 28px 76px rgba(0,0,0,.22), 0 0 44px rgba(214,107,56,.045);
+}
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .skol-cinematic-home .skol-principle-card::after,
+  .skol-cinematic-home .skol-format-panel::after,
+  .skol-cinematic-home .skol-cta-panel::after {
+    display: none;
+  }
+  .skol-cinematic-home .skol-principle-card,
+  .skol-cinematic-home .skol-format-panel,
+  .skol-cinematic-home .skol-cta-panel {
+    transition: none;
+  }
+}
