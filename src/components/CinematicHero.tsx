@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Crosshair, MoveUpRight } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, type PointerEvent } from "react";
 import heroImage from "@/assets/hero-demolition.jpg";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -15,7 +15,7 @@ const CinematicHero = () => {
   const imageY = useTransform(springY, [-0.5, 0.5], [10, -10]);
   const imageScale = reduceMotion ? 1 : 1.045;
 
-  const handlePointerMove = useCallback((event: React.PointerEvent<HTMLElement>) => {
+  const handlePointerMove = useCallback((event: PointerEvent<HTMLElement>) => {
     if (reduceMotion || event.pointerType !== "mouse") return;
     const bounds = event.currentTarget.getBoundingClientRect();
     pointerX.set((event.clientX - bounds.left) / bounds.width - 0.5);
