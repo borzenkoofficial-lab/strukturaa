@@ -8,7 +8,7 @@ import projectIndustrial from "@/assets/project-industrial-demo.jpg";
 import projectWaste from "@/assets/project-waste-removal.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, useRef, memo, type PointerEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const cardVariants = {
@@ -68,10 +68,33 @@ const FavButton = memo(({ id, className = "" }: { id: string; className?: string
 const BentoGrid = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const handleGridPointerMove = useCallback((event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "touch") return;
+    const card = (event.target as HTMLElement).closest<HTMLElement>(".skol-bento-grid > *");
+    if (!card || !gridRef.current?.contains(card)) return;
+    const bounds = card.getBoundingClientRect();
+    const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+    const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+    card.style.setProperty("--skol-spot-x", String((x * 100).toFixed(1)) + "%");
+    card.style.setProperty("--skol-spot-y", String((y * 100).toFixed(1)) + "%");
+    card.style.setProperty("--skol-tilt-x", String(((0.5 - y) * 2.2).toFixed(2)) + "deg");
+    card.style.setProperty("--skol-tilt-y", String(((x - 0.5) * 2.6).toFixed(2)) + "deg");
+  }, []);
+
+  const handleGridPointerLeave = useCallback(() => {
+    gridRef.current?.querySelectorAll<HTMLElement>(":scope > *").forEach((card) => {
+      card.style.removeProperty("--skol-spot-x");
+      card.style.removeProperty("--skol-spot-y");
+      card.style.removeProperty("--skol-tilt-x");
+      card.style.removeProperty("--skol-tilt-y");
+    });
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
-      <div className="skol-bento-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 auto-rows-[minmax(148px,auto)] sm:auto-rows-[minmax(190px,auto)] [&>*]:overflow-hidden">
+      <div ref={gridRef} onPointerMove={handleGridPointerMove} onPointerLeave={handleGridPointerLeave} className="skol-bento-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 auto-rows-[minmax(148px,auto)] sm:auto-rows-[minmax(190px,auto)] [&>*]:overflow-hidden">
 
         {/* ═══════ 1.5. МАГАЗИН ИНСТРУМЕНТОВ — б/у и новые ═══════ */}
         <motion.div
