@@ -19,7 +19,6 @@ const ParticleAssembly = ({ children }: { children: ReactNode }) => {
     if (!root || !canvas) return;
 
     let frame = 0;
-    let resizeObserver: ResizeObserver | undefined;
     let particles: Particle[] = [];
     let startedAt = 0;
     let width = 0;
@@ -130,7 +129,7 @@ const ParticleAssembly = ({ children }: { children: ReactNode }) => {
     }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
 
     observer.observe(root);
-    resizeObserver = new ResizeObserver(() => {
+    const resizeObserver = new ResizeObserver(() => {
       if (!root.classList.contains("is-assembled") && startedAt === 0) buildParticles();
     });
     resizeObserver.observe(root);
