@@ -60,3 +60,9 @@ Present SKOL as a modern construction and engineering ecosystem. Borrow cinemati
 - Added a low-intensity atmospheric light volume to separate the image planes and preserve legibility.
 - Added a vertical signal seam with five moving particles at the lower edge of the hero. Its opacity and scale respond to hero scroll progress, visually handing off from the camera scene into the particle assembly below.
 - Depth planes are disabled on narrow screens and under reduced-motion preferences; the base hero image and content remain intact.
+
+## Iteration 04 — focus pull and exposure choreography
+- Added a scroll-linked focus pull: the hero image begins crisp and gradually softens as the viewer leaves the opening scene, while the headline drifts at a different rate.
+- Added a restrained exposure bloom that rises and falls across the scroll timeline to create a lighting beat rather than a permanently glowing overlay.
+- Kept the effects on compositor-friendly opacity/transform where possible; image filter interpolation is limited to the hero image and a short blur range.
+- Exposure layer is disabled for reduced-motion preferences; mobile uses a lower-intensity lighting field.
