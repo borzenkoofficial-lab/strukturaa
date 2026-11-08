@@ -40,7 +40,7 @@ const ParticleAssembly = ({ children }: { children: ReactNode }) => {
       const bounds = root.getBoundingClientRect();
       width = root.clientWidth;
       height = root.scrollHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.25);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       canvas.style.width = width + "px";
@@ -60,9 +60,9 @@ const ParticleAssembly = ({ children }: { children: ReactNode }) => {
         const rect = card.getBoundingClientRect();
         const left = rect.left - bounds.left + root.scrollLeft;
         const top = rect.top - bounds.top + root.scrollTop;
-        const count = Math.max(18, Math.min(42, Math.round((rect.width * rect.height) / 8500)));
+        const count = Math.max(22, Math.min(38, Math.round((rect.width * rect.height) / 10500)));
         for (let i = 0; i < count; i += 1) {
-          const edge = i % 4;
+          const edge = i % 5;
           const t = random();
           let ex = left + t * rect.width;
           let ey = top + t * rect.height;
@@ -70,15 +70,21 @@ const ParticleAssembly = ({ children }: { children: ReactNode }) => {
           if (edge === 1) ex = left + rect.width;
           if (edge === 2) ey = top + rect.height;
           if (edge === 3) ex = left;
+          if (edge === 4) {
+            ex = left + rect.width * (0.08 + random() * 0.84);
+            ey = top + rect.height * (0.08 + random() * 0.84);
+          }
+          const depth = random();
           const angle = random() * Math.PI * 2;
-          const radius = Math.max(width, height) * (0.22 + random() * 0.7);
+          const radius = Math.max(width, height) * (0.16 + depth * 0.42);
+          const sx = Math.max(-12, Math.min(width + 12, ex + Math.cos(angle) * radius));
+          const sy = Math.max(-12, Math.min(height + 12, ey + Math.sin(angle) * radius * 0.7));
           next.push({
-            sx: width / 2 + Math.cos(angle) * radius,
-            sy: top + rect.height / 2 + Math.sin(angle) * radius * 0.62,
-            ex, ey, size: 0.7 + random() * 1.8,
-            delay: random() * 0.34 + cardIndex * 0.025,
-            drift: (random() - 0.5) * 34,
-            alpha: 0.35 + random() * 0.6,
+            sx, sy, ex, ey,
+            size: 0.55 + depth * 1.35,
+            delay: random() * 0.3 + cardIndex * 0.022,
+            drift: (random() - 0.5) * (18 + depth * 30),
+            alpha: 0.18 + depth * 0.52,
           });
         }
       });
