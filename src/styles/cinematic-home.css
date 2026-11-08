@@ -389,3 +389,25 @@
 @media (prefers-reduced-motion: reduce) {
   .skol-hero-depth-layer, .skol-hero-transition { display: none; }
 }
+
+/* Focus pull and exposure choreography — the image breathes as the viewer enters the next scene */
+.skol-hero-exposure {
+  position: absolute; z-index: 3; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 70% 48%, rgba(245,185,132,.22), transparent 32%),
+    linear-gradient(112deg, transparent 38%, rgba(255,231,202,.13) 52%, transparent 68%);
+  mix-blend-mode: screen;
+  will-change: opacity;
+}
+.skol-hero-image { will-change: transform, filter; }
+.skol-hero-depth-far, .skol-hero-depth-near { backface-visibility: hidden; }
+.skol-hero-atmosphere { transition: opacity .6s ease; }
+.skol-hero-camera { transform-style: preserve-3d; }
+.skol-hero-transition { will-change: opacity, transform; }
+@media (max-width: 640px) {
+  .skol-hero-exposure { background: radial-gradient(ellipse at 68% 46%, rgba(245,185,132,.13), transparent 36%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-hero-exposure { display: none; }
+  .skol-hero-image { filter: saturate(.58) contrast(1.12) brightness(.72) !important; }
+}
