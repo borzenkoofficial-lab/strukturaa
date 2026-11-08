@@ -12,11 +12,13 @@ import DeferredSection from "@/components/DeferredSection";
 import SEOHead from "@/components/SEOHead";
 import SakuraAtmosphere from "@/components/SakuraAtmosphere";
 import CinematicHero from "@/components/CinematicHero";
+import PageProgress from "@/components/PageProgress";
 import "@/styles/cinematic-home.css";
 
 const Index = () => {
   return (
     <div className="skol-cinematic-home relative isolate min-h-screen bg-background gradient-dark">
+      <PageProgress />
       <SakuraAtmosphere />
       <div className="relative z-10">
         <SEOHead canonical="/" />
