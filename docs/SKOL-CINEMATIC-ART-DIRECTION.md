@@ -54,3 +54,9 @@ Present SKOL as a modern construction and engineering ecosystem. Borrow cinemati
 - Reduced canvas backing resolution to a 1.25 DPR cap to lower fill cost while retaining crisp particles.
 - Corrected hero stacking context explicitly so the image, lighting, grid, film texture, overlays and typography render in a predictable compositing order.
 - Tightened mobile headline sizing and added visible keyboard focus for the hero actions.
+
+## Iteration 03 — multi-plane camera and transition seam
+- Introduced two restrained image planes, each with independent scroll and pointer response, to create a foreground/midground/far-field camera read without adding external image assets or changing the hero's composition.
+- Added a low-intensity atmospheric light volume to separate the image planes and preserve legibility.
+- Added a vertical signal seam with five moving particles at the lower edge of the hero. Its opacity and scale respond to hero scroll progress, visually handing off from the camera scene into the particle assembly below.
+- Depth planes are disabled on narrow screens and under reduced-motion preferences; the base hero image and content remain intact.
