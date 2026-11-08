@@ -18,6 +18,12 @@ const CinematicHero = () => {
   const cameraY = useTransform(scrollYProgress, [0, 1], [0, 115]);
   const cameraScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
   const cameraOpacity = useTransform(scrollYProgress, [0, 0.82, 1], [1, 0.72, 0.25]);
+  const farPlaneY = useTransform(scrollYProgress, [0, 1], [0, -76]);
+  const nearPlaneY = useTransform(scrollYProgress, [0, 1], [0, 64]);
+  const farPlaneX = useTransform(springX, [-0.5, 0.5], [10, -10]);
+  const nearPlaneX = useTransform(springX, [-0.5, 0.5], [-24, 24]);
+  const transitionOpacity = useTransform(scrollYProgress, [0.55, 0.9, 1], [0, 0.9, 1]);
+  const transitionScale = useTransform(scrollYProgress, [0.55, 1], [0.72, 1.15]);
   const imageScale = reduceMotion ? 1 : 1.075;
 
   const handlePointerMove = useCallback((event: PointerEvent<HTMLElement>) => {
@@ -52,6 +58,11 @@ const CinematicHero = () => {
             transition={{ duration: 2.4, ease }}
             fetchPriority="high"
           />
+          {!reduceMotion && <>
+            <motion.img src={heroImage} alt="" aria-hidden="true" className="skol-hero-depth-layer skol-hero-depth-far" style={{ x: farPlaneX, y: farPlaneY, scale: 1.13 }} initial={{ opacity: 0, filter: "blur(10px)" }} animate={{ opacity: 0.3, filter: "blur(1.5px)" }} transition={{ duration: 2.8, delay: 0.7, ease }} />
+            <motion.img src={heroImage} alt="" aria-hidden="true" className="skol-hero-depth-layer skol-hero-depth-near" style={{ x: nearPlaneX, y: nearPlaneY, scale: 1.18 }} initial={{ opacity: 0, filter: "blur(5px)" }} animate={{ opacity: 0.22, filter: "blur(0px)" }} transition={{ duration: 2.2, delay: 1, ease }} />
+          </>}
+          <div className="skol-hero-atmosphere" />
           <div className="skol-hero-image-shade" />
           <div className="skol-hero-grid" />
           <div className="skol-hero-orbit skol-hero-orbit-one" />
@@ -125,6 +136,7 @@ const CinematicHero = () => {
         </div>
         <div className="skol-hero-vertical-label" aria-hidden="true">SKOL / BUILT ENVIRONMENT</div>
       </motion.div>
+      <motion.div className="skol-hero-transition" aria-hidden="true" style={reduceMotion ? undefined : { opacity: transitionOpacity, scale: transitionScale }}><i /><i /><i /><i /><i /><span /></motion.div>
       <div className="skol-hero-frame-corners" aria-hidden="true"><i /><i /><i /><i /></div>
     </section>
   );
