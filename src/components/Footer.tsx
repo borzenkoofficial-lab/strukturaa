@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Footer = forwardRef<HTMLElement>((_, ref) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
 
   const serviceLinks = [
     { label: t("services.demolition"), path: "/services" },
@@ -25,18 +26,20 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
   return (
     <motion.footer
       className="skol-site-footer border-t border-border/30"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <motion.div
-              className="flex items-center gap-2 cursor-pointer mb-4"
-              whileHover={{ scale: 1.03 }}
+            <motion.button
+              type="button"
+              aria-label="На главную"
+              className="flex items-center gap-2 border-0 bg-transparent p-0 mb-4 text-left"
+              whileHover={reduceMotion ? undefined : { scale: 1.03 }}
               onClick={() => navigate("/")}
             >
               <div className="skol-footer-mark w-9 h-9 border border-primary/70 flex items-center justify-center" aria-hidden="true">
@@ -44,7 +47,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
                 <i className="skol-mark-cut" />
               </div>
               <span className="font-display font-bold text-lg text-foreground tracking-[0.18em]">СКОЛ<span className="text-primary">.</span></span>
-            </motion.div>
+            </motion.button>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               {t("about.mission")}
             </p>
