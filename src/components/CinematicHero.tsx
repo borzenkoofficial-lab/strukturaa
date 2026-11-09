@@ -2,11 +2,13 @@ import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTran
 import { ArrowDown, ArrowUpRight, Crosshair, MoveUpRight } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
 import heroImage from "@/assets/hero-demolition.jpg";
+import { useLanguage } from "@/contexts/LanguageContext";
 const ConstructionScene = lazy(() => import("@/components/ConstructionScene"));
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const CinematicHero = () => {
+  const { lang } = useLanguage();
   const reduceMotion = useReducedMotion();
   const [showConstructionScene, setShowConstructionScene] = useState(false);
   useEffect(() => {
@@ -106,24 +108,23 @@ const CinematicHero = () => {
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 1.35, delay: 0.48, ease }}
             >
-              <p className="skol-hero-kicker"><span>01</span> / СТРОИТЕЛЬНАЯ ЭКОСИСТЕМА</p>
+              <p className="skol-hero-kicker"><span>01</span> / {lang === "ru" ? "СТРОИТЕЛЬНАЯ ЭКОСИСТЕМА" : "CONSTRUCTION ECOSYSTEM"}</p>
               <motion.div className="skol-hero-title-parallax" style={reduceMotion ? undefined : { y: titleDrift }}>
               <h1 id="skol-home-title">
-                <motion.span initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.1, delay: 0.58, ease }}>СОЗДАЁМ</motion.span>
-                <motion.span className="skol-hero-title-line" initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.15, delay: 0.72, ease }}><em>ПРОСТРАНСТВО</em><b>ДЛЯ</b></motion.span>
-                <motion.span className="skol-hero-title-accent" initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.86, ease }}>НОВОГО.</motion.span>
+                <motion.span initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.1, delay: 0.58, ease }}>{lang === "ru" ? "СОЗДАЁМ" : "WE BUILD"}</motion.span>
+                <motion.span className="skol-hero-title-line" initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.15, delay: 0.72, ease }}><em>{lang === "ru" ? "ПРОСТРАНСТВО" : "SPACES"}</em><b>{lang === "ru" ? "ДЛЯ" : "FOR"}</b></motion.span>
+                <motion.span className="skol-hero-title-accent" initial={reduceMotion ? false : { y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.86, ease }}>{lang === "ru" ? "НОВОГО." : "THE NEXT."}</motion.span>
               </h1>
               </motion.div>
               <p className="skol-hero-description">
-                Демонтаж, строительство, ремонт и инженерные решения —
-                собранные в единую систему работы с объектом.
+                {lang === "ru" ? <>Демонтаж, строительство, ремонт и инженерные решения —<br />собранные в единую систему работы с объектом.</> : <>Demolition, construction, renovation and engineering —<br />coordinated as one integrated project system.</>}
               </p>
               <div className="skol-hero-actions">
                 <a className="skol-hero-primary" href="/services">
-                  НАПРАВЛЕНИЯ РАБОТ <MoveUpRight size={17} strokeWidth={1.7} />
+                  {lang === "ru" ? "НАПРАВЛЕНИЯ РАБОТ" : "OUR SERVICES"} <MoveUpRight size={17} strokeWidth={1.7} />
                 </a>
                 <a className="skol-hero-secondary" href="/contacts">
-                  ОБСУДИТЬ ПРОЕКТ <ArrowUpRight size={16} />
+                  {lang === "ru" ? "ОБСУДИТЬ ПРОЕКТ" : "DISCUSS A PROJECT"} <ArrowUpRight size={16} />
                 </a>
               </div>
             </motion.div>
@@ -136,8 +137,8 @@ const CinematicHero = () => {
             >
               <div className="skol-hero-index-mark"><Crosshair size={17} strokeWidth={1.2} /><span>SKOL / 2026</span></div>
               <div className="skol-hero-index-rule" />
-              <p>ОТ ПЕРВОГО<br />ЧЕРТЕЖА ДО<br /><strong>РЕЗУЛЬТАТА.</strong></p>
-              <span className="skol-hero-index-caption">ОДНА СИСТЕМА. РАЗНЫЕ МАСШТАБЫ.</span>
+              <p>{lang === "ru" ? <>ОТ ПЕРВОГО<br />ЧЕРТЕЖА ДО<br /><strong>РЕЗУЛЬТАТА.</strong></> : <>FROM FIRST<br />DRAWING TO<br /><strong>DELIVERY.</strong></>}</p>
+              <span className="skol-hero-index-caption">{lang === "ru" ? "ОДНА СИСТЕМА. РАЗНЫЕ МАСШТАБЫ." : "ONE SYSTEM. DIFFERENT SCALES."}</span>
             </motion.div>
           </div>
 
@@ -147,8 +148,8 @@ const CinematicHero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.35 }}
           >
-            <span className="skol-hero-scroll"><ArrowDown size={14} /> SCROLL TO EXPLORE</span>
-            <span className="skol-hero-bottom-center">ENGINEERED TO BUILD WHAT'S NEXT</span>
+            <span className="skol-hero-scroll"><ArrowDown size={14} /> {lang === "ru" ? "ЛИСТАЙТЕ, ЧТОБЫ УЗНАТЬ" : "SCROLL TO EXPLORE"}</span>
+            <span className="skol-hero-bottom-center">{lang === "ru" ? "ИНЖЕНЕРИЯ БУДУЩЕГО ПРОСТРАНСТВА" : "ENGINEERED TO BUILD WHAT'S NEXT"}</span>
             <span className="skol-hero-bottom-right">01 — 06</span>
           </motion.div>
         </div>
