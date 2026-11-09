@@ -10,7 +10,7 @@ import projectIndustrial from "@/assets/project-industrial-demo.jpg";
 import projectWaste from "@/assets/project-waste-removal.jpg";
 
 const BentoGrid = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
 
