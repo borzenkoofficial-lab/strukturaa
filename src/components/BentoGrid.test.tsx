@@ -45,7 +45,13 @@ describe("BentoGrid", () => {
       toJSON: () => ({}),
     } as DOMRect);
 
-    fireEvent.pointerMove(card, { clientX: 50, clientY: 25, pointerType: "mouse" });
+    const pointerMove = new Event("pointermove", { bubbles: true });
+    Object.defineProperties(pointerMove, {
+      pointerType: { value: "mouse" },
+      clientX: { value: 50 },
+      clientY: { value: 25 },
+    });
+    card.dispatchEvent(pointerMove);
 
     expect((card as HTMLButtonElement).style.getPropertyValue("--skol-spot-x")).toBe("25%");
     expect((card as HTMLButtonElement).style.getPropertyValue("--skol-spot-y")).toBe("25%");
