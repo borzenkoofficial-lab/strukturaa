@@ -3,6 +3,22 @@ import { ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./AnimatedSection";
 import { useLanguage } from "@/contexts/LanguageContext";
+import type { PointerEvent as ReactPointerEvent } from "react";
+
+const moveScopePointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+  if (event.pointerType !== "mouse") return;
+  const bounds = event.currentTarget.getBoundingClientRect();
+  if (bounds.width <= 0 || bounds.height <= 0) return;
+  const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+  const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+  event.currentTarget.style.setProperty("--skol-scope-x", `${x * 100}%`);
+  event.currentTarget.style.setProperty("--skol-scope-y", `${y * 100}%`);
+};
+
+const resetScopePointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+  event.currentTarget.style.setProperty("--skol-scope-x", "50%");
+  event.currentTarget.style.setProperty("--skol-scope-y", "50%");
+};
 
 const StatsSection = () => {
   const { lang } = useLanguage();
@@ -22,7 +38,7 @@ const StatsSection = () => {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20" aria-labelledby="skol-format-title">
       <AnimatedSection>
-        <div className="skol-format-panel relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#242629] px-5 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-14">
+        <div className="skol-format-panel relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#242629] px-5 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-14" onPointerMove={moveScopePointer} onPointerLeave={resetScopePointer}>
           <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
             <div className="absolute -right-20 -top-32 h-80 w-80 rounded-full border border-white/[0.045]" />
             <div className="absolute -right-8 -top-20 h-56 w-56 rounded-full border border-white/[0.045]" />
