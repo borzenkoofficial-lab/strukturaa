@@ -1,53 +1,75 @@
-import { motion } from "framer-motion";
-import { Phone, ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Phone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./AnimatedSection";
 import { useLanguage } from "@/contexts/LanguageContext";
+import type { PointerEvent as ReactPointerEvent } from "react";
+
+const moveCtaPointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+  if (event.pointerType !== "mouse") return;
+  const bounds = event.currentTarget.getBoundingClientRect();
+  if (bounds.width <= 0 || bounds.height <= 0) return;
+  const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+  const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+  event.currentTarget.style.setProperty("--skol-cta-x", `${x * 100}%`);
+  event.currentTarget.style.setProperty("--skol-cta-y", `${y * 100}%`);
+};
+
+const resetCtaPointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+  event.currentTarget.style.setProperty("--skol-cta-x", "50%");
+  event.currentTarget.style.setProperty("--skol-cta-y", "50%");
+};
 
 const CTASection = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20" aria-labelledby="skol-contact-title">
       <AnimatedSection>
-        <motion.div
-          className="skol-cta-panel relative overflow-hidden border border-border/70 p-8 sm:p-10 md:p-14"
-          style={{ background: "linear-gradient(135deg, rgba(112,45,59,0.28), rgba(36,38,41,0.94) 58%, rgba(29,30,32,0.98))" }}
-        >
-          <div
-            className="skol-cta-decoration absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-60"
-            style={{ background: "radial-gradient(circle, rgba(112,45,59,0.26), transparent 70%)" }}
-          />
-          <div className="relative flex flex-col items-stretch justify-between gap-6 sm:gap-8 md:flex-row md:items-center">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">{t("cta.title")}</h2>
-              <p className="text-muted-foreground max-w-lg">{t("cta.desc")}</p>
+        <div className="skol-cta-panel relative isolate overflow-hidden border border-border/70 p-6 sm:p-10 md:p-14" onPointerMove={moveCtaPointer} onPointerLeave={resetCtaPointer}>
+          <div className="skol-cta-panel__blueprint" aria-hidden="true" />
+          <div className="skol-cta-panel__orbit skol-cta-panel__orbit--one" aria-hidden="true" />
+          <div className="skol-cta-panel__orbit skol-cta-panel__orbit--two" aria-hidden="true" />
+          <div className="relative z-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+            <div className="max-w-2xl">
+              <p className="skol-section-label mb-4 text-primary">SKOL / NEXT STEP</p>
+              <h2 id="skol-contact-title" className="mb-4 font-display text-3xl font-semibold leading-[1.02] tracking-tight text-foreground sm:text-5xl">
+                {t("cta.title")}
+              </h2>
+              <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">{t("cta.desc")}</p>
             </div>
-            <div className="skol-cta-actions flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
+            <div className="skol-cta-actions flex w-full flex-col gap-3 sm:w-auto sm:min-w-[230px]">
               <motion.a
                 href="tel:+79366669958"
-                className="flex min-h-12 w-full items-center justify-center gap-2 rounded-sm bg-primary px-5 py-3.5 font-display font-semibold text-primary-foreground transition-opacity hover:opacity-90 sm:w-auto sm:px-8 sm:py-4"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                className="skol-cta-action skol-cta-action--primary"
+                whileHover={reduceMotion ? undefined : { y: -3 }}
+                whileTap={reduceMotion ? undefined : { scale: 0.98 }}
               >
-                <Phone className="w-5 h-5" />
-                {t("cta.call")}
+                <Phone size={17} strokeWidth={1.7} />
+                <span>{t("cta.call")}</span>
+                <ArrowUpRight className="ml-auto" size={17} />
               </motion.a>
               <motion.button
+                type="button"
                 onClick={() => navigate("/contacts")}
-                className="flex min-h-12 w-full items-center justify-center gap-2 rounded-sm bg-secondary px-5 py-3.5 font-display font-semibold text-secondary-foreground transition-colors hover:bg-secondary/80 sm:w-auto sm:px-8 sm:py-4"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                className="skol-cta-action skol-cta-action--secondary"
+                whileHover={reduceMotion ? undefined : { y: -3 }}
+                whileTap={reduceMotion ? undefined : { scale: 0.98 }}
               >
-                {t("cta.request")}
-                <ArrowRight className="w-5 h-5" />
+                <span>{t("cta.request")}</span>
+                <ArrowUpRight className="ml-auto" size={17} />
               </motion.button>
             </div>
           </div>
-        </motion.div>
+          <div className="skol-cta-panel__footer">
+            <span>{lang === "ru" ? "ДЕМОНТАЖ / СТРОИТЕЛЬСТВО / ОТДЕЛКА" : "DEMOLITION / CONSTRUCTION / FINISHING"}</span>
+            <span>{lang === "ru" ? "МОСКВА · МОСКОВСКАЯ ОБЛАСТЬ" : "MOSCOW · MOSCOW REGION"}</span>
+          </div>
+        </div>
       </AnimatedSection>
-    </div>
+    </section>
   );
 };
 

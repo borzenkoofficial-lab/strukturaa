@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calculator, Phone, Mail, CheckCircle2, Ruler, Clock, Shield, Loader2, ArrowUpRight, ChevronDown, HelpCircle, Layers, FolderOpen, Home, Bath, Paintbrush, DoorOpen, Zap, Trash2, Sofa, Grid2X2, Hammer, Package } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type PointerEvent as ReactPointerEvent } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -349,6 +349,37 @@ const servicesData: ServiceData[] = [
   },
 ];
 
+
+
+const serviceHeroVisuals: Record<string, { code: string; image: string; label: { ru: string; en: string } }> = {
+  demolition: { code: "01 / DEMOLITION", image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1800&q=85", label: { ru: "Демонтаж и подготовка", en: "Demolition & preparation" } },
+  construction: { code: "02 / STRUCTURES", image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1800&q=85", label: { ru: "Монтаж и конструкции", en: "Installation & structures" } },
+  renovation: { code: "03 / RENOVATION", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=85", label: { ru: "Ремонт и отделка", en: "Renovation & finishes" } },
+  "apartment-demolition": { code: "04 / APARTMENT STRIP-OUT", image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1800&q=85", label: { ru: "Демонтаж помещений", en: "Interior strip-out" } },
+  "building-demolition": { code: "05 / BUILDING DEMOLITION", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=85", label: { ru: "Здания и сооружения", en: "Buildings & structures" } },
+  "waste-removal": { code: "06 / SITE LOGISTICS", image: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1800&q=85", label: { ru: "Погрузка и логистика", en: "Loading & logistics" } },
+  dismantling: { code: "07 / ENGINEERING SYSTEMS", image: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1800&q=85", label: { ru: "Инженерные системы", en: "Engineering systems" } },
+  "diamond-cutting": { code: "08 / DIAMOND CUTTING", image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1800&q=85", label: { ru: "Алмазная резка и бурение", en: "Diamond cutting & drilling" } },
+};
+
+const moveServiceHeroPointer = (event: ReactPointerEvent<HTMLElement>) => {
+  if (event.pointerType !== "mouse") return;
+  const bounds = event.currentTarget.getBoundingClientRect();
+  if (bounds.width <= 0 || bounds.height <= 0) return;
+  const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+  const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+  event.currentTarget.style.setProperty("--detail-pointer-x", `${x * 100}%`);
+  event.currentTarget.style.setProperty("--detail-pointer-y", `${y * 100}%`);
+  event.currentTarget.style.setProperty("--detail-drift-x", `${(0.5 - x) * 14}px`);
+  event.currentTarget.style.setProperty("--detail-drift-y", `${(0.5 - y) * 10}px`);
+};
+
+const resetServiceHeroPointer = (event: ReactPointerEvent<HTMLElement>) => {
+  event.currentTarget.style.setProperty("--detail-pointer-x", "50%");
+  event.currentTarget.style.setProperty("--detail-pointer-y", "50%");
+  event.currentTarget.style.setProperty("--detail-drift-x", "0px");
+  event.currentTarget.style.setProperty("--detail-drift-y", "0px");
+};
 
 type ApartmentRoomId = "all" | "living" | "bedroom" | "kitchen" | "bathroom" | "hall" | "balcony";
 type ApartmentScopeSelection = { roomId: ApartmentRoomId; workId: string };
@@ -2274,6 +2305,7 @@ const ServiceDetailPage = () => {
   const relatedServices = service.relatedSlugs
     .map(s => servicesData.find(sd => sd.slug === s))
     .filter(Boolean) as ServiceData[];
+  const serviceHeroVisual = serviceHeroVisuals[service.slug] ?? serviceHeroVisuals.demolition;
 
   const seoTitle = t(service.titleKey);
   const seoDesc = service.slug === "apartment-demolition"
@@ -2302,18 +2334,28 @@ const ServiceDetailPage = () => {
 
       {/* Hero */}
       <AnimatedSection>
-        <div className="skol-detail-hero glass-card relative isolate overflow-hidden p-6 sm:p-8 md:p-12 mb-8">
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] overflow-hidden opacity-25 lg:block" aria-hidden="true">
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=85)" }} />
-            <div className="absolute inset-0 bg-gradient-to-r from-card via-card/35 to-transparent" />
+        <div className="skol-detail-hero glass-card relative isolate overflow-hidden p-6 sm:p-8 md:p-12 mb-8" onPointerMove={moveServiceHeroPointer} onPointerLeave={resetServiceHeroPointer}>
+          <div className="skol-detail-hero__visual pointer-events-none absolute inset-y-0 right-0 hidden w-[58%] overflow-hidden opacity-55 lg:block" aria-hidden="true">
+            <div className="skol-detail-hero__image absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${serviceHeroVisual.image})` }} />
+            <div className="absolute inset-0 bg-gradient-to-r from-card via-card/45 to-transparent" />
             <div className="absolute inset-0 opacity-40" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.16) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.16) 1px, transparent 1px)", backgroundSize: "42px 42px" }} />
           </div>
-          <h1 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-4">
+          <div className="skol-detail-hero__eyebrow relative z-10 mb-5 flex flex-wrap items-center gap-3 font-mono text-[9px] uppercase tracking-[.2em] text-primary sm:text-[10px]">
+            <span className="h-px w-7 bg-primary" />
+            <span>SKOL / {serviceHeroVisual.code}</span>
+            <span className="text-muted-foreground/70">{serviceHeroVisual.label[lang]}</span>
+          </div>
+          <span className="skol-detail-hero__ghost-code pointer-events-none absolute right-6 top-5 hidden select-none font-mono text-[clamp(4rem,11vw,10rem)] font-semibold leading-none tracking-[-.1em] text-foreground/[.045] lg:block" aria-hidden="true">{serviceHeroVisual.code.slice(0, 2)}</span>
+          <h1 className="skol-detail-hero__title relative z-10 mb-4 max-w-4xl text-3xl font-display font-bold tracking-[-.055em] text-foreground md:text-5xl lg:text-6xl">
             {t(service.titleKey)}
           </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mb-6">
+          <p className="skol-detail-hero__description relative z-10 mb-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
             {t(service.descKey)}
           </p>
+          <a href="#service-request-form" className="skol-detail-hero__action relative z-10 mb-7 inline-flex min-h-11 items-center gap-3 border border-primary/65 bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-[.12em] text-primary-foreground transition-all">
+            {lang === "ru" ? "Обсудить состав работ" : "Discuss the scope"}
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-xl text-sm font-semibold">
               <Ruler className="w-4 h-4" />

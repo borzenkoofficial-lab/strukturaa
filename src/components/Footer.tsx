@@ -1,18 +1,19 @@
 import { forwardRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
 const Footer = forwardRef<HTMLElement>((_, ref) => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
 
   const serviceLinks = [
-    { label: t("services.demolition"), path: "/services" },
-    { label: t("services.construction"), path: "/services" },
-    { label: t("services.renovation"), path: "/services" },
-    { label: t("services.concrete"), path: "/services" },
+    { label: t("services.demolition"), path: "/services/demolition" },
+    { label: t("services.construction"), path: "/services/construction" },
+    { label: t("services.renovation"), path: "/services/renovation" },
+    { label: t("services.concrete"), path: "/services/diamond-cutting" },
   ];
 
   const companyLinks = [
@@ -25,26 +26,28 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
   return (
     <motion.footer
       className="skol-site-footer border-t border-border/30"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <motion.div
-              className="flex items-center gap-2 cursor-pointer mb-4"
-              whileHover={{ scale: 1.03 }}
+            <motion.button
+              type="button"
+              aria-label="На главную"
+              className="flex items-center gap-2 border-0 bg-transparent p-0 mb-4 text-left"
+              whileHover={reduceMotion ? undefined : { scale: 1.03 }}
               onClick={() => navigate("/")}
             >
               <div className="skol-footer-mark w-9 h-9 border border-primary/70 flex items-center justify-center" aria-hidden="true">
                 <span className="skol-monogram font-display font-bold text-sm text-foreground">С</span>
                 <i className="skol-mark-cut" />
               </div>
-              <span className="font-display font-bold text-lg text-foreground tracking-[0.18em]">СКОЛ<span className="text-primary">.</span></span>
-            </motion.div>
+              <span className="font-display font-bold text-lg text-foreground tracking-[0.18em]">{lang === "ru" ? "СКОЛ" : "SKOL"}<span className="text-primary">.</span></span>
+            </motion.button>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               {t("about.mission")}
             </p>
@@ -57,6 +60,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
               {serviceLinks.map((item) => (
                 <li key={item.label}>
                   <button
+                    type="button"
                     onClick={() => navigate(item.path)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
@@ -112,10 +116,11 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
         <div className="mt-10 pt-6 border-t border-border/30 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">{t("footer.rights")}</p>
           <button
+            type="button"
             onClick={() => navigate("/contacts")}
             className="group inline-flex items-center gap-2 text-xs font-medium text-foreground/75 transition-colors hover:text-foreground"
           >
-            Обсудить объект
+            {lang === "ru" ? "Обсудить объект" : "Discuss the project"}
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </button>
         </div>

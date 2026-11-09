@@ -41,21 +41,25 @@ const Header = () => {
                 <ChevronLeft className="w-5 h-5" />
               </button>
             )}
-            <div
-              className="flex items-center gap-1.5 sm:gap-2 cursor-pointer"
-             
+            <button
+              type="button"
+              aria-label="На главную"
+              className="flex items-center gap-1.5 border-0 bg-transparent p-0 sm:gap-2"
               onClick={() => navigate("/")}
             >
               <img src="/skol-logo.png" alt="СКОЛ" className="skol-wordmark h-auto w-[108px] sm:w-[142px] invert dark:invert-0" width="969" height="159" decoding="async" />
-            </div>
+            </button>
           </div>
 
-          <div className="hidden md:flex items-center flex-1 max-w-md mx-8 cursor-pointer" onClick={() => setSearchOpen(true)}>
-            <div className="flex items-center w-full border border-border/70 bg-card/30 px-4 py-2.5 gap-2 transition-colors hover:border-primary/50">
-              <span className="text-sm text-muted-foreground">{t("header.search")}</span>
-              <Search className="w-4 h-4 text-muted-foreground ml-auto" />
-            </div>
-          </div>
+          <button
+            type="button"
+            aria-label={t("header.search")}
+            className="hidden md:flex items-center flex-1 max-w-md mx-8 border border-border/70 bg-card/30 px-4 py-2.5 gap-2 text-left transition-colors hover:border-primary/50"
+            onClick={() => setSearchOpen(true)}
+          >
+            <span className="text-sm text-muted-foreground">{t("header.search")}</span>
+            <Search className="w-4 h-4 text-muted-foreground ml-auto" />
+          </button>
 
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item, i) => (
@@ -71,6 +75,8 @@ const Header = () => {
 
           <div className="flex items-center gap-1.5 sm:gap-2">
             <button
+              type="button"
+              aria-label={t("header.search")}
               onClick={() => setSearchOpen(true)}
               className="md:hidden p-2 text-secondary-foreground"
       >
@@ -119,6 +125,9 @@ const Header = () => {
             )}
 
             <button
+              type="button"
+              aria-label="Открыть меню"
+              aria-expanded={menuOpen}
               className="lg:hidden p-2 text-secondary-foreground"
               onClick={() => setMenuOpen(true)}
       >

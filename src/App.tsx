@@ -12,7 +12,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute, AdminRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
+const Footer = lazy(() => import("./components/Footer"));
 import SakuraAtmosphere from "@/components/SakuraAtmosphere";
 
 // Lazy load non-critical routes
@@ -56,7 +56,7 @@ const PageLayout = ({ children, atmosphere = true }: { children: React.ReactNode
     <div className="relative z-10">
       <Header />
       <Suspense fallback={<PageLoading />}>{children}</Suspense>
-      <Footer />
+      <Suspense fallback={null}><Footer /></Suspense>
     </div>
   </div>
 );

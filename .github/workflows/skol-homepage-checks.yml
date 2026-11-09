@@ -1,0 +1,46 @@
+name: SKOL construction homepage checks
+
+on:
+  push:
+    branches:
+      - feature/skol-cinematic-homepage
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skol-homepage-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Test, lint and production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Lint changed TypeScript files
+        run: |
+          git diff --name-only origin/main...HEAD -- '*.ts' '*.tsx' | xargs -r npx eslint
+
+      - name: Build production bundle
+        run: npm run build
