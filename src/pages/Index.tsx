@@ -45,16 +45,16 @@ const Index = () => {
           </div>
         </main>
         <DeferredSection minHeight="760px" mobileMinHeight="1140px">
-          <div data-skol-reveal><Suspense fallback={null}><FeaturesCarousel /></Suspense></div>
+          <Suspense fallback={null}><FeaturesCarousel /></Suspense>
         </DeferredSection>
         <DeferredSection minHeight="580px" mobileMinHeight="650px">
-          <div data-skol-reveal><Suspense fallback={null}><StatsSection /></Suspense></div>
+          <Suspense fallback={null}><StatsSection /></Suspense>
         </DeferredSection>
         <DeferredSection minHeight="440px" mobileMinHeight="980px">
-          <div data-skol-reveal><Suspense fallback={null}><ProcessSection /></Suspense></div>
+          <Suspense fallback={null}><ProcessSection /></Suspense>
         </DeferredSection>
         <DeferredSection minHeight="350px" mobileMinHeight="400px">
-          <div data-skol-reveal><Suspense fallback={null}><CTASection /></Suspense></div>
+          <Suspense fallback={null}><CTASection /></Suspense>
         </DeferredSection>
         <div data-skol-reveal><Suspense fallback={null}><Footer /></Suspense></div>
       </div>
