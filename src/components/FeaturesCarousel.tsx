@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ClipboardCheck, Layers3, HardHat } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./AnimatedSection";
@@ -26,9 +26,10 @@ const principles = [
 
 const FeaturesCarousel = () => {
   const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
 
   return (
-    <section className="skol-principles-section relative overflow-hidden py-16 sm:py-24">
+    <section className="skol-principles-section relative overflow-hidden py-16 sm:py-24" aria-labelledby="skol-principles-title">
       <div className="pointer-events-none absolute inset-0 opacity-40" aria-hidden="true">
         <div className="absolute left-1/2 top-0 h-px w-[min(88%,1200px)] -translate-x-1/2 bg-gradient-to-r from-transparent via-border to-transparent" />
         <div className="absolute right-[8%] top-12 h-64 w-64 rounded-full border border-foreground/[0.04]" />
@@ -39,13 +40,14 @@ const FeaturesCarousel = () => {
         <AnimatedSection>
           <div className="mb-8 flex flex-col justify-between gap-5 sm:mb-12 sm:flex-row sm:items-end">
             <div className="max-w-2xl">
-              <p className="skol-section-label mb-4 text-primary">Подход СКОЛ</p>
-              <h2 className="font-display text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
+              <p className="skol-section-label mb-4 text-primary">SKOL / APPROACH</p>
+              <h2 id="skol-principles-title" className="font-display text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
                 Строительные работы
                 <span className="block text-muted-foreground">без лишней неопределённости</span>
               </h2>
             </div>
             <button
+              type="button"
               onClick={() => navigate("/contacts")}
               className="group inline-flex w-fit items-center gap-2 border-b border-primary/50 pb-2 text-sm font-medium text-foreground transition-colors hover:border-primary"
             >
@@ -56,17 +58,22 @@ const FeaturesCarousel = () => {
         </AnimatedSection>
 
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
-          {principles.map((item, index) => (
-            <AnimatedSection key={item.number} delay={index * 0.1}>
+          {principles.map((item, index) => {
+            const Icon = item.icon;
+            return (
               <motion.article
-                className="skol-principle-card group relative flex h-full min-h-[250px] flex-col justify-between overflow-hidden border border-border/65 bg-card/35 p-5 transition-colors duration-300 hover:border-primary/40 sm:min-h-[300px] sm:p-7"
-                whileHover={{ y: -2 }}
-                transition={{ duration: 0.25 }}
+                key={item.number}
+                className="skol-principle-card group relative flex min-h-[270px] flex-col justify-between overflow-hidden border border-border/65 bg-card/35 p-5 transition-colors duration-300 hover:border-primary/40 sm:min-h-[310px] sm:p-7"
+                initial={reduceMotion ? false : { opacity: 0, y: 26 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.18 }}
+                transition={{ duration: 0.72, delay: reduceMotion ? 0 : index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={reduceMotion ? undefined : { y: -3 }}
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border border-foreground/[0.035] transition-transform duration-500 group-hover:scale-110" />
                 <div className="flex items-start justify-between">
                   <div className="flex h-11 w-11 items-center justify-center rounded-md border border-border/60 bg-secondary/50 text-primary transition-colors group-hover:border-primary/35">
-                    <item.icon className="h-5 w-5" strokeWidth={1.7} />
+                    <Icon className="h-5 w-5" strokeWidth={1.7} />
                   </div>
                   <span className="font-mono text-xs tracking-widest text-muted-foreground/60">{item.number}</span>
                 </div>
@@ -75,8 +82,8 @@ const FeaturesCarousel = () => {
                   <p className="max-w-sm text-sm leading-6 text-muted-foreground">{item.description}</p>
                 </div>
               </motion.article>
-            </AnimatedSection>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
