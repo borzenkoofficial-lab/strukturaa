@@ -6,15 +6,15 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 import SEOHead from "@/components/SEOHead";
 
-const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: TranslationKey; slug: string; image: string; tag: string }[] = [
-  { icon: Building2, titleKey: "services.demolition", descKey: "services.demolitionDesc", slug: "demolition", image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=85", tag: "Разборка / демонтаж" },
-  { icon: HardHat, titleKey: "services.construction", descKey: "services.constructionDesc", slug: "construction", image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=85", tag: "Монтаж / конструкции" },
-  { icon: Home, titleKey: "services.renovation", descKey: "services.renovationDesc", slug: "renovation", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85", tag: "Подготовка / ремонт" },
-  { icon: Hammer, titleKey: "services.apartmentDemo", descKey: "services.apartmentDemoDesc", slug: "apartment-demolition", image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85", tag: "Квартиры / помещения" },
-  { icon: Building2, titleKey: "services.buildingDemo", descKey: "services.buildingDemoDesc", slug: "building-demolition", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85", tag: "Здания / сооружения" },
-  { icon: Truck, titleKey: "services.wasteRemoval", descKey: "services.wasteRemovalDesc", slug: "waste-removal", image: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1200&q=85", tag: "Логистика / отходы" },
-  { icon: Wrench, titleKey: "services.dismantling", descKey: "services.dismantlingDesc", slug: "dismantling", image: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1200&q=85", tag: "Инженерные системы" },
-  { icon: Gem, titleKey: "services.concrete", descKey: "services.concreteDesc", slug: "diamond-cutting", image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=85", tag: "Резка / отверстия" },
+const services: { icon: typeof Building2; titleKey: TranslationKey; descKey: TranslationKey; slug: string; image: string; tag: { ru: string; en: string } }[] = [
+  { icon: Building2, titleKey: "services.demolition", descKey: "services.demolitionDesc", slug: "demolition", image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=85", tag: { ru: "Разборка / демонтаж", en: "Strip-out / demolition" } },
+  { icon: HardHat, titleKey: "services.construction", descKey: "services.constructionDesc", slug: "construction", image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=85", tag: { ru: "Монтаж / конструкции", en: "Installation / structures" } },
+  { icon: Home, titleKey: "services.renovation", descKey: "services.renovationDesc", slug: "renovation", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85", tag: { ru: "Подготовка / ремонт", en: "Preparation / renovation" } },
+  { icon: Hammer, titleKey: "services.apartmentDemo", descKey: "services.apartmentDemoDesc", slug: "apartment-demolition", image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85", tag: { ru: "Квартиры / помещения", en: "Apartments / interiors" } },
+  { icon: Building2, titleKey: "services.buildingDemo", descKey: "services.buildingDemoDesc", slug: "building-demolition", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85", tag: { ru: "Здания / сооружения", en: "Buildings / structures" } },
+  { icon: Truck, titleKey: "services.wasteRemoval", descKey: "services.wasteRemovalDesc", slug: "waste-removal", image: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1200&q=85", tag: { ru: "Логистика / отходы", en: "Logistics / waste" } },
+  { icon: Wrench, titleKey: "services.dismantling", descKey: "services.dismantlingDesc", slug: "dismantling", image: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1200&q=85", tag: { ru: "Инженерные системы", en: "Building services" } },
+  { icon: Gem, titleKey: "services.concrete", descKey: "services.concreteDesc", slug: "diamond-cutting", image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=85", tag: { ru: "Резка / отверстия", en: "Cutting / openings" } },
 ];
 
 const ServicesPage = () => {
@@ -36,8 +36,8 @@ const ServicesPage = () => {
               </h1>
               <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">{t("services.pageSubtitle")}</p>
               <div className="mt-8 flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[.12em] text-muted-foreground sm:text-xs">
-                <span className="border border-border/70 px-3 py-2">01—08 / направления</span>
-                <span className="border border-border/70 px-3 py-2">Расчёт по объекту</span>
+                <span className="border border-border/70 px-3 py-2">{lang === "ru" ? "01—08 / направления" : "01—08 / disciplines"}</span>
+                <span className="border border-border/70 px-3 py-2">{lang === "ru" ? "Расчёт по объекту" : "Site-specific estimate"}</span>
               </div>
               <p className="mt-5 max-w-lg text-xs leading-6 text-muted-foreground">
                 {lang === "ru" ? "Состав, сроки и стоимость определяются после уточнения объёма, материалов, доступа и условий площадки." : "Scope, schedule and cost are defined after reviewing quantities, materials, access and site conditions."}
@@ -77,6 +77,8 @@ const ServicesPage = () => {
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.22 }}
                 onClick={() => navigate(`/services/${service.slug}`)}
+                onPointerMove={moveServicePointer}
+                onPointerLeave={resetServicePointer}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
@@ -90,7 +92,7 @@ const ServicesPage = () => {
                   <div className="skol-services-card__grid absolute inset-0 opacity-20" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.16) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.16) 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
                   <div className="absolute left-4 top-4 flex items-center gap-2">
                     <span className="border border-white/25 bg-black/25 px-2.5 py-1.5 font-mono text-[10px] text-white backdrop-blur-sm">0{i + 1}</span>
-                    <span className="border border-white/20 bg-black/20 px-2.5 py-1.5 text-[9px] uppercase tracking-[.14em] text-white/85 backdrop-blur-sm">{service.tag}</span>
+                    <span className="border border-white/20 bg-black/20 px-2.5 py-1.5 text-[9px] uppercase tracking-[.14em] text-white/85 backdrop-blur-sm">{service.tag[lang]}</span>
                   </div>
                   <div className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center border border-white/30 bg-black/20 text-white backdrop-blur-sm transition-colors group-hover:bg-primary">
                     <service.icon className="h-5 w-5" strokeWidth={1.5} />
@@ -125,7 +127,7 @@ const ServicesPage = () => {
               </div>
             </div>
             <button onClick={() => navigate("/contacts")} className="inline-flex min-h-11 items-center justify-center gap-2 border border-primary/60 px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-primary hover:text-primary-foreground">
-              Обсудить объект <ArrowUpRight className="h-4 w-4" />
+              {lang === "ru" ? "Обсудить объект" : "Discuss the project"} <ArrowUpRight className="h-4 w-4" />
             </button>
           </section>
         </AnimatedSection>
