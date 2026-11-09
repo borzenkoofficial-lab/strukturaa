@@ -10,10 +10,10 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
   const reduceMotion = useReducedMotion();
 
   const serviceLinks = [
-    { label: t("services.demolition"), path: "/services" },
-    { label: t("services.construction"), path: "/services" },
-    { label: t("services.renovation"), path: "/services" },
-    { label: t("services.concrete"), path: "/services" },
+    { label: t("services.demolition"), path: "/services/demolition" },
+    { label: t("services.construction"), path: "/services/construction" },
+    { label: t("services.renovation"), path: "/services/renovation" },
+    { label: t("services.concrete"), path: "/services/diamond-cutting" },
   ];
 
   const companyLinks = [
@@ -60,6 +60,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
               {serviceLinks.map((item) => (
                 <li key={item.label}>
                   <button
+                    type="button"
                     onClick={() => navigate(item.path)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
@@ -115,6 +116,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
         <div className="mt-10 pt-6 border-t border-border/30 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">{t("footer.rights")}</p>
           <button
+            type="button"
             onClick={() => navigate("/contacts")}
             className="group inline-flex items-center gap-2 text-xs font-medium text-foreground/75 transition-colors hover:text-foreground"
           >
