@@ -48,11 +48,15 @@ const CinematicHero = () => {
     const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
     pointerX.set(x - 0.5);
     pointerY.set(y - 0.5);
+    event.currentTarget.style.setProperty("--skol-pointer-x", `${x * 100}%`);
+    event.currentTarget.style.setProperty("--skol-pointer-y", `${y * 100}%`);
   }, [pointerX, pointerY, reduceMotion]);
 
   const resetPointer = useCallback(() => {
     pointerX.set(0);
     pointerY.set(0);
+    heroRef.current?.style.setProperty("--skol-pointer-x", "50%");
+    heroRef.current?.style.setProperty("--skol-pointer-y", "50%");
   }, [pointerX, pointerY]);
 
   return (
@@ -83,6 +87,8 @@ const CinematicHero = () => {
           <div className="skol-hero-image-shade" />
           {showConstructionScene && <Suspense fallback={null}><ConstructionScene /></Suspense>}
           <div className="skol-hero-grid" />
+          <div className="skol-hero-kinetic-lines" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
+          <div className="skol-hero-focus-glow" aria-hidden="true" />
           <div className="skol-hero-orbit skol-hero-orbit-one" />
           <div className="skol-hero-orbit skol-hero-orbit-two" />
           <div className="skol-hero-light-sweep" />
