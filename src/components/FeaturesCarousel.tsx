@@ -1,31 +1,33 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ClipboardCheck, Layers3, HardHat } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 import AnimatedSection from "./AnimatedSection";
 
 const principles = [
   {
     number: "01",
     icon: ClipboardCheck,
-    title: "Понятная смета",
-    description: "Согласуем состав работ, объёмы и стоимость до начала работ. Изменения обсуждаем отдельно, а не ставим перед фактом.",
+    title: lang === "ru" ? "Понятная смета" : "Clear estimate",
+    description: lang === "ru" ? "Согласуем состав работ, объёмы и стоимость до начала работ. Изменения обсуждаем отдельно, а не ставим перед фактом." : "We agree on scope, quantities and cost before work begins. Any changes are discussed and approved separately.",
   },
   {
     number: "02",
     icon: Layers3,
-    title: "Комплексный подход",
-    description: "Демонтаж, подготовка и последующие строительные работы можно собрать в единый план — без разрозненных подрядчиков на каждом этапе.",
+    title: lang === "ru" ? "Комплексный подход" : "Integrated delivery",
+    description: lang === "ru" ? "Демонтаж, подготовка и последующие строительные работы можно собрать в единый план — без разрозненных подрядчиков на каждом этапе." : "Demolition, preparation and follow-on construction can be coordinated in one plan instead of fragmented contractors at every stage.",
   },
   {
     number: "03",
     icon: HardHat,
-    title: "Работа по этапам",
-    description: "Фиксируем последовательность работ и контрольные точки, чтобы заказчик понимал, что происходит на объекте и что будет дальше.",
+    title: lang === "ru" ? "Работа по этапам" : "Controlled stages",
+    description: lang === "ru" ? "Фиксируем последовательность работ и контрольные точки, чтобы заказчик понимал, что происходит на объекте и что будет дальше." : "We define the sequence and checkpoints so the client knows what is happening on site and what comes next.",
   },
 ];
 
 const FeaturesCarousel = () => {
   const navigate = useNavigate();
+  const { lang } = useLanguage();
   const reduceMotion = useReducedMotion();
 
   return (
