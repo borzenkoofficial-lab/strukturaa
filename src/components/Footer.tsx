@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
 const Footer = forwardRef<HTMLElement>((_, ref) => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
 
@@ -46,7 +46,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
                 <span className="skol-monogram font-display font-bold text-sm text-foreground">С</span>
                 <i className="skol-mark-cut" />
               </div>
-              <span className="font-display font-bold text-lg text-foreground tracking-[0.18em]">СКОЛ<span className="text-primary">.</span></span>
+              <span className="font-display font-bold text-lg text-foreground tracking-[0.18em]">{lang === "ru" ? "СКОЛ" : "SKOL"}<span className="text-primary">.</span></span>
             </motion.button>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               {t("about.mission")}
@@ -120,7 +120,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
             onClick={() => navigate("/contacts")}
             className="group inline-flex items-center gap-2 text-xs font-medium text-foreground/75 transition-colors hover:text-foreground"
           >
-            Обсудить объект
+            {lang === "ru" ? "Обсудить объект" : "Discuss the project"}
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </button>
         </div>
