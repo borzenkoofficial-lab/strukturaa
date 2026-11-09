@@ -1103,3 +1103,28 @@
   .skol-cinematic-home .skol-process-step__icon,
   .skol-cinematic-home .skol-cta-action { transition: none !important; }
 }
+
+
+/* Stories rail: a restrained field-report strip, not a social widget. */
+.skol-cinematic-home .skol-stories-bar > div > div {
+  border-color: rgba(241,239,233,.14);
+  border-radius: 2px;
+  background: rgba(30,33,35,.78);
+  box-shadow: 0 14px 42px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.035);
+}
+.skol-cinematic-home .skol-stories-bar .skol-story-ring {
+  border: 1px solid rgba(214,107,56,.56);
+  background: linear-gradient(135deg, rgba(214,107,56,.9), rgba(241,239,233,.2) 58%, rgba(214,107,56,.45));
+  box-shadow: 0 0 0 3px rgba(214,107,56,.045);
+}
+.skol-cinematic-home .skol-stories-bar button:focus-visible {
+  outline: 2px solid var(--skol-orange);
+  outline-offset: 3px;
+}
+.skol-cinematic-home .skol-stories-bar button:hover .skol-story-ring {
+  box-shadow: 0 0 0 4px rgba(214,107,56,.1), 0 0 22px rgba(214,107,56,.16);
+}
+.skol-cinematic-home .skol-stories-bar img { filter: saturate(.76) contrast(1.06); }
+@media (prefers-reduced-motion: reduce) {
+  .skol-cinematic-home .skol-stories-bar * { scroll-behavior: auto !important; transition-duration: 0s !important; }
+}
