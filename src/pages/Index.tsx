@@ -18,6 +18,8 @@ import HomeMotionDirector from "@/components/HomeMotionDirector";
 import "@/styles/cinematic-home.css";
 
 const Index = () => {
+  const { lang } = useLanguage();
+
   return (
     <div className="skol-cinematic-home relative isolate min-h-screen bg-background gradient-dark">
       <PageProgress />
