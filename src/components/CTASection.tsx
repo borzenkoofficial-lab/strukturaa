@@ -64,8 +64,8 @@ const CTASection = () => {
             </div>
           </div>
           <div className="skol-cta-panel__footer">
-            <span>DEMOLITION / CONSTRUCTION / FINISHING</span>
-            <span>МОСКВА · МОСКОВСКАЯ ОБЛАСТЬ</span>
+            <span>{lang === "ru" ? "ДЕМОНТАЖ / СТРОИТЕЛЬСТВО / ОТДЕЛКА" : "DEMOLITION / CONSTRUCTION / FINISHING"}</span>
+            <span>{lang === "ru" ? "МОСКВА · МОСКОВСКАЯ ОБЛАСТЬ" : "MOSCOW · MOSCOW REGION"}</span>
           </div>
         </div>
       </AnimatedSection>
