@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import { ArrowUpRight, Building2, FolderOpen, Gem, Hammer, HardHat, Truck, Wrench } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
@@ -13,12 +14,31 @@ const BentoGrid = () => {
   const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
 
+  const handleCardPointerMove = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (reduceMotion || event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    if (bounds.width <= 0 || bounds.height <= 0) return;
+    const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+    const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+    event.currentTarget.style.setProperty("--skol-spot-x", `${x * 100}%`);
+    event.currentTarget.style.setProperty("--skol-spot-y", `${y * 100}%`);
+    event.currentTarget.style.setProperty("--skol-card-shift-x", `${(0.5 - x) * 12}px`);
+    event.currentTarget.style.setProperty("--skol-card-shift-y", `${(0.5 - y) * 8}px`);
+  };
+
+  const resetCardPointer = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    event.currentTarget.style.setProperty("--skol-spot-x", "50%");
+    event.currentTarget.style.setProperty("--skol-spot-y", "50%");
+    event.currentTarget.style.setProperty("--skol-card-shift-x", "0px");
+    event.currentTarget.style.setProperty("--skol-card-shift-y", "0px");
+  };
+
   const cards = [
     {
       number: "01",
       title: t("services.demolition"),
       description: t("services.demolitionDesc"),
-      category: "DEMOLITION / 01",
+      category: lang === "ru" ? "ДЕМОНТАЖ / 01" : "DEMOLITION / 01",
       image: heroDemolition,
       icon: Hammer,
       href: "/services/demolition",
@@ -28,7 +48,7 @@ const BentoGrid = () => {
       number: "02",
       title: t("services.concrete"),
       description: t("services.concreteDesc"),
-      category: "CUTTING / DRILLING",
+      category: lang === "ru" ? "РЕЗКА / БУРЕНИЕ" : "CUTTING / DRILLING",
       image: projectIndustrial,
       icon: Gem,
       href: "/services/diamond-cutting",
@@ -38,7 +58,7 @@ const BentoGrid = () => {
       number: "03",
       title: t("services.renovation"),
       description: t("services.renovationDesc"),
-      category: "FINISHING",
+      category: lang === "ru" ? "ОТДЕЛКА" : "FINISHING",
       image: serviceRenovation,
       icon: Wrench,
       href: "/services/renovation",
@@ -48,7 +68,7 @@ const BentoGrid = () => {
       number: "04",
       title: t("services.construction"),
       description: t("services.constructionDesc"),
-      category: "INSTALLATION",
+      category: lang === "ru" ? "МОНТАЖ" : "INSTALLATION",
       image: serviceConstruction,
       icon: HardHat,
       href: "/services/construction",
@@ -58,7 +78,7 @@ const BentoGrid = () => {
       number: "05",
       title: t("services.wasteRemoval"),
       description: t("services.wasteRemovalDesc"),
-      category: "SITE LOGISTICS",
+      category: lang === "ru" ? "ЛОГИСТИКА ОБЪЕКТА" : "SITE LOGISTICS",
       image: projectWaste,
       icon: Truck,
       href: "/services/waste-removal",
@@ -68,7 +88,7 @@ const BentoGrid = () => {
       number: "06",
       title: t("bento.projectsTitle"),
       description: t("bento.projectsDesc"),
-      category: "SELECTED WORK",
+      category: lang === "ru" ? "ИЗБРАННЫЕ ПРОЕКТЫ" : "SELECTED WORK",
       image: projectIndustrial,
       icon: FolderOpen,
       href: "/projects",
@@ -78,7 +98,7 @@ const BentoGrid = () => {
       number: "07",
       title: t("bento.marketplace"),
       description: t("bento.marketplaceDesc"),
-      category: "ONE COORDINATED PLAN",
+      category: lang === "ru" ? "ЕДИНЫЙ ПЛАН РАБОТ" : "ONE COORDINATED PLAN",
       image: serviceConstruction,
       icon: Building2,
       href: "/services",
@@ -97,12 +117,13 @@ const BentoGrid = () => {
               type="button"
               className={`skol-bento-card ${card.size}`}
               onClick={() => navigate(card.href)}
+              onPointerMove={handleCardPointerMove}
+              onPointerLeave={resetCardPointer}
               aria-label={`${card.title}. ${card.description}`}
               initial={reduceMotion ? false : { opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.16 }}
               transition={{ duration: 0.72, delay: reduceMotion ? 0 : (index % 3) * 0.075, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={reduceMotion ? undefined : { y: -5 }}
               whileTap={reduceMotion ? undefined : { scale: 0.992 }}
             >
               <img className="skol-bento-card__image" src={card.image} alt="" aria-hidden="true" loading="lazy" />
