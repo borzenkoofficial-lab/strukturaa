@@ -44,7 +44,14 @@ const DeferredSection = ({
   }, [rootMargin]);
 
   return (
-    <div ref={hostRef} className="skol-deferred-section" data-deferred-section data-ready={ready ? "true" : "false"} style={ready ? undefined : { minHeight, "--skol-deferred-mobile-height": mobileMinHeight } as React.CSSProperties}>
+    <div
+      ref={hostRef}
+      className="skol-deferred-section"
+      data-deferred-section
+      data-skol-reveal
+      data-ready={ready ? "true" : "false"}
+      style={ready ? undefined : { minHeight, "--skol-deferred-mobile-height": mobileMinHeight } as React.CSSProperties}
+    >
       {ready ? children : null}
     </div>
   );
