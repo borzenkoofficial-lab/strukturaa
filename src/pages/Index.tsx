@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import BentoGrid from "@/components/BentoGrid";
 import ParticleAssembly from "@/components/ParticleAssembly";
@@ -32,11 +33,20 @@ const Index = () => {
           </div>
           <div id="ecosystem" data-skol-reveal>
             <ParticleAssembly>
-              <div className="skol-ecosystem-intro" aria-label="Экосистема SKOL">
-                <div className="skol-ecosystem-intro-meta"><span>02 / SKOL SYSTEM</span><span>ОБЪЕКТ · ПРОЦЕСС · РЕЗУЛЬТАТ</span></div>
+              <div className="skol-ecosystem-intro" aria-label={lang === "ru" ? "Экосистема SKOL" : "SKOL ecosystem"}>
+                <div className="skol-ecosystem-intro-meta">
+                  <span>02 / SKOL SYSTEM</span>
+                  <span>{lang === "ru" ? "ОБЪЕКТ · ПРОЦЕСС · РЕЗУЛЬТАТ" : "SITE · PROCESS · DELIVERY"}</span>
+                </div>
                 <div className="skol-ecosystem-intro-main">
-                  <h2>ОДНА СИСТЕМА.<br /><em>ПОЛНЫЙ ЦИКЛ РАБОТ.</em></h2>
-                  <p>От инструмента и специалистов до реализации проекта — все ключевые направления в одной среде.</p>
+                  <h2>
+                    {lang === "ru" ? <>ОДНА СИСТЕМА.<br /><em>ПОЛНЫЙ ЦИКЛ РАБОТ.</em></> : <>ONE SYSTEM.<br /><em>THE FULL WORK CYCLE.</em></>}
+                  </h2>
+                  <p>
+                    {lang === "ru"
+                      ? "От подготовки площадки и демонтажа до монтажа и отделки — ключевые этапы объекта связаны единым планом."
+                      : "From site preparation and demolition to installation and finishing — every key stage is connected in one coordinated plan."}
+                  </p>
                 </div>
                 <div className="skol-ecosystem-intro-rule"><i /></div>
               </div>
