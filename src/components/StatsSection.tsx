@@ -2,14 +2,16 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./AnimatedSection";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const serviceLines = [
-  { index: "01", title: "Демонтаж", note: "Разборка и подготовка помещений", href: "/services/demolition" },
-  { index: "02", title: "Монтаж", note: "Конструкции и инженерные задачи", href: "/services/construction" },
-  { index: "03", title: "Комплексные работы", note: "Несколько этапов в одном плане", href: "/services" },
+  { index: "01", title: lang === "ru" ? "Демонтаж" : "Demolition", note: lang === "ru" ? "Разборка и подготовка помещений" : "Dismantling and site preparation", href: "/services/demolition" },
+  { index: "02", title: lang === "ru" ? "Монтаж" : "Installation", note: lang === "ru" ? "Конструкции и инженерные задачи" : "Structures and engineering works", href: "/services/construction" },
+  { index: "03", title: lang === "ru" ? "Комплексные работы" : "Integrated works", note: lang === "ru" ? "Несколько этапов в одном плане" : "Multiple stages in one coordinated plan", href: "/services" },
 ];
 
 const StatsSection = () => {
+  const { lang } = useLanguage();
   const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
 
@@ -27,8 +29,8 @@ const StatsSection = () => {
               <div>
                 <p className="skol-section-label mb-4 text-primary">SKOL / SCOPE</p>
                 <h2 id="skol-format-title" className="max-w-lg font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
-                  От отдельных задач
-                  <span className="block text-white/55">до комплексного объекта</span>
+                  {lang === "ru" ? "От отдельных задач" : "From individual tasks"}
+                  <span className="block text-white/55">{lang === "ru" ? "до комплексного объекта" : "to a complete project"}</span>
                 </h2>
               </div>
               <button
@@ -36,7 +38,7 @@ const StatsSection = () => {
                 onClick={() => navigate("/services")}
                 className="group inline-flex items-center gap-2 border-b border-white/25 pb-2 text-sm font-medium text-white transition-colors hover:border-primary"
               >
-                Смотреть все услуги
+                {lang === "ru" ? "Смотреть все услуги" : "Explore all services"}
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </button>
             </div>
