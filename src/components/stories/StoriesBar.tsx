@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import StoryViewer from "./StoryViewer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Story {
   id: string;
@@ -16,6 +17,7 @@ interface Story {
 
 const StoriesBar = () => {
   const reduceMotion = useReducedMotion();
+  const { lang } = useLanguage();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const { data: stories = [] } = useQuery({
@@ -35,7 +37,7 @@ const StoriesBar = () => {
 
   return (
     <>
-      <section className="skol-stories-bar sticky top-[60px] sm:top-[68px] z-40 px-3 sm:px-6 py-1.5 sm:py-2">
+      <section className="skol-stories-bar sticky top-[60px] sm:top-[68px] z-40 px-3 sm:px-6 py-1.5 sm:py-2" aria-label={lang === "ru" ? "Истории объектов" : "Project stories"}>
         <div className="max-w-7xl mx-auto relative overflow-hidden rounded-xl border border-border/45 bg-card/75 backdrop-blur-xl">
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.12]"
@@ -50,7 +52,7 @@ const StoriesBar = () => {
           <div className="relative flex items-center gap-2.5 px-2.5 py-2 sm:gap-3 sm:px-3">
             <div className="hidden sm:flex shrink-0 items-center gap-2 border-r border-border/50 pr-3">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">Истории</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">{lang === "ru" ? "ИСТОРИИ ОБЪЕКТОВ" : "PROJECT STORIES"}</span>
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex gap-2 overflow-x-auto scrollbar-hide">
@@ -58,7 +60,7 @@ const StoriesBar = () => {
                   <motion.button
                     key={story.id}
                     type="button"
-                    aria-label={`Открыть историю: ${story.title}`}
+                    aria-label={`${lang === "ru" ? "Открыть историю" : "Open story"}: ${story.title}`}
                     className="group relative flex w-[62px] shrink-0 flex-col items-center gap-1 rounded-lg px-1 py-1 transition-colors hover:bg-primary/[0.06] sm:w-[72px]"
                     initial={reduceMotion ? false : { opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
