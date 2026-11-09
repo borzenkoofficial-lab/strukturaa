@@ -87,6 +87,35 @@ const CinematicHero = () => {
           <div className="skol-hero-image-shade" />
           {showConstructionScene && <Suspense fallback={null}><ConstructionScene /></Suspense>}
           <div className="skol-hero-grid" />
+          <div className="skol-hero-geometry" aria-hidden="true">
+            <svg viewBox="0 0 820 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g className="skol-hero-geometry__frame">
+                <path d="M188 420V238L402 114L616 238V420" />
+                <path d="M188 238L402 362L616 238" />
+                <path d="M402 114V362" />
+                <path d="M188 420L402 544L616 420" />
+                <path d="M244 271V388L402 480L560 388V271" />
+                <path d="M244 388L402 296L560 388" />
+                <path d="M316 230V430M488 230V430" />
+                <path d="M188 328L402 452L616 328" />
+                <path d="M122 238H188M616 238H682M402 70V114" />
+              </g>
+              <g className="skol-hero-geometry__measure">
+                <path d="M154 210V445M666 210V445M142 210H166M142 445H166M654 210H678M654 445H678" />
+                <path d="M402 64V92M388 78H416M102 420H142M678 420H718" />
+                <path d="M214 478L402 586L590 478" strokeDasharray="5 8" />
+                <circle cx="402" cy="296" r="12" />
+                <circle cx="402" cy="296" r="34" strokeDasharray="2 7" />
+              </g>
+              <g className="skol-hero-geometry__nodes">
+                <circle cx="188" cy="238" r="4" />
+                <circle cx="402" cy="114" r="4" />
+                <circle cx="616" cy="238" r="4" />
+                <circle cx="402" cy="544" r="4" />
+              </g>
+            </svg>
+            <span>STRUCTURAL STUDY / 01</span>
+          </div>
           <div className="skol-hero-kinetic-lines" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
           <div className="skol-hero-focus-glow" aria-hidden="true" />
           <div className="skol-hero-orbit skol-hero-orbit-one" />
