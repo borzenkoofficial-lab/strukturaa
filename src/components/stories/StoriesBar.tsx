@@ -15,6 +15,7 @@ interface Story {
 }
 
 const StoriesBar = () => {
+  const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const { data: stories = [] } = useQuery({
@@ -59,9 +60,9 @@ const StoriesBar = () => {
                     type="button"
                     aria-label={`Открыть историю: ${story.title}`}
                     className="group relative flex w-[62px] shrink-0 flex-col items-center gap-1 rounded-lg px-1 py-1 transition-colors hover:bg-primary/[0.06] sm:w-[72px]"
-                    initial={{ opacity: 0, y: 5 }}
+                    initial={reduceMotion ? false : { opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.035, duration: 0.24 }}
+                    transition={{ delay: reduceMotion ? 0 : i * 0.035, duration: reduceMotion ? 0 : 0.24 }}
                     onClick={() => setActiveIndex(i)}
                   >
                     <span className="skol-story-ring relative block h-[44px] w-[44px] rounded-full p-[2px] transition-transform duration-300 group-hover:scale-[1.04] sm:h-[48px] sm:w-[48px]">
