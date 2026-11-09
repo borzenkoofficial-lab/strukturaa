@@ -1,19 +1,20 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./AnimatedSection";
 
 const serviceLines = [
-  { index: "01", title: "Демонтаж", note: "Разборка и подготовка помещений" },
-  { index: "02", title: "Монтаж", note: "Конструкции и инженерные задачи" },
-  { index: "03", title: "Комплексные работы", note: "Несколько этапов в одном плане" },
+  { index: "01", title: "Демонтаж", note: "Разборка и подготовка помещений", href: "/services/demolition" },
+  { index: "02", title: "Монтаж", note: "Конструкции и инженерные задачи", href: "/services/construction" },
+  { index: "03", title: "Комплексные работы", note: "Несколько этапов в одном плане", href: "/services" },
 ];
 
 const StatsSection = () => {
   const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20">
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20" aria-labelledby="skol-format-title">
       <AnimatedSection>
         <div className="skol-format-panel relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#242629] px-5 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-14">
           <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
@@ -24,13 +25,14 @@ const StatsSection = () => {
           <div className="relative grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
             <div className="flex flex-col items-start justify-between gap-6">
               <div>
-                <p className="skol-section-label mb-4 text-primary">Формат сотрудничества</p>
-                <h2 className="max-w-lg font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
+                <p className="skol-section-label mb-4 text-primary">SKOL / SCOPE</p>
+                <h2 id="skol-format-title" className="max-w-lg font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
                   От отдельных задач
                   <span className="block text-white/55">до комплексного объекта</span>
                 </h2>
               </div>
               <button
+                type="button"
                 onClick={() => navigate("/services")}
                 className="group inline-flex items-center gap-2 border-b border-white/25 pb-2 text-sm font-medium text-white transition-colors hover:border-primary"
               >
@@ -42,10 +44,15 @@ const StatsSection = () => {
               {serviceLines.map((line, index) => (
                 <motion.button
                   key={line.index}
-                  onClick={() => navigate(index === 0 ? "/services/demolition" : "/services")}
+                  type="button"
+                  onClick={() => navigate(line.href)}
+                  aria-label={`${line.title}: ${line.note}`}
                   className="group flex w-full items-center gap-4 py-5 text-left sm:gap-6 sm:py-6"
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.2 }}
+                  initial={reduceMotion ? false : { opacity: 0, x: 16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.6, delay: reduceMotion ? 0 : index * 0.09, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={reduceMotion ? undefined : { x: 4 }}
                 >
                   <span className="font-mono text-xs text-primary/90">{line.index}</span>
                   <span className="min-w-0 flex-1">
