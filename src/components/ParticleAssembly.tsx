@@ -24,6 +24,7 @@ const ParticleAssembly = ({ children }: { children: ReactNode }) => {
     let width = 0;
     let height = 0;
     let dpr = 1;
+    let hasStarted = false;
 
     const finish = () => {
       root.classList.add("is-assembled");
@@ -131,12 +132,20 @@ const ParticleAssembly = ({ children }: { children: ReactNode }) => {
       observer.disconnect();
       buildParticles();
       startedAt = performance.now();
+      hasStarted = true;
       frame = requestAnimationFrame(draw);
     }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
 
     observer.observe(root);
     const resizeObserver = new ResizeObserver(() => {
-      if (!root.classList.contains("is-assembled") && startedAt === 0) buildParticles();
+      if (!root.classList.contains("is-assembled")) {
+        buildParticles();
+        if (hasStarted) {
+          cancelAnimationFrame(frame);
+          startedAt = performance.now();
+          frame = requestAnimationFrame(draw);
+        }
+      }
     });
     resizeObserver.observe(root);
 
