@@ -38,11 +38,15 @@ const handleProjectPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
   const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
   event.currentTarget.style.setProperty("--project-pointer-x", `${x * 100}%`);
   event.currentTarget.style.setProperty("--project-pointer-y", `${y * 100}%`);
+  event.currentTarget.style.setProperty("--project-drift-x", `${(0.5 - x) * 12}px`);
+  event.currentTarget.style.setProperty("--project-drift-y", `${(0.5 - y) * 8}px`);
 };
 
 const resetProjectPointer = (event: ReactPointerEvent<HTMLElement>) => {
   event.currentTarget.style.setProperty("--project-pointer-x", "50%");
   event.currentTarget.style.setProperty("--project-pointer-y", "50%");
+  event.currentTarget.style.setProperty("--project-drift-x", "0px");
+  event.currentTarget.style.setProperty("--project-drift-y", "0px");
 };
 
 const visualReferences = [
