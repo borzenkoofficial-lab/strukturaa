@@ -193,8 +193,15 @@ const ProjectsPage = () => {
               <div><p className="text-[10px] uppercase tracking-[0.22em] text-primary">Выбрать направление</p><h2 className="mt-2 font-display text-xl font-semibold text-foreground sm:text-2xl">Архив проектов</h2></div>
               <div className="flex max-w-full gap-2 overflow-x-auto pb-1 scrollbar-hide">
                 {categories.map((cat) => (
-                  <button key={cat} onClick={() => setActiveFilter(cat)} className={`shrink-0 rounded-full border px-4 py-2 text-xs font-medium transition-all duration-300 ${activeFilter === cat ? "border-primary bg-primary text-primary-foreground shadow-[0_5px_25px_-10px_hsl(var(--primary)/0.7)]" : "border-border/70 bg-card/55 text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}>
-                    {cat === "all" ? "Все проекты" : cat}
+                                    <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setActiveFilter(cat)}
+                    aria-pressed={activeFilter === cat}
+                    className={activeFilter === cat ? "relative shrink-0 overflow-hidden rounded-full border border-primary/70 px-4 py-2 text-xs font-medium text-primary-foreground" : "relative shrink-0 overflow-hidden rounded-full border border-border/70 bg-card/55 px-4 py-2 text-xs font-medium text-muted-foreground transition-colors duration-300 hover:border-primary/40 hover:text-foreground"}
+                  >
+                    {activeFilter === cat && <motion.span layoutId="skol-project-filter-indicator" className="absolute inset-0 rounded-full bg-primary shadow-[0_5px_25px_-10px_hsl(var(--primary)/0.7)]" transition={{ duration: reduceMotion ? 0 : 0.48, ease: [0.16, 1, 0.3, 1] }} /> }
+                    <span className="relative z-10">{cat === "all" ? "Все проекты" : cat}</span>
                   </button>
                 ))}
               </div>
