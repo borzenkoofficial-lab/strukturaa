@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight, ArrowRight, Building2, Layers3, Ruler, Sparkles, Crosshair } from "lucide-react";
-import { useReducedMotion } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import SEOHead from "@/components/SEOHead";
 import ProjectDetailModal from "@/components/ProjectDetailModal";
