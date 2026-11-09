@@ -17,8 +17,8 @@ const BentoGrid = () => {
     {
       number: "01",
       title: t("services.demolition"),
-      description: t("bento.hotDemolition"),
-      category: t("bento.hotDemolitionPrice"),
+      description: t("services.demolitionDesc"),
+      category: "DEMOLITION / 01",
       image: heroDemolition,
       icon: Hammer,
       href: "/services/demolition",
@@ -26,8 +26,8 @@ const BentoGrid = () => {
     },
     {
       number: "02",
-      title: t("bento.exclusiveTitle"),
-      description: t("bento.exclusiveDesc"),
+      title: t("services.concrete"),
+      description: t("services.concreteDesc"),
       category: "CUTTING / DRILLING",
       image: projectIndustrial,
       icon: Gem,
@@ -37,7 +37,7 @@ const BentoGrid = () => {
     {
       number: "03",
       title: t("services.renovation"),
-      description: t("services.renovation"),
+      description: t("services.renovationDesc"),
       category: "FINISHING",
       image: serviceRenovation,
       icon: Wrench,
@@ -47,7 +47,7 @@ const BentoGrid = () => {
     {
       number: "04",
       title: t("services.construction"),
-      description: t("bento.equipmentDesc"),
+      description: t("services.constructionDesc"),
       category: "INSTALLATION",
       image: serviceConstruction,
       icon: HardHat,
@@ -56,8 +56,8 @@ const BentoGrid = () => {
     },
     {
       number: "05",
-      title: t("bento.eco"),
-      description: t("bento.ecoDesc"),
+      title: t("services.wasteRemoval"),
+      description: t("services.wasteRemovalDesc"),
       category: "SITE LOGISTICS",
       image: projectWaste,
       icon: Truck,
