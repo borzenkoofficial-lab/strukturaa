@@ -39,7 +39,7 @@ describe("BentoGrid", () => {
 
   it("tracks pointer position for the service-card light field", () => {
     render(<BentoGrid />);
-    const card = screen.getByRole("button", { name: /services\\.demolition/ });
+    const card = screen.getByRole("button", { name: /services\.demolition/ });
     vi.spyOn(card, "getBoundingClientRect").mockReturnValue({
       x: 0, y: 0, top: 0, left: 0, right: 200, bottom: 100, width: 200, height: 100,
       toJSON: () => ({}),
