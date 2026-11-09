@@ -13,7 +13,14 @@ vi.mock("react-router-dom", () => ({
 }));
 
 describe("BentoGrid", () => {
-  beforeEach(() => navigateMock.mockClear());
+  beforeEach(() => {
+    navigateMock.mockClear();
+    vi.stubGlobal("IntersectionObserver", class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    });
+  });
 
   it("presents construction directions rather than marketplace widgets", () => {
     render(<BentoGrid />);
