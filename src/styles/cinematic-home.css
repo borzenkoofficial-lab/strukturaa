@@ -1313,3 +1313,7 @@
     transform: none !important;
   }
 }
+
+@media (hover: none), (pointer: coarse) {
+  .skol-cinematic-home .skol-process-step__track i { transform: none; }
+}
