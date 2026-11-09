@@ -11,7 +11,7 @@ const CinematicHero = () => {
   const [showConstructionScene, setShowConstructionScene] = useState(false);
   useEffect(() => {
     const desktopQuery = window.matchMedia("(min-width: 1281px)");
-    const updateSceneEligibility = () => setShowConstructionScene(desktopQuery.matches);
+    const updateSceneEligibility = () => setShowConstructionScene(desktopQuery.matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     updateSceneEligibility();
     desktopQuery.addEventListener("change", updateSceneEligibility);
     return () => desktopQuery.removeEventListener("change", updateSceneEligibility);
@@ -41,8 +41,11 @@ const CinematicHero = () => {
   const handlePointerMove = useCallback((event: PointerEvent<HTMLElement>) => {
     if (reduceMotion || event.pointerType !== "mouse") return;
     const bounds = event.currentTarget.getBoundingClientRect();
-    pointerX.set((event.clientX - bounds.left) / bounds.width - 0.5);
-    pointerY.set((event.clientY - bounds.top) / bounds.height - 0.5);
+    if (bounds.width <= 0 || bounds.height <= 0) return;
+    const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+    const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+    pointerX.set(x - 0.5);
+    pointerY.set(y - 0.5);
   }, [pointerX, pointerY, reduceMotion]);
 
   const resetPointer = useCallback(() => {
