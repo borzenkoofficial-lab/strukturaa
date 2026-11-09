@@ -19,7 +19,7 @@ describe("BentoGrid", () => {
     render(<BentoGrid />);
 
     expect(screen.getByRole("button", { name: /services\.demolition/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /bento\.exclusiveTitle/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /services\.concrete/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /services\.renovation/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /services\.construction/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /bento\.projectsTitle/ })).toBeInTheDocument();
