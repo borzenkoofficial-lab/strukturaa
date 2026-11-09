@@ -1505,3 +1505,82 @@
     transform: none !important;
   }
 }
+
+
+/* Approach and scope panels: controlled metallic response on interaction. */
+.skol-cinematic-home .skol-principle-card {
+  isolation: isolate;
+  transform: translateZ(0);
+}
+.skol-cinematic-home .skol-principle-card::after {
+  content: "";
+  position: absolute;
+  top: -65%;
+  left: -62%;
+  z-index: -1;
+  width: 38%;
+  height: 230%;
+  pointer-events: none;
+  opacity: 0;
+  transform: rotate(22deg);
+  background: linear-gradient(90deg, transparent, rgba(241,239,233,.11), rgba(214,107,56,.13), transparent);
+}
+.skol-cinematic-home .skol-principle-card:hover::after {
+  opacity: 1;
+  animation: skol-principle-sweep 1.1s cubic-bezier(.16,1,.3,1) both;
+}
+.skol-cinematic-home .skol-principle-card > div:first-of-type > div {
+  transition: transform .55s cubic-bezier(.16,1,.3,1), box-shadow .4s ease, border-color .4s ease;
+}
+.skol-cinematic-home .skol-principle-card:hover > div:first-of-type > div {
+  transform: translateY(-3px) rotate(-5deg);
+  border-color: rgba(214,107,56,.62);
+  box-shadow: 0 0 26px rgba(214,107,56,.12), inset 0 0 18px rgba(214,107,56,.08);
+}
+.skol-cinematic-home .skol-format-panel button {
+  position: relative;
+  isolation: isolate;
+  transition: padding .45s cubic-bezier(.16,1,.3,1), color .35s ease;
+}
+.skol-cinematic-home .skol-format-panel button::before {
+  content: "";
+  position: absolute;
+  inset: 8px -12px;
+  z-index: -1;
+  opacity: 0;
+  transform: scaleX(.94);
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(214,107,56,.12), rgba(214,107,56,.035) 62%, transparent);
+  transition: opacity .35s ease, transform .55s cubic-bezier(.16,1,.3,1);
+}
+.skol-cinematic-home .skol-format-panel button:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+.skol-cinematic-home .skol-format-panel button:focus-visible {
+  outline: 1px solid var(--skol-orange);
+  outline-offset: 4px;
+}
+.skol-cinematic-home .skol-format-panel button > span:first-child {
+  transition: color .35s ease, text-shadow .35s ease;
+}
+.skol-cinematic-home .skol-format-panel button:hover > span:first-child {
+  color: #f1efe9;
+  text-shadow: 0 0 16px rgba(214,107,56,.55);
+}
+@keyframes skol-principle-sweep {
+  0% { left: -62%; opacity: 0; }
+  22% { opacity: .85; }
+  100% { left: 130%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-cinematic-home .skol-principle-card::after,
+  .skol-cinematic-home .skol-principle-card > div:first-of-type > div,
+  .skol-cinematic-home .skol-format-panel button,
+  .skol-cinematic-home .skol-format-panel button::before,
+  .skol-cinematic-home .skol-format-panel button > span:first-child {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
