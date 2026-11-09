@@ -1317,3 +1317,191 @@
 @media (hover: none), (pointer: coarse) {
   .skol-cinematic-home .skol-process-step__track i { transform: none; }
 }
+
+
+/* Transition choreography: each section gets a single architectural light wipe. */
+.skol-cinematic-home.skol-motion-ready [data-skol-reveal] {
+  position: relative;
+  isolation: isolate;
+}
+.skol-cinematic-home.skol-motion-ready [data-skol-reveal]::after {
+  content: "";
+  position: absolute;
+  z-index: 24;
+  inset: 0;
+  pointer-events: none;
+  transform: translate3d(-112%, 0, 0) skewX(-11deg);
+  background: linear-gradient(105deg,
+    transparent 0%,
+    rgba(241,239,233,.025) 34%,
+    rgba(214,107,56,.24) 47%,
+    rgba(241,239,233,.34) 50%,
+    rgba(214,107,56,.12) 54%,
+    transparent 70%);
+  transition: transform 1.35s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--skol-reveal-order, 0) * 65ms + 110ms);
+}
+.skol-cinematic-home.skol-motion-ready [data-skol-reveal][data-skol-visible="true"]::after {
+  transform: translate3d(112%, 0, 0) skewX(-11deg);
+}
+.skol-cinematic-home .skol-ecosystem-intro-rule i {
+  display: block;
+  transform: scaleX(.12);
+  transform-origin: left center;
+  transition: transform 1.3s cubic-bezier(.16,1,.3,1) .25s;
+}
+.skol-cinematic-home [data-skol-reveal][data-skol-visible="true"] .skol-ecosystem-intro-rule i {
+  transform: scaleX(1);
+}
+@media (max-width: 640px) {
+  .skol-cinematic-home.skol-motion-ready [data-skol-reveal]::after {
+    transition-duration: .9s;
+    background: linear-gradient(105deg, transparent 0%, rgba(214,107,56,.18) 47%, rgba(241,239,233,.16) 50%, transparent 68%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-cinematic-home.skol-motion-ready [data-skol-reveal]::after {
+    display: none !important;
+    transition: none !important;
+  }
+  .skol-cinematic-home .skol-ecosystem-intro-rule i { transform: none; transition: none; }
+}
+
+/* Project archive: cinematic field-report language, matched to the SKOL homepage. */
+.skol-projects-page {
+  --background: 220 7% 10%;
+  --foreground: 40 18% 94%;
+  --card: 220 7% 14%;
+  --card-foreground: 40 18% 94%;
+  --border: 0 0% 100%;
+  --muted: 220 7% 19%;
+  --muted-foreground: 220 5% 66%;
+  --primary: 17 64% 53%;
+  --primary-foreground: 220 8% 10%;
+  --secondary: 220 7% 18%;
+  --secondary-foreground: 40 18% 94%;
+  background:
+    radial-gradient(ellipse at 76% 5%, rgba(214,107,56,.09), transparent 35%),
+    linear-gradient(180deg, #17191b 0%, #1c1f21 54%, #17191b 100%);
+  color: #f1efe9;
+}
+.skol-projects-page .skol-projects-backdrop > div:first-child {
+  background:
+    radial-gradient(ellipse at 15% 12%, rgba(214,107,56,.1), transparent 34%),
+    radial-gradient(ellipse at 90% 42%, rgba(167,188,194,.06), transparent 30%);
+}
+.skol-projects-page header,
+.skol-projects-page .skol-projects-featured,
+.skol-projects-page .skol-projects-card,
+.skol-projects-page main > div > section {
+  border-radius: 4px;
+  border-color: rgba(241,239,233,.15);
+  background-color: rgba(34,37,39,.78);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 24px 74px rgba(0,0,0,.18);
+  backdrop-filter: blur(14px);
+}
+.skol-projects-page header {
+  background:
+    linear-gradient(115deg, rgba(214,107,56,.08), transparent 44%),
+    rgba(34,37,39,.8);
+}
+.skol-projects-page .skol-projects-featured,
+.skol-projects-page .skol-projects-card {
+  position: relative;
+  isolation: isolate;
+  --project-pointer-x: 50%;
+  --project-pointer-y: 50%;
+  --project-drift-x: 0px;
+  --project-drift-y: 0px;
+  transition: border-color .5s ease, box-shadow .65s cubic-bezier(.16,1,.3,1), transform .65s cubic-bezier(.16,1,.3,1);
+}
+.skol-projects-page .skol-projects-featured::before,
+.skol-projects-page .skol-projects-card::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(460px circle at var(--project-pointer-x) var(--project-pointer-y), rgba(214,107,56,.16), transparent 68%);
+  transition: opacity .45s ease;
+}
+.skol-projects-page .skol-projects-featured::after,
+.skol-projects-page .skol-projects-card::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  top: -70%;
+  left: -58%;
+  width: 36%;
+  height: 240%;
+  pointer-events: none;
+  opacity: 0;
+  transform: rotate(22deg);
+  background: linear-gradient(90deg, transparent, rgba(241,239,233,.18), rgba(214,107,56,.14), transparent);
+}
+.skol-projects-page .skol-projects-featured > div > img,
+.skol-projects-page .skol-projects-card > div:first-child img {
+  transform: scale(1.025) translate3d(var(--project-drift-x), var(--project-drift-y), 0);
+  transition: transform 1.1s cubic-bezier(.16,1,.3,1), filter .75s ease;
+  filter: saturate(.72) contrast(1.08);
+}
+.skol-projects-page .skol-projects-featured:hover,
+.skol-projects-page .skol-projects-card:hover {
+  border-color: rgba(214,107,56,.58);
+  box-shadow: 0 34px 100px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.skol-projects-page .skol-projects-featured:hover::before,
+.skol-projects-page .skol-projects-card:hover::before { opacity: 1; }
+.skol-projects-page .skol-projects-featured:hover::after,
+.skol-projects-page .skol-projects-card:hover::after {
+  opacity: 1;
+  animation: skol-project-specular 1.15s cubic-bezier(.16,1,.3,1) both;
+}
+.skol-projects-page .skol-projects-featured:hover > div > img,
+.skol-projects-page .skol-projects-card:hover > div:first-child img {
+  transform: scale(1.085) translate3d(var(--project-drift-x), var(--project-drift-y), 0);
+  filter: saturate(.9) contrast(1.12);
+}
+.skol-projects-page .skol-projects-card > div:first-child {
+  position: relative;
+  overflow: hidden;
+}
+.skol-projects-page .skol-projects-card > div:first-child::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(12,14,15,.1), transparent 28%, rgba(12,14,15,.35));
+}
+.skol-projects-page .skol-projects-card > div:last-child {
+  background: linear-gradient(180deg, rgba(255,255,255,.015), transparent);
+}
+.skol-projects-page .skol-projects-card h3,
+.skol-projects-page .skol-projects-featured h2 { text-wrap: balance; }
+.skol-projects-page .skol-projects-card:focus-visible,
+.skol-projects-page .skol-projects-featured:focus-visible {
+  outline: 2px solid #d66b38;
+  outline-offset: 4px;
+}
+.skol-projects-page button,
+.skol-projects-page a { -webkit-tap-highlight-color: rgba(214,107,56,.18); }
+@keyframes skol-project-specular {
+  0% { left: -58%; opacity: 0; }
+  20% { opacity: .9; }
+  100% { left: 128%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skol-projects-page .skol-projects-featured,
+  .skol-projects-page .skol-projects-card,
+  .skol-projects-page .skol-projects-featured::before,
+  .skol-projects-page .skol-projects-card::before,
+  .skol-projects-page .skol-projects-featured::after,
+  .skol-projects-page .skol-projects-card::after,
+  .skol-projects-page .skol-projects-featured img,
+  .skol-projects-page .skol-projects-card img {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
