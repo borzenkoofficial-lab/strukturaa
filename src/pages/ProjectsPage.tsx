@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, ArrowRight, Building2, Layers3, Ruler, Sparkles, Flower2 } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, ArrowRight, Building2, Layers3, Ruler, Sparkles, Crosshair } from "lucide-react";
+import { useReducedMotion } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import SEOHead from "@/components/SEOHead";
 import ProjectDetailModal from "@/components/ProjectDetailModal";
@@ -72,6 +73,7 @@ const portfolioExamples: DbProject[] = [
 ];
 
 const ProjectsPage = () => {
+  const reduceMotion = useReducedMotion();
   const [selected, setSelected] = useState<SelectedProject | null>(null);
   const [projects, setProjects] = useState<DbProject[]>([]);
   const [activeFilter, setActiveFilter] = useState("all");
@@ -118,13 +120,13 @@ const ProjectsPage = () => {
 
   return (
     <>
-      <SEOHead title="Проекты и портфолио — Структура" description="Портфолио строительных объектов: демонтаж, фасадные работы и подготовка помещений. Истории объектов, фотографии и детали выполненных работ." canonical="/projects" />
+      <SEOHead title="Проекты и портфолио — SKOL" description="Портфолио строительных объектов: демонтаж, фасадные работы и подготовка помещений. Истории объектов, фотографии и детали выполненных работ." canonical="/projects" />
       <main className="relative isolate min-h-screen overflow-hidden">
         <div aria-hidden="true" className="skol-projects-backdrop pointer-events-none absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_12%,hsl(var(--primary)/0.10),transparent_34%),radial-gradient(ellipse_at_90%_42%,rgba(190,130,151,0.09),transparent_30%)]" />
           <div className="absolute inset-0 opacity-[0.16]" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/0.06) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/0.06) 1px, transparent 1px)", backgroundSize: "72px 72px", maskImage: "linear-gradient(to bottom, black, transparent 75%)" }} />
-          <motion.div className="absolute -right-28 top-52 h-80 w-80 rounded-full border border-primary/10" animate={{ rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
-          <motion.div className="absolute -right-12 top-64 h-48 w-48 rounded-full border border-primary/10" animate={{ rotate: -360 }} transition={{ duration: 70, repeat: Infinity, ease: "linear" }} />
+          <motion.div className="absolute -right-28 top-52 h-80 w-80 rounded-full border border-primary/10" animate={reduceMotion ? undefined : { rotate: 360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} />
+          <motion.div className="absolute -right-12 top-64 h-48 w-48 rounded-full border border-primary/10" animate={reduceMotion ? undefined : { rotate: -360 }} transition={{ duration: 70, repeat: Infinity, ease: "linear" }} />
         </div>
 
         <div className="mx-auto max-w-7xl px-4 pb-20 pt-8 sm:px-6 sm:pb-24 sm:pt-12 lg:px-8">
@@ -138,7 +140,7 @@ const ProjectsPage = () => {
               </div>
               <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.65fr)] lg:items-end">
                 <div>
-                  <p className="mb-4 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary sm:text-xs"><span className="h-px w-7 bg-primary" />Структура / архив объектов</p>
+                  <p className="mb-4 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary sm:text-xs"><span className="h-px w-7 bg-primary" />SKOL / архив объектов</p>
                   <h1 className="max-w-3xl font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-foreground sm:text-5xl lg:text-7xl">
                     Проекты,<br /><span className="text-primary">за которыми</span><br />стоит работа.
                   </h1>
@@ -158,10 +160,10 @@ const ProjectsPage = () => {
                   </div>
                   <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5">
                     <div className="mb-3 flex items-center justify-between text-[9px] uppercase tracking-[0.18em] text-muted-foreground"><span>От задачи к результату</span><span>01 / 03</span></div>
-                    <div className="h-[2px] overflow-hidden bg-border/70"><motion.div className="h-full w-1/3 bg-primary" animate={{ x: ["0%", "200%", "0%"] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} /></div>
+                    <div className="h-[2px] overflow-hidden bg-border/70"><motion.div className="h-full w-1/3 bg-primary" animate={reduceMotion ? undefined : { x: ["0%", "200%", "0%"] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} /></div>
                     <p className="mt-3 max-w-xs text-xs leading-relaxed text-muted-foreground">Факты об объектах — отдельно. Визуальные референсы — только как иллюстрация.</p>
                   </div>
-                  <Flower2 className="absolute bottom-10 right-8 h-20 w-20 rotate-12 text-rose-200/25" strokeWidth={0.7} />
+                  <Crosshair className="absolute bottom-10 right-8 h-20 w-20 text-primary/25" strokeWidth={0.7} />
                 </div>
               </div>
             </header>
@@ -188,7 +190,7 @@ const ProjectsPage = () => {
             <>
               {featured && (
                 <AnimatedSection>
-                  <motion.article className="group relative mb-5 cursor-pointer overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/70 shadow-[0_25px_90px_-55px_hsl(var(--foreground)/0.35)] sm:mb-7" whileHover={{ y: -3 }} transition={{ duration: 0.35 }} onClick={() => openProject(featured, 0)} tabIndex={0} role="button" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openProject(featured, 0); }}>
+                  <motion.article className="group relative mb-5 cursor-pointer overflow-hidden rounded-[1.75rem] border border-border/60 bg-card/70 shadow-[0_25px_90px_-55px_hsl(var(--foreground)/0.35)] sm:mb-7" whileHover={{ y: -3 }} transition={{ duration: 0.35 }} onClick={() => openProject(featured, 0)} tabIndex={0} role="button" aria-label={`Открыть проект: ${featured.title}`} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openProject(featured, 0); } }}>
                     <div className="relative min-h-[390px] overflow-hidden sm:min-h-[470px] lg:min-h-[540px]">
                       <img src={featured.featured_image || visualReferences[0]} alt={featured.featured_image ? featured.title : `Визуальный референс: ${featured.title}`} className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-[1.035]" loading="lazy" />
                       <div className="absolute inset-0 bg-gradient-to-r from-[#111315]/95 via-[#111315]/72 to-[#111315]/10" />
@@ -205,9 +207,9 @@ const ProjectsPage = () => {
                             <span className="inline-flex items-center gap-2 border-l border-white/30 pl-3 text-xs text-white/75">Задача / процесс / пространство</span>
                           </div>
                         </div>
-                        <button className="inline-flex w-fit items-center gap-3 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-sm font-medium text-white backdrop-blur-md transition-all group-hover:border-rose-100/60 group-hover:bg-rose-100/15">Открыть историю <ArrowUpRight className="h-4 w-4" /></button>
+                        <span className="inline-flex w-fit items-center gap-3 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-sm font-medium text-white backdrop-blur-md transition-all group-hover:border-primary/60 group-hover:bg-primary/15">Открыть историю <ArrowUpRight className="h-4 w-4" /></span>
                       </div>
-                      <div aria-hidden="true" className="pointer-events-none absolute bottom-5 right-8 hidden font-mono text-[9px] tracking-[0.2em] text-white/35 xl:block">STRUKTURA / PROJECT ARCHIVE</div>
+                      <div aria-hidden="true" className="pointer-events-none absolute bottom-5 right-8 hidden font-mono text-[9px] tracking-[0.2em] text-white/35 xl:block">SKOL / PROJECT ARCHIVE</div>
                     </div>
                   </motion.article>
                 </AnimatedSection>
@@ -220,7 +222,7 @@ const ProjectsPage = () => {
                   const image = p.featured_image || visualReferences[(i + 1) % visualReferences.length];
                   return (
                     <AnimatedSection key={p.id} delay={i * 0.08}>
-                      <motion.article className="group h-full cursor-pointer overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/70 transition-colors hover:border-primary/35" whileHover={{ y: -4 }} transition={{ duration: 0.3 }} onClick={() => openProject(p, i + 1)} tabIndex={0} role="button" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openProject(p, i + 1); }}>
+                      <motion.article className="group h-full cursor-pointer overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/70 transition-colors hover:border-primary/35" whileHover={{ y: -4 }} transition={{ duration: 0.3 }} onClick={() => openProject(p, i + 1)} tabIndex={0} role="button" aria-label={`Открыть проект: ${p.title}`} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openProject(p, i + 1); } }}>
                         <div className="relative aspect-[16/9] overflow-hidden bg-muted">
                           <img src={image} alt={p.featured_image ? p.title : `Визуальный референс: ${p.title}`} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/5 to-black/20" />
