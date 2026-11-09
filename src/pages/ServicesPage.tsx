@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import { ArrowUpRight, Building2, Home, Truck, Wrench, Hammer, Gem, HardHat, ClipboardCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "@/components/AnimatedSection";
@@ -23,12 +24,12 @@ const ServicesPage = () => {
   return (
     <>
       <SEOHead title="Услуги — СКОЛ" description="Демонтаж, монтаж конструкций, ремонт, вывоз строительного мусора и алмазная резка." canonical="/services" />
-      <main className="relative mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
+      <main className="skol-services-page relative mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
         <AnimatedSection>
-          <header className="relative mb-8 grid overflow-hidden border border-border/60 bg-card/35 shadow-[0_28px_90px_-56px_hsl(var(--primary)/0.35)] lg:grid-cols-[1.1fr_.9fr]">
+          <header className="skol-services-hero relative mb-8 grid overflow-hidden border border-border/60 bg-card/35 shadow-[0_28px_90px_-56px_hsl(var(--primary)/0.35)] lg:grid-cols-[1.1fr_.9fr]" onPointerMove={moveServicePointer} onPointerLeave={resetServicePointer}>
             <div className="relative z-10 flex flex-col justify-center p-6 sm:p-9 lg:p-11">
               <p className="mb-5 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[.22em] text-primary sm:text-xs">
-                <span className="h-px w-8 bg-primary" /> СКОЛ / ПРОИЗВОДСТВЕННЫЙ КАТАЛОГ
+                <span className="h-px w-8 bg-primary" /> {lang === "ru" ? "СКОЛ / ПРОИЗВОДСТВЕННЫЙ КАТАЛОГ" : "SKOL / CONSTRUCTION SERVICES"}
               </p>
               <h1 className="max-w-3xl font-display text-4xl font-semibold leading-[.98] tracking-[-.045em] text-foreground sm:text-5xl lg:text-6xl">
                 {t("services.pageTitle")}
@@ -39,28 +40,28 @@ const ServicesPage = () => {
                 <span className="border border-border/70 px-3 py-2">Расчёт по объекту</span>
               </div>
               <p className="mt-5 max-w-lg text-xs leading-6 text-muted-foreground">
-                Состав, сроки и стоимость определяются после уточнения объёма, материалов, доступа и условий площадки.
+                {lang === "ru" ? "Состав, сроки и стоимость определяются после уточнения объёма, материалов, доступа и условий площадки." : "Scope, schedule and cost are defined after reviewing quantities, materials, access and site conditions."}
               </p>
             </div>
-            <div className="relative min-h-[250px] overflow-hidden border-t border-border/50 sm:min-h-[340px] lg:border-l lg:border-t-0">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1600&q=85)" }} role="img" aria-label="Визуальный образ строительной площадки" />
+            <div className="skol-services-hero__visual relative min-h-[250px] overflow-hidden border-t border-border/50 sm:min-h-[340px] lg:border-l lg:border-t-0">
+              <div className="skol-services-hero__image absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1600&q=85)" }} role="img" aria-label="Визуальный образ строительной площадки" />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-background/5 lg:bg-gradient-to-r lg:from-background/15 lg:via-transparent lg:to-background/10" />
-              <div className="absolute inset-0 opacity-25" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.2) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.2) 1px, transparent 1px)", backgroundSize: "48px 48px" }} />
-              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 sm:bottom-7 sm:left-7 sm:right-7">
+              <div className="skol-services-hero__grid absolute inset-0 opacity-25" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.2) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.2) 1px, transparent 1px)", backgroundSize: "48px 48px" }} />
+              <div className="skol-services-hero__caption absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 sm:bottom-7 sm:left-7 sm:right-7">
                 <div>
-                  <span className="mb-2 block font-mono text-[10px] uppercase tracking-[.18em] text-primary">СКОЛ / WORK SYSTEM</span>
-                  <p className="max-w-sm text-xl font-medium leading-snug text-white sm:text-2xl">Каждый этап — часть общего плана.</p>
+                  <span className="mb-2 block font-mono text-[10px] uppercase tracking-[.18em] text-primary">{lang === "ru" ? "СКОЛ / СИСТЕМА РАБОТ" : "SKOL / WORK SYSTEM"}</span>
+                  <p className="max-w-sm text-xl font-medium leading-snug text-white sm:text-2xl">{lang === "ru" ? "Каждый этап — часть общего плана." : "Every stage is part of one coordinated plan."}</p>
                 </div>
-                <span className="hidden border border-white/25 bg-black/25 px-3 py-2 text-[9px] uppercase tracking-[.15em] text-white/80 backdrop-blur-sm sm:inline-block">Визуальный образ</span>
+                <span className="hidden border border-white/25 bg-black/25 px-3 py-2 text-[9px] uppercase tracking-[.15em] text-white/80 backdrop-blur-sm sm:inline-block">{lang === "ru" ? "Визуальный образ" : "VISUAL REFERENCE"}</span>
               </div>
             </div>
           </header>
         </AnimatedSection>
 
-        <div className="mb-4 flex items-end justify-between gap-4 border-b border-border/60 pb-4">
+        <div className="skol-services-heading mb-4 flex items-end justify-between gap-4 border-b border-border/60 pb-4">
           <div>
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.2em] text-primary">01 / Что можем выполнить</p>
-            <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">Направления работ</h2>
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.2em] text-primary">{lang === "ru" ? "01 / ЧТО МОЖЕМ ВЫПОЛНИТЬ" : "01 / WHAT WE DELIVER"}</p>
+            <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">{lang === "ru" ? "Направления работ" : "Areas of work"}</h2>
           </div>
           <span className="font-mono text-xs text-muted-foreground">01—08</span>
         </div>
@@ -72,7 +73,7 @@ const ServicesPage = () => {
                 role="link"
                 tabIndex={0}
                 aria-label={t(service.titleKey)}
-                className="group relative flex h-full cursor-pointer flex-col overflow-hidden border border-border/60 bg-card/45 transition-colors duration-300 hover:border-primary/50 hover:bg-card/70"
+                className="skol-services-card group relative flex h-full cursor-pointer flex-col overflow-hidden border border-border/60 bg-card/45 transition-colors duration-300 hover:border-primary/50 hover:bg-card/70"
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.22 }}
                 onClick={() => navigate(`/services/${service.slug}`)}
@@ -83,10 +84,10 @@ const ServicesPage = () => {
                   }
                 }}
               >
-                <div className={`relative overflow-hidden ${i === 0 ? "h-52 sm:h-64" : "h-40"}`}>
-                  <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.045]" style={{ backgroundImage: `url(${service.image})` }} />
+                <div className={`skol-services-card__media relative overflow-hidden ${i === 0 ? "h-52 sm:h-64" : "h-40"}`}>
+                  <div className="skol-services-card__image absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.045]" style={{ backgroundImage: `url(${service.image})` }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-black/5" />
-                  <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.16) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.16) 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
+                  <div className="skol-services-card__grid absolute inset-0 opacity-20" style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)/.16) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/.16) 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
                   <div className="absolute left-4 top-4 flex items-center gap-2">
                     <span className="border border-white/25 bg-black/25 px-2.5 py-1.5 font-mono text-[10px] text-white backdrop-blur-sm">0{i + 1}</span>
                     <span className="border border-white/20 bg-black/20 px-2.5 py-1.5 text-[9px] uppercase tracking-[.14em] text-white/85 backdrop-blur-sm">{service.tag}</span>
@@ -100,8 +101,8 @@ const ServicesPage = () => {
                   <p className="mt-2 flex-1 text-sm leading-6 text-muted-foreground">{t(service.descKey)}</p>
                   <div className="mt-6 flex items-end justify-between gap-3 border-t border-border/60 pt-4">
                     <div>
-                      <span className="block text-[9px] uppercase tracking-[.17em] text-muted-foreground">Формат расчёта</span>
-                      <span className="mt-1 block text-sm font-medium text-foreground">По объёму и условиям</span>
+                      <span className="block text-[9px] uppercase tracking-[.17em] text-muted-foreground">{lang === "ru" ? "ФОРМАТ РАСЧЁТА" : "ESTIMATE BASIS"}</span>
+                      <span className="mt-1 block text-sm font-medium text-foreground">{lang === "ru" ? "По объёму и условиям" : "By scope and conditions"}</span>
                     </div>
                     <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold text-foreground transition-colors group-hover:text-primary">
                       {t("services.orderBtn")} <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -114,13 +115,13 @@ const ServicesPage = () => {
         </div>
 
         <AnimatedSection delay={0.12}>
-          <section className="mt-8 grid gap-5 border border-border/60 bg-background/35 p-5 sm:p-7 md:grid-cols-[1fr_auto] md:items-center">
+          <section className="skol-services-cta mt-8 grid gap-5 border border-border/60 bg-background/35 p-5 sm:p-7 md:grid-cols-[1fr_auto] md:items-center">
             <div className="flex gap-4">
               <div className="hidden h-12 w-12 shrink-0 items-center justify-center border border-primary/35 bg-primary/10 text-primary sm:flex"><ClipboardCheck className="h-5 w-5" /></div>
               <div>
-                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.18em] text-primary">Перед стартом</p>
-                <h2 className="font-display text-xl font-semibold text-foreground sm:text-2xl">Сначала разберёмся в задаче</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Опишите объект и нужный результат. Уточним исходные данные и определим, какие работы необходимо оценить.</p>
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.18em] text-primary">{lang === "ru" ? "ПЕРЕД СТАРТОМ" : "BEFORE WE START"}</p>
+                <h2 className="font-display text-xl font-semibold text-foreground sm:text-2xl">{lang === "ru" ? "Сначала разберёмся в задаче" : "First, we clarify the task"}</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{lang === "ru" ? "Опишите объект и нужный результат. Уточним исходные данные и определим, какие работы необходимо оценить." : "Describe the site and intended result. We will clarify the initial data and define the work to be assessed."}</p>
               </div>
             </div>
             <button onClick={() => navigate("/contacts")} className="inline-flex min-h-11 items-center justify-center gap-2 border border-primary/60 px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-primary hover:text-primary-foreground">
