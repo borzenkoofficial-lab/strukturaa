@@ -1,10 +1,11 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ClipboardCheck, HardHat, Ruler, Truck } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
 import { useLanguage, TranslationKey } from "@/contexts/LanguageContext";
 
 const ProcessSection = () => {
   const { t } = useLanguage();
+  const reduceMotion = useReducedMotion();
 
   const steps: { icon: typeof ClipboardCheck; titleKey: TranslationKey; descKey: TranslationKey }[] = [
     { icon: ClipboardCheck, titleKey: "process.step1", descKey: "process.step1Desc" },
@@ -14,31 +15,44 @@ const ProcessSection = () => {
   ];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+    <section className="skol-process-section mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20" aria-labelledby="skol-process-title">
       <AnimatedSection>
-        <h2 className="text-2xl font-display font-bold text-foreground mb-2">{t("process.title")}</h2>
-        <p className="text-muted-foreground mb-10">{t("process.subtitle")}</p>
+        <div className="skol-process-heading">
+          <p className="skol-section-label mb-4 text-primary">SKOL / PROCESS</p>
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <h2 id="skol-process-title" className="max-w-2xl text-3xl font-display font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
+              {t("process.title")}
+            </h2>
+            <p className="max-w-md text-sm leading-6 text-muted-foreground sm:text-base">{t("process.subtitle")}</p>
+          </div>
+        </div>
       </AnimatedSection>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {steps.map((step, i) => (
-          <AnimatedSection key={step.titleKey} delay={i * 0.12}>
-            <motion.div className="glass-card-hover p-6 relative overflow-hidden group" whileHover={{ y: -4 }}>
-              <span className="absolute top-4 right-4 text-5xl font-display font-bold text-foreground/5 group-hover:text-primary/10 transition-colors">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-4 group-hover:bg-primary/25 transition-colors">
-                <step.icon className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-display font-semibold text-foreground mb-1">{t(step.titleKey)}</h3>
-              <p className="text-sm text-muted-foreground">{t(step.descKey)}</p>
-              {i < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-2 w-4 h-px bg-border/50" />
-              )}
-            </motion.div>
-          </AnimatedSection>
-        ))}
+
+      <div className="skol-process-grid">
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          return (
+            <AnimatedSection key={step.titleKey} delay={index * 0.09}>
+              <motion.article
+                className="skol-process-step group"
+                whileHover={reduceMotion ? undefined : { y: -5 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className="skol-process-step__top">
+                  <span className="skol-process-step__number">0{index + 1}</span>
+                  <span className="skol-process-step__icon"><Icon size={21} strokeWidth={1.5} /></span>
+                </div>
+                <div className="skol-process-step__body">
+                  <h3>{t(step.titleKey)}</h3>
+                  <p>{t(step.descKey)}</p>
+                </div>
+                <span className="skol-process-step__track" aria-hidden="true"><i style={{ transform: `scaleX(${(index + 1) / steps.length})` }} /></span>
+              </motion.article>
+            </AnimatedSection>
+          );
+        })}
       </div>
-    </div>
+    </section>
   );
 };
 
