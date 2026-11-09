@@ -4,31 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import AnimatedSection from "./AnimatedSection";
 
-const principles = [
-  {
-    number: "01",
-    icon: ClipboardCheck,
-    title: lang === "ru" ? "Понятная смета" : "Clear estimate",
-    description: lang === "ru" ? "Согласуем состав работ, объёмы и стоимость до начала работ. Изменения обсуждаем отдельно, а не ставим перед фактом." : "We agree on scope, quantities and cost before work begins. Any changes are discussed and approved separately.",
-  },
-  {
-    number: "02",
-    icon: Layers3,
-    title: lang === "ru" ? "Комплексный подход" : "Integrated delivery",
-    description: lang === "ru" ? "Демонтаж, подготовка и последующие строительные работы можно собрать в единый план — без разрозненных подрядчиков на каждом этапе." : "Demolition, preparation and follow-on construction can be coordinated in one plan instead of fragmented contractors at every stage.",
-  },
-  {
-    number: "03",
-    icon: HardHat,
-    title: lang === "ru" ? "Работа по этапам" : "Controlled stages",
-    description: lang === "ru" ? "Фиксируем последовательность работ и контрольные точки, чтобы заказчик понимал, что происходит на объекте и что будет дальше." : "We define the sequence and checkpoints so the client knows what is happening on site and what comes next.",
-  },
-];
-
 const FeaturesCarousel = () => {
   const navigate = useNavigate();
   const { lang } = useLanguage();
   const reduceMotion = useReducedMotion();
+
+  const principles = lang === "ru" ? [
+    { number: "01", icon: ClipboardCheck, title: "Понятная смета", description: "Согласуем состав работ, объёмы и стоимость до начала работ. Изменения обсуждаем отдельно, а не ставим перед фактом." },
+    { number: "02", icon: Layers3, title: "Комплексный подход", description: "Демонтаж, подготовка и последующие строительные работы можно собрать в единый план — без разрозненных подрядчиков на каждом этапе." },
+    { number: "03", icon: HardHat, title: "Работа по этапам", description: "Фиксируем последовательность работ и контрольные точки, чтобы заказчик понимал, что происходит на объекте и что будет дальше." },
+  ] : [
+    { number: "01", icon: ClipboardCheck, title: "Clear estimate", description: "We agree on scope, quantities and cost before work begins. Any changes are discussed and approved separately." },
+    { number: "02", icon: Layers3, title: "Integrated delivery", description: "Demolition, preparation and follow-on construction can be coordinated in one plan instead of fragmented contractors at every stage." },
+    { number: "03", icon: HardHat, title: "Controlled stages", description: "We define the sequence and checkpoints so the client knows what is happening on site and what comes next." },
+  ];
 
   return (
     <section className="skol-principles-section relative overflow-hidden py-16 sm:py-24" aria-labelledby="skol-principles-title">
@@ -44,16 +33,12 @@ const FeaturesCarousel = () => {
             <div className="max-w-2xl">
               <p className="skol-section-label mb-4 text-primary">SKOL / APPROACH</p>
               <h2 id="skol-principles-title" className="font-display text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
-                Строительные работы
-                <span className="block text-muted-foreground">без лишней неопределённости</span>
+                {lang === "ru" ? "Строительные работы" : "Construction work"}
+                <span className="block text-muted-foreground">{lang === "ru" ? "без лишней неопределённости" : "without unnecessary uncertainty"}</span>
               </h2>
             </div>
-            <button
-              type="button"
-              onClick={() => navigate("/contacts")}
-              className="group inline-flex w-fit items-center gap-2 border-b border-primary/50 pb-2 text-sm font-medium text-foreground transition-colors hover:border-primary"
-            >
-              Обсудить объект
+            <button type="button" onClick={() => navigate("/contacts")} className="group inline-flex w-fit items-center gap-2 border-b border-primary/50 pb-2 text-sm font-medium text-foreground transition-colors hover:border-primary">
+              {lang === "ru" ? "Обсудить объект" : "Discuss a project"}
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </button>
           </div>
