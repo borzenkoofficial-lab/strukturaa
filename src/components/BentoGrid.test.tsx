@@ -5,7 +5,7 @@ import BentoGrid from "./BentoGrid";
 const { navigateMock } = vi.hoisted(() => ({ navigateMock: vi.fn() }));
 
 vi.mock("@/contexts/LanguageContext", () => ({
-  useLanguage: () => ({ t: (key: string) => key }),
+  useLanguage: () => ({ t: (key: string) => key, lang: "ru" }),
 }));
 
 vi.mock("react-router-dom", () => ({
@@ -34,6 +34,26 @@ describe("BentoGrid", () => {
     expect(screen.queryByText(/от \d+₽/)).not.toBeInTheDocument();
     expect(screen.queryByText(/30 минут|85%/)).not.toBeInTheDocument();
     expect(screen.queryByText(/магазин|подписка|установить приложение/i)).not.toBeInTheDocument();
+  });
+
+
+  it("tracks pointer position for the service-card light field", () => {
+    render(<BentoGrid />);
+    const card = screen.getByRole("button", { name: /services\\.demolition/ });
+    vi.spyOn(card, "getBoundingClientRect").mockReturnValue({
+      x: 0, y: 0, top: 0, left: 0, right: 200, bottom: 100, width: 200, height: 100,
+      toJSON: () => ({}),
+    } as DOMRect);
+
+    fireEvent.pointerMove(card, { clientX: 50, clientY: 25, pointerType: "mouse" });
+
+    expect((card as HTMLButtonElement).style.getPropertyValue("--skol-spot-x")).toBe("25%");
+    expect((card as HTMLButtonElement).style.getPropertyValue("--skol-spot-y")).toBe("25%");
+
+    fireEvent.pointerLeave(card);
+
+    expect((card as HTMLButtonElement).style.getPropertyValue("--skol-spot-x")).toBe("50%");
+    expect((card as HTMLButtonElement).style.getPropertyValue("--skol-card-shift-x")).toBe("0px");
   });
 
   it("routes a selected service card to its matching service page", () => {
